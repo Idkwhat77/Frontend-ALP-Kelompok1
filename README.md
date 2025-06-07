@@ -34,17 +34,23 @@ Membuat sebuah interaksi agar dapat mengurangi pengangguran di Indonesia
 ## 🛠️ Tech Stack
 
 ### Frontend
-- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) &nbsp; **JavaScript ES6+** - Modern client-side programming language
-- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) &nbsp; **HTML5** - Semantic markup and structure
-- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) &nbsp; **CSS3** - Modern styling and animations  
-- ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white) &nbsp; **Tailwind CSS v4** - Utility-first CSS framework
+| Technology | Badge | Description |
+|------------|-------|-------------|
+| **JavaScript ES6+** | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) | Modern client-side programming language |
+| **HTML5** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) | Semantic markup and structure |
+| **CSS3** | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) | Modern styling and animations |
+| **Tailwind CSS v4** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white) | Utility-first CSS framework |
 
 ### Backend
-- ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white) &nbsp; **Java Spring Boot** - Enterprise-grade REST API framework
-- ![REST API](https://img.shields.io/badge/REST-API-02569B?style=flat&logo=fastapi&logoColor=white) &nbsp; **REST API Architecture** - RESTful web services design
+| Technology | Badge | Description |
+|------------|-------|-------------|
+| **Java Spring Boot** | ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white) | Enterprise-grade REST API framework |
+| **REST API Architecture** | ![REST API](https://img.shields.io/badge/REST-API-02569B?style=flat&logo=fastapi&logoColor=white) | RESTful web services design |
 
 ### Database
-- ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=flat&logo=mysql&logoColor=white) &nbsp; **MySQL** - Relational database management system *(Development)*
+| Technology | Badge | Description |
+|------------|-------|-------------|
+| **MySQL** | ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=flat&logo=mysql&logoColor=white) | Relational database management system *(Development)* |
 
 > **Note:** Database configuration may change for production deployment.
 
