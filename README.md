@@ -13,6 +13,9 @@ This is a Challenge Based Learning (CBL) project focused on creating an interact
 > [!NOTE]
 > This project is currently in development phase. Database configuration and deployment strategies may change for production environments.
 
+# Backend Repository
+You can find the backend repository here: [Idkwhat77/Backend-ALP-Kelompok1](https://github.com/Idkwhat77/Backend-ALP-Kelompok1)
+
 ## 👥 Team Members
 1. Aristo Benedict Iskandar
 2. Exsel Octaviand Gosal
