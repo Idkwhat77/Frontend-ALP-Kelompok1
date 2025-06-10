@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee - Escoffier</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="src/output.css">
+  <link class="favicon" rel="icon" href="img/blackswa.png" type="image/x-icon">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  integrity="sha512-..."
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  />
+</head>
+<style>
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #c69aed;
+    border-radius: 10px;
+  }
+</style>
+<body class="" id="body">
+  <div class="flex lg:flex-row flex-col items-center bg-[#F4ECFB] transition duration-300" id="main-container">
+    <div class="flex flex-col bg-[#B57EDC] h-screen items-center justify-center lg:w-5/12 w-full relative">
+      <div class="flex flex-col items-center text-center gap-5">
+        <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity duration-300 object-cover" src="img/escoffier.png" alt="A majestic llama">
+        <h1 class="text-5xl font-bold text-white">Escoffier</h1>
+        <p class="mt-4 text-lg text-white">Head Chef at the Fleuve Cendre!</p>
+      </div>
+      <div class="flex flex-row space-x-4 text-3xl bottom-10 absolute">
+        <a href="https://facebook.com" target="_blank" class="hover:text-blue-600">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" class="hover:text-pink-500">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://x.com" target="_blank" class="hover:text-gray-600">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+      </div>
+    </div>
+    <div class="flex lg:flex-row flex-col items-center justify-center w-full gap-10">
+      <div class="text-center flex flex-col gap-4 items-center w-96">
+        <h2 class="text-3xl font-bold text-[#6B21A8] lg:m-0 m-10">Employee Details</h2>
+
+        <!-- Profile Content -->
+        <div class="bg-white shadow-xl rounded-2xl p-6 w-full max-w-md text-left">
+          <div class="mb-4">
+            <h4 class="font-semibold text-xl text-[#9333EA]">Full Name</h4>
+            <p class="text-[#374151]">Escoffier de Fontaine</p>
+          </div>
+          <div class="mb-4">
+            <h4 class="font-semibold text-xl text-[#9333EA]">Birth Date</h4>
+            <p class="text-[#374151]">April 1, 1990</p>
+          </div>
+          <div class="mb-4">
+            <h4 class="font-semibold text-xl text-[#9333EA]">Location</h4>
+            <p class="text-[#374151]">Fontaine, Teyvat</p>
+          </div>
+          <div class="mb-4">
+            <h4 class="font-semibold text-xl text-[#9333EA]">Employment Status</h4>
+            <p class="text-[#374151]">Employed – Head Chef at Fleuve Cendre</p>
+          </div>
+          <div class="mb-4">
+            <h4 class="font-semibold text-xl text-[#9333EA]">Contact Email</h4>
+            <p class="text-[#374151]">escoffier@mail.tyv</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center flex flex-col gap-4 items-center w-96">
+        <h2 class="text-3xl font-bold text-[#6B21A8] lg:m-0 m-10">Biodata</h2>
+        <div class="bg-white shadow-xl rounded-2xl p-6 w-full max-w-md text-left">
+          <div class="mb-4">
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Education Modal -->
+  <div id="modal-education" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-50 opacity-0">
+      <h3 class="text-3xl font-semibold text-[#6B21A8]">Education</h3>
+      <div class="flex flex-col mt-4">
+        <div class="flex flex-row">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fontaine Culinary Academy">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#6B21A8]">Fontaine Culinary Academy</h2>
+            <p class="">2020-2024</p>
+          </div>
+        </div>
+        <div class="flex flex-row mt-4">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#6B21A8]">Teyvat Culinary Institute</h2>
+            <p class="">2016-2020</p>
+          </div>
+        </div>
+      </div>
+      <h3 class="text-3xl font-semibold text-[#6B21A8] mt-4">Experience</h3>
+      <div class="flex flex-col mt-4">
+        <div class="flex flex-row">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fleuve Cendre">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#6B21A8]">Fleuve Cendre</h2>
+            <p class="">2025-Present</p>
+          </div>
+        </div>
+        <div class="flex flex-row mt-4">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#6B21A8]">Hotel Debord</h2>
+            <p class="">2020-2025</p>
+          </div>
+        </div>
+                <div class="flex flex-row mt-4">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#6B21A8]">Hotel Debord</h2>
+            <p class="">2020-2025</p>
+          </div>
+        </div>
+                <div class="flex flex-row mt-4">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#6B21A8]">Hotel Debord</h2>
+            <p class="">2020-2025</p>
+          </div>
+        </div>
+      </div>
+      <button onclick="closeModal('modal-education')" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300 mt-5">Close</button>
+    </div>
+  </div>
+
+  <!-- Skills Modal -->
+  <div id="modal-skills" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-50 opacity-0">
+      <h3 class="text-2xl font-semibold text-[#6B21A8] mb-4">Skills</h3>
+      <ul class="list-disc list-inside text-gray-700 mb-6">
+        <li>5-Star Cuisine Mastery</li>
+        <li>Perfect Plating</li>
+        <li>Sassy Sous Chef Handling</li>
+      </ul>
+      <button onclick="closeModal('modal-skills')" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300">Close</button>
+    </div>
+  </div>
+  <!-- Floating Buttons -->
+  <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-40">
+    <button onclick="openModal('modal-skills')" class="bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-800 transition-all duration-300">
+      <i class="fa fa-dumbbell"></i>
+    </button>
+    <button onclick="openModal('modal-education')" class="bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-800 transition-all duration-300">
+      <i class="fa fa-graduation-cap"></i>
+    </button>
+  </div>
+</body>
+  <script>
+  const loading_circle = document.createElement('div');
+  loading_circle.id = 'load_bro';
+  loading_circle.innerHTML = `
+    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
+      <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+    </div>
+  `;
+  document.body.appendChild(loading_circle);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const l = document.getElementById('load_bro');
+    if (l) {
+      l.remove();
+    }
+  });
+
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    const content = modal.querySelector('div');
+    const main = document.getElementById('main-container');
+
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      content.classList.remove('scale-50', 'opacity-0');
+      content.classList.add('scale-100', 'opacity-100');
+      main.classList.add('opacity-50');
+    }, 10);
+
+    // Close modal if clicked outside the box
+    modal.onclick = (e) => {
+      if (e.target === modal) closeModal(id);
+    };
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    const content = modal.querySelector('div');
+    const main = document.getElementById('main-container');
+
+    modal.classList.add('hidden');
+    setTimeout(() => {
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-50', 'opacity-0');
+      main.classList.remove('opacity-50');
+    }, 10);
+  }
+</script>
+</html>
