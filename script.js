@@ -6,12 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check for saved user preference or use system preference
     const savedTheme = localStorage.getItem('theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-        htmlElement.classList.add('dark');
-        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    }
-    
+   
     darkModeToggle.addEventListener('click', function() {
         htmlElement.classList.toggle('dark');
         
