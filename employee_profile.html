@@ -5,6 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee - Escoffier</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      tailwind.config = {
+          darkMode: 'class',
+          theme: {
+              extend: {
+                  colors: {
+                      lilac: {
+                          50: '#faf7fd',
+                          100: '#f4ecfb',
+                          200: '#ebddf7',
+                          300: '#dbc2f0',
+                          400: '#c69ae6',
+                          500: '#b87ce0',
+                      },
+                  },
+                  fontFamily: {
+                      elegant: ['"Playfair Display"', 'serif'],
+                      poppins: ['Poppins', 'sans-serif'],
+                  },
+                  animation: {
+                      'fade-in': 'fadeIn 0.5s ease-in forwards',
+                  },
+                  keyframes: {
+                      fadeIn: {
+                          '0%': { opacity: '0', transform: 'translateY(10px)' },
+                          '100%': { opacity: '1', transform: 'translateY(0)' },
+                      }
+                  },
+                  transitionProperty: {
+                      'scale': 'transform',
+                  }
+              }
+          }
+      }
+  </script>
   <link rel="stylesheet" href="src/output.css">
   <link class="favicon" rel="icon" href="img/blackswa.png" type="image/x-icon">
   <link
@@ -30,42 +65,67 @@
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #F4ECFB;
   }
   ::-webkit-scrollbar-thumb {
-    background: #c69aed;
+    background: #DBC2F0;
     border-radius: 10px;
   }
 </style>
-<body class="" id="body">
-  
-  <!-- Navbar at the top -->
-  <nav class="bg-[#F4ECFB] fixed w-full px-8 py-3 flex items-center justify-between border-b shadow-2xl z-50">
-    <!-- Left Side: Brand + Nav Links -->
-    <div class="flex items-center gap-10">
-      <!-- Brand -->
-      <a class="text-2xl font-bold text-[#C09AE6] hover:text-black" href="homepage.html">RuangKerja</a>
-
-      <!-- Navigation Links -->
-      <div class="hidden md:flex items-center gap-6 text-[16px]">
-        <a href="#" class="text-black hover:text-purple-600 hover:bg-[#EBDDF6] rounded-xl p-2">Home</a>
-        <a href="#" class="text-black hover:text-purple-600 hover:bg-[#EBDDF6] rounded-xl p-2">About</a>
-        <a href="#" class="text-black hover:text-purple-600 hover:bg-[#EBDDF6] rounded-xl p-2">Employee</a>
-        <a href="#" class="text-black hover:text-purple-600 hover:bg-[#EBDDF6] rounded-xl p-2">Company</a>
+<body class="bg-lilac-100 dark:bg-gray-900" id="body">
+<!-- Navbar -->
+<nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+          <div class="flex">
+          <div class="flex-shrink-0 flex items-center">
+              <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto" />
+          </div>
+              <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                  <a href="homepage.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                      Home
+                  </a>
+                  <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                      About
+                  </a>
+                  <a href="candidates.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                      Candidates
+                  </a>
+                  <a href="companies.html" class="border-transparent dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                      Companies
+                  </a>
+              </div>
+          </div>
+          <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+              <button id="darkModeToggle" class="p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
+                  <i class="fas fa-moon dark:hidden"></i>
+                  <i class="fas fa-sun hidden dark:inline"></i>
+              </button>
+              <div class="ml-3 relative">
+                  <div>
+                      <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                      </button>
+                  </div>
+                  <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                  </div>
+              </div>
+          </div>
+          <div class="-mr-2 flex items-center sm:hidden">
+              <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                  <span class="sr-only">Open main menu</span>
+                  <i class="fas fa-bars"></i>
+              </button>
+          </div>
       </div>
-    </div>
-
-    <!-- Right Side: Icons + Profile -->
-    <div class="flex items-center gap-4 text-sm">
-      <i class="fa-solid fa-moon text-lg"></i>
-      <img src="img/escoffier.png" alt="Profile" class="w-10 h-10 rounded-full object-cover" />
-      <span class="">My Profile <i class="fa-solid fa-caret-down"></i></span>
-    </div>
+  </div>
   </nav>
-
+  
   <!-- Main Content duh -->
-  <div class="flex lg:flex-row flex-col items-center transition duration-300 bg-[#FAF7FD]" id="main-container">
-    <div class="flex flex-col bg-[#B57EDC] h-screen items-center justify-center lg:w-5/12 w-full relative">
+  <div class="flex lg:flex-row flex-col items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
+    <div class="flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-5/12 w-full relative">
       <div class="flex flex-col items-center text-center gap-5">
         <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity duration-300 object-cover" src="img/escoffier.png" alt="A majestic llama">
         <h1 class="text-5xl font-bold text-white">Escoffier</h1>
@@ -93,35 +153,35 @@
     <!-- Employee Main Profile -->
     <div class="flex lg:flex-row flex-col items-center justify-center w-full gap-10">
       <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px]">
-        <h2 class="text-3xl font-bold text-[#6B21A8] lg:m-0 m-10">Employee Details</h2>
-        <div class="bg-white shadow-xl rounded-2xl p-6 lg:w-full w-80 h-full text-left">
+        <h2 class="text-3xl font-bold text-[#B57EDC] lg:m-0 m-10">Employee Details</h2>
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-full text-left">
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#9333EA]">Full Name</h4>
-            <p class="text-[#374151]">Escoffier de Fontaine</p>
+            <h4 class="font-semibold text-xl text-[#B57EDC]">Full Name</h4>
+            <p class="text-[#374151] dark:text-white">Escoffier de Fontaine</p>
           </div>
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#9333EA]">Birth Date</h4>
-            <p class="text-[#374151]">April 1, 1990</p>
+            <h4 class="font-semibold text-xl text-[#B57EDC]">Birth Date</h4>
+            <p class="text-[#374151] dark:text-white">April 1, 1990</p>
           </div>
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#9333EA]">Location</h4>
-            <p class="text-[#374151]">Fontaine, Teyvat</p>
+            <h4 class="font-semibold text-xl text-[#B57EDC]">Location</h4>
+            <p class="text-[#374151] dark:text-white">Fontaine, Teyvat</p>
           </div>
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#9333EA]">Employment Status</h4>
-            <p class="text-[#374151]">Employed – Head Chef at Fleuve Cendre</p>
+            <h4 class="font-semibold text-xl text-[#B57EDC]">Employment Status</h4>
+            <p class="text-[#374151] dark:text-white">Employed – Head Chef at Fleuve Cendre</p>
           </div>
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#9333EA]">Contact Email</h4>
-            <p class="text-[#374151]">escoffier@mail.tyv</p>
+            <h4 class="font-semibold text-xl text-[#B57EDC]">Contact Email</h4>
+            <p class="text-[#374151] dark:text-white">escoffier@mail.tyv</p>
           </div>
         </div>
       </div>
-      <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px]">
-        <h2 class="text-3xl font-bold text-[#6B21A8] lg:m-0 m-10">Biodata</h2>
-        <div class="bg-white shadow-xl rounded-2xl p-6 lg:w-full w-80 h-96 text-left">
+      <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px] lg:mb-0 mb-10">
+        <h2 class="text-3xl font-bold text-[#B57EDC] lg:m-0 m-10">Biodata</h2>
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-96 text-left">
           <div class="mb-4">
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
+            <p class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
             </p>
           </div>
         </div>
@@ -130,69 +190,69 @@
   </div>
   <!-- Employee Education Modal Box (popup basically) -->
   <div id="modal-education" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 class="text-3xl font-semibold text-[#6B21A8]">Education</h3>
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
+      <h3 class="text-3xl font-semibold text-[#B57EDC]">Education</h3>
       <div class="flex flex-col mt-4">
         <div class="flex flex-row">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fontaine Culinary Academy">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#6B21A8]">Fontaine Culinary Academy</h2>
-            <p class="">2020-2024</p>
+            <h2 class="text-xl font-semibold text-[#B57EDC]">Fontaine Culinary Academy</h2>
+            <p class="text-black dark:text-white">2020-2024</p>
           </div>
         </div>
         <div class="flex flex-row mt-4">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#6B21A8]">Teyvat Culinary Institute</h2>
-            <p class="">2016-2020</p>
+            <h2 class="text-xl font-semibold text-[#B57EDC]">Teyvat Culinary Institute</h2>
+            <p class="text-black dark:text-white">2016-2020</p>
           </div>
         </div>
       </div>
-      <h3 class="text-3xl font-semibold text-[#6B21A8] mt-4">Experience</h3>
+      <h3 class="text-3xl font-semibold text-[#B57EDC] mt-4">Experience</h3>
       <div class="flex flex-col mt-4">
         <div class="flex flex-row">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fleuve Cendre">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#6B21A8]">Fleuve Cendre</h2>
-            <p class="">2025-Present</p>
+            <h2 class="text-xl font-semibold text-[#B57EDC]">Fleuve Cendre</h2>
+            <p class="text-black dark:text-white">2025-Present</p>
           </div>
         </div>
         <div class="flex flex-row mt-4">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#6B21A8]">Hotel Debord</h2>
-            <p class="">2020-2025</p>
+            <h2 class="text-xl font-semibold text-[#B57EDC]">Hotel Debord</h2>
+            <p class="text-black dark:text-white">2020-2025</p>
           </div>
         </div>
                 <div class="flex flex-row mt-4">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#6B21A8]">Hotel Debord</h2>
-            <p class="">2020-2025</p>
+            <h2 class="text-xl font-semibold text-[#B57EDC]">Hotel Debord</h2>
+            <p class="text-black dark:text-white">2020-2025</p>
           </div>
         </div>
                 <div class="flex flex-row mt-4">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#6B21A8]">Hotel Debord</h2>
-            <p class="">2020-2025</p>
+            <h2 class="text-xl font-semibold text-[#B57EDC]">Hotel Debord</h2>
+            <p class="text-black dark:text-white">2020-2025</p>
           </div>
         </div>
       </div>
-      <button onclick="closeModal('modal-education')" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300 mt-5">Close</button>
+      <button onclick="closeModal('modal-education')" class="bg-[#B57EDC] text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300 mt-5">Close</button>
     </div>
   </div>
 
   <!-- Employee Skills Modal Box (popups basically again)-->
   <div id="modal-skills" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 class="text-2xl font-semibold text-[#6B21A8] mb-4">Skills</h3>
-      <ul class="list-disc list-inside text-gray-700 mb-6">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
+      <h3 class="text-2xl font-semibold text-[#B57EDC] mb-4">Skills</h3>
+      <ul class="list-disc list-inside text-black dark:text-white mb-6">
         <li>5-Star Cuisine Mastery</li>
         <li>Perfect Plating</li>
         <li>Sassy Sous Chef Handling</li>
       </ul>
-      <button onclick="closeModal('modal-skills')" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300">Close</button>
+      <button onclick="closeModal('modal-skills')" class="bg text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300">Close</button>
     </div>
   </div>
 
@@ -214,97 +274,85 @@
       </button>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="w-full bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 transition-colors duration-300">
+      <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <!-- Company Info -->
+              <div class="space-y-4">
+                  <h3 class="text-xl font-bold font-elegant text-lilac-400">RuangKerja</h3>
+                  <p class="text-sm">Connecting professionals with opportunities that matter.</p>
+                  <div class="flex space-x-4">
+                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
+                          <i class="fab fa-facebook-f"></i>
+                      </a>
+                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
+                          <i class="fab fa-twitter"></i>
+                      </a>
+                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
+                          <i class="fab fa-linkedin-in"></i>
+                      </a>
+                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
+                          <i class="fab fa-instagram"></i>
+                      </a>
+                  </div>
+              </div>
+
+              <!-- Quick Links -->
+              <div>
+                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Quick Links</h4>
+                  <ul class="space-y-2 text-sm">
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Home</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">About Us</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Candidates</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Companies</a></li>
+                  </ul>
+              </div>
+
+              <!-- Resources -->
+              <div>
+                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Resources</h4>
+                  <ul class="space-y-2 text-sm">
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Blog</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Help Center</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Career Advice</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Interview Tips</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Success Stories</a></li>
+                  </ul>
+              </div>
+
+              <!-- Contact -->
+              <div>
+                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                  <ul class="space-y-2 text-sm">
+                      <li class="flex items-start">
+                          <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                          <span>Makassar</span>
+                      </li>
+                      <li class="flex items-start">
+                          <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                          <span>+62 823 1955 6278</span>
+                      </li>
+                      <li class="flex items-start">
+                          <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                          <span>hello@ruangkerja.id</span>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+
+          <!-- Copyright -->
+          <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 text-sm text-center">
+              <p>&copy; 2026 RuangKerja. All rights reserved.</p>
+              <div class="mt-2 flex justify-center space-x-6">
+                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Privacy Policy</a>
+                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Terms of Service</a>
+                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Cookie Policy</a>
+              </div>
+          </div>
+      </div>
+  </footer>
 </body>
-  <script>
-
-  // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
-  const loading_circle = document.createElement('div');
-  loading_circle.id = 'load_bro';
-  loading_circle.innerHTML = `
-    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
-      <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
-    </div>
-  `;
-  document.body.appendChild(loading_circle);
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const l = document.getElementById('load_bro');
-    if (l) {
-      l.remove();
-    }
-  });
-
-  // JavaScript for opening and closing le popup boxes (education and skills)
-  function openModal(id) {
-    const modal = document.getElementById(id);
-    const content = modal.querySelector('div');
-    const main = document.getElementById('main-container');
-
-    modal.classList.remove('hidden');
-    setTimeout(() => {
-      content.classList.remove('scale-0', 'opacity-0');
-      content.classList.add('scale-100', 'opacity-100');
-      main.classList.add('opacity-50');
-    }, 10);
-
-    // Close modal if clicked outside the box
-    modal.onclick = (e) => {
-      if (e.target === modal) closeModal(id);
-    };
-  }
-
-  function closeModal(id) {
-    const modal = document.getElementById(id);
-    const content = modal.querySelector('div');
-    const main = document.getElementById('main-container');
-
-    setTimeout(() => {
-      content.classList.remove('scale-100');
-      content.classList.add('scale-0');
-      main.classList.remove('opacity-50');
-    }, 10);
-    setTimeout(() => {
-      modal.classList.add('hidden');
-    }, 300);
-
-  }
-
-  // JavaScript for the navigation modal boxes that extends width to the left to show text on hover
-  // and shrinks back to icon size when mouse go bye bye
-  const btnSkills = document.getElementById('btn-skills');
-  const btnEducation = document.getElementById('btn-education');
-  const btnChat = document.getElementById('btn-chat');
-
-  btnSkills.addEventListener('mouseover', () => {
-    btnSkills.innerHTML = 'Skills';
-    btnSkills.classList.remove('w-12');
-    btnSkills.classList.add('w-32');
-  });
-  btnSkills.addEventListener('mouseout', () => {
-    btnSkills.classList.remove('w-32');
-    btnSkills.classList.add('w-12');
-    btnSkills.innerHTML = '<i class="fa fa-dumbbell"></i>';
-  });
-  btnEducation.addEventListener('mouseover', () => {
-    btnEducation.innerHTML = 'Education';
-    btnEducation.classList.remove('w-12');
-    btnEducation.classList.add('w-32');
-  });
-  btnEducation.addEventListener('mouseout', () => {
-    btnEducation.classList.remove('w-32');
-    btnEducation.classList.add('w-12');
-    btnEducation.innerHTML = '<i class="fa fa-graduation-cap"></i>';
-  });
-  btnChat.addEventListener('mouseover', () => {
-    btnChat.innerHTML = 'Chat';
-    btnChat.classList.remove('w-12');
-    btnChat.classList.add('w-32');
-  });
-  btnChat.addEventListener('mouseout', () => {
-    btnChat.classList.remove('w-32');
-    btnChat.classList.add('w-12');
-    btnChat.innerHTML = '<i class="fa fa-comment-dots"></i>';
-  });
-
-</script>
+<script src="script.js"></script>
 </html>
