@@ -99,8 +99,8 @@
         <div class="logo-animation mb-8">
             <i class="fas fa-briefcase text-lilac-400 dark:text-lilac-300 text-6xl"></i>
         </div>
-        <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4 welcome-text">Welcome to RuangKerja</h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 welcome-text">Your professional workspace</p>
+        <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4 welcome-text">Selamat Datang di RuangKerja</h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 welcome-text">Tempat kerja profesional Anda</p>
         <div class="welcome-complete">
             <div class="w-12 h-12 border-4 border-lilac-400 dark:border-lilac-300 border-t-transparent rounded-full animate-spin mx-auto"></div>
         </div>
@@ -112,13 +112,12 @@
         // Show welcome animation first
         const welcomeScreen = document.getElementById('welcome-screen');
         
-        // After welcome animation completes, redirect to login page
         setTimeout(() => {
             welcomeScreen.style.opacity = '0';
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 1000);
-        }, 4000); // Total animation duration: 4 seconds (3s for animations + 1s fade out)
+        }, 5000);
     });
 </script>
 </body>
