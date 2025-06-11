@@ -481,6 +481,23 @@
         
         window.addEventListener('scroll', checkVisibility);
         window.addEventListener('load', checkVisibility);
+
+        // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
+        const loading_circle = document.createElement('div');
+        loading_circle.id = 'load_bro';
+        loading_circle.innerHTML = `
+            <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
+            <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+            </div>
+        `;
+        document.body.appendChild(loading_circle);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('load_bro');
+            if (l) {
+            l.remove();
+            }
+        });
     </script>
 </body>
 </html>
