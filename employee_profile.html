@@ -25,12 +25,32 @@
                       poppins: ['Poppins', 'sans-serif'],
                   },
                   animation: {
-                      'fade-in': 'fadeIn 0.5s ease-in forwards',
+                      'fade-in-from-up': 'fadeInUp 1s ease-in forwards',
+                      'fade-in-from-right' : 'fadeInRight 1s ease-in forwards',
+                      'fade-in-from-down': 'fadeInDown 0.5s ease-in forwards',
+                      'expand-down': 'expandDown 1.2s ease-out forwards',
+                      'expand-left': 'expandLeft 1.2s ease-out forwards',
                   },
                   keyframes: {
-                      fadeIn: {
-                          '0%': { opacity: '0', transform: 'translateY(10px)' },
+                      fadeInUp: {
+                          '0%': { opacity: '0', transform: 'translateY(-100px)' },
                           '100%': { opacity: '1', transform: 'translateY(0)' },
+                      },
+                      fadeInRight: {
+                          '0%': { opacity: '0', transform: 'translateX(100px)' },
+                          '100%': { opacity: '1', transform: 'translateX(0)' },
+                      },
+                      fadeInDown: {
+                          '0%': { opacity: '0', transform: 'translateY(50px)' },
+                          '100%': { opacity: '1', transform: 'translateY(0)' },
+                      },
+                      expandDown: {
+                        '0%': { height: '0', opacity: '0' },
+                        '100%': { height: '100vh', opacity: '1' },
+                      },
+                      expandLeft: {
+                        '0%': { width: '0', opacity: '0' },
+                        '100%': { width: '100vw', opacity: '1' },
                       }
                   },
                   transitionProperty: {
@@ -60,21 +80,33 @@
     background-color: #FAF7FD;
   }
 
-  /* Scrollbar Customization (to make pretty pretty epic) */
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+      width: 8px;
+      height: 8px;
   }
+  
   ::-webkit-scrollbar-track {
-    background: #F4ECFB;
+      background: #f4ecfb;
   }
+  
   ::-webkit-scrollbar-thumb {
-    background: #DBC2F0;
-    border-radius: 10px;
+      background: #dbc2f0;
+      border-radius: 4px;
+  }
+  
+  .dark ::-webkit-scrollbar-track {
+      background: #1a202c;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+      background: #4a5568;
   }
 </style>
 <body class="bg-lilac-100 dark:bg-gray-900" id="body">
+
 <!-- Navbar -->
-<nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-all duration-300 top-0 w-full z-50 h-0 opacity-0" id="navbar-employees">
+<nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-all duration-700 top-0 w-full z-50 h-0 opacity-0" id="navbar-employees">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
           <div class="flex">
@@ -82,21 +114,27 @@
               <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto" />
           </div>
               <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  <a href="homepage.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                  <a data-i18n="nav.home" href="homepage.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Home
                   </a>
-                  <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                  <a data-i18n="nav.about" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       About
                   </a>
-                  <a href="candidates.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                  <a data-i18n="nav.candidates" href="candidates.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Candidates
                   </a>
-                  <a href="companies.html" class="border-transparent dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                  <a data-i18n="nav.companies" href="companies.html" class="border-transparent dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Companies
                   </a>
               </div>
           </div>
           <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+              <div class="ml-4">
+                <select id="language-selector" class="text-gray-700 dark:text-white p-2 rounded">
+                  <option class="bg-lilac-100 dark:bg-[#1F2937]" value="en">EN</option>
+                  <option class="bg-lilac-100 dark:bg-[#1F2937]" value="id">ID</option>
+                </select>
+              </div>
               <button id="darkModeToggle" class="p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
                   <i class="fas fa-moon dark:hidden"></i>
                   <i class="fas fa-sun hidden dark:inline"></i>
@@ -108,8 +146,8 @@
                       </button>
                   </div>
                   <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                      <a data-i18n="employee_profile_settings" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
+                      <a data-i18n="employee_logout" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
                   </div>
               </div>
           </div>
@@ -125,10 +163,10 @@
   <!-- Mobile menu -->
   <div class="hidden sm:hidden bg-lilac-100 dark:bg-[#111827]" id="mobile-menu">
       <div class="pt-2 pb-3 space-y-1">
-          <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-          <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
-          <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
-          <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
+          <a data-i18n="nav.home" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+          <a data-i18n="nav.about" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
+          <a data-i18n="nav.candidates" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
+          <a data-i18n="nav.companies" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
       </div>
       <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
           <div class="flex items-center px-4">
@@ -142,6 +180,12 @@
                   <i class="fas fa-moon dark:hidden"></i>
                   <i class="fas fa-sun hidden dark:inline"></i>
               </button>
+              <div class="ml-4">
+                <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                  <option value="en">EN</option>
+                  <option value="id">ID</option>
+                </select>
+              </div>
           </div>
           <div class="mt-3 space-y-1">
               <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
@@ -152,20 +196,21 @@
   </nav>
 
   <!-- Main Content duh -->
-  <div class="flex lg:flex-row flex-col items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
-    <div class="flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-5/12 w-full relative">
+  <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
+    <div class="flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-5/12 w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
-        <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity duration-300 object-cover" src="img/escoffier.png" alt="A majestic llama">
-        <h1 class="text-5xl font-bold text-white">Escoffier</h1>
-        <p class="mt-4 text-lg text-white">Head Chef at the Fleuve Cendre!</p>
+        <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity animate-fade-in-from-up duration-300 object-cover" src="img/escoffier.png" alt="A majestic llama"  id ="profile-image">
+        <h1 class="text-5xl font-bold text-white animate-fade-in-from-down">Escoffier</h1>
+        <p class="mt-4 text-lg text-white animate-fade-in-from-down">Head Chef at the Fleuve Cendre!</p>
       </div>
       <div class="flex justify-center mt-6">
         <a href="cv/Escoffier_Resume.pdf" download
-          class="bg-[#7F4CA5] text-white px-6 py-3 rounded-full shadow-md hover:bg-purple-800 transition-all duration-300">
-          <i class="fa-solid fa-file-pdf"></i> Download CV
+          class="bg-[#7F4CA5] text-white px-6 py-3 rounded-full shadow-md transition-all duration-300 animate-fade-in-from-down">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span data-i18n="cv_download">Download CV</span>
         </a>
       </div>
-      <div class="flex flex-row space-x-4 text-3xl bottom-10 absolute">
+      <div class="flex flex-row space-x-4 text-3xl bottom-10 absolute transition duration-300 animate-fade-in-from-down">
         <a href="https://facebook.com" target="_blank" class="hover:text-blue-600">
           <i class="fab fa-facebook"></i>
         </a>
@@ -179,38 +224,48 @@
     </div>
 
     <!-- Employee Main Profile -->
-    <div class="flex lg:flex-row flex-col items-center justify-center w-full gap-10">
-      <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px]">
-        <h2 class="text-3xl font-bold text-[#B57EDC] lg:m-0 m-10">Employee Details</h2>
-        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-full text-left">
+    <div class="flex lg:flex-row flex-col items-center justify-center w-full gap-8">
+      <div class="text-center flex flex-col gap-6 items-center w-96 min-h-[320px]">
+        <h2 data-i18n="employee_details" class="text-3xl font-bold text-[#C69AE6] lg:mt-0 mt-10 ">Employee Details</h2>
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-auto h-full text-left lg:border-l-4 lg:border-t-0 lg:border-b-0 border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#B57EDC]">Full Name</h4>
+            <h4 data-i18n="employee_full_name" class="font-semibold text-xl text-[#C69AE6]">Full Name</h4>
             <p class="text-[#374151] dark:text-white">Escoffier de Fontaine</p>
           </div>
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#B57EDC]">Birth Date</h4>
+            <h4 data-i18n="employee_birth_date" class="font-semibold text-xl text-[#C69AE6]">Birth Date</h4>
             <p class="text-[#374151] dark:text-white">April 1, 1990</p>
           </div>
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#B57EDC]">Location</h4>
+            <h4 data-i18n="employee_location" class="font-semibold text-xl text-[#C69AE6]">Location</h4>
             <p class="text-[#374151] dark:text-white">Fontaine, Teyvat</p>
           </div>
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#B57EDC]">Employment Status</h4>
+            <h4 data-i18n="employee_employment_status" class="font-semibold text-xl text-[#C69AE6]">Employment Status</h4>
             <p class="text-[#374151] dark:text-white">Employed – Head Chef at Fleuve Cendre</p>
           </div>
           <div class="mb-4">
-            <h4 class="font-semibold text-xl text-[#B57EDC]">Contact Email</h4>
+            <h4 data-i18n="employee_contact_email" class="font-semibold text-xl text-[#C69AE6]">Contact Email</h4>
             <p class="text-[#374151] dark:text-white">escoffier@mail.tyv</p>
           </div>
         </div>
       </div>
-      <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px] lg:mb-0 mb-10">
-        <h2 class="text-3xl font-bold text-[#B57EDC] lg:m-0 m-10">Biodata</h2>
-        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-96 text-left">
+      <div class="text-center flex flex-col gap-6 items-center w-96 min-h-[160px] lg:mb-0 mb-10">
+        <h2 data-i18n="employee_biodata" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-6">Biodata</h2>
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-auto h-64 text-left lg:border-r-4 lg:border-t-0 lg:border-b-0 border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
           <div class="mb-4">
             <p class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
             </p>
+          </div>
+        </div>
+        <h2 data-i18n="employee_highlights" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-6">Employee Highlights</h2>
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-auto h-48 text-left lg:border-r-4 lg:border-t-0 lg:border-b-0 border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
+          <div class="mb-4">
+            <ul class="list-disc list-inside">
+              <li class="text-[#374151] dark:text-white">github.com/escoffier/spaghetti-python</li>
+              <li class="text-[#374151] dark:text-white">www.gamer.com</li>
+              <li class="text-[#374151] dark:text-white">youtube.com</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -219,86 +274,90 @@
   <!-- Employee Education Modal Box (popup basically) -->
   <div id="modal-education" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
     <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 class="text-3xl font-semibold text-[#B57EDC]">Education</h3>
+      <h3 data-i18n="education" class="text-3xl font-semibold text-[#C69AE6]">Education</h3>
       <div class="flex flex-col mt-4">
         <div class="flex flex-row">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fontaine Culinary Academy">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#B57EDC]">Fontaine Culinary Academy</h2>
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Fontaine Culinary Academy</h2>
             <p class="text-black dark:text-white">2020-2024</p>
           </div>
         </div>
         <div class="flex flex-row mt-4">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#B57EDC]">Teyvat Culinary Institute</h2>
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Teyvat Culinary Institute</h2>
             <p class="text-black dark:text-white">2016-2020</p>
           </div>
         </div>
       </div>
-      <h3 class="text-3xl font-semibold text-[#B57EDC] mt-4">Experience</h3>
+      <h3 data-i18n="experience" class="text-3xl font-semibold text-[#C69AE6] mt-4">Experience</h3>
       <div class="flex flex-col mt-4">
         <div class="flex flex-row">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fleuve Cendre">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#B57EDC]">Fleuve Cendre</h2>
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Fleuve Cendre</h2>
             <p class="text-black dark:text-white">2025-Present</p>
           </div>
         </div>
         <div class="flex flex-row mt-4">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#B57EDC]">Hotel Debord</h2>
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
             <p class="text-black dark:text-white">2020-2025</p>
           </div>
         </div>
                 <div class="flex flex-row mt-4">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#B57EDC]">Hotel Debord</h2>
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
             <p class="text-black dark:text-white">2020-2025</p>
           </div>
         </div>
                 <div class="flex flex-row mt-4">
           <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
           <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#B57EDC]">Hotel Debord</h2>
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
             <p class="text-black dark:text-white">2020-2025</p>
           </div>
         </div>
       </div>
-      <button onclick="closeModal('modal-education')" class="bg-[#B57EDC] text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300 mt-5">Close</button>
+      <button onclick="closeModal('modal-education')" class="text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 mt-5">Close</button>
     </div>
   </div>
 
   <!-- Employee Skills Modal Box (popups basically again)-->
   <div id="modal-skills" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
     <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 class="text-2xl font-semibold text-[#B57EDC] mb-4">Skills</h3>
+      <h3 data-i18n="skills" class="text-2xl font-semibold text-[#C69AE6] mb-4">Skills</h3>
       <ul class="list-disc list-inside text-black dark:text-white mb-6">
         <li>5-Star Cuisine Mastery</li>
         <li>Perfect Plating</li>
         <li>Sassy Sous Chef Handling</li>
       </ul>
-      <button onclick="closeModal('modal-skills')" class="bg text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300">Close</button>
+      <button onclick="closeModal('modal-skills')" class="bg text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
     </div>
   </div>
 
   <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
-  <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+  <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
     <div class="flex justify-end">
-      <button id="btn-skills" onclick="openModal('modal-skills')" class="w-12 h-12 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-800 transition-all duration-300">
-        <i class="fa fa-dumbbell"></i>
+      <button id="btn-skills" onclick="openModal('modal-skills')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-dumbbell ml-0.5"></i>
+        <span data-i18n="skills_nav" id="nav-skills" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Skills</span>
+      </button>
+
+    </div>
+    <div class="flex justify-end">
+      <button id="btn-education" onclick="openModal('modal-education')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-graduation-cap ml-0.5"></i>
+        <span data-i18n="education_nav" id="nav-education" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Education</span>
       </button>
     </div>
     <div class="flex justify-end">
-      <button id="btn-education" onclick="openModal('modal-education')" class="w-12 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-800 transition-all duration-300">
-        <i class="fa fa-graduation-cap"></i>
-      </button>
-    </div>
-    <div class="flex justify-end">
-      <button id="btn-chat" onclick="openModal('modal-chat')" class="w-12 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-800 transition-all duration-300">
-        <i class="fa fa-comment-dots"></i>
+      <button id="btn-chat" onclick="openModal('modal-chat')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-comment-dots ml-0.5"></i>
+        <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
       </button>
     </div>
   </div>
@@ -434,17 +493,11 @@
 
   // JavaScript for navbar open when website loaded
     window.addEventListener('DOMContentLoaded', () => {
-    const navbarCandidates = document.getElementById('navbar-candidates');
     const navbarEmployees = document.getElementById('navbar-employees');
 
-    if (navbarCandidates) {
-        navbarCandidates.classList.remove('h-0', 'opacity-0');
-        navbarCandidates.classList.add('h-16', 'opacity-100');
-    }
-
     if (navbarEmployees) {
-        navbarEmployees.classList.remove('h-0', 'opacity-0');
-        navbarEmployees.classList.add('h-16', 'opacity-100');
+      navbarEmployees.classList.remove('opacity-0', 'h-0');
+      navbarEmployees.classList.add('opacity-100', 'h-16');
     }
     });
 
@@ -475,7 +528,7 @@
     setTimeout(() => {
       content.classList.remove('scale-0', 'opacity-0');
       content.classList.add('scale-100', 'opacity-100');
-      main.classList.add('opacity-80');
+      main.classList.add('opacity-50');
     }, 10);
 
     // Close modal if clicked outside the box
@@ -492,7 +545,7 @@
     setTimeout(() => {
       content.classList.remove('scale-100');
       content.classList.add('scale-0');
-      main.classList.remove('opacity-80');
+      main.classList.remove('opacity-50');
     }, 10);
     setTimeout(() => {
       modal.classList.add('hidden');
@@ -503,39 +556,117 @@
   // JavaScript for the navigation modal boxes that extends width to the left to show text on hover
   // and shrinks back to icon size when mouse go bye bye
   const btnSkills = document.getElementById('btn-skills');
+  const navSkills = document.getElementById('nav-skills')
   const btnEducation = document.getElementById('btn-education');
+  const navEducation = document.getElementById('nav-education')
   const btnChat = document.getElementById('btn-chat');
+  const navChat = document.getElementById('nav-chat')
 
   btnSkills.addEventListener('mouseover', () => {
-    btnSkills.innerHTML = 'Skills';
+    navSkills.classList.remove('hidden');
     btnSkills.classList.remove('w-12');
-    btnSkills.classList.add('w-32');
+    btnSkills.classList.add('w-36');
   });
   btnSkills.addEventListener('mouseout', () => {
-    btnSkills.classList.remove('w-32');
+    btnSkills.classList.remove('w-36');
     btnSkills.classList.add('w-12');
-    btnSkills.innerHTML = '<i class="fa fa-dumbbell"></i>';
+    navSkills.classList.add('hidden');
   });
   btnEducation.addEventListener('mouseover', () => {
-    btnEducation.innerHTML = 'Education';
+    navEducation.classList.remove('hidden');
     btnEducation.classList.remove('w-12');
-    btnEducation.classList.add('w-32');
+    btnEducation.classList.add('w-36');
   });
   btnEducation.addEventListener('mouseout', () => {
-    btnEducation.classList.remove('w-32');
+    btnEducation.classList.remove('w-36');
     btnEducation.classList.add('w-12');
-    btnEducation.innerHTML = '<i class="fa fa-graduation-cap"></i>';
+    navEducation.classList.add('hidden');
   });
   btnChat.addEventListener('mouseover', () => {
-    btnChat.innerHTML = 'Chat';
+    navChat.classList.remove('hidden');
     btnChat.classList.remove('w-12');
-    btnChat.classList.add('w-32');
+    btnChat.classList.add('w-36');
   });
   btnChat.addEventListener('mouseout', () => {
-    btnChat.classList.remove('w-32');
+    btnChat.classList.remove('w-36');
     btnChat.classList.add('w-12');
-    btnChat.innerHTML = '<i class="fa fa-comment-dots"></i>';
+    navChat.classList.add('hidden');
   });
-       
+  
+  // JavaScript for language selector
+  const translations = {
+    en: {
+      "nav.home": "Home",
+      "nav.about": "About",
+      "nav.candidates": "Candidates",
+      "nav.companies": "Companies",
+      "cv_download": "Download CV",
+      "employee_details": "Employee Details",
+      "employee_full_name": "Full Name",
+      "employee_birth_date": "Birth Date",
+      "employee_location": "Location",
+      "employee_employment_status": "Employment Status",
+      "employee_contact_email": "Contact Email",
+      "employee_biodata": "Biodata",
+      "employee_highlights": "Employee Highlights",
+      "education": "Education",
+      "experience": "Experience",
+      "skills": "Skills",
+      "employee_profile_settings": "Profile Settings",
+      "employee_logout": "Logout",
+      "skills_nav": "Skills",
+      "education_nav": "Education",
+      "chat_nav" : "Chat"
+    },
+    id: {
+      "nav.home": "Beranda",
+      "nav.about": "Tentang",
+      "nav.candidates": "Kandidat",
+      "nav.companies": "Perusahaan",
+      "cv_download": "Unduh CV",
+      "employee_details": "Detail Karyawan",
+      "employee_full_name": "Nama Lengkap",
+      "employee_birth_date": "Tanggal Lahir",
+      "employee_location": "Lokasi",
+      "employee_employment_status": "Status Pekerjaan",
+      "employee_contact_email": "Email Kontak",
+      "employee_biodata": "Biodata",
+      "employee_highlights": "Sorotan Karyawan",
+      "education": "Pendidikan",
+      "experience": "Pengalaman",
+      "skills": "Keterampilan",
+      "employee_profile_settings": "Pengaturan Profil",
+      "employee_logout": "Keluar",
+      "skills_nav": "Keterampilan",
+      "education_nav": "Pendidikan",
+      "chat_nav" : "Obrolan"
+    }
+  };
+
+  function setLanguage(lang) {
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      el.textContent = translations[lang][key] || key;
+    });
+    localStorage.setItem("lang", lang);
+  }
+
+  document.getElementById("language-selector").addEventListener("change", e => {
+    setLanguage(e.target.value);
+  });
+
+  document.getElementById("language-selector-mobile").addEventListener("change", e => {
+    setLanguage(e.target.value);
+  });
+
+  // Load saved language or default to English
+  window.addEventListener("DOMContentLoaded", () => {
+    const lang = localStorage.getItem("lang") || "en";
+    document.getElementById("language-selector").value = lang;
+    setLanguage(lang);
+    document.getElementById("language-selector-mobile").value = lang;
+    setLanguage(lang);
+  });
+
 </script>
 </html>
