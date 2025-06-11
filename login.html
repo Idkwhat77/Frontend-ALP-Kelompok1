@@ -1,839 +1,1229 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RuangKerja - Login/Register</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        lilac: {
-                            50: '#faf7fd',
-                            100: '#f4ecfb',
-                            200: '#ebddf7',
-                            300: '#dbc2f0',
-                            400: '#c69ae6',
-                            500: '#b87ce0',
-                        },
-                    },
-                    fontFamily: {
-                        elegant: ['"Playfair Display"', 'serif'],
-                        poppins: ['Poppins', 'sans-serif'],
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in forwards',
-                        'slide-up': 'slideUp 0.5s ease-out forwards',
-                        'pulse-slow': 'pulse 3s infinite',
-                        'highlight': 'highlight 2s ease-in-out infinite',
-                        'bounce-right': 'bounceRight 1s infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        highlight: {
-                            '0%, 100%': { 
-                                'box-shadow': '0 0 0 4px rgba(184, 124, 224, 0.3)',
-                                'transform': 'scale(1)'
-                            },
-                            '50%': { 
-                                'box-shadow': '0 0 0 8px rgba(184, 124, 224, 0.1)',
-                                'transform': 'scale(1.01)'
-                            }
-                        },
-                        bounceRight: {
-                            '0%, 100%': { 
-                                transform: 'translateX(0)' 
-                            },
-                            '50%': { 
-                                transform: 'translateX(10px)' 
-                            }
-                        }
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              lilac: {
+                50: "#faf7fd",
+                100: "#f4ecfb",
+                200: "#ebddf7",
+                300: "#dbc2f0",
+                400: "#c69ae6",
+                500: "#b87ce0",
+              },
+            },
+            fontFamily: {
+              elegant: ['"Playfair Display"', "serif"],
+              poppins: ["Poppins", "sans-serif"],
+            },
+            animation: {
+              "fade-in": "fadeIn 0.5s ease-in forwards",
+              "slide-up": "slideUp 0.5s ease-out forwards",
+              "pulse-slow": "pulse 3s infinite",
+              highlight: "highlight 2s ease-in-out infinite",
+              "bounce-right": "bounceRight 1s infinite",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideUp: {
+                "0%": { transform: "translateY(20px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
+              },
+              highlight: {
+                "0%, 100%": {
+                  "box-shadow": "0 0 0 4px rgba(184, 124, 224, 0.3)",
+                  transform: "scale(1)",
+                },
+                "50%": {
+                  "box-shadow": "0 0 0 8px rgba(184, 124, 224, 0.1)",
+                  transform: "scale(1.01)",
+                },
+              },
+              bounceRight: {
+                "0%, 100%": {
+                  transform: "translateX(0)",
+                },
+                "50%": {
+                  transform: "translateX(10px)",
+                },
+              },
+            },
+          },
+        },
+      };
     </script>
-    
+
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        .auth-container {
-            perspective: 1000px;
+      .auth-container {
+        perspective: 1000px;
+      }
+      .auth-form {
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        transition: all 0.5s ease;
+      }
+      .flipped {
+        transform: rotateY(180deg);
+      }
+      .tutorial-step {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: none;
+      }
+      .tutorial-step.active {
+        opacity: 1;
+        transform: translateY(0);
+        display: block;
+        position: relative;
+      }
+      .floating {
+        animation: floating 6s ease-in-out infinite;
+      }
+      @keyframes floating {
+        0%,
+        100% {
+          transform: translateY(0);
         }
-        .auth-form {
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            transition: all 0.5s ease;
+        50% {
+          transform: translateY(-15px);
         }
-        .flipped {
-            transform: rotateY(180deg);
-        }
-        .tutorial-step {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            display: none;
-        }
-        .tutorial-step.active {
-            opacity: 1;
-            transform: translateY(0);
-            display: block;
-            position: relative;
-        }
-        .floating {
-            animation: floating 6s ease-in-out infinite;
-        }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-        .tutorial-highlight {
-            animation: highlight 2s ease-in-out infinite;
-            position: relative;
-            z-index: 10;
-            border-radius: 0.5rem;
-        }
-        .tutorial-tooltip {
-            position: absolute;
-            background-color: white;
-            padding: 12px 16px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 20;
-            max-width: 280px;
-            font-size: 14px;
-            line-height: 1.5;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-        }
-        .tutorial-tooltip.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .tutorial-tooltip:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border: 10px solid transparent;
-        }
-        .tutorial-tooltip.top:after {
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-top-color: white;
-        }
-        .tutorial-tooltip.right:after {
-            left: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-right-color: white;
-        }
-        .animation-delay-100 {
-            animation-delay: 100ms;
-        }
-        .animation-delay-200 {
-            animation-delay: 200ms;
-        }
-        .animation-delay-300 {
-            animation-delay: 300ms;
-        }
-        .animation-delay-400 {
-            animation-delay: 400ms;
-        }
-        .animation-delay-500 {
-            animation-delay: 500ms;
-        }
-        .animation-delay-600 {
-            animation-delay: 600ms;
-        }
-        .animation-delay-700 {
-            animation-delay: 700ms;
-        }
-        .animation-delay-800 {
-            animation-delay: 800ms;
-        }
-        .rotate-y-180 {
-            transform: rotateY(180deg);
-        }
-        .backface-hidden {
-            backface-visibility: hidden;
-        }
-        .tutorial-input {
-            pointer-events: none;
-            background-color: #f9f9f9;
-        }
-        .tutorial-input:focus {
-            background-color: white;
-        }
-        .btn-next {
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-next .icon {
-            transition: all 0.3s ease;
-        }
-        .btn-next:hover .icon {
-            transform: translateX(3px);
-        }
-        .btn-prev {
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-prev .icon {
-            transition: all 0.3s ease;
-        }
-        .btn-prev:hover .icon {
-            transform: translateX(-3px);
-        }
-        .tutorial-progress {
-            height: 4px;
-            transition: width 0.3s ease;
-        }
+      }
+      .tutorial-highlight {
+        animation: highlight 2s ease-in-out infinite;
+        position: relative;
+        z-index: 10;
+        border-radius: 0.5rem;
+      }
+      .tutorial-tooltip {
+        position: absolute;
+        background-color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 20;
+        max-width: 280px;
+        font-size: 14px;
+        line-height: 1.5;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+      }
+      .tutorial-tooltip.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .tutorial-tooltip:after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+      }
+      .tutorial-tooltip.top:after {
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-top-color: white;
+      }
+      .tutorial-tooltip.right:after {
+        left: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-right-color: white;
+      }
+      .animation-delay-100 {
+        animation-delay: 100ms;
+      }
+      .animation-delay-200 {
+        animation-delay: 200ms;
+      }
+      .animation-delay-300 {
+        animation-delay: 300ms;
+      }
+      .animation-delay-400 {
+        animation-delay: 400ms;
+      }
+      .animation-delay-500 {
+        animation-delay: 500ms;
+      }
+      .animation-delay-600 {
+        animation-delay: 600ms;
+      }
+      .animation-delay-700 {
+        animation-delay: 700ms;
+      }
+      .animation-delay-800 {
+        animation-delay: 800ms;
+      }
+      .rotate-y-180 {
+        transform: rotateY(180deg);
+      }
+      .backface-hidden {
+        backface-visibility: hidden;
+      }
+      .form-hidden {
+        pointer-events: none;
+      }
+      .form-active {
+        pointer-events: auto;
+      }
+      .tutorial-input {
+        pointer-events: none;
+        background-color: #f9f9f9;
+      }
+      .tutorial-input:focus {
+        background-color: white;
+      }
+      .btn-next {
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-next .icon {
+        transition: all 0.3s ease;
+      }
+      .btn-next:hover .icon {
+        transform: translateX(3px);
+      }
+      .btn-prev {
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-prev .icon {
+        transition: all 0.3s ease;
+      }
+      .btn-prev:hover .icon {
+        transform: translateX(-3px);
+      }
+      .tutorial-progress {
+        height: 4px;
+        transition: width 0.3s ease;
+      }
     </style>
-</head>
-<body class="bg-lilac-50 dark:bg-gray-900 font-poppins min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
-
-<!-- Tutorial Overlay -->
-<div id="tutorial-overlay" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center transition-opacity duration-500">
-    <div class="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full mx-4 p-6 shadow-2xl relative overflow-hidden">
+  </head>
+  <body
+    class="bg-lilac-50 dark:bg-gray-900 font-poppins min-h-screen flex items-center justify-center p-4 transition-colors duration-300"
+  >
+    <!-- Tutorial Overlay -->
+    <div
+      id="tutorial-overlay"
+      class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center transition-opacity duration-500"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full mx-4 p-6 shadow-2xl relative overflow-hidden"
+      >
         <!-- Progress bar -->
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700">
-            <div id="tutorial-progress" class="tutorial-progress h-full bg-lilac-400" style="width: 0%"></div>
+        <div
+          class="absolute top-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700"
+        >
+          <div
+            id="tutorial-progress"
+            class="tutorial-progress h-full bg-lilac-400"
+            style="width: 0%"
+          ></div>
         </div>
-        
+
         <div class="absolute top-4 right-4">
-            <button id="skip-tutorial" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
-                <i class="fas fa-times text-lg"></i>
-            </button>
+          <button
+            id="skip-tutorial"
+            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+          >
+            <i class="fas fa-times text-lg"></i>
+          </button>
         </div>
-        
+
         <div class="tutorial-content text-center relative min-h-[400px] pt-2">
-            <!-- Step 1: Welcome -->
-            <div class="tutorial-step active" data-step="1">
-                <div class="floating text-lilac-400 text-6xl mb-6">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Welcome to RuangKerja!</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">Let's walk you through how to get started with your professional workspace. We'll guide you through each step.</p>
-                
-                <button class="next-step px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105">
-                    Start Tutorial <i class="fas fa-arrow-right ml-2 icon"></i>
-                </button>
+          <!-- Step 1: Welcome -->
+          <div class="tutorial-step active" data-step="1">
+            <div class="floating text-lilac-400 text-6xl mb-6">
+              <i class="fas fa-graduation-cap"></i>
             </div>
-            
-            <!-- Step 2: Login Email -->
-            <div class="tutorial-step" data-step="2">
-                <div class="text-lilac-400 text-4xl mb-5">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Your Email Address</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">First, enter your email address to login to your account.</p>
-                
-                <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
-                    <div class="flex items-center mb-4" id="tut-email">
-                        <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
-                            <input type="email" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="you@example.com">
-                        </div>
-                    </div>
-                    
-                    <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px);">
-                        <div class="font-medium text-lilac-500 mb-1">Enter your email</div>
-                        <div class="text-gray-600 dark:text-gray-300">This should be the email you used to register your account.</div>
-                    </div>
-                </div>
-                
-                <div class="flex justify-between max-w-md mx-auto">
-                    <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
-                        <i class="fas fa-arrow-left mr-2 icon"></i> Back
-                    </button>
-                    <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
-                        Next <i class="fas fa-arrow-right ml-2 icon"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Step 3: Login Password -->
-            <div class="tutorial-step" data-step="3">
-                <div class="text-lilac-400 text-4xl mb-5">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Your Password</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">Now enter your password to securely access your account.</p>
-                
-                <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
-                    <div class="flex items-center mb-4" id="tut-password">
-                        <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                            <input type="password" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••">
-                        </div>
-                    </div>
-                    
-                    <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px);">
-                        <div class="font-medium text-lilac-500 mb-1">Enter your password</div>
-                        <div class="text-gray-600 dark:text-gray-300">Make sure it's secure and don't share it with anyone.</div>
-                    </div>
-                </div>
-                
-                <div class="flex justify-between max-w-md mx-auto">
-                    <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
-                        <i class="fas fa-arrow-left mr-2 icon"></i> Back
-                    </button>
-                    <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
-                        Next <i class="fas fa-arrow-right ml-2 icon"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Step 4: Register Name -->
-            <div class="tutorial-step" data-step="4">
-                <div class="text-lilac-400 text-4xl mb-5">
-                    <i class="fas fa-user"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Your Full Name</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">If you're new, start by entering your full name for your profile.</p>
-                
-                <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
-                    <div class="flex items-center mb-4" id="tut-name">
-                        <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
-                            <input type="text" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="John Doe">
-                        </div>
-                    </div>
-                    
-                    <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px);">
-                        <div class="font-medium text-lilac-500 mb-1">Enter your full name</div>
-                        <div class="text-gray-600 dark:text-gray-300">This will be displayed on your profile and to your connections.</div>
-                    </div>
-                </div>
-                
-                <div class="flex justify-between max-w-md mx-auto">
-                    <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
-                        <i class="fas fa-arrow-left mr-2 icon"></i> Back
-                    </button>
-                    <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
-                        Next <i class="fas fa-arrow-right ml-2 icon"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Step 5: Register Email -->
-            <div class="tutorial-step" data-step="5">
-                <div class="text-lilac-400 text-4xl mb-5">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Your Email Address</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">Enter your email address for account verification.</p>
-                
-                <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
-                    <div class="flex items-center mb-4" id="tut-reg-email">
-                        <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
-                            <input type="email" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="you@example.com">
-                        </div>
-                    </div>
-                    
-                    <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px);">
-                        <div class="font-medium text-lilac-500 mb-1">Enter your email</div>
-                        <div class="text-gray-600 dark:text-gray-300">We'll send a verification link to this address.</div>
-                    </div>
-                </div>
-                
-                <div class="flex justify-between max-w-md mx-auto">
-                    <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
-                        <i class="fas fa-arrow-left mr-2 icon"></i> Back
-                    </button>
-                    <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
-                        Next <i class="fas fa-arrow-right ml-2 icon"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Step 6: Register Password -->
-            <div class="tutorial-step" data-step="6">
-                <div class="text-lilac-400 text-4xl mb-5">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Create a Password</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">Choose a strong password to secure your account.</p>
-                
-                <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
-                    <div class="flex items-center mb-4" id="tut-reg-password">
-                        <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                            <input type="password" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••">
-                        </div>
-                    </div>
-                    
-                    <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px);">
-                        <div class="font-medium text-lilac-500 mb-1">Create a password</div>
-                        <div class="text-gray-600 dark:text-gray-300">Use at least 8 characters with one number for security.</div>
-                    </div>
-                </div>
-                
-                <div class="flex justify-between max-w-md mx-auto">
-                    <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
-                        <i class="fas fa-arrow-left mr-2 icon"></i> Back
-                    </button>
-                    <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
-                        Next <i class="fas fa-arrow-right ml-2 icon"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Step 7: Register Confirm Password -->
-            <div class="tutorial-step" data-step="7">
-                <div class="text-lilac-400 text-4xl mb-5">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Confirm Your Password</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">Re-enter your password to make sure it's correct.</p>
-                
-                <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
-                    <div class="flex items-center mb-4" id="tut-confirm">
-                        <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
-                            <input type="password" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••">
-                        </div>
-                    </div>
-                    
-                    <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px);">
-                        <div class="font-medium text-lilac-500 mb-1">Confirm password</div>
-                        <div class="text-gray-600 dark:text-gray-300">This helps prevent typos in your password.</div>
-                    </div>
-                </div>
-                
-                <div class="flex justify-between max-w-md mx-auto">
-                    <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
-                        <i class="fas fa-arrow-left mr-2 icon"></i> Back
-                    </button>
-                    <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
-                        Next <i class="fas fa-arrow-right ml-2 icon"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Step 8: Complete -->
-            <div class="tutorial-step" data-step="8">
-                <div class="floating text-lilac-400 text-6xl mb-6">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Tutorial Complete!</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">Now you know how to login or register. Ready to begin your professional journey?</p>
-                
-                <div class="flex justify-center space-x-4 mb-8 max-w-md mx-auto">
-                    <button id="tutorial-login-btn" class="px-6 py-3 border-2 border-lilac-400 text-lilac-400 hover:bg-lilac-50 dark:hover:bg-gray-700 rounded-lg font-medium transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Login
-                    </button>
-                    <button id="tutorial-register-btn" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-user-plus mr-2"></i> Register
-                    </button>
-                </div>
-                
-                <div class="flex justify-center">
-                    <button id="finish-tutorial" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105">
-                        Continue to RuangKerja <i class="fas fa-arrow-right ml-2 icon"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Main Auth Container -->
-<div id="auth-container" class="auth-container w-full max-w-md opacity-0">
-    <div class="relative w-full">
-        <!-- Login Form (Front) -->
-        <div id="login-form" class="auth-form bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-all duration-500">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2 animate-slide-up">Welcome Back</h2>
-                <p class="text-gray-500 dark:text-gray-400 animate-slide-up animation-delay-100">Login to access your professional network</p>
-            </div>
-            
-            <form id="loginForm" class="space-y-6">
-                <div class="animate-slide-up animation-delay-200">
-                    <label for="login-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-envelope text-gray-400 dark:text-gray-500"></i>
-                        </div>
-                        <input type="email" id="login-email" class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="you@example.com" required>
-                    </div>
-                </div>
-                
-                <div class="animate-slide-up animation-delay-300">
-                    <label for="login-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
-                        </div>
-                        <input type="password" id="login-password" class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••" required>
-                        <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-lilac-400 password-toggle">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="flex justify-end mt-2">
-                        <a href="#" class="text-sm text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300">Forgot password?</a>
-                    </div>
-                </div>
-                
-                <div class="animate-slide-up animation-delay-400">
-                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-lilac-400 hover:bg-lilac-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300 transform hover:scale-105">
-                        Login
-                    </button>
-                </div>
-            </form>
-            
-            <div class="mt-6 animate-slide-up animation-delay-500">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Or continue with</span>
-                    </div>
-                </div>
-                
-                <div class="mt-6 grid grid-cols-2 gap-3">
-                    <div class="animate-slide-up animation-delay-600">
-                        <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300">
-                            <i class="fab fa-google text-red-500 mr-2"></i> Google
-                        </button>
-                    </div>
-                    <div class="animate-slide-up animation-delay-700">
-                        <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300">
-                            <i class="fab fa-linkedin text-blue-500 mr-2"></i> LinkedIn
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-6 text-center animate-slide-up animation-delay-800">
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Don't have an account? 
-                    <button id="show-register" class="font-medium text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors">Register here</button>
-                </p>
-            </div>
-        </div>
-        
-        <!-- Register Form (Back) -->
-        <div id="register-form" class="auth-form absolute top-0 left-0 w-full h-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-all duration-500 transform rotate-y-180 backface-hidden opacity-0">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">Join RuangKerja</h2>
-                <p class="text-gray-500 dark:text-gray-400">Create your professional profile</p>
-            </div>
-            
-            <form id="registerForm" class="space-y-6">
-                <div>
-                    <label for="register-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-user text-gray-400 dark:text-gray-500"></i>
-                        </div>
-                        <input type="text" id="register-name" class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="John Doe" required>
-                    </div>
-                </div>
-                
-                <div>
-                    <label for="register-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-envelope text-gray-400 dark:text-gray-500"></i>
-                        </div>
-                        <input type="email" id="register-email" class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="you@example.com" required>
-                    </div>
-                </div>
-                
-                <div>
-                    <label for="register-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
-                        </div>
-                        <input type="password" id="register-password" class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••" required minlength="8" pattern="^(?=.*\d).{8,}$">
-                        <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-lilac-400 password-toggle">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Must be at least 8 characters with one number</p>
-                    </div>
-                                <div>
-                <label for="register-confirm" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
-                    </div>
-                    <input type="password" id="register-confirm" class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••" required>
-                </div>
-            </div>
-            
-            <div>
-                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-lilac-400 hover:bg-lilac-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300 transform hover:scale-105">
-                    Create Account
-                </button>
-            </div>
-        </form>
-        
-        <div class="mt-6">
-            <div class="relative">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Or sign up with</span>
-                </div>
-            </div>
-            
-            <div class="mt-6 grid grid-cols-2 gap-3">
-                <div>
-                    <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300">
-                        <i class="fab fa-google text-red-500 mr-2"></i> Google
-                    </button>
-                </div>
-                <div>
-                    <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300">
-                        <i class="fab fa-linkedin text-blue-500 mr-2"></i> LinkedIn
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="mt-6 text-center">
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                Already have an account? 
-                <button id="show-login" class="font-medium text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors">Login here</button>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Welcome to RuangKerja!
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+              Let's walk you through how to get started with your professional
+              workspace. We'll guide you through each step.
             </p>
+
+            <button
+              class="next-step px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105"
+            >
+              Start Tutorial <i class="fas fa-arrow-right ml-2 icon"></i>
+            </button>
+          </div>
+
+          <!-- Step 2: Login Email -->
+          <div class="tutorial-step" data-step="2">
+            <div class="text-lilac-400 text-4xl mb-5">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Your Email Address
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              First, enter your email address to login to your account.
+            </p>
+
+            <div
+              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
+            >
+              <div class="flex items-center mb-4" id="tut-email">
+                <div
+                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="flex-1">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                    placeholder="you@example.com"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="tutorial-tooltip right"
+                style="top: 20px; left: calc(100% + 15px)"
+              >
+                <div class="font-medium text-lilac-500 mb-1">
+                  Enter your email
+                </div>
+                <div class="text-gray-600 dark:text-gray-300">
+                  This should be the email you used to register your account.
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between max-w-md mx-auto">
+              <button
+                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
+              >
+                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              </button>
+              <button
+                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
+              >
+                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Login Password -->
+          <div class="tutorial-step" data-step="3">
+            <div class="text-lilac-400 text-4xl mb-5">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Your Password
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              Now enter your password to securely access your account.
+            </p>
+
+            <div
+              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
+            >
+              <div class="flex items-center mb-4" id="tut-password">
+                <div
+                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-lock"></i>
+                </div>
+                <div class="flex-1">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Password</label
+                  >
+                  <input
+                    type="password"
+                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="tutorial-tooltip right"
+                style="top: 20px; left: calc(100% + 15px)"
+              >
+                <div class="font-medium text-lilac-500 mb-1">
+                  Enter your password
+                </div>
+                <div class="text-gray-600 dark:text-gray-300">
+                  Make sure it's secure and don't share it with anyone.
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between max-w-md mx-auto">
+              <button
+                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
+              >
+                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              </button>
+              <button
+                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
+              >
+                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 4: Register Name -->
+          <div class="tutorial-step" data-step="4">
+            <div class="text-lilac-400 text-4xl mb-5">
+              <i class="fas fa-user"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Your Full Name
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              If you're new, start by entering your full name for your profile.
+            </p>
+
+            <div
+              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
+            >
+              <div class="flex items-center mb-4" id="tut-name">
+                <div
+                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-user"></i>
+                </div>
+                <div class="flex-1">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Full Name</label
+                  >
+                  <input
+                    type="text"
+                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                    placeholder="John Doe"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="tutorial-tooltip right"
+                style="top: 20px; left: calc(100% + 15px)"
+              >
+                <div class="font-medium text-lilac-500 mb-1">
+                  Enter your full name
+                </div>
+                <div class="text-gray-600 dark:text-gray-300">
+                  This will be displayed on your profile and to your
+                  connections.
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between max-w-md mx-auto">
+              <button
+                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
+              >
+                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              </button>
+              <button
+                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
+              >
+                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 5: Register Email -->
+          <div class="tutorial-step" data-step="5">
+            <div class="text-lilac-400 text-4xl mb-5">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Your Email Address
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              Enter your email address for account verification.
+            </p>
+
+            <div
+              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
+            >
+              <div class="flex items-center mb-4" id="tut-reg-email">
+                <div
+                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="flex-1">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                    placeholder="you@example.com"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="tutorial-tooltip right"
+                style="top: 20px; left: calc(100% + 15px)"
+              >
+                <div class="font-medium text-lilac-500 mb-1">
+                  Enter your email
+                </div>
+                <div class="text-gray-600 dark:text-gray-300">
+                  We'll send a verification link to this address.
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between max-w-md mx-auto">
+              <button
+                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
+              >
+                <i class="fas fa-arrow-left mr-2 icon"></i> Kontol
+              </button>
+              <button
+                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
+              >
+                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 6: Register Password -->
+          <div class="tutorial-step" data-step="6">
+            <div class="text-lilac-400 text-4xl mb-5">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Create a Password
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              Choose a strong password to secure your account.
+            </p>
+
+            <div
+              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
+            >
+              <div class="flex items-center mb-4" id="tut-reg-password">
+                <div
+                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-lock"></i>
+                </div>
+                <div class="flex-1">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Password</label
+                  >
+                  <input
+                    type="password"
+                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="tutorial-tooltip right"
+                style="top: 20px; left: calc(100% + 15px)"
+              >
+                <div class="font-medium text-lilac-500 mb-1">
+                  Create a password
+                </div>
+                <div class="text-gray-600 dark:text-gray-300">
+                  Use at least 8 characters with one number for security.
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between max-w-md mx-auto">
+              <button
+                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
+              >
+                <i class="fas fa-arrow-left mr-2 icon"></i> Memek
+              </button>
+              <button
+                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
+              >
+                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 7: Register Confirm Password -->
+          <div class="tutorial-step" data-step="7">
+            <div class="text-lilac-400 text-4xl mb-5">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Confirm Your Password
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              Re-enter your password to make sure it's correct.
+            </p>
+
+            <div
+              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
+            >
+              <div class="flex items-center mb-4" id="tut-confirm">
+                <div
+                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-lock"></i>
+                </div>
+                <div class="flex-1">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >Confirm Password</label
+                  >
+                  <input
+                    type="password"
+                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="tutorial-tooltip right"
+                style="top: 20px; left: calc(100% + 15px)"
+              >
+                <div class="font-medium text-lilac-500 mb-1">
+                  Confirm password
+                </div>
+                <div class="text-gray-600 dark:text-gray-300">
+                  This helps prevent typos in your password.
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between max-w-md mx-auto">
+              <button
+                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
+              >
+                <i class="fas fa-arrow-left mr-2 icon"></i> Anjing
+              </button>
+              <button
+                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
+              >
+                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 8: Complete -->
+          <div class="tutorial-step" data-step="8">
+            <div class="floating text-lilac-400 text-6xl mb-6">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Tutorial Complete!
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+              Now you know how to login or register. Ready to begin your
+              professional journey?
+            </p>
+
+            <div class="flex justify-center space-x-4 mb-8 max-w-md mx-auto">
+              <button
+                id="tutorial-login-btn"
+                class="px-6 py-3 border-2 border-lilac-400 text-lilac-400 hover:bg-lilac-50 dark:hover:bg-gray-700 rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
+              >
+                <i class="fas fa-sign-in-alt mr-2"></i> Login
+              </button>
+              <button
+                id="tutorial-register-btn"
+                class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
+              >
+                <i class="fas fa-user-plus mr-2"></i> Register
+              </button>
+            </div>
+
+            <div class="flex justify-center">
+              <button
+                id="finish-tutorial"
+                class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105"
+              >
+                Continue to RuangKerja
+                <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<!-- Theme Toggle -->
-<div class="fixed bottom-6 right-6 z-10">
-  <button id="theme-toggle" class="w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors duration-300">
-    <i class="fas fa-moon dark:hidden"></i>
-    <i class="fas fa-sun hidden dark:block"></i>
-  </button>
-</div>
 
-<!-- Scripts -->
-<script>
-  // Theme Toggle
-  const themeToggle = document.getElementById('theme-toggle');
-  const html = document.documentElement;
-  const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    <!-- Main Auth Container -->
+    <div id="auth-container" class="auth-container w-full max-w-md opacity-0">
+      <div class="relative w-full">
+        <!-- Login Form (Front) -->
+        <div
+          id="login-form"
+          class="auth-form form-active bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-all duration-500"
+        >
+          <div class="text-center mb-8">
+            <h2
+              class="text-3xl font-bold text-gray-800 dark:text-white mb-2 animate-slide-up"
+            >
+              Welcome Back
+            </h2>
+            <p
+              class="text-gray-500 dark:text-gray-400 animate-slide-up animation-delay-100"
+            >
+              Login to access your ngentot professional network
+            </p>
+          </div>
 
-  if (savedTheme === 'dark') html.classList.add('dark');
-  else html.classList.remove('dark');
+          <form id="loginForm" class="space-y-6">
+            <div class="animate-slide-up animation-delay-200">
+              <label
+                for="login-email"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Email Address</label
+              >
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <i
+                    class="fas fa-envelope text-gray-400 dark:text-gray-500"
+                  ></i>
+                </div>
+                <input
+                  type="email"
+                  id="login-email"
+                  class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+            </div>
 
-  themeToggle.addEventListener('click', () => {
-    html.classList.toggle('dark');
-    const theme = html.classList.contains('dark') ? 'dark' : 'light';
-    localStorage.setItem('theme', theme);
-  });
+            <div class="animate-slide-up animation-delay-300">
+              <label
+                for="login-password"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Password</label
+              >
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
+                </div>
+                <input
+                  type="password"
+                  id="login-password"
+                  class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-lilac-400 password-toggle"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <div class="flex justify-end mt-2">
+                <a
+                  href="#"
+                  class="text-sm text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300"
+                  >Forgot memek password?</a
+                >
+              </div>
+            </div>
 
-  // Form Flip Animation
-  const showRegister = document.getElementById('show-register');
-  const showLogin = document.getElementById('show-login');
-  const loginForm = document.getElementById('login-form');
-  const registerForm = document.getElementById('register-form');
-  const authContainer = document.getElementById('auth-container');
+            <div class="animate-slide-up animation-delay-400">
+              <button
+                type="submit"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-lilac-400 hover:bg-lilac-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300 transform hover:scale-105"
+              >
+                Login
+              </button>
+            </div>
+          </form>
 
-  showRegister.addEventListener('click', () => {
-    loginForm.classList.add('opacity-0');
-    setTimeout(() => {
-      loginForm.classList.add('rotate-y-180');
-      registerForm.classList.remove('rotate-y-180');
-      registerForm.classList.remove('opacity-0');
-    }, 300);
-  });
+          <div class="mt-6 animate-slide-up animation-delay-500">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div
+                  class="w-full border-t border-gray-300 dark:border-gray-600"
+                ></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span
+                  class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                  >Or continue with</span
+                >
+              </div>
+            </div>
 
-  showLogin.addEventListener('click', () => {
-    registerForm.classList.add('opacity-0');
-    setTimeout(() => {
-      registerForm.classList.add('rotate-y-180');
-      loginForm.classList.remove('rotate-y-180');
-      loginForm.classList.remove('opacity-0');
-    }, 300);
-  });
+            <div class="mt-6 grid grid-cols-2 gap-3">
+              <div class="animate-slide-up animation-delay-600">
+                <button
+                  type="button"
+                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300"
+                >
+                  <i class="fab fa-google text-red-500 mr-2"></i> Google
+                </button>
+              </div>
+              <div class="animate-slide-up animation-delay-700">
+                <button
+                  type="button"
+                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300"
+                >
+                  <i class="fab fa-linkedin text-blue-500 mr-2"></i> LinkedIn
+                </button>
+              </div>
+            </div>
+          </div>
 
-  // Password Toggle
-  const passwordToggles = document.querySelectorAll('.password-toggle');
-  passwordToggles.forEach(toggle => {
-    toggle.addEventListener('click', (e) => {
-      const input = e.currentTarget.parentElement.querySelector('input');
-      const icon = e.currentTarget.querySelector('i');
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-      } else {
-        input.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-      }
-    });
-  });
+          <div class="mt-6 text-center animate-slide-up animation-delay-800">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Don't have an account?
+              <button
+                id="show-register"
+                type="button"
+                class="font-medium text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors"
+              >
+                Register here
+              </button>
+            </p>
+          </div>
+        </div>
 
-  // Tutorial Functionality
-  const tutorialOverlay = document.getElementById('tutorial-overlay');
-  const tutorialSteps = document.querySelectorAll('.tutorial-step');
-  const nextButtons = document.querySelectorAll('.next-step');
-  const prevButtons = document.querySelectorAll('.prev-step');
-  const skipTutorial = document.getElementById('skip-tutorial');
-  const finishTutorial = document.getElementById('finish-tutorial');
-  const tutorialLoginBtn = document.getElementById('tutorial-login-btn');
-  const tutorialRegisterBtn = document.getElementById('tutorial-register-btn');
-  const tutorialProgress = document.getElementById('tutorial-progress');
+        <!-- Register Form (Back) -->
+        <div
+          id="register-form"
+          class="auth-form form-hidden absolute top-0 left-0 w-full h-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-all duration-500 transform rotate-y-180 backface-hidden opacity-0"
+        >
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+              Join RuangKerja
+            </h2>
+            <p class="text-gray-500 dark:text-gray-400">
+              Create your professional profile
+            </p>
+          </div>
 
-  let currentStep = 1;
-  const totalSteps = tutorialSteps.length;
+          <form id="registerForm" class="space-y-6">
+            <div>
+              <label
+                for="register-name"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Full Name</label
+              >
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <i class="fas fa-user text-gray-400 dark:text-gray-500"></i>
+                </div>
+                <input
+                  type="text"
+                  id="register-name"
+                  class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                  placeholder="John Doe"
+                  required
+                />
+              </div>
+            </div>
 
-  function showStep(step) {
-    tutorialSteps.forEach((s, index) => {
-      s.classList.toggle('active', index + 1 === step);
-    });
+            <div>
+              <label
+                for="register-email"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Email Address</label
+              >
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <i
+                    class="fas fa-envelope text-gray-400 dark:text-gray-500"
+                  ></i>
+                </div>
+                <input
+                  type="email"
+                  id="register-email"
+                  class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+            </div>
 
-    const progress = ((step - 1) / (totalSteps - 1)) * 100;
-    tutorialProgress.style.width = `${progress}%`;
-    highlightCurrentStep(step);
-  }
+            <div>
+              <label
+                for="register-password"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Password</label
+              >
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
+                </div>
+                <input
+                  type="password"
+                  id="register-password"
+                  class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                  placeholder="••••••••"
+                  required
+                  minlength="8"
+                  pattern="^(?=.*\d).{8,}$"
+                />
+                <button
+                  type="button"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-lilac-400 password-toggle"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                Must be at least 8 characters with one number
+              </p>
+            </div>
+            <div>
+              <label
+                for="register-confirm"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >Confirm Password</label
+              >
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
+                </div>
+                <input
+                  type="password"
+                  id="register-confirm"
+                  class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+            </div>
 
-  function highlightCurrentStep(step) {
-    document.querySelectorAll('.tutorial-highlight').forEach(el => el.classList.remove('tutorial-highlight'));
-    document.querySelectorAll('.tutorial-tooltip').forEach(el => el.classList.remove('active'));
+            <div>
+              <button
+                type="submit"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-lilac-400 hover:bg-lilac-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300 transform hover:scale-105"
+              >
+                Create Account
+              </button>
+            </div>
+          </form>
 
-    if (step >= 2 && step <= 7) {
-      const ids = ['email', 'password', 'name', 'reg-email', 'reg-password', 'confirm'];
-      const stepElement = document.getElementById(`tut-${ids[step - 2]}`);
-      if (stepElement) {
-        stepElement.classList.add('tutorial-highlight');
-        const tooltip = stepElement.nextElementSibling;
-        if (tooltip && tooltip.classList.contains('tutorial-tooltip')) {
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div
+                  class="w-full border-t border-gray-300 dark:border-gray-600"
+                ></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span
+                  class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                  >Or sign up with</span
+                >
+              </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-2 gap-3">
+              <div>
+                <button
+                  type="button"
+                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300"
+                >
+                  <i class="fab fa-google text-red-500 mr-2"></i> Google
+                </button>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300"
+                ></button>
+                  <i class="fab fa-linkedin text-blue-500 mr-2"></i> LinkedIn
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Already have an account?
+              <button
+                id="show-login"
+                class="font-medium text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors"
+              >
+                Login here
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Theme Toggle -->
+      <div class="fixed bottom-6 right-6 z-10">
+        <button
+          id="theme-toggle"
+          class="w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors duration-300"
+        >
+          <i class="fas fa-moon dark:hidden"></i>
+          <i class="fas fa-sun hidden dark:block"></i>
+        </button>
+      </div>
+
+      <!-- Scripts -->
+      <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById("theme-toggle");
+        const html = document.documentElement;
+        const savedTheme =
+          localStorage.getItem("theme") ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+
+        if (savedTheme === "dark") html.classList.add("dark");
+        else html.classList.remove("dark");
+
+        themeToggle.addEventListener("click", () => {
+          html.classList.toggle("dark");
+          const theme = html.classList.contains("dark") ? "dark" : "light";
+          localStorage.setItem("theme", theme);
+        });
+
+        // Form Flip Animation
+        const showRegister = document.getElementById("show-register");
+        const showLogin = document.getElementById("show-login");
+        const loginForm = document.getElementById("login-form");
+        const registerForm = document.getElementById("register-form");
+        const authContainer = document.getElementById("auth-container");
+
+        showRegister.addEventListener("click", () => {
+          loginForm.classList.add("opacity-0");
+          loginForm.classList.add("form-hidden");
           setTimeout(() => {
-            tooltip.classList.add('active');
-          }, 500);
+            loginForm.classList.add("rotate-y-180");
+            registerForm.classList.remove("rotate-y-180");
+            registerForm.classList.remove("opacity-0");
+            registerForm.classList.remove("form-hidden");
+            registerForm.classList.add("form-active");
+          }, 300);
+        });
+
+        showLogin.addEventListener("click", () => {
+          registerForm.classList.add("opacity-0");
+          registerForm.classList.add("form-hidden");
+          registerForm.classList.remove("form-active");
+          setTimeout(() => {
+            registerForm.classList.add("rotate-y-180");
+            loginForm.classList.remove("rotate-y-180");
+            loginForm.classList.remove("opacity-0");
+            loginForm.classList.remove("form-hidden");
+            loginForm.classList.add("form-active");
+          }, 300);
+        });
+
+        // Password Toggle
+        const passwordToggles = document.querySelectorAll(".password-toggle");
+        passwordToggles.forEach((toggle) => {
+          toggle.addEventListener("click", (e) => {
+            const input = e.currentTarget.parentElement.querySelector("input");
+            const icon = e.currentTarget.querySelector("i");
+            if (input.type === "password") {
+              input.type = "text";
+              icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+              input.type = "password";
+              icon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+          });
+        });
+
+        // Tutorial Functionality
+        const tutorialOverlay = document.getElementById("tutorial-overlay");
+        const tutorialSteps = document.querySelectorAll(".tutorial-step");
+        const nextButtons = document.querySelectorAll(".next-step");
+        const prevButtons = document.querySelectorAll(".prev-step");
+        const skipTutorial = document.getElementById("skip-tutorial");
+        const finishTutorial = document.getElementById("finish-tutorial");
+        const tutorialLoginBtn = document.getElementById("tutorial-login-btn");
+        const tutorialRegisterBtn = document.getElementById(
+          "tutorial-register-btn"
+        );
+        const tutorialProgress = document.getElementById("tutorial-progress");
+
+        let currentStep = 1;
+        const totalSteps = tutorialSteps.length;
+
+        function showStep(step) {
+          tutorialSteps.forEach((s, index) => {
+            s.classList.toggle("active", index + 1 === step);
+          });
+
+          const progress = ((step - 1) / (totalSteps - 1)) * 100;
+          tutorialProgress.style.width = `${progress}%`;
+          highlightCurrentStep(step);
         }
-      }
-    }
-  }
 
-  nextButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      if (currentStep < totalSteps) {
-        currentStep++;
-        showStep(currentStep);
-      }
-    });
-  });
+        function highlightCurrentStep(step) {
+          document
+            .querySelectorAll(".tutorial-highlight")
+            .forEach((el) => el.classList.remove("tutorial-highlight"));
+          document
+            .querySelectorAll(".tutorial-tooltip")
+            .forEach((el) => el.classList.remove("active"));
 
-  prevButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      if (currentStep > 1) {
-        currentStep--;
-        showStep(currentStep);
-      }
-    });
-  });
+          if (step >= 2 && step <= 7) {
+            const ids = [
+              "email",
+              "password",
+              "name",
+              "reg-email",
+              "reg-password",
+              "confirm",
+            ];
+            const stepElement = document.getElementById(`tut-${ids[step - 2]}`);
+            if (stepElement) {
+              stepElement.classList.add("tutorial-highlight");
+              const tooltip = stepElement.nextElementSibling;
+              if (tooltip && tooltip.classList.contains("tutorial-tooltip")) {
+                setTimeout(() => {
+                  tooltip.classList.add("active");
+                }, 500);
+              }
+            }
+          }
+        }
 
-  skipTutorial.addEventListener('click', () => {
-    tutorialOverlay.style.opacity = '0';
-    setTimeout(() => {
-      tutorialOverlay.style.display = 'none';
-      authContainer.classList.remove('opacity-0');
-    }, 500);
-  });
+        nextButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            if (currentStep < totalSteps) {
+              currentStep++;
+              showStep(currentStep);
+            }
+          });
+        });
 
-  finishTutorial.addEventListener('click', () => {
-    tutorialOverlay.style.opacity = '0';
-    setTimeout(() => {
-      tutorialOverlay.style.display = 'none';
-      authContainer.classList.remove('opacity-0');
-    }, 500);
-  });
+        prevButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            if (currentStep > 1) {
+              currentStep--;
+              showStep(currentStep);
+            }
+          });
+        });
 
-  tutorialLoginBtn.addEventListener('click', () => {
-    tutorialOverlay.style.opacity = '0';
-    setTimeout(() => {
-      tutorialOverlay.style.display = 'none';
-      authContainer.classList.remove('opacity-0');
-      showLogin.click();
-    }, 500);
-  });
+        skipTutorial.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+          }, 500);
+        });
 
-  tutorialRegisterBtn.addEventListener('click', () => {
-    tutorialOverlay.style.opacity = '0';
-    setTimeout(() => {
-      tutorialOverlay.style.display = 'none';
-      authContainer.classList.remove('opacity-0');
-      showRegister.click();
-    }, 500);
-  });
+        finishTutorial.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+          }, 500);
+        });
 
-  // Form submissions
-  document.getElementById('loginForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Login functionality would be implemented here');
-  });
+        tutorialLoginBtn.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+            showLogin.click();
+          }, 500);
+        });
 
-  document.getElementById('registerForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const password = document.getElementById('register-password').value;
-    const confirm = document.getElementById('register-confirm').value;
-    if (password !== confirm) {
-      alert('Passwords do not match!');
-      return;
-    }
-    alert('Registration functionality would be implemented here');
-  });
+        tutorialRegisterBtn.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+            showRegister.click();
+          }, 500);
+        });
 
-  // Show tutorial on first visit
-  const hasSeenTutorial = localStorage.getItem('hasSeenTutorial');
-  if (!hasSeenTutorial) {
-    setTimeout(() => {
-      tutorialOverlay.style.opacity = '1';
-      showStep(1);
-      localStorage.setItem('hasSeenTutorial', 'true');
-    }, 500);
-  } else {
-    authContainer.classList.remove('opacity-0');
-  }
-</script>
+        // Form submissions
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+          e.preventDefault();
+          alert("Login functionality would be implemented here");
+        });
+
+        document
+          .getElementById("registerForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            const password = document.getElementById("register-password").value;
+            const confirm = document.getElementById("register-confirm").value;
+            if (password !== confirm) {
+              alert("Passwords do not match!");
+              return;
+            }
+            alert("Registration functionality would be implemented here");
+          });
+
+        // Show tutorial on first visit
+        const hasSeenTutorial = localStorage.getItem("hasSeenTutorial");
+        if (!hasSeenTutorial) {
+          setTimeout(() => {
+            tutorialOverlay.style.opacity = "1";
+            showStep(1);
+            localStorage.setItem("hasSeenTutorial", "true");
+          }, 500);
+        } else {
+          authContainer.classList.remove("opacity-0");
+        }
+      </script>
+    </div>
+  </body>
+</html>
