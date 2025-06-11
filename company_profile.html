@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Escoffier - RuangKerja</title>
+  <title>Employee - Escoffier</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
       tailwind.config = {
@@ -74,7 +74,7 @@
 </style>
 <body class="bg-lilac-100 dark:bg-gray-900" id="body">
 <!-- Navbar -->
-<nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-all duration-300 top-0 w-full z-50 h-0 opacity-0" id="navbar-employees">
+<nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
           <div class="flex">
@@ -121,36 +121,8 @@
           </div>
       </div>
   </div>
-  
-  <!-- Mobile menu -->
-  <div class="hidden sm:hidden bg-lilac-100 dark:bg-[#111827]" id="mobile-menu">
-      <div class="pt-2 pb-3 space-y-1">
-          <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-          <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
-          <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
-          <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
-      </div>
-      <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
-          <div class="flex items-center px-4">
-              <div class="flex-shrink-0">
-                  <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
-              </div>
-              <div class="ml-3">
-                  <div class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
-              </div>
-              <button id="mobileDarkModeToggle" class="ml-auto p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
-                  <i class="fas fa-moon dark:hidden"></i>
-                  <i class="fas fa-sun hidden dark:inline"></i>
-              </button>
-          </div>
-          <div class="mt-3 space-y-1">
-              <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-              <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
-          </div>
-      </div>
-  </div>
   </nav>
-
+  
   <!-- Main Content duh -->
   <div class="flex lg:flex-row flex-col items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
     <div class="flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-5/12 w-full relative">
@@ -382,160 +354,5 @@
       </div>
   </footer>
 </body>
-<script>
-
-  // Dark mode toggle
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
-  
-  function toggleDarkMode() {
-      const html = document.documentElement;
-      html.classList.toggle('dark');
-      localStorage.setItem('darkMode', html.classList.contains('dark'));
-  }
-  
-  darkModeToggle.addEventListener('click', toggleDarkMode);
-  mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
-  
-  // Check for saved dark mode preference
-  if (localStorage.getItem('darkMode') === 'true') {
-      document.documentElement.classList.add('dark');
-  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.classList.add('dark');
-  }
-        
-  // Mobile menu toggle
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-  
-  mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-  });
-  
-  // User menu toggle
-  const userMenuButton = document.getElementById('user-menu-button');
-  const userMenu = document.getElementById('user-menu');
-  
-  userMenuButton.addEventListener('click', () => {
-      userMenu.classList.toggle('hidden');
-  });
-  
-  
-  // Close menus when clicking outside
-  document.addEventListener('click', (e) => {
-      if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
-          userMenu.classList.add('hidden');
-      }
-      
-      if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
-          mobileMenu.classList.add('hidden');
-      }
-  });
-
-  // JavaScript for navbar open when website loaded
-    window.addEventListener('DOMContentLoaded', () => {
-    const navbarCandidates = document.getElementById('navbar-candidates');
-    const navbarEmployees = document.getElementById('navbar-employees');
-
-    if (navbarCandidates) {
-        navbarCandidates.classList.remove('h-0', 'opacity-0');
-        navbarCandidates.classList.add('h-16', 'opacity-100');
-    }
-
-    if (navbarEmployees) {
-        navbarEmployees.classList.remove('h-0', 'opacity-0');
-        navbarEmployees.classList.add('h-16', 'opacity-100');
-    }
-    });
-
-  // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
-  const loading_circle = document.createElement('div');
-  loading_circle.id = 'load_bro';
-  loading_circle.innerHTML = `
-    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
-      <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
-    </div>
-  `;
-  document.body.appendChild(loading_circle);
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const l = document.getElementById('load_bro');
-    if (l) {
-      l.remove();
-    }
-  });
-
-  // JavaScript for opening and closing le popup boxes (education and skills)
-  function openModal(id) {
-    const modal = document.getElementById(id);
-    const content = modal.querySelector('div');
-    const main = document.getElementById('main-container');
-
-    modal.classList.remove('hidden');
-    setTimeout(() => {
-      content.classList.remove('scale-0', 'opacity-0');
-      content.classList.add('scale-100', 'opacity-100');
-      main.classList.add('opacity-80');
-    }, 10);
-
-    // Close modal if clicked outside the box
-    modal.onclick = (e) => {
-      if (e.target === modal) closeModal(id);
-    };
-  }
-
-  function closeModal(id) {
-    const modal = document.getElementById(id);
-    const content = modal.querySelector('div');
-    const main = document.getElementById('main-container');
-
-    setTimeout(() => {
-      content.classList.remove('scale-100');
-      content.classList.add('scale-0');
-      main.classList.remove('opacity-80');
-    }, 10);
-    setTimeout(() => {
-      modal.classList.add('hidden');
-    }, 300);
-
-  }
-
-  // JavaScript for the navigation modal boxes that extends width to the left to show text on hover
-  // and shrinks back to icon size when mouse go bye bye
-  const btnSkills = document.getElementById('btn-skills');
-  const btnEducation = document.getElementById('btn-education');
-  const btnChat = document.getElementById('btn-chat');
-
-  btnSkills.addEventListener('mouseover', () => {
-    btnSkills.innerHTML = 'Skills';
-    btnSkills.classList.remove('w-12');
-    btnSkills.classList.add('w-32');
-  });
-  btnSkills.addEventListener('mouseout', () => {
-    btnSkills.classList.remove('w-32');
-    btnSkills.classList.add('w-12');
-    btnSkills.innerHTML = '<i class="fa fa-dumbbell"></i>';
-  });
-  btnEducation.addEventListener('mouseover', () => {
-    btnEducation.innerHTML = 'Education';
-    btnEducation.classList.remove('w-12');
-    btnEducation.classList.add('w-32');
-  });
-  btnEducation.addEventListener('mouseout', () => {
-    btnEducation.classList.remove('w-32');
-    btnEducation.classList.add('w-12');
-    btnEducation.innerHTML = '<i class="fa fa-graduation-cap"></i>';
-  });
-  btnChat.addEventListener('mouseover', () => {
-    btnChat.innerHTML = 'Chat';
-    btnChat.classList.remove('w-12');
-    btnChat.classList.add('w-32');
-  });
-  btnChat.addEventListener('mouseout', () => {
-    btnChat.classList.remove('w-32');
-    btnChat.classList.add('w-12');
-    btnChat.innerHTML = '<i class="fa fa-comment-dots"></i>';
-  });
-       
-</script>
+<script src="script.js"></script>
 </html>
