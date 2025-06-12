@@ -608,9 +608,10 @@
             </div>
         </div>
     </footer>
-
+</body>
 <!-- Scripts -->
 <script>
+    
     // Mobile menu toggle
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -630,26 +631,6 @@
             icon.classList.add('fa-times');
         }
     });
-    
-    // Dark mode toggle
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
-    
-    function toggleDarkMode() {
-        const html = document.documentElement;
-        html.classList.toggle('dark');
-        localStorage.setItem('darkMode', html.classList.contains('dark'));
-    }
-    
-    darkModeToggle.addEventListener('click', toggleDarkMode);
-    mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
-    
-    // Check for saved dark mode preference
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.documentElement.classList.add('dark');
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-    }
     
     // User menu dropdown
     const userMenuButton = document.getElementById('user-menu-button');
@@ -725,3 +706,5 @@
 
 </script>
 <script src="language.js"></script>
+<script src="darkmode.js"></script>
+</html>
