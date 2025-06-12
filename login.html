@@ -270,421 +270,339 @@
               <i class="fas fa-graduation-cap"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Welcome to RuangKerja!
+              Selamat Datang di RuangKerja!
             </h3>
             <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
-              Let's walk you through how to get started with your professional
-              workspace. We'll guide you through each step.
+              Mari kita pandu Anda memulai perjalanan profesional Anda. Pilih cara masuk yang Anda inginkan.
             </p>
 
-            <button
-              class="next-step px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105"
-            >
-              Start Tutorial <i class="fas fa-arrow-right ml-2 icon"></i>
-            </button>
+            <div class="flex flex-col space-y-4 max-w-md mx-auto">
+              <button data-choice="login" class="choice-btn px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105">
+                <i class="fas fa-sign-in-alt mr-2"></i> Panduan Login
+              </button>
+              <button data-choice="register" class="choice-btn px-6 py-3 border-2 border-lilac-400 text-lilac-400 hover:bg-lilac-50 dark:hover:bg-gray-700 rounded-lg font-medium transition-all duration-300 transform hover:scale-105">
+                <i class="fas fa-user-plus mr-2"></i> Panduan Daftar
+              </button>
+            </div>
           </div>
 
           <!-- Step 2: Login Email -->
-          <div class="tutorial-step" data-step="2">
+          <div class="tutorial-step" data-step="2" data-path="login">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-envelope"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Your Email Address
+              Alamat Email Anda
             </h3>
             <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-              First, enter your email address to login to your account.
+              Pertama, masukkan alamat email Anda untuk masuk ke akun.
             </p>
 
-            <div
-              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
-            >
+            <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
               <div class="flex items-center mb-4" id="tut-email">
-                <div
-                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
-                >
+                <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
                   <i class="fas fa-envelope"></i>
                 </div>
                 <div class="flex-1">
-                  <label
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >Email Address</label
-                  >
-                  <input
-                    type="email"
-                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
-                    placeholder="you@example.com"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alamat Email</label>
+                  <input type="email" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="anda@contoh.com" />
                 </div>
               </div>
 
-              <div
-                class="tutorial-tooltip right"
-                style="top: 20px; left: calc(100% + 15px)"
-              >
-                <div class="font-medium text-lilac-500 mb-1">
-                  Enter your email
-                </div>
+              <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px)">
+                <div class="font-medium text-lilac-500 mb-1">Masukkan email</div>
                 <div class="text-gray-600 dark:text-gray-300">
-                  This should be the email you used to register your account.
+                  Gunakan email yang Anda daftarkan sebelumnya.
                 </div>
               </div>
             </div>
 
             <div class="flex justify-between max-w-md mx-auto">
-              <button
-                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
-              >
-                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
+                <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
               </button>
-              <button
-                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
-              >
-                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
+                Lanjut <i class="fas fa-arrow-right ml-2 icon"></i>
               </button>
             </div>
           </div>
 
           <!-- Step 3: Login Password -->
-          <div class="tutorial-step" data-step="3">
+          <div class="tutorial-step" data-step="3" data-path="login">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-lock"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Your Password
+              Password Anda
             </h3>
             <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-              Now enter your password to securely access your account.
+              Sekarang masukkan password untuk mengakses akun Anda dengan aman.
             </p>
 
-            <div
-              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
-            >
+            <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
               <div class="flex items-center mb-4" id="tut-password">
-                <div
-                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
-                >
+                <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
                   <i class="fas fa-lock"></i>
                 </div>
                 <div class="flex-1">
-                  <label
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >Password</label
-                  >
-                  <input
-                    type="password"
-                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
-                    placeholder="••••••••"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                  <input type="password" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••" />
                 </div>
               </div>
 
-              <div
-                class="tutorial-tooltip right"
-                style="top: 20px; left: calc(100% + 15px)"
-              >
-                <div class="font-medium text-lilac-500 mb-1">
-                  Enter your password
-                </div>
+              <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px)">
+                <div class="font-medium text-lilac-500 mb-1">Masukkan password</div>
                 <div class="text-gray-600 dark:text-gray-300">
-                  Make sure it's secure and don't share it with anyone.
+                  Pastikan password Anda aman dan jangan bagikan ke siapa pun.
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
-              <button
-                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
-              >
-                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
+                <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
               </button>
-              <button
-                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
-              >
-                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
+                Lanjut <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Step 4: Login Complete -->
+          <div class="tutorial-step" data-step="7" data-path="register">
+            <div class="floating text-lilac-400 text-6xl mb-6">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Panduan Selesai!
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+              Sekarang Anda tahu cara masuk atau mendaftar. Siap memulai perjalanan profesional Anda?
+            </p>
+
+            <div class="flex justify-center">
+              <button id="finish-tutorial" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                Lanjutkan ke RuangKerja
+                <i class="fas fa-arrow-right ml-2 icon"></i>
               </button>
             </div>
           </div>
 
-          <!-- Step 4: Register Name -->
-          <div class="tutorial-step" data-step="4">
+          <!-- Step 1: Register Name -->
+          <div class="tutorial-step" data-step="1" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-user"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Your Full Name
+              Nama Lengkap Anda
             </h3>
             <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-              If you're new, start by entering your full name for your profile.
+              Jika Anda baru, mulai dengan memasukkan nama lengkap untuk profil Anda.
             </p>
 
-            <div
-              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
-            >
+            <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
               <div class="flex items-center mb-4" id="tut-name">
-                <div
-                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
-                >
+                <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
                   <i class="fas fa-user"></i>
                 </div>
                 <div class="flex-1">
-                  <label
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >Full Name</label
-                  >
-                  <input
-                    type="text"
-                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
-                    placeholder="John Doe"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Lengkap</label>
+                  <input type="text" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="John Doe" />
                 </div>
               </div>
 
-              <div
-                class="tutorial-tooltip right"
-                style="top: 20px; left: calc(100% + 15px)"
-              >
-                <div class="font-medium text-lilac-500 mb-1">
-                  Enter your full name
-                </div>
+              <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px)">
+                <div class="font-medium text-lilac-500 mb-1">Masukkan nama lengkap</div>
                 <div class="text-gray-600 dark:text-gray-300">
-                  This will be displayed on your profile and to your
-                  connections.
+                  Nama ini akan ditampilkan di profil Anda.
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
-              <button
-                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
-              >
-                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
+                <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
               </button>
-              <button
-                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
-              >
-                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
+                Lanjut <i class="fas fa-arrow-right ml-2 icon"></i>
               </button>
             </div>
           </div>
 
-          <!-- Step 5: Register Email -->
-          <div class="tutorial-step" data-step="5">
+          <!-- Step 2: Register Email -->
+          <div class="tutorial-step" data-step="2" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-envelope"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Your Email Address
+              Alamat Email Anda
             </h3>
             <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-              Enter your email address for account verification.
+              Masukkan alamat email untuk verifikasi akun.
             </p>
 
-            <div
-              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
-            >
+            <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
               <div class="flex items-center mb-4" id="tut-reg-email">
-                <div
-                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
-                >
+                <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
                   <i class="fas fa-envelope"></i>
                 </div>
                 <div class="flex-1">
-                  <label
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >Email Address</label
-                  >
-                  <input
-                    type="email"
-                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
-                    placeholder="you@example.com"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alamat Email</label>
+                  <input type="email" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="anda@contoh.com" />
                 </div>
               </div>
 
-              <div
-                class="tutorial-tooltip right"
-                style="top: 20px; left: calc(100% + 15px)"
-              >
-                <div class="font-medium text-lilac-500 mb-1">
-                  Enter your email
-                </div>
+              <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px)">
+                <div class="font-medium text-lilac-500 mb-1">Masukkan email</div>
                 <div class="text-gray-600 dark:text-gray-300">
-                  We'll send a verification link to this address.
+                  Kami akan mengirim tautan verifikasi ke alamat ini.
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
-              <button
-                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
-              >
-                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
+                <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
               </button>
-              <button
-                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
-              >
-                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
+                Lanjut <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Register Phone -->
+          <div class="tutorial-step" data-step="3" data-path="register">
+            <div class="text-lilac-400 text-4xl mb-5">
+              <i class="fas fa-phone"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Nomor Telepon Anda
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              Masukkan nomor telepon untuk verifikasi tambahan.
+            </p>
+
+            <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
+              <div class="flex items-center mb-4" id="tut-phone">
+                <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <div class="flex-1">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nomor Telepon</label>
+                  <input type="tel" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="08123456789" />
+                </div>
+              </div>
+
+              <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px)">
+                <div class="font-medium text-lilac-500 mb-1">Masukkan nomor telepon</div>
+                <div class="text-gray-600 dark:text-gray-300">
+                  Kami mungkin mengirim kode verifikasi ke nomor ini.
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between max-w-md mx-auto">
+              <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
+                <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
+              </button>
+              <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
+                Lanjut <i class="fas fa-arrow-right ml-2 icon"></i>
               </button>
             </div>
           </div>
 
           <!-- Step 6: Register Password -->
-          <div class="tutorial-step" data-step="6">
+          <div class="tutorial-step" data-step="4" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-lock"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Create a Password
+              Buat Password
             </h3>
             <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-              Choose a strong password to secure your account.
+              Pilih password yang kuat untuk mengamankan akun Anda.
             </p>
 
-            <div
-              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
-            >
+            <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
               <div class="flex items-center mb-4" id="tut-reg-password">
-                <div
-                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
-                >
+                <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
                   <i class="fas fa-lock"></i>
                 </div>
                 <div class="flex-1">
-                  <label
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >Password</label
-                  >
-                  <input
-                    type="password"
-                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
-                    placeholder="••••••••"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                  <input type="password" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••" />
                 </div>
               </div>
 
-              <div
-                class="tutorial-tooltip right"
-                style="top: 20px; left: calc(100% + 15px)"
-              >
-                <div class="font-medium text-lilac-500 mb-1">
-                  Create a password
-                </div>
+              <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px)">
+                <div class="font-medium text-lilac-500 mb-1">Buat password</div>
                 <div class="text-gray-600 dark:text-gray-300">
-                  Use at least 8 characters with one number for security.
+                  Gunakan minimal 8 karakter dengan satu angka.
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
-              <button
-                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
-              >
-                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
+                <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
               </button>
-              <button
-                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
-              >
-                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
+                Lanjut <i class="fas fa-arrow-right ml-2 icon"></i>
               </button>
             </div>
           </div>
 
           <!-- Step 7: Register Confirm Password -->
-          <div class="tutorial-step" data-step="7">
+          <div class="tutorial-step" data-step="5" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-lock"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Confirm Your Password
+              Konfirmasi Password
             </h3>
             <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-              Re-enter your password to make sure it's correct.
+              Masukkan kembali password Anda untuk memastikan benar.
             </p>
 
-            <div
-              class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative"
-            >
+            <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
               <div class="flex items-center mb-4" id="tut-confirm">
-                <div
-                  class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3"
-                >
+                <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
                   <i class="fas fa-lock"></i>
                 </div>
                 <div class="flex-1">
-                  <label
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >Confirm Password</label
-                  >
-                  <input
-                    type="password"
-                    class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
-                    placeholder="••••••••"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Konfirmasi Password</label>
+                  <input type="password" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="••••••••" />
                 </div>
               </div>
 
-              <div
-                class="tutorial-tooltip right"
-                style="top: 20px; left: calc(100% + 15px)"
-              >
-                <div class="font-medium text-lilac-500 mb-1">
-                  Confirm password
-                </div>
+              <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px)">
+                <div class="font-medium text-lilac-500 mb-1">Konfirmasi password</div>
                 <div class="text-gray-600 dark:text-gray-300">
-                  This helps prevent typos in your password.
+                  Ini membantu mencegah kesalahan ketik pada password Anda.
                 </div>
               </div>
             </div>
 
             <div class="flex justify-between max-w-md mx-auto">
-              <button
-                class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev"
-              >
-                <i class="fas fa-arrow-left mr-2 icon"></i> Back
+              <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
+                <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
               </button>
-              <button
-                class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next"
-              >
-                Next <i class="fas fa-arrow-right ml-2 icon"></i>
+              <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
+                Lanjut <i class="fas fa-arrow-right ml-2 icon"></i>
               </button>
             </div>
           </div>
 
-          <!-- Step 8: Complete -->
-          <div class="tutorial-step" data-step="8">
+          <!-- Step 8: Register Complete -->
+          <div class="tutorial-step" data-step="6" data-path="register">
             <div class="floating text-lilac-400 text-6xl mb-6">
               <i class="fas fa-check-circle"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Tutorial Complete!
+              Panduan Selesai!
             </h3>
             <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
-              Now you know how to login or register. Ready to begin your
-              professional journey?
+              Sekarang Anda tahu cara masuk atau mendaftar. Siap memulai perjalanan profesional Anda?
             </p>
 
-            <div class="flex justify-center space-x-4 mb-8 max-w-md mx-auto">
-              <button
-                id="tutorial-login-btn"
-                class="px-6 py-3 border-2 border-lilac-400 text-lilac-400 hover:bg-lilac-50 dark:hover:bg-gray-700 rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
-              >
-                <i class="fas fa-sign-in-alt mr-2"></i> Login
-              </button>
-              <button
-                id="tutorial-register-btn"
-                class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
-              >
-                <i class="fas fa-user-plus mr-2"></i> Register
-              </button>
-            </div>
-
             <div class="flex justify-center">
-              <button
-                id="finish-tutorial"
-                class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105"
-              >
-                Continue to RuangKerja
+              <button id="finish-tutorial2" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                Lanjutkan ke RuangKerja
                 <i class="fas fa-arrow-right ml-2 icon"></i>
               </button>
             </div>
@@ -797,9 +715,7 @@
                   >Or continue with</span
                 >
               </div>
-            </div>
-
-            <div class="mt-6 grid grid-cols-2 gap-3">
+            </div>            <div class="mt-6 grid grid-cols-2 gap-3">
               <div class="animate-slide-up animation-delay-600">
                 <button
                   type="button"
@@ -811,9 +727,9 @@
               <div class="animate-slide-up animation-delay-700">
                 <button
                   type="button"
-                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300"
+                  class="phone-modal-btn w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300"
                 >
-                  <i class="fab fa-linkedin text-blue-500 mr-2"></i> LinkedIn
+                  <i class="fas fa-phone text-green-500 mr-2"></i> PhoneNumber
                 </button>
               </div>
             </div>
@@ -971,9 +887,7 @@
                   >Or sign up with</span
                 >
               </div>
-            </div>
-
-            <div class="mt-6 grid grid-cols-2 gap-3">
+            </div>            <div class="mt-6 grid grid-cols-2 gap-3">
               <div>
                 <button
                   type="button"
@@ -982,12 +896,12 @@
                   <i class="fab fa-google text-red-500 mr-2"></i> Google
                 </button>
               </div>
-              <div>
+              <div class="animate-slide-up animation-delay-700">
                 <button
                   type="button"
-                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300"
+                  class="phone-modal-btn w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-400 transition-all duration-300"
                 >
-                  <i class="fab fa-linkedin text-blue-500 mr-2"></i> LinkedIn
+                  <i class="fas fa-phone text-green-500 mr-2"></i> PhoneNumber
                 </button>
               </div>
             </div>
@@ -1006,6 +920,32 @@
           </div>
         </div>
       </div>
+    </div>    <!-- Phone Number Input Modal -->
+    <div id="phone-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center hidden">
+      <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg text-left w-full max-w-md relative">
+        <!-- Close Button -->
+        <button id="close-phone-modal" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Phone Input Content -->
+        <div class="flex items-center mb-4" id="tut-phone">
+          <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="flex-1">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nomor Telepon</label>
+            <input type="tel" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="08123456789" />
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="w-full py-2 px-4 bg-lilac-400 hover:bg-lilac-500 text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105">
+          Kirim Kode
+        </button>
+      </div>
+    </div>
+
       <!-- Theme Toggle -->
       <div class="fixed bottom-6 right-6 z-10">
         <button
@@ -1018,7 +958,18 @@
       </div>
 
       <!-- Scripts -->
-      <script>
+      <script>        // Phone modal toggle
+        const phoneModalBtns = document.querySelectorAll(".phone-modal-btn");
+        phoneModalBtns.forEach(btn => {
+          btn.addEventListener("click", () => {
+            document.getElementById("phone-modal").classList.remove("hidden");
+          });
+        });
+
+        document.getElementById("close-phone-modal").addEventListener("click", () => {
+          document.getElementById("phone-modal").classList.add("hidden");
+        });
+
         // Theme Toggle
         const themeToggle = document.getElementById("theme-toggle");
         const html = document.documentElement;
@@ -1092,14 +1043,53 @@
         const prevButtons = document.querySelectorAll(".prev-step");
         const skipTutorial = document.getElementById("skip-tutorial");
         const finishTutorial = document.getElementById("finish-tutorial");
+        const finishTutorial2 = document.getElementById("finish-tutorial2");
         const tutorialLoginBtn = document.getElementById("tutorial-login-btn");
+        const choiceLoginBtn = document.querySelector('[data-choice="login"]');
         const tutorialRegisterBtn = document.getElementById(
           "tutorial-register-btn"
         );
-        const tutorialProgress = document.getElementById("tutorial-progress");
+        const choiceRegisterBtn = document.querySelector(
+          '[data-choice="register"]'
+        );
+        
+        finishTutorial.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+          }, 500);
+        });
+
+        finishTutorial2.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          showRegister.click();
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+          }, 500);
+        });
 
         let currentStep = 1;
-        const totalSteps = tutorialSteps.length;
+        let totalSteps = 0;
+        let login = false; // use let, not const
+
+        choiceLoginBtn.addEventListener("click", () => {
+          currentStep = 2; // corresponds to login step 1 (email)
+          login = true;
+          totalSteps = 4;
+          showStep(currentStep);
+        });
+
+        choiceRegisterBtn.addEventListener("click", () => {
+          currentStep = 5; // corresponds to register step 1 (name)
+          login = false;
+          totalSteps = 10;
+          showStep(currentStep);
+        });
+
+
+        const tutorialProgress = document.getElementById("tutorial-progress");
 
         function showStep(step) {
           tutorialSteps.forEach((s, index) => {
@@ -1153,7 +1143,11 @@
         prevButtons.forEach((button) => {
           button.addEventListener("click", () => {
             if (currentStep > 1) {
-              currentStep--;
+              if (currentStep == 5) {
+                currentStep = 1; // Go back to choice step
+              } else {
+                currentStep--;
+              }
               showStep(currentStep);
             }
           });
@@ -1240,6 +1234,7 @@
             l.remove();
             }
         });
+
       </script>
     </div>
   </body>
