@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Test - RuangKerja</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        .upload-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #9f7aea;
+            background-color: #faf7fd;
+        }
+        .upload-area.dragover {
+            border-color: #9f7aea;
+            background-color: #f3e8ff;
+        }
+        .file-input {
+            display: none;
+        }
+        .btn {
+            background: #9f7aea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background: #8b5cf6;
+        }
+        .btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+        .result {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+        .success {
+            background-color: #ecfdf5;
+            border: 1px solid #d1fae5;
+            color: #065f46;
+        }
+        .error {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+        .info {
+            background-color: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #1e40af;
+        }
+        .preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #374151;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h1>🖼️ Profile Image Upload Test</h1>
+        
+        <div class="form-group">
+            <label for="userId">User ID (for testing):</label>
+            <input type="number" id="userId" value="1" min="1" placeholder="Enter user ID">
+            <small style="color: #6b7280;">Use ID 1 for testing, or register a new user and use their ID</small>
+        </div>
+        
+        <div class="upload-area" id="uploadArea">
+            <div>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5" style="margin: 0 auto 16px;">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17,8 12,3 7,8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p><strong>Click to upload</strong> or drag and drop</p>
+                <p style="color: #6b7280; font-size: 14px;">PNG, JPG or GIF (max 5MB)</p>
+            </div>
+        </div>
+        
+        <input type="file" id="fileInput" class="file-input" accept="image/*">
+        
+        <div id="preview"></div>
+        
+        <div style="text-align: center;">
+            <button class="btn" id="uploadBtn" disabled>Upload Image</button>
+            <button class="btn" id="deleteBtn" disabled>Delete Current Image</button>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        let selectedFile = null;
+        let currentUserId = 1;
+
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const preview = document.getElementById('preview');
+        const results = document.getElementById('results');
+        const userIdInput = document.getElementById('userId');
+
+        // Update user ID when changed
+        userIdInput.addEventListener('change', (e) => {
+            currentUserId = parseInt(e.target.value) || 1;
+            log(`User ID updated to: ${currentUserId}`, 'info');
+        });
+
+        // Logging function
+        function log(message, type = 'info') {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `result ${type}`;
+            resultDiv.textContent = new Date().toLocaleTimeString() + ': ' + message;
+            results.appendChild(resultDiv);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+            
+            // Auto-scroll to latest result
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // File upload handling
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelect(file) {
+            // Validate file
+            if (!file.type.startsWith('image/')) {
+                log('Please select a valid image file', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) { // 5MB
+                log('File size must be less than 5MB', 'error');
+                return;
+            }
+            
+            selectedFile = file;
+            uploadBtn.disabled = false;
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.innerHTML = `
+                    <h3>Selected Image:</h3>
+                    <img src="${e.target.result}" class="preview" alt="Preview">
+                    <p><strong>File:</strong> ${file.name}</p>
+                    <p><strong>Size:</strong> ${(file.size / 1024).toFixed(1)} KB</p>
+                    <p><strong>Type:</strong> ${file.type}</p>
+                `;
+            };
+            reader.readAsDataURL(file);
+            
+            log(`Selected file: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`, 'info');
+        }
+
+        // Upload functionality
+        uploadBtn.addEventListener('click', async () => {
+            if (!selectedFile) {
+                log('No file selected', 'error');
+                return;
+            }
+            
+            if (!window.RuangKerjaAPI) {
+                log('RuangKerjaAPI not loaded', 'error');
+                return;
+            }
+            
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Uploading...';
+            
+            try {
+                log(`Starting upload for user ID: ${currentUserId}`, 'info');
+                
+                const response = await window.RuangKerjaAPI.uploadProfileImage(currentUserId, selectedFile);
+                
+                if (response && response.success) {
+                    log('✅ Image uploaded successfully!', 'success');
+                    log(`Response: ${JSON.stringify(response, null, 2)}`, 'success');
+                    deleteBtn.disabled = false;
+                    
+                    // Clear preview
+                    selectedFile = null;
+                    preview.innerHTML = '';
+                    fileInput.value = '';
+                } else {
+                    log(`❌ Upload failed: ${response ? response.message : 'Unknown error'}`, 'error');
+                    if (response) {
+                        log(`Full response: ${JSON.stringify(response, null, 2)}`, 'error');
+                    }
+                }
+            } catch (error) {
+                log(`❌ Upload error: ${error.message}`, 'error');
+            } finally {
+                uploadBtn.disabled = selectedFile === null;
+                uploadBtn.textContent = 'Upload Image';
+            }
+        });
+
+        // Delete functionality
+        deleteBtn.addEventListener('click', async () => {
+            if (!window.RuangKerjaAPI) {
+                log('RuangKerjaAPI not loaded', 'error');
+                return;
+            }
+            
+            deleteBtn.disabled = true;
+            deleteBtn.textContent = 'Deleting...';
+            
+            try {
+                log(`Deleting image for user ID: ${currentUserId}`, 'info');
+                
+                const response = await window.RuangKerjaAPI.deleteProfileImage(currentUserId);
+                
+                if (response && response.success) {
+                    log('✅ Image deleted successfully!', 'success');
+                    log(`Response: ${JSON.stringify(response, null, 2)}`, 'success');
+                } else {
+                    log(`❌ Delete failed: ${response ? response.message : 'Unknown error'}`, 'error');
+                    if (response) {
+                        log(`Full response: ${JSON.stringify(response, null, 2)}`, 'error');
+                    }
+                }
+            } catch (error) {
+                log(`❌ Delete error: ${error.message}`, 'error');
+            } finally {
+                deleteBtn.disabled = false;
+                deleteBtn.textContent = 'Delete Current Image';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.RuangKerjaAPI) {
+                log('✅ RuangKerjaAPI loaded successfully', 'success');
+                deleteBtn.disabled = false; // Enable delete button for testing
+            } else {
+                log('❌ RuangKerjaAPI not loaded', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
