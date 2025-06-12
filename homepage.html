@@ -69,89 +69,117 @@
             outline: 2px solid #c69ae6;
             outline-offset: 2px;
         }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f4ecfb;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #dbc2f0;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
     <!-- Navbar -->
-    <nav class="bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300">
+    <nav class="bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                <div class="flex-shrink-0 flex items-center">
-                    <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto" />
-                </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="#" class="border-lilac-400 text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Home
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                            Beranda
                         </a>
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            About
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
                         </a>
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Candidates
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
                         </a>
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Companies
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
                         </a>
                     </div>
                 </div>
-                <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-                    <button id="darkModeToggle" class="p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
+
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
                         <i class="fas fa-moon dark:hidden"></i>
                         <i class="fas fa-sun hidden dark:inline"></i>
                     </button>
-                    <div class="ml-3 relative">
-                        <div>
-                            <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <img class="h-8 w-8 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
-                            </button>
-                        </div>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <img class="h-8 w-8 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
                         <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                            <div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-100 dark:border-gray-700">
+                                <div class="font-medium">Profil Saya</div>
+                            </div>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profil</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Keluar</a>
                         </div>
                     </div>
                 </div>
-                <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
-                        <span class="sr-only">Open main menu</span>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
-        </div>
 
-        <!-- Mobile menu -->
-        <div class="hidden sm:hidden" id="mobile-menu">
-            <div class="pt-2 pb-3 space-y-1">
-                <a href="#" class="bg-lilac-50 dark:bg-gray-800 border-lilac-400 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
-            </div>
-            <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
-                <div class="flex items-center px-4">
-                    <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
-                    </div>
-                    <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
-                    </div>
-                    <button id="mobileDarkModeToggle" class="ml-auto p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
-                        <i class="fas fa-moon dark:hidden"></i>
-                        <i class="fas fa-sun hidden dark:inline"></i>
-                    </button>
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a href="#" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a href="#" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a href="#" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a href="#" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
                 </div>
-                <div class="mt-3 space-y-1">
-                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
+
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <img class="h-8 w-8 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
+                            <span class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</span>
+                        </div>
+                        <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon dark:hidden"></i>
+                            <i class="fas fa-sun hidden dark:inline"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Hero Section -->
         <section class="text-center mb-8 animate-fade-in">
             <h1 class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
@@ -174,10 +202,9 @@
         <!-- Candidates Section -->
         <section class="mb-8 fade-on-scroll">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Featured Candidates</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Rekomendasi Kandidat</h2>
                 <a href="#" class="text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 text-sm">See More</a>
             </div>
-            
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Candidate Card 1 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
@@ -326,44 +353,37 @@
                 </div>
             </div>
         </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="w-full bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Company Info -->
+                <!-- Logo and Description -->
                 <div class="space-y-4">
-                    <h3 class="text-xl font-bold font-elegant text-lilac-400">RuangKerja</h3>
-                    <p class="text-sm">Connecting professionals with opportunities that matter.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
                     </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
                 </div>
-
+                
                 <!-- Quick Links -->
-                <div>
+                <div class="space-y-4">
                     <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Quick Links</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Home</a></li>
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">About Us</a></li>
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Candidates</a></li>
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Companies</a></li>
-                    </ul>
+                  <ul class="space-y-2 text-sm">
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Home</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">About Us</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Candidates</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Companies</a></li>
+                  </ul>
                 </div>
-
+                
                 <!-- Resources -->
-                <div>
+                <div class="space-y-4">
                     <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Resources</h4>
                     <ul class="space-y-2 text-sm">
                         <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Blog</a></li>
@@ -373,9 +393,9 @@
                         <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Success Stories</a></li>
                     </ul>
                 </div>
-
-                <!-- Contact -->
-                <div>
+                
+                <!-- For Employers -->
+                <div class="space-y-4">
                     <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
                     <ul class="space-y-2 text-sm">
                         <li class="flex items-start">
@@ -393,22 +413,29 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- Copyright -->
-            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 text-sm text-center">
-                <p>&copy; 2026 RuangKerja. All rights reserved.</p>
-                <div class="mt-2 flex justify-center space-x-6">
-                    <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Cookie Policy</a>
+            
+            <!-- Copyright and Bottom Links -->
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
                 </div>
             </div>
         </div>
     </footer>
 
-
     <script>
-        // Dark mode toggle
+        // Dark mode toggle functionality
         const darkModeToggle = document.getElementById('darkModeToggle');
         const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
         
@@ -426,23 +453,30 @@
         darkModeToggle.addEventListener('click', toggleDarkMode);
         mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
         
-        // Check for saved dark mode preference
+        // Check for saved dark mode preference or system preference
         if (localStorage.getItem('darkMode') === 'dark' || 
             (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
         
-        // Mobile menu toggle
+        // Mobile menu functionality
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         
-        mobileMenuButton.addEventListener('click', () => {
+        function toggleMobileMenu() {
             const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
             mobileMenuButton.setAttribute('aria-expanded', !expanded);
             mobileMenu.classList.toggle('hidden');
-        });
+            
+            // Toggle between hamburger and close icon
+            const icon = mobileMenuButton.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        }
         
-        // User menu toggle
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        
+        // User dropdown menu functionality
         const userMenuButton = document.getElementById('user-menu-button');
         const userMenu = document.getElementById('user-menu');
         
@@ -454,18 +488,27 @@
         
         // Close menus when clicking outside
         document.addEventListener('click', (e) => {
+            // Close user dropdown if clicked outside
             if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
                 userMenuButton.setAttribute('aria-expanded', 'false');
                 userMenu.classList.add('hidden');
             }
             
-            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+            // Close mobile menu if clicked outside
+            if (!mobileMenuButton.contains(e.target) && 
+                !mobileMenu.contains(e.target)) {
+                
                 mobileMenuButton.setAttribute('aria-expanded', 'false');
                 mobileMenu.classList.add('hidden');
+                
+                // Reset mobile menu icon to hamburger
+                const icon = mobileMenuButton.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
             }
         });
         
-        // Fade-in on scroll animation
+        // Fade-in animation on scroll
         function checkVisibility() {
             const elements = document.querySelectorAll('.fade-on-scroll');
             
@@ -479,10 +522,11 @@
             });
         }
         
+        // Run checkVisibility on scroll and page load
         window.addEventListener('scroll', checkVisibility);
         window.addEventListener('load', checkVisibility);
 
-        // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
+        // Loading spinner animation
         const loading_circle = document.createElement('div');
         loading_circle.id = 'load_bro';
         loading_circle.innerHTML = `
@@ -492,10 +536,11 @@
         `;
         document.body.appendChild(loading_circle);
 
+        // Remove loading spinner when page finishes loading
         window.addEventListener('DOMContentLoaded', () => {
-            const l = document.getElementById('load_bro');
-            if (l) {
-            l.remove();
+            const spinner = document.getElementById('load_bro');
+            if (spinner) {
+                spinner.remove();
             }
         });
     </script>
