@@ -455,117 +455,100 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        // Dark mode toggle functionality
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
-        
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                localStorage.setItem('darkMode', 'light');
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('darkMode', 'dark');
-            }
-        }
-        
-        darkModeToggle.addEventListener('click', toggleDarkMode);
-        mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
-        
-        // Check for saved dark mode preference or system preference
-        if (localStorage.getItem('darkMode') === 'dark' || 
-            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        }
-        
-        // Mobile menu functionality
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        function toggleMobileMenu() {
-            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-            mobileMenuButton.setAttribute('aria-expanded', !expanded);
-            mobileMenu.classList.toggle('hidden');
-            
-            // Toggle between hamburger and close icon
-            const icon = mobileMenuButton.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
-        }
-        
-        mobileMenuButton.addEventListener('click', toggleMobileMenu);
-        
-        // User dropdown menu functionality
-        const userMenuButton = document.getElementById('user-menu-button');
-        const userMenu = document.getElementById('user-menu');
-        
-        userMenuButton.addEventListener('click', () => {
-            const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-            userMenuButton.setAttribute('aria-expanded', !expanded);
-            userMenu.classList.toggle('hidden');
-        });
-        
-        // Close menus when clicking outside
-        document.addEventListener('click', (e) => {
-            // Close user dropdown if clicked outside
-            if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
-                userMenuButton.setAttribute('aria-expanded', 'false');
-                userMenu.classList.add('hidden');
-            }
-            
-            // Close mobile menu if clicked outside
-            if (!mobileMenuButton.contains(e.target) && 
-                !mobileMenu.contains(e.target)) {
-                
-                mobileMenuButton.setAttribute('aria-expanded', 'false');
-                mobileMenu.classList.add('hidden');
-                
-                // Reset mobile menu icon to hamburger
-                const icon = mobileMenuButton.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-        
-        // Fade-in animation on scroll
-        function checkVisibility() {
-            const elements = document.querySelectorAll('.fade-on-scroll');
-            
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementBottom = element.getBoundingClientRect().bottom;
-                
-                if (elementTop < window.innerHeight && elementBottom > 0) {
-                    element.classList.add('visible');
-                }
-            });
-        }
-        
-        // Run checkVisibility on scroll and page load
-        window.addEventListener('scroll', checkVisibility);
-        window.addEventListener('load', checkVisibility);
-
-        // Loading spinner animation
-        const loading_circle = document.createElement('div');
-        loading_circle.id = 'load_bro';
-        loading_circle.innerHTML = `
-            <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
-            <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
-            </div>
-        `;
-        document.body.appendChild(loading_circle);
-
-        // Remove loading spinner when page finishes loading
-        window.addEventListener('DOMContentLoaded', () => {
-            const spinner = document.getElementById('load_bro');
-            if (spinner) {
-                spinner.remove();
-            }
-        });
-    </script>
-    <script src="language.js"></script>
 </body>
+<script>
+    
+    // Check for saved dark mode preference or system preference
+    if (localStorage.getItem('darkMode') === 'dark' || 
+        (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    }
+    
+    // Mobile menu functionality
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    function toggleMobileMenu() {
+        const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !expanded);
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between hamburger and close icon
+        const icon = mobileMenuButton.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    }
+    
+    mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    
+    // User dropdown menu functionality
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    
+    userMenuButton.addEventListener('click', () => {
+        const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+        userMenuButton.setAttribute('aria-expanded', !expanded);
+        userMenu.classList.toggle('hidden');
+    });
+    
+    // Close menus when clicking outside
+    document.addEventListener('click', (e) => {
+        // Close user dropdown if clicked outside
+        if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+            userMenuButton.setAttribute('aria-expanded', 'false');
+            userMenu.classList.add('hidden');
+        }
+        
+        // Close mobile menu if clicked outside
+        if (!mobileMenuButton.contains(e.target) && 
+            !mobileMenu.contains(e.target)) {
+            
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+            mobileMenu.classList.add('hidden');
+            
+            // Reset mobile menu icon to hamburger
+            const icon = mobileMenuButton.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    });
+    
+    // Fade-in animation on scroll
+    function checkVisibility() {
+        const elements = document.querySelectorAll('.fade-on-scroll');
+        
+        elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementBottom = element.getBoundingClientRect().bottom;
+            
+            if (elementTop < window.innerHeight && elementBottom > 0) {
+                element.classList.add('visible');
+            }
+        });
+    }
+    
+    // Run checkVisibility on scroll and page load
+    window.addEventListener('scroll', checkVisibility);
+    window.addEventListener('load', checkVisibility);
+
+    // Loading spinner animation
+    const loading_circle = document.createElement('div');
+    loading_circle.id = 'load_bro';
+    loading_circle.innerHTML = `
+        <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
+        <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+        </div>
+    `;
+    document.body.appendChild(loading_circle);
+
+    // Remove loading spinner when page finishes loading
+    window.addEventListener('DOMContentLoaded', () => {
+        const spinner = document.getElementById('load_bro');
+        if (spinner) {
+            spinner.remove();
+        }
+    });
+</script>
+<script src="language.js"></script>
+<script src="darkmode.js"></script>
 </html>
