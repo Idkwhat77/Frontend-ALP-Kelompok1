@@ -104,99 +104,100 @@
   }
 </style>
 <body class="bg-lilac-100 dark:bg-gray-900" id="body">
+  <!-- Navbar -->
+  <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+          <div class="flex justify-between items-center h-16">
+              <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                      <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                  </div>
+                  <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                      <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                          Beranda
+                      </a>
+                      <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                          Tentang
+                      </a>
+                      <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                          Kandidat
+                      </a>
+                      <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                          Perusahaan
+                      </a>
+                  </div>
+              </div>
 
-<!-- Navbar -->
-<nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-all duration-700 top-0 w-full z-50 h-0 opacity-0" id="navbar-employees">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-          <div class="flex">
-          <div class="flex-shrink-0 flex items-center">
-              <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto" />
-          </div>
-              <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  <a data-i18n="nav.home" href="homepage.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      Home
-                  </a>
-                  <a data-i18n="nav.about" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      About
-                  </a>
-                  <a data-i18n="nav.candidates" href="candidates.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      Candidates
-                  </a>
-                  <a data-i18n="nav.companies" href="companies.html" class="border-transparent dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      Companies
-                  </a>
-              </div>
-          </div>
-          <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-              <div class="ml-4">
-                <select id="language-selector" class="text-gray-700 dark:text-white p-2 rounded">
-                  <option class="bg-lilac-100 dark:bg-[#1F2937]" value="en">EN</option>
-                  <option class="bg-lilac-100 dark:bg-[#1F2937]" value="id">ID</option>
-                </select>
-              </div>
-              <button id="darkModeToggle" class="p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
-                  <i class="fas fa-moon dark:hidden"></i>
-                  <i class="fas fa-sun hidden dark:inline"></i>
-              </button>
-              <div class="ml-3 relative">
-                  <div>
+              <!-- Desktop Dark Mode & Profile -->
+              <div class="hidden sm:flex items-center space-x-4">
+                  <div class="ml-4">
+                      <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                      <option value="en">EN</option>
+                      <option value="id">ID</option>
+                      </select>
+                  </div>
+                  <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                      <i class="fas fa-moon dark:hidden"></i>
+                      <i class="fas fa-sun hidden dark:inline"></i>
+                  </button>
+
+                  <div class="relative">
                       <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                           <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
                       </button>
+                      
+                      <!-- Dropdown Menu -->
+                      <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                          <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                          <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                      </div>
                   </div>
-                  <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                      <a data-i18n="employee_profile_settings" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
-                      <a data-i18n="employee_logout" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+              </div>
+
+              <!-- Mobile Menu Button -->
+              <div class="sm:hidden flex items-center">
+                  <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                      <span class="sr-only">Buka Menu Utama</span>
+                      <i class="fas fa-bars"></i>
+                  </button>
+              </div>
+          </div>
+
+          <!-- Mobile Menu Content -->
+          <div class="hidden sm:hidden" id="mobile-menu">
+              <div class="pt-2 pb-3 space-y-1">
+                  <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                  <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                  <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                  <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+              </div>
+
+              <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+              <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                          <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                          <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                              <option value="en">EN</option>
+                              <option value="id">ID</option>
+                          </select>
+                          <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                              <i class="fas fa-moon dark:hidden"></i>
+                              <i class="fas fa-sun hidden dark:inline"></i>
+                          </button>
+                      </div>
                   </div>
               </div>
           </div>
-          <div class="-mr-2 flex items-center sm:hidden">
-              <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
-                  <span class="sr-only">Open main menu</span>
-                  <i class="fas fa-bars"></i>
-              </button>
-          </div>
       </div>
-  </div>
-  
-  <!-- Mobile menu -->
-  <div class="hidden sm:hidden bg-lilac-100 dark:bg-[#111827]" id="mobile-menu">
-      <div class="pt-2 pb-3 space-y-1">
-          <a data-i18n="nav.home" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-          <a data-i18n="nav.about" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
-          <a data-i18n="nav.candidates" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
-          <a data-i18n="nav.companies" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
-      </div>
-      <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
-          <div class="flex items-center px-4">
-              <div class="flex-shrink-0">
-                  <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
-              </div>
-              <div class="ml-3">
-                  <div class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
-              </div>
-              <button id="mobileDarkModeToggle" class="ml-auto p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
-                  <i class="fas fa-moon dark:hidden"></i>
-                  <i class="fas fa-sun hidden dark:inline"></i>
-              </button>
-              <div class="ml-4">
-                <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
-                  <option value="en">EN</option>
-                  <option value="id">ID</option>
-                </select>
-              </div>
-          </div>
-          <div class="mt-3 space-y-1">
-              <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-              <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
-          </div>
-      </div>
-  </div>
   </nav>
 
   <!-- Main Content duh -->
-  <div class="flex lg:flex-row flex-col lg:h-auto items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
+  <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
     <div class="lg:fixed flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
         <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity animate-fade-in-from-up duration-300 object-cover" src="img/escoffier.png" alt="A majestic llama"  id ="profile-image">
