@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Black Swan LLC - RuangKerja</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      tailwind.config = {
+          darkMode: 'class',
+          theme: {
+              extend: {
+                  colors: {
+                      lilac: {
+                          50: '#faf7fd',
+                          100: '#f4ecfb',
+                          200: '#ebddf7',
+                          300: '#dbc2f0',
+                          400: '#c69ae6',
+                          500: '#b87ce0',
+                      },
+                  },
+                  fontFamily: {
+                      elegant: ['"Playfair Display"', 'serif'],
+                      poppins: ['Poppins', 'sans-serif'],
+                  },
+                  animation: {
+                      'fade-in-from-up': 'fadeInUp 1s ease-in forwards',
+                      'fade-in-from-right' : 'fadeInRight 1s ease-in forwards',
+                      'fade-in-from-down': 'fadeInDown 0.5s ease-in forwards',
+                      'expand-down': 'expandDown 0.6s ease-out forwards',
+                      'expand-left': 'expandLeft 0.6s ease-out forwards',
+                  },
+                  keyframes: {
+                      fadeInUp: {
+                          '0%': { opacity: '0', transform: 'translateY(-100px)' },
+                          '100%': { opacity: '1', transform: 'translateY(0)' },
+                      },
+                      fadeInRight: {
+                          '0%': { opacity: '0', transform: 'translateX(100px)' },
+                          '100%': { opacity: '1', transform: 'translateX(0)' },
+                      },
+                      fadeInDown: {
+                          '0%': { opacity: '0', transform: 'translateY(50px)' },
+                          '100%': { opacity: '1', transform: 'translateY(0)' },
+                      },
+                      expandDown: {
+                        '0%': { height: '0', opacity: '0' },
+                        '100%': { height: '100vh', opacity: '1' },
+                      },
+                      expandLeft: {
+                        '0%': { width: '0', opacity: '0' },
+                        '100%': { width: '100vw', opacity: '1' },
+                      }
+                  },
+                  transitionProperty: {
+                      'scale': 'transform',
+                  }
+              }
+          }
+      }
+  </script>
+  <link rel="stylesheet" href="src/output.css">
+  <link class="favicon" rel="icon" href="img/blackswa.png" type="image/x-icon">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  integrity="sha512-..."
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+  />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+</head>
+<style>
+  /* Font Family */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #FAF7FD;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+      background: #f4ecfb;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+      background: #dbc2f0;
+      border-radius: 4px;
+  }
+  
+  .dark ::-webkit-scrollbar-track {
+      background: #1a202c;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+      background: #4a5568;
+  }
+</style>
+<body class="bg-lilac-100 dark:bg-gray-900" id="body">
+<!-- Navbar -->
+<nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-all duration-700 top-0 w-full z-50 h-0 opacity-0" id="navbar-employees">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+          <div class="flex">
+          <div class="flex-shrink-0 flex items-center">
+              <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto" />
+          </div>
+              <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                  <a data-i18n="nav.home" href="homepage.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                      Home
+                  </a>
+                  <a data-i18n="nav.about" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                      About
+                  </a>
+                  <a data-i18n="nav.candidates" href="candidates.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                      Candidates
+                  </a>
+                  <a data-i18n="nav.companies" href="companies.html" class="border-transparent dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                      Companies
+                  </a>
+              </div>
+          </div>
+          <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+              <div class="ml-4">
+                <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                  <option value="en">EN</option>
+                  <option value="id">ID</option>
+                </select>
+              </div>
+              <button id="darkModeToggle" class="p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
+                  <i class="fas fa-moon dark:hidden"></i>
+                  <i class="fas fa-sun hidden dark:inline"></i>
+              </button>
+              <div class="ml-3 relative">
+                  <div>
+                      <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile" id ="profile-image">
+                      </button>
+                  </div>
+                  <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                      <a data-i18n="employee_profile_settings" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
+                      <a data-i18n="employee_logout" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                  </div>
+              </div>
+          </div>
+          <div class="-mr-2 flex items-center sm:hidden">
+              <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                  <span class="sr-only">Open main menu</span>
+                  <i class="fas fa-bars"></i>
+              </button>
+          </div>
+      </div>
+  </div>
+  
+  <!-- Mobile menu -->
+  <div class="hidden sm:hidden bg-lilac-100 dark:bg-[#111827]" id="mobile-menu">
+      <div class="pt-2 pb-3 space-y-1">
+          <a data-i18n="nav.home" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+          <a data-i18n="nav.about" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
+          <a data-i18n="nav.candidates" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
+          <a data-i18n="nav.companies" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
+      </div>
+      <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex items-center px-4">
+              <div class="flex-shrink-0">
+                  <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
+              </div>
+              <div class="ml-3">
+                  <div class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
+              </div>
+              <button id="mobileDarkModeToggle" class="ml-auto p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
+                  <i class="fas fa-moon dark:hidden"></i>
+                  <i class="fas fa-sun hidden dark:inline"></i>
+              </button>
+              <div class="ml-4">
+                <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                  <option value="en">EN</option>
+                  <option value="id">ID</option>
+                </select>
+              </div>
+          </div>
+          <div class="mt-3 space-y-1">
+              <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+              <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
+          </div>
+      </div>
+  </div>
+  </nav>
+
+  <!-- Main Content duh -->
+  <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
+    <div class="flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-5/12 w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
+      <div class="flex flex-col items-center text-center gap-5">
+        <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity duration-300 object-cover" src="img/blackswa.png" alt="A majestic llama">
+        <h1 class="text-5xl font-bold text-white animate-fade-in-from-down">Black Swan LLC</h1>
+        <p class="mt-4 text-lg text-white animate-fade-in-from-down">Join us to create your future (literally)~</p>
+      </div>
+      <div class="flex justify-center mt-6 animate-fade-in-from-down">
+        <a data-i18n="cv_download" href="cv/Escoffier_Resume.pdf" download
+          class="bg-[#7F4CA5] text-white px-6 py-3 rounded-full shadow-md transition-all duration-300">
+          <i class="fa-solid fa-file-pdf"></i> Download CV
+        </a>
+      </div>
+      <div class="flex flex-row space-x-4 text-3xl bottom-10 absolute animate-fade-in-from-down">
+        <a href="https://facebook.com" target="_blank" class="hover:text-blue-600">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" class="hover:text-pink-500">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://x.com" target="_blank" class="hover:text-gray-600">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Employee Main Profile -->
+    <div class="flex lg:flex-row flex-col items-center justify-center w-full gap-10">
+      <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px]">
+        <h2 data-i18n="company_details" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-10">Company Details</h2>
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-full text-left lg:border-l-4 lg:border-t-0 lg:border-b-0 border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
+          <div class="mb-4">
+            <h4 data-i18n="company_full_name" class="font-semibold text-xl text-[#C69AE6]">Company Name</h4>
+              <p class="text-[#374151] dark:text-white">Black Swan LLC</p>
+            </div>
+          <div class="mb-4">
+            <h4 data-i18n="company_foundation_date" class="font-semibold text-xl text-[#C69AE6]">Foundation Date</h4>
+            <p class="text-[#374151] dark:text-white">January 1, 2000</p>
+          </div>
+          <div class="mb-4">
+            <h4 data-i18n="company_hq_location" class="font-semibold text-xl text-[#C69AE6]">HQ Location</h4>
+            <p class="text-[#374151] dark:text-white">Somewhere~</p>
+          </div>
+          <div class="mb-4">
+            <h4 data-i18n="company_size" class="font-semibold text-xl text-[#C69AE6]">Company Size</h4>
+            <p class="text-[#374151] dark:text-white">200 Employees</p>
+          </div>
+          <div class="mb-4">
+            <h4 data-i18n="company_business_email" class="font-semibold text-xl text-[#C69AE6]">Business Email</h4>
+            <p class="text-[#374151] dark:text-white">info@blackswan.com</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px] lg:mb-0 mb-10">
+        <h2 data-i18n="company_biodata" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-10">Company Description</h2>
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-96 text-left lg:border-r-4 lg:border-t-0 lg:border-b-0 border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
+          <div class="mb-4">
+            <p class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employee Education Modal Box (popup basically) -->
+  <div id="modal-members" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
+      <h3 data-i18n="members" class="text-3xl font-semibold text-[#C69AE6] mt-4">Our Members</h3>
+      <div class="flex flex-col mt-4">
+        <div class="flex flex-row">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fleuve Cendre">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Fleuve Cendre</h2>
+            <p class="text-black dark:text-white">2025-Present</p>
+          </div>
+        </div>
+        <div class="flex flex-row mt-4">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
+            <p class="text-black dark:text-white">2020-2025</p>
+          </div>
+        </div>
+        <div class="flex flex-row mt-4">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
+            <p class="text-black dark:text-white">2020-2025</p>
+          </div>
+        </div>
+        <div class="flex flex-row mt-4">
+          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
+          <div class="flex flex-col ml-5">
+            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
+            <p class="text-black dark:text-white">2020-2025</p>
+          </div>
+        </div>
+      </div>
+      <button onclick="closeModal('modal-education')" class="text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 mt-5">Close</button>
+    </div>
+  </div>
+
+  <!-- Employee Skills Modal Box (popups basically again)-->
+  <div id="modal-skills" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
+      <h3 data-i18n="skills" class="text-2xl font-semibold text-[#C69AE6] mb-4">Skills</h3>
+      <ul class="list-disc list-inside text-black dark:text-white mb-6">
+        <li>5-Star Cuisine Mastery</li>
+        <li>Perfect Plating</li>
+        <li>Sassy Sous Chef Handling</li>
+      </ul>
+      <button onclick="closeModal('modal-skills')" class="bg text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
+  <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
+    <div class="flex justify-end">
+      <button id="btn-skills" onclick="openModal('modal-skills')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-dumbbell ml-0.5"></i>
+        <span data-i18n="skills_nav" id="nav-skills" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Skills</span>
+      </button>
+
+    </div>
+    <div class="flex justify-end">
+      <button id="btn-members" onclick="openModal('modal-members')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-users ml-0.5"></i>
+        <span data-i18n="members_nav" id="nav-members" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Employees</span>
+      </button>
+    </div>
+    <div class="flex justify-end">
+      <button id="btn-chat" onclick="openModal('modal-chat')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-comment-dots ml-0.5"></i>
+        <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 transition-colors duration-300">
+      <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <!-- Company Info -->
+              <div class="space-y-4">
+                  <h3 class="text-xl font-bold font-elegant text-lilac-400">RuangKerja</h3>
+                  <p class="text-sm">Connecting professionals with opportunities that matter.</p>
+                  <div class="flex space-x-4">
+                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
+                          <i class="fab fa-facebook-f"></i>
+                      </a>
+                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
+                          <i class="fab fa-twitter"></i>
+                      </a>
+                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
+                          <i class="fab fa-linkedin-in"></i>
+                      </a>
+                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
+                          <i class="fab fa-instagram"></i>
+                      </a>
+                  </div>
+              </div>
+
+              <!-- Quick Links -->
+              <div>
+                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Quick Links</h4>
+                  <ul class="space-y-2 text-sm">
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Home</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">About Us</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Candidates</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Companies</a></li>
+                  </ul>
+              </div>
+
+              <!-- Resources -->
+              <div>
+                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Resources</h4>
+                  <ul class="space-y-2 text-sm">
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Blog</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Help Center</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Career Advice</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Interview Tips</a></li>
+                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Success Stories</a></li>
+                  </ul>
+              </div>
+
+              <!-- Contact -->
+              <div>
+                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                  <ul class="space-y-2 text-sm">
+                      <li class="flex items-start">
+                          <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                          <span>Makassar</span>
+                      </li>
+                      <li class="flex items-start">
+                          <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                          <span>+62 823 1955 6278</span>
+                      </li>
+                      <li class="flex items-start">
+                          <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                          <span>hello@ruangkerja.id</span>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+
+          <!-- Copyright -->
+          <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 text-sm text-center">
+              <p>&copy; 2026 RuangKerja. All rights reserved.</p>
+              <div class="mt-2 flex justify-center space-x-6">
+                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Privacy Policy</a>
+                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Terms of Service</a>
+                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Cookie Policy</a>
+              </div>
+          </div>
+      </div>
+  </footer>
+</body>
+<script>
+
+  // Dark mode toggle
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
+  
+  function toggleDarkMode() {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      localStorage.setItem('darkMode', html.classList.contains('dark'));
+  }
+  
+  darkModeToggle.addEventListener('click', toggleDarkMode);
+  mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
+  
+  // Check for saved dark mode preference
+  if (localStorage.getItem('darkMode') === 'true') {
+      document.documentElement.classList.add('dark');
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+  }
+        
+  // Mobile menu toggle
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+  });
+  
+  // User menu toggle
+  const userMenuButton = document.getElementById('user-menu-button');
+  const userMenu = document.getElementById('user-menu');
+  
+  userMenuButton.addEventListener('click', () => {
+      userMenu.classList.toggle('hidden');
+  });
+  
+  
+  // Close menus when clicking outside
+  document.addEventListener('click', (e) => {
+      if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+          userMenu.classList.add('hidden');
+      }
+      
+      if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+          mobileMenu.classList.add('hidden');
+      }
+  });
+
+  // JavaScript for navbar open when website loaded
+    window.addEventListener('DOMContentLoaded', () => {
+    const navbarCandidates = document.getElementById('navbar-candidates');
+    const navbarEmployees = document.getElementById('navbar-employees');
+
+    if (navbarCandidates) {
+        navbarCandidates.classList.remove('h-0', 'opacity-0');
+        navbarCandidates.classList.add('h-16', 'opacity-100');
+    }
+
+    if (navbarEmployees) {
+        navbarEmployees.classList.remove('h-0', 'opacity-0');
+        navbarEmployees.classList.add('h-16', 'opacity-100');
+    }
+    });
+
+  // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
+  const loading_circle = document.createElement('div');
+  loading_circle.id = 'load_bro';
+  loading_circle.innerHTML = `
+    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
+      <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+    </div>
+  `;
+  document.body.appendChild(loading_circle);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const l = document.getElementById('load_bro');
+    if (l) {
+      l.remove();
+    }
+  });
+
+  // JavaScript for opening and closing le popup boxes (education and skills)
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    const content = modal.querySelector('div');
+    const main = document.getElementById('main-container');
+
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      content.classList.remove('scale-0', 'opacity-0');
+      content.classList.add('scale-100', 'opacity-100');
+      main.classList.add('opacity-50');
+    }, 10);
+
+    // Close modal if clicked outside the box
+    modal.onclick = (e) => {
+      if (e.target === modal) closeModal(id);
+    };
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    const content = modal.querySelector('div');
+    const main = document.getElementById('main-container');
+
+    setTimeout(() => {
+      content.classList.remove('scale-100');
+      content.classList.add('scale-0');
+      main.classList.remove('opacity-50');
+    }, 10);
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 300);
+
+  }
+
+  // JavaScript for the navigation modal boxes that extends width to the left to show text on hover
+  // and shrinks back to icon size when mouse go bye bye
+  const btnSkills = document.getElementById('btn-skills');
+  const navSkills = document.getElementById('nav-skills')
+  const btnMembers = document.getElementById('btn-members');
+  const navMembers = document.getElementById('nav-members')
+  const btnChat = document.getElementById('btn-chat');
+  const navChat = document.getElementById('nav-chat')
+
+  btnSkills.addEventListener('mouseover', () => {
+    navSkills.classList.remove('hidden');
+    btnSkills.classList.remove('w-12');
+    btnSkills.classList.add('w-36');
+  });
+  btnSkills.addEventListener('mouseout', () => {
+    btnSkills.classList.remove('w-36');
+    btnSkills.classList.add('w-12');
+    navSkills.classList.add('hidden');
+  });
+  btnMembers.addEventListener('mouseover', () => {
+    navMembers.classList.remove('hidden');
+    btnMembers.classList.remove('w-12');
+    btnMembers.classList.add('w-36');
+  });
+  btnMembers.addEventListener('mouseout', () => {
+    btnMembers.classList.remove('w-36');
+    btnMembers.classList.add('w-12');
+    navMembers.classList.add('hidden');
+  });
+  btnChat.addEventListener('mouseover', () => {
+    navChat.classList.remove('hidden');
+    btnChat.classList.remove('w-12');
+    btnChat.classList.add('w-36');
+  });
+  btnChat.addEventListener('mouseout', () => {
+    btnChat.classList.remove('w-36');
+    btnChat.classList.add('w-12');
+    navChat.classList.add('hidden');
+  });
+
+  const translations = {
+    en: {
+      "nav.home": "Home",
+      "nav.about": "About",
+      "nav.candidates": "Candidates",
+      "nav.companies": "Companies",
+      "cv_download": "Download CV",
+      "company_details": "Company Details",
+      "company_full_name": "Full Name",
+      "company_foundation_date": "Foundation Date",
+      "company_hq_location": "HQ Location",
+      "company_size": "Company Size",
+      "company_business_email": "Business Email",
+      "company_biodata": "Company Description",
+      "education": "Education",
+      "experience": "Experience",
+      "skills": "Skills",
+      "employee_profile_settings": "Profile Settings",
+      "employee_logout": "Logout",
+      "skills_nav": "Skills",
+      "members_nav": "Employees",
+      "chat_nav": "Chat",
+    },
+    id: {
+      "nav.home": "Beranda",
+      "nav.about": "Tentang",
+      "nav.candidates": "Kandidat",
+      "nav.companies": "Perusahaan",
+      "cv_download": "Unduh CV",
+      "company_details": "Detail Perusahaan",
+      "company_full_name": "Nama Lengkap",
+      "company_foundation_date": "Tanggal Didirikan",
+      "company_hq_location": "Lokasi Kantor Pusat",
+      "company_size": "Jumlah Karyawan",
+      "company_business_email": "Email Bisnis",
+      "company_biodata": "Deskripsi Perusahaan",
+      "education": "Pendidikan",
+      "experience": "Pengalaman",
+      "skills": "Keterampilan",
+      "employee_profile_settings": "Pengaturan Profil",
+      "employee_logout": "Keluar",
+      "skills_nav": "Keterampilan",
+      "members_nav": "Karyawan",
+      "chat_nav": "Obrolan",
+    }
+  };
+
+  function setLanguage(lang) {
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      el.textContent = translations[lang][key] || key;
+    });
+    localStorage.setItem("lang", lang);
+  }
+
+  document.getElementById("language-selector").addEventListener("change", e => {
+    setLanguage(e.target.value);
+  });
+
+  document.getElementById("language-selector-mobile").addEventListener("change", e => {
+    setLanguage(e.target.value);
+  });
+
+  // Load saved language or default to English
+  window.addEventListener("DOMContentLoaded", () => {
+    const lang = localStorage.getItem("lang") || "en";
+    document.getElementById("language-selector").value = lang;
+    setLanguage(lang);
+    document.getElementById("language-selector-mobile").value = lang;
+    setLanguage(lang);
+  });
+
+</script>
+</html>

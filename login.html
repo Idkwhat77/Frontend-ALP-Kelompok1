@@ -232,23 +232,39 @@
       }
     </style>
   </head>
-  <body class="bg-lilac-50 dark:bg-gray-900 font-poppins min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+  <body
+    class="bg-lilac-50 dark:bg-gray-900 font-poppins min-h-screen flex items-center justify-center p-4 transition-colors duration-300"
+  >
     <!-- Tutorial Overlay -->
-    <div id="tutorial-overlay" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center transition-opacity duration-500">
-      <div class="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full mx-4 p-6 shadow-2xl relative overflow-hidden">
+    <div
+      id="tutorial-overlay"
+      class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center transition-opacity duration-500"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full mx-4 p-6 shadow-2xl relative overflow-hidden"
+      >
         <!-- Progress bar -->
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700">
-          <div id="tutorial-progress" class="tutorial-progress h-full bg-lilac-400" style="width: 0%"></div>
+        <div
+          class="absolute top-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700"
+        >
+          <div
+            id="tutorial-progress"
+            class="tutorial-progress h-full bg-lilac-400"
+            style="width: 0%"
+          ></div>
         </div>
 
         <div class="absolute top-4 right-4">
-          <button id="skip-tutorial" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+          <button
+            id="skip-tutorial"
+            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+          >
             <i class="fas fa-times text-lg"></i>
           </button>
         </div>
 
         <div class="tutorial-content text-center relative min-h-[400px] pt-2">
-          <!-- Step 1: Welcome (Choice) -->
+          <!-- Step 1: Welcome -->
           <div class="tutorial-step active" data-step="1">
             <div class="floating text-lilac-400 text-6xl mb-6">
               <i class="fas fa-graduation-cap"></i>
@@ -270,7 +286,6 @@
             </div>
           </div>
 
-          <!-- Login Path Steps -->
           <!-- Step 2: Login Email -->
           <div class="tutorial-step" data-step="2" data-path="login">
             <div class="text-lilac-400 text-4xl mb-5">
@@ -342,7 +357,6 @@
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
               <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
                 <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
@@ -352,10 +366,29 @@
               </button>
             </div>
           </div>
+          
+          <!-- Step 4: Login Complete -->
+          <div class="tutorial-step" data-step="7" data-path="register">
+            <div class="floating text-lilac-400 text-6xl mb-6">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              Panduan Selesai!
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+              Sekarang Anda tahu cara masuk atau mendaftar. Siap memulai perjalanan profesional Anda?
+            </p>
 
-          <!-- Register Path Steps -->
-          <!-- Step 2: Register Name -->
-          <div class="tutorial-step" data-step="2" data-path="register">
+            <div class="flex justify-center">
+              <button id="finish-tutorial" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                Lanjutkan ke RuangKerja
+                <i class="fas fa-arrow-right ml-2 icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 1: Register Name -->
+          <div class="tutorial-step" data-step="1" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-user"></i>
             </div>
@@ -384,7 +417,6 @@
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
               <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
                 <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
@@ -395,8 +427,8 @@
             </div>
           </div>
 
-          <!-- Step 3: Register Email -->
-          <div class="tutorial-step" data-step="3" data-path="register">
+          <!-- Step 2: Register Email -->
+          <div class="tutorial-step" data-step="2" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-envelope"></i>
             </div>
@@ -425,7 +457,6 @@
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
               <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
                 <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
@@ -436,8 +467,8 @@
             </div>
           </div>
 
-          <!-- Step 4: Register Phone -->
-          <div class="tutorial-step" data-step="4" data-path="register">
+          <!-- Step 3: Register Phone -->
+          <div class="tutorial-step" data-step="3" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-phone"></i>
             </div>
@@ -466,7 +497,6 @@
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
               <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
                 <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
@@ -477,8 +507,8 @@
             </div>
           </div>
 
-          <!-- Step 5: Register Password -->
-          <div class="tutorial-step" data-step="5" data-path="register">
+          <!-- Step 6: Register Password -->
+          <div class="tutorial-step" data-step="4" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-lock"></i>
             </div>
@@ -507,7 +537,6 @@
                 </div>
               </div>
             </div>
-
             <div class="flex justify-between max-w-md mx-auto">
               <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
                 <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
@@ -518,8 +547,8 @@
             </div>
           </div>
 
-          <!-- Step 6: Register Confirm Password -->
-          <div class="tutorial-step" data-step="6" data-path="register">
+          <!-- Step 7: Register Confirm Password -->
+          <div class="tutorial-step" data-step="5" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-lock"></i>
             </div>
@@ -559,9 +588,8 @@
             </div>
           </div>
 
-          <!-- Final Step: Complete -->
-          <div class="tutorial-step" data-step="4" data-path="login">
-          <div class="tutorial-step" data-step="7" data-path="register">
+          <!-- Step 8: Register Complete -->
+          <div class="tutorial-step" data-step="6" data-path="register">
             <div class="floating text-lilac-400 text-6xl mb-6">
               <i class="fas fa-check-circle"></i>
             </div>
@@ -573,7 +601,7 @@
             </p>
 
             <div class="flex justify-center">
-              <button id="finish-tutorial" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+              <button id="finish-tutorial2" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 transform hover:scale-105">
                 Lanjutkan ke RuangKerja
                 <i class="fas fa-arrow-right ml-2 icon"></i>
               </button>
@@ -584,7 +612,7 @@
     </div>
 
     <!-- Main Auth Container -->
-    <div id="auth-container" class="auth-container w-full max-w-md opacity-100 items-center justify-center">
+    <div id="auth-container" class="auth-container w-full max-w-md opacity-0">
       <div class="relative w-full">
         <!-- Login Form (Front) -->
         <div
@@ -907,259 +935,269 @@
         </button>
       </div>
 
+      <!-- Scripts -->
       <script>
-            // Theme Toggle
-            const themeToggle = document.getElementById("theme-toggle");
-            const html = document.documentElement;
-            const savedTheme =
-                localStorage.getItem("theme") ||
-                (window.matchMedia("(prefers-color-scheme: dark)").matches
-                    ? "dark"
-                    : "light");
+        // Theme Toggle
+        const themeToggle = document.getElementById("theme-toggle");
+        const html = document.documentElement;
+        const savedTheme =
+          localStorage.getItem("theme") ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
 
-            if (savedTheme === "dark") html.classList.add("dark");
-            else html.classList.remove("dark");
+        if (savedTheme === "dark") html.classList.add("dark");
+        else html.classList.remove("dark");
 
-            themeToggle.addEventListener("click", () => {
-                html.classList.toggle("dark");
-                const theme = html.classList.contains("dark") ? "dark" : "light";
-                localStorage.setItem("theme", theme);
-            });
+        themeToggle.addEventListener("click", () => {
+          html.classList.toggle("dark");
+          const theme = html.classList.contains("dark") ? "dark" : "light";
+          localStorage.setItem("theme", theme);
+        });
 
-            // Form Flip Animation
-            const showRegister = document.getElementById("show-register");
-            const showLogin = document.getElementById("show-login");
-            const loginForm = document.getElementById("login-form");
-            const registerForm = document.getElementById("register-form");
-            const authContainer = document.getElementById("auth-container");
+        // Form Flip Animation
+        const showRegister = document.getElementById("show-register");
+        const showLogin = document.getElementById("show-login");
+        const loginForm = document.getElementById("login-form");
+        const registerForm = document.getElementById("register-form");
+        const authContainer = document.getElementById("auth-container");
 
+        showRegister.addEventListener("click", () => {
+          loginForm.classList.add("opacity-0");
+          loginForm.classList.add("form-hidden");
+          setTimeout(() => {
+            loginForm.classList.add("rotate-y-180");
+            registerForm.classList.remove("rotate-y-180");
+            registerForm.classList.remove("opacity-0");
+            registerForm.classList.remove("form-hidden");
+            registerForm.classList.add("form-active");
+          }, 300);
+        });
 
+        showLogin.addEventListener("click", () => {
+          registerForm.classList.add("opacity-0");
+          registerForm.classList.add("form-hidden");
+          registerForm.classList.remove("form-active");
+          setTimeout(() => {
+            registerForm.classList.add("rotate-y-180");
+            loginForm.classList.remove("rotate-y-180");
+            loginForm.classList.remove("opacity-0");
+            loginForm.classList.remove("form-hidden");
+            loginForm.classList.add("form-active");
+          }, 300);
+        });
 
-            showRegister.addEventListener("click", () => {
-                loginForm.classList.add("opacity-0");
-                loginForm.classList.add("form-hidden");
-                setTimeout(() => {
-                    loginForm.classList.add("rotate-y-180");
-                    registerForm.classList.remove("rotate-y-180");
-                    registerForm.classList.remove("opacity-0");
-                    registerForm.classList.remove("form-hidden");
-                    registerForm.classList.add("form-active");
-                }, 300);
-            });
-
-            showLogin.addEventListener("click", () => {
-                registerForm.classList.add("opacity-0");
-                registerForm.classList.add("form-hidden");
-                registerForm.classList.remove("form-active");
-                setTimeout(() => {
-                    registerForm.classList.add("rotate-y-180");
-                    loginForm.classList.remove("rotate-y-180");
-                    loginForm.classList.remove("opacity-0");
-                    loginForm.classList.remove("form-hidden");
-                    loginForm.classList.add("form-active");
-                }, 300);
-            });
-
-            // Password Toggle
-            const passwordToggles = document.querySelectorAll(".password-toggle");
-            passwordToggles.forEach((toggle) => {
-                toggle.addEventListener("click", (e) => {
-                    const input = e.currentTarget.parentElement.querySelector("input");
-                    const icon = e.currentTarget.querySelector("i");
-                    if (input.type === "password") {
-                        input.type = "text";
-                        icon.classList.replace("fa-eye", "fa-eye-slash");
-                    } else {
-                        input.type = "password";
-                        icon.classList.replace("fa-eye-slash", "fa-eye");
-                    }
-                });
-            });
-
-            // Tutorial Functionality
-            const tutorialOverlay = document.getElementById("tutorial-overlay");
-            const tutorialSteps = document.querySelectorAll(".tutorial-step");
-            const nextButtons = document.querySelectorAll(".next-step");
-            const prevButtons = document.querySelectorAll(".prev-step");
-            const skipTutorial = document.getElementById("skip-tutorial");
-            const finishTutorial = document.getElementById("finish-tutorial");
-            const choiceButtons = document.querySelectorAll(".choice-btn");
-            const tutorialProgress = document.getElementById("tutorial-progress");
-
-            let currentStep = 1;
-            let currentPath = "";
-            const loginSteps = 3; // Steps for login path
-            const registerSteps = 6; // Steps for register path
-
-            function completeTutorial() {
-                // Hide tutorial overlay
-                tutorialOverlay.style.opacity = "0";
-                setTimeout(() => {
-                    tutorialOverlay.style.display = "none";
-                    
-                    // Show auth container with animation
-                    authContainer.classList.remove("hidden");
-                    authContainer.classList.remove("opacity-0");
-                    authContainer.classList.add("opacity-100");
-                }, 0);
+        // Password Toggle
+        const passwordToggles = document.querySelectorAll(".password-toggle");
+        passwordToggles.forEach((toggle) => {
+          toggle.addEventListener("click", (e) => {
+            const input = e.currentTarget.parentElement.querySelector("input");
+            const icon = e.currentTarget.querySelector("i");
+            if (input.type === "password") {
+              input.type = "text";
+              icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+              input.type = "password";
+              icon.classList.replace("fa-eye-slash", "fa-eye");
             }
+          });
+        });
 
-            function showStep(step) {
-                // Hide all steps
-                tutorialSteps.forEach(s => {
-                    s.classList.remove("active");
-                    s.style.display = "none";
-                });
+        // Tutorial Functionality
+        const tutorialOverlay = document.getElementById("tutorial-overlay");
+        const tutorialSteps = document.querySelectorAll(".tutorial-step");
+        const nextButtons = document.querySelectorAll(".next-step");
+        const prevButtons = document.querySelectorAll(".prev-step");
+        const skipTutorial = document.getElementById("skip-tutorial");
+        const finishTutorial = document.getElementById("finish-tutorial");
+        const finishTutorial2 = document.getElementById("finish-tutorial2");
+        const tutorialLoginBtn = document.getElementById("tutorial-login-btn");
+        const choiceLoginBtn = document.querySelector('[data-choice="login"]');
+        const tutorialRegisterBtn = document.getElementById(
+          "tutorial-register-btn"
+        );
+        const choiceRegisterBtn = document.querySelector(
+          '[data-choice="register"]'
+        );
+        
+        finishTutorial.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+          }, 500);
+        });
 
-                // Show current step based on path
-                let stepToShow;
-                if (currentPath === "login") {
-                    stepToShow = document.querySelector(`.tutorial-step[data-step="${step}"][data-path="login"]`);
-                    if (!stepToShow && step > loginSteps) {
-                        completeTutorial();
-                        return;
-                    }
-                } else if (currentPath === "register") {
-                    stepToShow = document.querySelector(`.tutorial-step[data-step="${step}"][data-path="register"]`);
-                    if (!stepToShow && step > registerSteps) {
-                        completeTutorial();
-                        return;
-                    }
-                } else {
-                    stepToShow = document.querySelector(`.tutorial-step[data-step="${step}"]:not([data-path])`);
-                }
+        finishTutorial2.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          showRegister.click();
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+          }, 500);
+        });
 
-                if (stepToShow) {
-                    stepToShow.classList.add("active");
-                    stepToShow.style.display = "block";
-                }
+        let currentStep = 1;
+        let totalSteps = 0;
+        let login = false; // use let, not const
 
-                // Update progress
-                const totalSteps = currentPath === "login" ? loginSteps : 
-                                currentPath === "register" ? registerSteps : 1;
-                const progress = ((step - 1) / (totalSteps - 1)) * 100;
-                tutorialProgress.style.width = `${progress}%`;
-                
-                highlightCurrentStep(step);
-            }
+        choiceLoginBtn.addEventListener("click", () => {
+          currentStep = 2; // corresponds to login step 1 (email)
+          login = true;
+          totalSteps = 4;
+          showStep(currentStep);
+        });
 
-            function highlightCurrentStep(step) {
-                document.querySelectorAll(".tutorial-highlight").forEach(el => el.classList.remove("tutorial-highlight"));
-                document.querySelectorAll(".tutorial-tooltip").forEach(el => el.classList.remove("active"));
+        choiceRegisterBtn.addEventListener("click", () => {
+          currentStep = 5; // corresponds to register step 1 (name)
+          login = false;
+          totalSteps = 10;
+          showStep(currentStep);
+        });
 
-                if (currentPath === "login") {
-                    if (step === 2) {
-                        const stepElement = document.getElementById("tut-email");
-                        if (stepElement) {
-                            stepElement.classList.add("tutorial-highlight");
-                            const tooltip = stepElement.nextElementSibling;
-                            if (tooltip && tooltip.classList.contains("tutorial-tooltip")) {
-                                setTimeout(() => tooltip.classList.add("active"), 500);
-                            }
-                        }
-                    } else if (step === 3) {
-                        const stepElement = document.getElementById("tut-password");
-                        if (stepElement) {
-                            stepElement.classList.add("tutorial-highlight");
-                            const tooltip = stepElement.nextElementSibling;
-                            if (tooltip && tooltip.classList.contains("tutorial-tooltip")) {
-                                setTimeout(() => tooltip.classList.add("active"), 500);
-                            }
-                        }
-                    }
-                } else if (currentPath === "register") {
-                    const highlightMap = {
-                        2: "name",
-                        3: "reg-email",
-                        4: "phone",
-                        5: "reg-password",
-                        6: "confirm"
-                    };
-                    
-                    if (highlightMap[step]) {
-                        const stepElement = document.getElementById(`tut-${highlightMap[step]}`);
-                        if (stepElement) {
-                            stepElement.classList.add("tutorial-highlight");
-                            const tooltip = stepElement.nextElementSibling;
-                            if (tooltip && tooltip.classList.contains("tutorial-tooltip")) {
-                                setTimeout(() => tooltip.classList.add("active"), 500);
-                            }
-                        }
-                    }
-                }
-            }
 
-            // Choice buttons handler
-            choiceButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    currentPath = button.dataset.choice;
-                    currentStep = 2;
-                    showStep(currentStep);
-                });
-            });
+        const tutorialProgress = document.getElementById("tutorial-progress");
 
-            // Next buttons handler
-            nextButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    const totalSteps = currentPath === "login" ? loginSteps : 
-                                    currentPath === "register" ? registerSteps : 1;
-                    
-                    if (currentStep < totalSteps) {
-                        currentStep++;
-                        showStep(currentStep);
-                    } else {
-                        completeTutorial();
-                    }
-                });
-            });
+        function showStep(step) {
+          tutorialSteps.forEach((s, index) => {
+            s.classList.toggle("active", index + 1 === step);
+          });
 
-            // Prev buttons handler
-            prevButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    if (currentStep > 1) {
-                        currentStep--;
-                        showStep(currentStep);
-                    } else if (currentPath) {
-                        // Go back to choice screen
-                        currentPath = "";
-                        currentStep = 1;
-                        showStep(currentStep);
-                    }
-                });
-            });
+          const progress = ((step - 1) / (totalSteps - 1)) * 100;
+          tutorialProgress.style.width = `${progress}%`;
+          highlightCurrentStep(step);
+        }
 
-            // Skip tutorial button
-            skipTutorial.addEventListener("click", completeTutorial);
+        function highlightCurrentStep(step) {
+          document
+            .querySelectorAll(".tutorial-highlight")
+            .forEach((el) => el.classList.remove("tutorial-highlight"));
+          document
+            .querySelectorAll(".tutorial-tooltip")
+            .forEach((el) => el.classList.remove("active"));
 
-            // Finish tutorial button
-            finishTutorial.addEventListener("click", completeTutorial);
-
-            // Show tutorial on initial load
-            document.addEventListener('DOMContentLoaded', () => {
-                showStep(1);
-                tutorialOverlay.style.display = "block";
+          if (step >= 2 && step <= 7) {
+            const ids = [
+              "email",
+              "password",
+              "name",
+              "reg-email",
+              "reg-password",
+              "confirm",
+            ];
+            const stepElement = document.getElementById(`tut-${ids[step - 2]}`);
+            if (stepElement) {
+              stepElement.classList.add("tutorial-highlight");
+              const tooltip = stepElement.nextElementSibling;
+              if (tooltip && tooltip.classList.contains("tutorial-tooltip")) {
                 setTimeout(() => {
-                    tutorialOverlay.style.opacity = "1";
-                }, 10);
-            });
+                  tooltip.classList.add("active");
+                }, 500);
+              }
+            }
+          }
+        }
 
-            // Loading circle
-            const loading_circle = document.createElement('div');
-            loading_circle.id = 'load_bro';
-            loading_circle.innerHTML = `
+        nextButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            if (currentStep < totalSteps) {
+              currentStep++;
+              showStep(currentStep);
+            }
+          });
+        });
+
+        prevButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            if (currentStep > 1) {
+              currentStep--;
+              showStep(currentStep);
+            }
+          });
+        });
+
+        skipTutorial.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+          }, 500);
+        });
+
+        finishTutorial.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+          }, 500);
+        });
+
+        tutorialLoginBtn.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+            showLogin.click();
+          }, 500);
+        });
+
+        tutorialRegisterBtn.addEventListener("click", () => {
+          tutorialOverlay.style.opacity = "0";
+          setTimeout(() => {
+            tutorialOverlay.style.display = "none";
+            authContainer.classList.remove("opacity-0");
+            showRegister.click();
+          }, 500);
+        });
+
+        // Form submissions
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+          e.preventDefault();
+          alert("Login functionality would be implemented here");
+        });
+
+        document
+          .getElementById("registerForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            const password = document.getElementById("register-password").value;
+            const confirm = document.getElementById("register-confirm").value;
+            if (password !== confirm) {
+              alert("Passwords do not match!");
+              return;
+            }
+            alert("Registration functionality would be implemented here");
+          });
+
+        // Show tutorial on first visit
+        const hasSeenTutorial = localStorage.getItem("hasSeenTutorial");
+        if (!hasSeenTutorial) {
+          setTimeout(() => {
+            tutorialOverlay.style.opacity = "1";
+            showStep(1);
+            localStorage.setItem("hasSeenTutorial", "true");
+          }, 500);
+        } else {
+          authContainer.classList.remove("opacity-0");
+        }
+        
+        // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
+        const loading_circle = document.createElement('div');
+        loading_circle.id = 'load_bro';
+        loading_circle.innerHTML = `
             <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
-                <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+            <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
             </div>
-            `;
-            document.body.appendChild(loading_circle);
+        `;
+        document.body.appendChild(loading_circle);
 
-            window.addEventListener('DOMContentLoaded', () => {
-                const l = document.getElementById('load_bro');
-                if (l) {
-                    l.remove();
-                }
-            });
-        </script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('load_bro');
+            if (l) {
+            l.remove();
+            }
+        });
+      </script>
     </div>
   </body>
 </html>
