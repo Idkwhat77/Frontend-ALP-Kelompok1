@@ -96,7 +96,7 @@
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
     <!-- Navbar -->
-    <nav class="bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 sticky top-0 z-10">
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
             <div class="flex justify-between items-center h-16">
@@ -140,8 +140,8 @@
                         
                         <!-- Dropdown Menu -->
                         <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">My Profile</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Keluar</a>
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -158,10 +158,10 @@
             <!-- Mobile Menu Content -->
             <div class="hidden sm:hidden" id="mobile-menu">
                 <div class="pt-2 pb-3 space-y-1">
-                    <a href="#" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
-                    <a href="#" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
-                    <a href="#" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
-                    <a href="#" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                    <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
                 </div>
 
                 <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
@@ -169,12 +169,18 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
-                            <a href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
-                        <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
-                            <i class="fas fa-moon dark:hidden"></i>
-                            <i class="fas fa-sun hidden dark:inline"></i>
-                        </button>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,8 +191,8 @@
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Hero Section -->
         <section class="text-center mb-8 animate-fade-in">
-            <h1 data-i18n="hero.title" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white opacity-0">
-                You found the filler text~
+            <h1 data-i18n-html="hero.title" class="text-4xl md:text-5xl font-bold lg:mb-6 font-elegant text-gray-900 dark:text-white opacity-0">
+
             </h1>
             <h1 data-i18n-html="hero.subtitle" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
                 Find Your <span class="text-lilac-400">Perfect Match</span>
@@ -373,63 +379,66 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Logo and Description -->
-                <div class="space-y-4">
+                <div class="md:col-span-2 space-y-4">
                     <div class="flex items-center">
                         <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
                             <span class="text-[#8a6db1]">Ruang</span>Kerja
                         </h2>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                    <p data-i18n="footer.company_description" class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
                         RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
                     </p>
                 </div>
-                
-                <!-- Quick Links -->
-                <div class="space-y-4">
-                    <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Quick Links</h4>
-                  <ul class="space-y-2 text-sm">
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Home</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">About Us</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Candidates</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Companies</a></li>
-                  </ul>
-                </div>
-                
-                <!-- Resources -->
-                <div class="space-y-4">
-                    <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Resources</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Help Center</a></li>
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Career Advice</a></li>
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Interview Tips</a></li>
-                        <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Success Stories</a></li>
-                    </ul>
-                </div>
-                
-                <!-- For Employers -->
-                <div class="space-y-4">
-                    <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li class="flex items-start">
-                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
-                            <span>Makassar</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
-                            <span>+62 823 1955 6278</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
-                            <span>hello@ruangkerja.id</span>
-                        </li>
-                    </ul>
+
+                <!-- Socials and Contact in a row on the right -->
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <!-- Our Socials -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.socials" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.contact" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            
+
             <!-- Copyright and Bottom Links -->
             <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
                     © 2026 RuangKerja. All rights reserved.
                 </p>
                 <div class="flex space-x-6">

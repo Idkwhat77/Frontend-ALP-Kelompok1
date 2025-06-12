@@ -104,99 +104,101 @@
   }
 </style>
 <body class="bg-lilac-100 dark:bg-gray-900" id="body">
-<!-- Navbar -->
-<nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-all duration-700 top-0 w-full z-50 h-0 opacity-0" id="navbar-employees">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-          <div class="flex">
-          <div class="flex-shrink-0 flex items-center">
-              <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto" />
-          </div>
-              <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  <a data-i18n="nav.home" href="homepage.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      Home
-                  </a>
-                  <a data-i18n="nav.about" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      About
-                  </a>
-                  <a data-i18n="nav.candidates" href="candidates.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      Candidates
-                  </a>
-                  <a data-i18n="nav.companies" href="companies.html" class="border-transparent dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      Companies
-                  </a>
+  <!-- Navbar -->
+  <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+          <div class="flex justify-between items-center h-16">
+              <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                      <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                  </div>
+                  <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                      <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                          Beranda
+                      </a>
+                      <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                          Tentang
+                      </a>
+                      <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                          Kandidat
+                      </a>
+                      <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                          Perusahaan
+                      </a>
+                  </div>
               </div>
-          </div>
-          <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-              <div class="ml-4">
-                <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
-                  <option value="en">EN</option>
-                  <option value="id">ID</option>
-                </select>
-              </div>
-              <button id="darkModeToggle" class="p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
-                  <i class="fas fa-moon dark:hidden"></i>
-                  <i class="fas fa-sun hidden dark:inline"></i>
-              </button>
-              <div class="ml-3 relative">
-                  <div>
+
+              <!-- Desktop Dark Mode & Profile -->
+              <div class="hidden sm:flex items-center space-x-4">
+                  <div class="ml-4">
+                      <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                      <option value="en">EN</option>
+                      <option value="id">ID</option>
+                      </select>
+                  </div>
+                  <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                      <i class="fas fa-moon dark:hidden"></i>
+                      <i class="fas fa-sun hidden dark:inline"></i>
+                  </button>
+
+                  <div class="relative">
                       <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile" id ="profile-image">
+                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
                       </button>
+                      
+                      <!-- Dropdown Menu -->
+                      <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                          <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                          <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                      </div>
                   </div>
-                  <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                      <a data-i18n="employee_profile_settings" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
-                      <a data-i18n="employee_logout" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+              </div>
+
+              <!-- Mobile Menu Button -->
+              <div class="sm:hidden flex items-center">
+                  <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                      <span class="sr-only">Buka Menu Utama</span>
+                      <i class="fas fa-bars"></i>
+                  </button>
+              </div>
+          </div>
+
+          <!-- Mobile Menu Content -->
+          <div class="hidden sm:hidden" id="mobile-menu">
+              <div class="pt-2 pb-3 space-y-1">
+                  <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                  <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                  <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                  <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+              </div>
+
+              <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+              <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                          <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                          <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                              <option value="en">EN</option>
+                              <option value="id">ID</option>
+                          </select>
+                          <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                              <i class="fas fa-moon dark:hidden"></i>
+                              <i class="fas fa-sun hidden dark:inline"></i>
+                          </button>
+                      </div>
                   </div>
               </div>
           </div>
-          <div class="-mr-2 flex items-center sm:hidden">
-              <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
-                  <span class="sr-only">Open main menu</span>
-                  <i class="fas fa-bars"></i>
-              </button>
-          </div>
       </div>
-  </div>
-  
-  <!-- Mobile menu -->
-  <div class="hidden sm:hidden bg-lilac-100 dark:bg-[#111827]" id="mobile-menu">
-      <div class="pt-2 pb-3 space-y-1">
-          <a data-i18n="nav.home" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-          <a data-i18n="nav.about" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
-          <a data-i18n="nav.candidates" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
-          <a data-i18n="nav.companies" href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
-      </div>
-      <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
-          <div class="flex items-center px-4">
-              <div class="flex-shrink-0">
-                  <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
-              </div>
-              <div class="ml-3">
-                  <div class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
-              </div>
-              <button id="mobileDarkModeToggle" class="ml-auto p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
-                  <i class="fas fa-moon dark:hidden"></i>
-                  <i class="fas fa-sun hidden dark:inline"></i>
-              </button>
-              <div class="ml-4">
-                <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
-                  <option value="en">EN</option>
-                  <option value="id">ID</option>
-                </select>
-              </div>
-          </div>
-          <div class="mt-3 space-y-1">
-              <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-              <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
-          </div>
-      </div>
-  </div>
   </nav>
 
   <!-- Main Content duh -->
   <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
-    <div class="flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-5/12 w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
+    <div class="lg:fixed flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
         <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity duration-300 object-cover" src="img/blackswa.png" alt="A majestic llama">
         <h1 class="text-5xl font-bold text-white animate-fade-in-from-down">Black Swan LLC</h1>
@@ -221,11 +223,11 @@
       </div>
     </div>
 
-    <!-- Employee Main Profile -->
-    <div class="flex lg:flex-row flex-col items-center justify-center w-full gap-10">
-      <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px]">
-        <h2 data-i18n="company_details" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-10">Company Details</h2>
-        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-full text-left lg:border-l-4 lg:border-t-0 lg:border-b-0 border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
+    <!-- Company Main Profile -->
+    <div class="flex flex-col items-center h-screen justify-center w-full gap-8 mt-5 lg:pl-[29vw]">
+      <div class="text-center flex flex-col gap-6 items-center h-auto lg:mt-20">
+        <h2 data-i18n="company_details" class="text-3xl font-bold text-[#C69AE6] lg:mt-0 mt-10 ">Employee Details</h2>
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[60vw] w-[85vw] h-auto text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
           <div class="mb-4">
             <h4 data-i18n="company_full_name" class="font-semibold text-xl text-[#C69AE6]">Company Name</h4>
               <p class="text-[#374151] dark:text-white">Black Swan LLC</p>
@@ -248,9 +250,9 @@
           </div>
         </div>
       </div>
-      <div class="text-center flex flex-col gap-4 items-center w-96 min-h-[320px] lg:mb-0 mb-10">
+      <div class="text-center flex flex-col gap-6 items-center lg:w-[60vw] min-h-[160px] lg:mb-0 mb-10">
         <h2 data-i18n="company_biodata" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-10">Company Description</h2>
-        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-96 text-left lg:border-r-4 lg:border-t-0 lg:border-b-0 border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
+        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-full w-80 h-96 text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
           <div class="mb-4">
             <p class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
             </p>
@@ -333,85 +335,6 @@
       </button>
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer class="w-full bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 transition-colors duration-300">
-      <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <!-- Company Info -->
-              <div class="space-y-4">
-                  <h3 class="text-xl font-bold font-elegant text-lilac-400">RuangKerja</h3>
-                  <p class="text-sm">Connecting professionals with opportunities that matter.</p>
-                  <div class="flex space-x-4">
-                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
-                          <i class="fab fa-facebook-f"></i>
-                      </a>
-                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
-                          <i class="fab fa-twitter"></i>
-                      </a>
-                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
-                          <i class="fab fa-linkedin-in"></i>
-                      </a>
-                      <a href="#" class="text-gray-500 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">
-                          <i class="fab fa-instagram"></i>
-                      </a>
-                  </div>
-              </div>
-
-              <!-- Quick Links -->
-              <div>
-                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Quick Links</h4>
-                  <ul class="space-y-2 text-sm">
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Home</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">About Us</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Candidates</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Companies</a></li>
-                  </ul>
-              </div>
-
-              <!-- Resources -->
-              <div>
-                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Resources</h4>
-                  <ul class="space-y-2 text-sm">
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Blog</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Help Center</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Career Advice</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Interview Tips</a></li>
-                      <li><a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Success Stories</a></li>
-                  </ul>
-              </div>
-
-              <!-- Contact -->
-              <div>
-                  <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
-                  <ul class="space-y-2 text-sm">
-                      <li class="flex items-start">
-                          <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
-                          <span>Makassar</span>
-                      </li>
-                      <li class="flex items-start">
-                          <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
-                          <span>+62 823 1955 6278</span>
-                      </li>
-                      <li class="flex items-start">
-                          <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
-                          <span>hello@ruangkerja.id</span>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-
-          <!-- Copyright -->
-          <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 text-sm text-center">
-              <p>&copy; 2026 RuangKerja. All rights reserved.</p>
-              <div class="mt-2 flex justify-center space-x-6">
-                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Privacy Policy</a>
-                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Terms of Service</a>
-                  <a href="#" class="hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors">Cookie Policy</a>
-              </div>
-          </div>
-      </div>
-  </footer>
 </body>
 <script>
 
@@ -571,77 +494,6 @@
     navChat.classList.add('hidden');
   });
 
-  const translations = {
-    en: {
-      "nav.home": "Home",
-      "nav.about": "About",
-      "nav.candidates": "Candidates",
-      "nav.companies": "Companies",
-      "cv_download": "Download CV",
-      "company_details": "Company Details",
-      "company_full_name": "Full Name",
-      "company_foundation_date": "Foundation Date",
-      "company_hq_location": "HQ Location",
-      "company_size": "Company Size",
-      "company_business_email": "Business Email",
-      "company_biodata": "Company Description",
-      "education": "Education",
-      "experience": "Experience",
-      "skills": "Skills",
-      "employee_profile_settings": "Profile Settings",
-      "employee_logout": "Logout",
-      "skills_nav": "Skills",
-      "members_nav": "Employees",
-      "chat_nav": "Chat",
-    },
-    id: {
-      "nav.home": "Beranda",
-      "nav.about": "Tentang",
-      "nav.candidates": "Kandidat",
-      "nav.companies": "Perusahaan",
-      "cv_download": "Unduh CV",
-      "company_details": "Detail Perusahaan",
-      "company_full_name": "Nama Lengkap",
-      "company_foundation_date": "Tanggal Didirikan",
-      "company_hq_location": "Lokasi Kantor Pusat",
-      "company_size": "Jumlah Karyawan",
-      "company_business_email": "Email Bisnis",
-      "company_biodata": "Deskripsi Perusahaan",
-      "education": "Pendidikan",
-      "experience": "Pengalaman",
-      "skills": "Keterampilan",
-      "employee_profile_settings": "Pengaturan Profil",
-      "employee_logout": "Keluar",
-      "skills_nav": "Keterampilan",
-      "members_nav": "Karyawan",
-      "chat_nav": "Obrolan",
-    }
-  };
-
-  function setLanguage(lang) {
-    document.querySelectorAll("[data-i18n]").forEach(el => {
-      const key = el.getAttribute("data-i18n");
-      el.textContent = translations[lang][key] || key;
-    });
-    localStorage.setItem("lang", lang);
-  }
-
-  document.getElementById("language-selector").addEventListener("change", e => {
-    setLanguage(e.target.value);
-  });
-
-  document.getElementById("language-selector-mobile").addEventListener("change", e => {
-    setLanguage(e.target.value);
-  });
-
-  // Load saved language or default to English
-  window.addEventListener("DOMContentLoaded", () => {
-    const lang = localStorage.getItem("lang") || "en";
-    document.getElementById("language-selector").value = lang;
-    setLanguage(lang);
-    document.getElementById("language-selector-mobile").value = lang;
-    setLanguage(lang);
-  });
-
 </script>
+<script src="language.js"></script>
 </html>
