@@ -103,22 +103,28 @@
                 <div class="flex-shrink-0 flex items-center">
                     <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto" />
                 </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">                        
+                        <a href="homepage.html" data-i18n="nav.home" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Home
                         </a>
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="about.html" data-i18n="nav.about" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             About
                         </a>
-                        <a href="#" class="border-lilac-400 text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="candidates.html" data-i18n="nav.candidates" class="border-lilac-400 text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Candidates
                         </a>
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="companies.html" data-i18n="nav.companies" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Companies
                         </a>
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
                     <button id="darkModeToggle" class="p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
                         <i class="fas fa-moon dark:hidden"></i>
                         <i class="fas fa-sun hidden dark:inline"></i>
@@ -128,10 +134,9 @@
                             <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                 <img class="h-8 w-8 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
                             </button>
-                        </div>
-                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                        </div>                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a href="#" data-i18n="profile.my_profile" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
+                            <a href="#" data-i18n="profile.logout" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -147,10 +152,10 @@
         <!-- Mobile menu -->
         <div class="hidden sm:hidden" id="mobile-menu">
             <div class="pt-2 pb-3 space-y-1">
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
-                <a href="#" class="bg-lilac-50 dark:bg-gray-800 border-lilac-400 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
+                <a href="homepage.html" data-i18n="nav.home" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="about.html" data-i18n="nav.about" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
+                <a href="candidates.html" data-i18n="nav.candidates" class="bg-lilac-50 dark:bg-gray-800 border-lilac-400 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
+                <a href="companies.html" data-i18n="nav.companies" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
             </div>
             <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
                 <div class="flex items-center px-4">
@@ -158,7 +163,7 @@
                         <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
                     </div>
                     <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
+                        <div data-i18n="profile.my_profile" class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
                     </div>
                     <button id="mobileDarkModeToggle" class="ml-auto p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
                         <i class="fas fa-moon dark:hidden"></i>
@@ -166,28 +171,33 @@
                     </button>
                 </div>
                 <div class="mt-3 space-y-1">
-                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
+                    <a href="#" data-i18n="profile.my_profile" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                    <a href="#" data-i18n="profile.logout" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">        
         <!-- Search and Filter Section -->
         <section class="mb-8 animate-fade-in">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
+            <h1 data-i18n-html="candidates.find_talented" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
                 Find <span class="text-lilac-400">Talented Candidates</span>
             </h1>
-            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl text-sm">
+            <p data-i18n="candidates.browse_description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl text-sm">
                 Browse through our network of skilled professionals ready for their next opportunity
             </p>
-            
-            <!-- Search Bar -->
+              <!-- Search Bar -->
             <div class="mb-6">
                 <div class="flex shadow-sm rounded-lg overflow-hidden text-sm">
-                    <input type="text" class="flex-grow px-4 py-3 focus:outline-none dark:bg-gray-800 dark:text-white" placeholder="Search by name, skills, or job title..." aria-label="Search candidates">
+                    <input 
+                        type="text" 
+                        class="flex-grow px-4 py-3 focus:outline-none dark:bg-gray-800 dark:text-white" 
+                        data-i18n-placeholder="search.candidate_placeholder" 
+                        data-i18n-aria="search.aria_label"
+                        placeholder="Search by name, skills, or job title..." 
+                        aria-label="Search candidates">
                     <button class="bg-lilac-400 hover:bg-lilac-500 text-white px-6 py-3 transition-colors">
                         <i class="fas fa-search"></i>
                     </button>
@@ -196,12 +206,11 @@
             
             <!-- Filters -->
             <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Location Filter -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">                    <!-- Location Filter -->
                     <div>
-                        <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                        <label for="location" data-i18n="filter.location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
                         <select id="location" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="">All Indonesia</option>
+                            <option value="" data-i18n="filter.all_locations">All Indonesia</option>
                             <option value="jakarta">Jakarta</option>
                             <option value="surabaya">Surabaya</option>
                             <option value="bandung">Bandung</option>
@@ -217,9 +226,9 @@
                     
                     <!-- Job Type Filter -->
                     <div>
-                        <label for="job-type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Job Type</label>
+                        <label for="job-type" data-i18n="filter.job_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Job Type</label>
                         <select id="job-type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="">All Job Types</option>
+                            <option value="" data-i18n="filter.all_job_types">All Job Types</option>
                             <option value="full-time">Full-time</option>
                             <option value="part-time">Part-time</option>
                             <option value="contract">Contract</option>
@@ -230,39 +239,40 @@
                     
                     <!-- Industry Filter -->
                     <div>
-                        <label for="industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
+                        <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
                         <select id="industry" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="">All Industries</option>
-                            <option value="technology">Technology</option>
-                            <option value="finance">Finance</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="education">Education</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="design">Design</option>
-                            <option value="engineering">Engineering</option>
-                            <option value="hospitality">Hospitality</option>
-                            <option value="retail">Retail</option>
+                            <option value="" data-i18n="filter.all_industries">All Industries</option>
+                            <option value="technology" data-i18n="filter.technology">Technology</option>
+                            <option value="finance" data-i18n="filter.finance">Finance</option>
+                            <option value="healthcare" data-i18n="filter.healthcare">Healthcare</option>
+                            <option value="education" data-i18n="filter.education">Education</option>
+                            <option value="marketing" data-i18n="filter.marketing">Marketing</option>
+                            <option value="manufacturing" data-i18n="filter.manufacturing">Manufacturing</option>
+                            <option value="retail" data-i18n="filter.retail">Retail</option>
+                            <option value="hospitality" data-i18n="filter.hospitality">Hospitality</option>
+                            <option value="government" data-i18n="filter.government">Government</option>
                         </select>
                     </div>
                 </div>
-                
-                <div class="mt-4 flex flex-wrap gap-2">
+                  <div class="mt-4 flex flex-wrap gap-2">
                     <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-full transition-colors">
-                        <i class="fas fa-filter mr-1"></i> Apply Filters
+                        <i class="fas fa-filter mr-1"></i>
+                        <span data-i18n="button.apply_filters">Apply Filters</span>
                     </button>
                     <button class="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-full transition-colors">
-                        <i class="fas fa-sync-alt mr-1"></i> Reset
+                        <i class="fas fa-sync-alt mr-1"></i> 
+                        <span data-i18n="button.reset">Reset</span>
                     </button>
                 </div>
             </div>
         </section>
 
         <!-- Candidates Grid -->
-        <section class="mb-8">
+        <section class="mb-8">            
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Available Candidates</h2>
+                <h2 data-i18n="candidates.available" class="text-xl font-bold text-gray-900 dark:text-white">Available Candidates</h2>
                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                    Showing <span class="font-medium text-lilac-500 dark:text-lilac-400">24</span> of <span class="font-medium">128</span> candidates
+                    <span data-i18n="candidates.showing">Showing</span> <span class="font-medium text-lilac-500 dark:text-lilac-400">24</span> <span data-i18n="candidates.of">of</span> <span class="font-medium">128</span> <span data-i18n="candidates.found">candidates</span>
                 </div>
             </div>
             
@@ -274,7 +284,7 @@
                             <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Alex Johnson">
                             <div>
                                 <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Alexandra Johnson</h3>
-                                <p class="text-gray-500 dark:text-gray-300 text-xs">Software Engineer</p>
+                                <p data-i18n="software_engineer" class="text-gray-500 dark:text-gray-300 text-xs">Software Engineer</p>
                                 <div class="flex items-center mt-1">
                                     <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
                                     <span class="text-gray-500 dark:text-gray-400 text-xs">Jakarta</span>
@@ -291,7 +301,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
+                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
                                 View Profile
                             </button>
                         </div>
@@ -305,7 +315,7 @@
                             <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Sarah Williams">
                             <div>
                                 <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Sarah Williams</h3>
-                                <p class="text-gray-500 dark:text-gray-300 text-xs">Marketing Director</p>
+                                <p data-i18n="marketing_director" class="text-gray-500 dark:text-gray-300 text-xs">Marketing Director</p>
                                 <div class="flex items-center mt-1">
                                     <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
                                     <span class="text-gray-500 dark:text-gray-400 text-xs">Bali</span>
@@ -322,7 +332,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs text-gray-500 dark:text-gray-400">Remote</span>
-                            <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
+                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
                                 View Profile
                             </button>
                         </div>
@@ -336,7 +346,7 @@
                             <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Michael Chen">
                             <div>
                                 <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Michael Chen</h3>
-                                <p class="text-gray-500 dark:text-gray-300 text-xs">Product Manager</p>
+                                <p data-i18n="product_manager" class="text-gray-500 dark:text-gray-300 text-xs">Product Manager</p>
                                 <div class="flex items-center mt-1">
                                     <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
                                     <span class="text-gray-500 dark:text-gray-400 text-xs">Bandung</span>
@@ -353,7 +363,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
+                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
                                 View Profile
                             </button>
                         </div>
@@ -367,7 +377,7 @@
                             <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Emma Davis">
                             <div>
                                 <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Emma Davis</h3>
-                                <p class="text-gray-500 dark:text-gray-300 text-xs">UX Designer</p>
+                                <p data-i18n="ux_designer" class="text-gray-500 dark:text-gray-300 text-xs">UX Designer</p>
                                 <div class="flex items-center mt-1">
                                     <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
                                     <span class="text-gray-500 dark:text-gray-400 text-xs">Yogyakarta</span>
@@ -384,7 +394,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs text-gray-500 dark:text-gray-400">Contract</span>
-                            <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
+                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
                                 View Profile
                             </button>
                         </div>
@@ -398,7 +408,7 @@
                             <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Rizky Pratama">
                             <div>
                                 <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Rizky Pratama</h3>
-                                <p class="text-gray-500 dark:text-gray-300 text-xs">Data Scientist</p>
+                                <p data-i18n="data_scientist" class="text-gray-500 dark:text-gray-300 text-xs">Data Scientist</p>
                                 <div class="flex items-center mt-1">
                                     <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
                                     <span class="text-gray-500 dark:text-gray-400 text-xs">Jakarta</span>
@@ -415,7 +425,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
+                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
                                 View Profile
                             </button>
                         </div>
@@ -429,7 +439,7 @@
                             <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Dewi Sari">
                             <div>
                                 <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Dewi Sari</h3>
-                                <p class="text-gray-500 dark:text-gray-300 text-xs">Financial Analyst</p>
+                                <p data-i18n="financial_analyst" class="text-gray-500 dark:text-gray-300 text-xs">Financial Analyst</p>
                                 <div class="flex items-center mt-1">
                                     <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
                                     <span class="text-gray-500 dark:text-gray-400 text-xs">Surabaya</span>
@@ -446,7 +456,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
+                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
                                 View Profile
                             </button>
                         </div>
@@ -460,7 +470,7 @@
                             <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Budi Santoso">
                             <div>
                                 <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Budi Santoso</h3>
-                                <p class="text-gray-500 dark:text-gray-300 text-xs">DevOps Engineer</p>
+                                <p data-i18n="devops_engineer" class="text-gray-500 dark:text-gray-300 text-xs">DevOps Engineer</p>
                                 <div class="flex items-center mt-1">
                                     <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
                                     <span class="text-gray-500 dark:text-gray-400 text-xs">Remote</span>
@@ -477,7 +487,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs text-gray-500 dark:text-gray-400">Contract</span>
-                            <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
+                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
                                 View Profile
                             </button>
                         </div>
@@ -491,7 +501,7 @@
                             <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Anita Wijaya">
                             <div>
                                 <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Anita Wijaya</h3>
-                                <p class="text-gray-500 dark:text-gray-300 text-xs">HR Manager</p>
+                                <p data-i18n="hr_manager" class="text-gray-500 dark:text-gray-300 text-xs">HR Manager</p>
                                 <div class="flex items-center mt-1">
                                     <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
                                     <span class="text-gray-500 dark:text-gray-400 text-xs">Medan</span>
@@ -508,19 +518,18 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
+                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
                                 View Profile
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Pagination -->
+              <!-- Pagination -->
             <div class="mt-8 flex justify-center">
                 <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                     <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span class="sr-only">Previous</span>
+                        <span data-i18n="candidates.pagination.previous" class="sr-only">Previous</span>
                         <i class="fas fa-chevron-left"></i>
                     </a>
                     <a href="#" aria-current="page" class="z-10 bg-lilac-400 border-lilac-400 text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
@@ -539,20 +548,19 @@
                         8
                     </a>
                     <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span class="sr-only">Next</span>
+                        <span data-i18n="candidates.pagination.next" class="sr-only">Next</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </nav>
             </div>
         </section>
-        
-        <!-- Call to Action -->
+          <!-- Call to Action -->
         <section class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-8 mb-8 text-center fade-on-scroll">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Can't Find What You're Looking For?</h2>
-            <p class="text-gray-600 dark:text-gray-300 mb-4 max-w-2xl mx-auto">
+            <h2 data-i18n="cta.cant_find" class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Can't Find What You're Looking For?</h2>
+            <p data-i18n="cta.help_text" class="text-gray-600 dark:text-gray-300 mb-4 max-w-2xl mx-auto">
                 Let us help you find the perfect candidate. Our recruitment specialists can source and screen candidates tailored to your specific needs.
             </p>
-            <button class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-md font-medium transition-colors">
+            <button data-i18n="cta.request_search" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-md font-medium transition-colors">
                 <i class="fas fa-headset mr-2"></i> Request Talent Search
             </button>
         </section>
@@ -563,8 +571,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="md:col-span-2">
-                    <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto mb-4" />
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                    <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto mb-4" />                    <p data-i18n="footer.company_description" class="text-gray-600 dark:text-gray-300 text-sm mb-4">
                         RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
                     </p>
                     <div class="flex space-x-4">
@@ -581,43 +588,41 @@
                             <i class="fab fa-instagram"></i>
                         </a>
                     </div>
-                </div>
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">For Candidates</h3>
+                </div>                <div>
+                    <h3 data-i18n="footer.for_candidates" class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">For Candidates</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Browse Jobs</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Create Profile</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Career Resources</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Salary Calculator</a></li>
+                        <li><a href="#" data-i18n="footer.browse_jobs" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Browse Jobs</a></li>
+                        <li><a href="#" data-i18n="footer.create_profile" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Create Profile</a></li>
+                        <li><a href="#" data-i18n="footer.career_resources" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Career Resources</a></li>
+                        <li><a href="#" data-i18n="footer.salary_calculator" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Salary Calculator</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">For Employers</h3>
+                    <h3 data-i18n="footer.for_employers" class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">For Employers</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Post a Job</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Browse Candidates</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Recruiting Solutions</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Pricing</a></li>
+                        <li><a href="#" data-i18n="footer.post_job" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Post a Job</a></li>
+                        <li><a href="#" data-i18n="footer.browse_candidates" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Browse Candidates</a></li>
+                        <li><a href="#" data-i18n="footer.recruiting_solutions" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Recruiting Solutions</a></li>
+                        <li><a href="#" data-i18n="footer.pricing" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Pricing</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Company</h3>
+                    <h3 data-i18n="footer.company" class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Company</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">About Us</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Contact</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Terms of Service</a></li>
+                        <li><a href="#" data-i18n="footer.about_us" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">About Us</a></li>
+                        <li><a href="#" data-i18n="footer.contact" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Contact</a></li>
+                        <li><a href="#" data-i18n="footer.privacy_policy" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" data-i18n="footer.terms" class="text-gray-600 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 text-sm transition-colors">Terms of Service</a></li>
                     </ul>
                 </div>
-            </div>
-            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4 md:mb-0">
+            </div>            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm mb-4 md:mb-0">
                     &copy; 2023 RuangKerja. All rights reserved.
                 </p>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm transition-colors">Privacy</a>
-                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm transition-colors">Terms</a>
-                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm transition-colors">Sitemap</a>
+                    <a href="#" data-i18n="footer.privacy_link" class="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm transition-colors">Privacy</a>
+                    <a href="#" data-i18n="footer.terms_link" class="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm transition-colors">Terms</a>
+                    <a href="#" data-i18n="footer.sitemap" class="text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm transition-colors">Sitemap</a>
                 </div>
             </div>
         </div>
@@ -697,14 +702,13 @@
             <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
             </div>
         `;
-        document.body.appendChild(loading_circle);
-
-        window.addEventListener('DOMContentLoaded', () => {
+        document.body.appendChild(loading_circle);        window.addEventListener('DOMContentLoaded', () => {
             const l = document.getElementById('load_bro');
             if (l) {
             l.remove();
             }
         });
     </script>
+    <script src="language.js"></script>
 </body>
 </html>

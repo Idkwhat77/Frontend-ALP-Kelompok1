@@ -104,21 +104,27 @@
                     <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-12 w-auto" />
                 </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a data-i18n="nav.home" href="homepage.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Home
                         </a>
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a data-i18n="nav.about" href="about.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             About
                         </a>
-                        <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a data-i18n="nav.candidates" href="candidates.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Candidates
                         </a>
-                        <a href="#" class="border-lilac-400 text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a data-i18n="nav.companies" href="companies.html" class="border-lilac-400 text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Companies
                         </a>
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
                     <button id="darkModeToggle" class="p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
                         <i class="fas fa-moon dark:hidden"></i>
                         <i class="fas fa-sun hidden dark:inline"></i>
@@ -130,8 +136,8 @@
                             </button>
                         </div>
                         <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Profile</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                            <a data-i18n="employee_profile_settings" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">My Profile</a>
+                            <a data-i18n="employee_logout" href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -147,10 +153,10 @@
         <!-- Mobile menu -->
         <div class="hidden sm:hidden" id="mobile-menu">
             <div class="pt-2 pb-3 space-y-1">
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
-                <a href="#" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
-                <a href="#" class="bg-lilac-50 dark:bg-gray-800 border-lilac-400 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
+                <a data-i18n="nav.home" href="homepage.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a data-i18n="nav.about" href="about.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
+                <a data-i18n="nav.candidates" href="candidates.html" class="border-transparent text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Candidates</a>
+                <a data-i18n="nav.companies" href="companies.html" class="bg-lilac-50 dark:bg-gray-800 border-lilac-400 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Companies</a>
             </div>
             <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
                 <div class="flex items-center px-4">
@@ -158,7 +164,7 @@
                         <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="Profile">
                     </div>
                     <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
+                        <div  class="text-base font-medium text-gray-800 dark:text-white">My Profile</div>
                     </div>
                     <button id="mobileDarkModeToggle" class="ml-auto p-1 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 focus:outline-none" aria-label="Toggle dark mode">
                         <i class="fas fa-moon dark:hidden"></i>
@@ -166,8 +172,8 @@
                     </button>
                 </div>
                 <div class="mt-3 space-y-1">
-                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
+                    <a data-i18n="employee_profile_settings" href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                    <a data-i18n="employee_logout" href="#" class="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
                 </div>
             </div>
         </div>
@@ -177,17 +183,23 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Search and Filter Section -->
         <section class="mb-8 animate-fade-in">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
+            <h1 data-i18n-html="companies.title" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
                 Explore <span class="text-lilac-400">Top Companies</span>
             </h1>
-            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl text-sm">
+            <p data-i18n="companies.description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl text-sm">
                 Discover leading companies hiring through our platform and find your next career opportunity
             </p>
             
             <!-- Search Bar -->
             <div class="mb-6">
                 <div class="flex shadow-sm rounded-lg overflow-hidden text-sm">
-                    <input type="text" class="flex-grow px-4 py-3 focus:outline-none dark:bg-gray-800 dark:text-white" placeholder="Search by company name, industry, or location..." aria-label="Search companies">
+                    <input
+                        type="text" 
+                        class="flex-grow px-4 py-3 focus:outline-none dark:bg-gray-800 dark:text-white" 
+                        data-i18n-placeholder="search.company_placeholder" 
+                        data-i18n-aria="search.company_label"
+                        placeholder="Search by company name, industry, or location..." 
+                        aria-label="Search companies">
                     <button class="bg-lilac-400 hover:bg-lilac-500 text-white px-6 py-3 transition-colors">
                         <i class="fas fa-search"></i>
                     </button>
@@ -199,9 +211,9 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- Location Filter -->
                     <div>
-                        <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                        <label for="location" data-i18n="filter.location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
                         <select id="location" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="">All Indonesia</option>
+                            <option value="" data-i18n="filter.all_locations">All Indonesia</option>
                             <option value="jakarta">Jakarta</option>
                             <option value="surabaya">Surabaya</option>
                             <option value="bandung">Bandung</option>
@@ -217,41 +229,43 @@
                     
                     <!-- Company Size Filter -->
                     <div>
-                        <label for="company-size" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
+                        <label for="company-size" data-i18n="filter.company_size" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
                         <select id="company-size" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="">All Sizes</option>
-                            <option value="startup">Startup (1-50)</option>
-                            <option value="small">Small (51-200)</option>
-                            <option value="medium">Medium (201-1000)</option>
-                            <option value="large">Large (1001-5000)</option>
-                            <option value="enterprise">Enterprise (5000+)</option>
+                            <option value="" data-i18n="filter.all_sizes">All Sizes</option>
+                            <option value="startup" data-i18n="filter.startup">Startup (1-50)</option>
+                            <option value="small" data-i18n="filter.small">Small (51-200)</option>
+                            <option value="medium" data-i18n="filter.medium">Medium (201-1000)</option>
+                            <option value="large" data-i18n="filter.large">Large (1001-5000)</option>
+                            <option value="enterprise" data-i18n="filter.enterprise">Enterprise (5000+)</option>
                         </select>
                     </div>
                     
                     <!-- Industry Filter -->
                     <div>
-                        <label for="industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
+                        <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
                         <select id="industry" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="">All Industries</option>
-                            <option value="technology">Technology</option>
-                            <option value="finance">Finance</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="education">Education</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="manufacturing">Manufacturing</option>
-                            <option value="retail">Retail</option>
-                            <option value="hospitality">Hospitality</option>
-                            <option value="government">Government</option>
+                            <option value="" data-i18n="filter.all_industries">All Industries</option>
+                            <option value="technology" data-i18n="filter.technology">Technology</option>
+                            <option value="finance" data-i18n="filter.finance">Finance</option>
+                            <option value="healthcare" data-i18n="filter.healthcare">Healthcare</option>
+                            <option value="education" data-i18n="filter.education">Education</option>
+                            <option value="marketing" data-i18n="filter.marketing">Marketing</option>
+                            <option value="manufacturing" data-i18n="filter.manufacturing">Manufacturing</option>
+                            <option value="retail" data-i18n="filter.retail">Retail</option>
+                            <option value="hospitality" data-i18n="filter.hospitality">Hospitality</option>
+                            <option value="government" data-i18n="filter.government">Government</option>
                         </select>
                     </div>
                 </div>
                 
                 <div class="mt-4 flex flex-wrap gap-2">
                     <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-full transition-colors">
-                        <i class="fas fa-filter mr-1"></i> Apply Filters
+                        <i class="fas fa-filter mr-1"></i>
+                        <span data-i18n="button.apply_filters">Apply Filters</span>
                     </button>
                     <button class="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-full transition-colors">
-                        <i class="fas fa-sync-alt mr-1"></i> Reset
+                        <i class="fas fa-sync-alt mr-1"></i> 
+                        <span data-i18n="button.reset">Reset</span>
                     </button>
                 </div>
             </div>
@@ -260,9 +274,9 @@
         <!-- Companies Grid -->
         <section class="mb-8">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Featured Companies</h2>
+                <h2 data-i18n="companies.featured" class="text-xl font-bold text-gray-900 dark:text-white">Featured Companies</h2>
                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                    Showing <span class="font-medium text-lilac-500 dark:text-lilac-400">16</span> of <span class="font-medium">84</span> companies
+                    <span data-i18n="companies.showing">Showing</span> <span class="font-medium text-lilac-500 dark:text-lilac-400">16</span> <span data-i18n="companies.of">of</span> <span class="font-medium">84</span> <span data-i18n="companies.found">companies</span>
                 </div>
             </div>
             
@@ -279,7 +293,7 @@
                             <span class="text-gray-500 dark:text-gray-400 text-sm">Jakarta</span>
                         </div>
                         <div class="flex items-center justify-center mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Technology</span>
+                            <span data-i18n="filter.technology" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Technology</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
                             Leading software development company specializing in enterprise solutions and digital transformation.
@@ -303,7 +317,7 @@
                             <span class="text-gray-500 dark:text-gray-400 text-sm">Surabaya</span>
                         </div>
                         <div class="flex items-center justify-center mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Finance</span>
+                            <span data-i18n="filter.finance" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Finance</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
                             Innovative fintech company providing digital banking solutions for SMEs across Indonesia.
@@ -327,7 +341,7 @@
                             <span class="text-gray-500 dark:text-gray-400 text-sm">Bandung</span>
                         </div>
                         <div class="flex items-center justify-center mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Healthcare</span>
+                            <span data-i18n="filter.healthcare" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Healthcare</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
                             Healthcare provider with a network of clinics and telemedicine services nationwide.
@@ -351,7 +365,7 @@
                             <span class="text-gray-500 dark:text-gray-400 text-sm">Remote</span>
                         </div>
                         <div class="flex items-center justify-center mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Education</span>
+                            <span data-i18n="filter.education" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Education</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
                             EdTech startup revolutionizing online learning with AI-powered personalized education.
@@ -375,7 +389,7 @@
                             <span class="text-gray-500 dark:text-gray-400 text-sm">Jakarta</span>
                         </div>
                         <div class="flex items-center justify-center mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Retail</span>
+                            <span data-i18n="filter.retail" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Retail</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
                             Omnichannel retail platform with physical stores and e-commerce operations across Indonesia.
@@ -399,7 +413,7 @@
                             <span class="text-gray-500 dark:text-gray-400 text-sm">Bali</span>
                         </div>
                         <div class="flex items-center justify-center mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Construction</span>
+                            <span data-i18n="filter.construction" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Construction</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
                             Sustainable construction company specializing in eco-friendly buildings and resorts.
@@ -423,7 +437,7 @@
                             <span class="text-gray-500 dark:text-gray-400 text-sm">Multiple Locations</span>
                         </div>
                         <div class="flex items-center justify-center mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Food & Beverage</span>
+                            <span data-i18n="filter.food_beverage" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Food & Beverage</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
                             Fast-growing food delivery service operating in 15 cities across Indonesia.
@@ -447,7 +461,7 @@
                             <span class="text-gray-500 dark:text-gray-400 text-sm">Yogyakarta</span>
                         </div>
                         <div class="flex items-center justify-center mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Marketing</span>
+                            <span data-i18n="filter.marketing" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Marketing</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
                             Full-service digital marketing agency helping brands grow their online presence.
@@ -688,4 +702,6 @@
         l.remove();
         }
     });
+
 </script>
+<script src="language.js"></script>
