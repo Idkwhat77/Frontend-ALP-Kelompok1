@@ -188,88 +188,149 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Search and Filter Section -->
-        <section class="mb-8 animate-fade-in">
-            <h1 data-i18n-html="hero.title" class="text-4xl md:text-5xl font-bold lg:mb-6 font-elegant text-gray-900 dark:text-white opacity-0">
-
-            </h1>
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+        <!-- Hero Section -->
+        <section class="text-center mb-8 animate-fade-in">
             <h1 data-i18n-html="companies.title" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
                 Explore <span class="text-lilac-400">Top Companies</span>
             </h1>
-            <p data-i18n="companies.description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl text-sm">
+            <p data-i18n="companies.description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl mx-auto text-sm">
                 Discover leading companies hiring through our platform and find your next career opportunity
             </p>
             
             <!-- Search Bar -->
-            <div class="mb-6">
+            <div class="max-w-xl mx-auto mb-6">
                 <div class="flex shadow-sm rounded-lg overflow-hidden text-sm">
                     <input
-                        type="text" 
-                        class="flex-grow px-4 py-3 focus:outline-none dark:bg-gray-800 dark:text-white" 
-                        data-i18n-placeholder="search.company_placeholder" 
+                        type="text"
+                        class="flex-grow px-4 py-2 focus:outline-none dark:bg-gray-800 dark:text-white"
+                        data-i18n-placeholder="search.company_placeholder"
                         data-i18n-aria="search.company_label"
-                        placeholder="Search by company name, industry, or location..." 
-                        aria-label="Search companies">
-                    <button class="bg-lilac-400 hover:bg-lilac-500 text-white px-6 py-3 transition-colors">
+                        placeholder="Search by company name, industry, or location..."
+                        aria-label="Search companies"
+                    />
+                    <button class="bg-lilac-400 hover:bg-lilac-500 text-white px-4 py-2 transition-colors">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
             </div>
-            
-            <!-- Filters -->
-            <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Location Filter -->
-                    <div>
-                        <label for="location" data-i18n="filter.location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
-                        <select id="location" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_locations">All Indonesia</option>
-                            <option value="jakarta">Jakarta</option>
-                            <option value="surabaya">Surabaya</option>
-                            <option value="bandung">Bandung</option>
-                            <option value="medan">Medan</option>
-                            <option value="makassar">Makassar</option>
-                            <option value="bali">Bali</option>
-                            <option value="yogyakarta">Yogyakarta</option>
-                            <option value="semarang">Semarang</option>
-                            <option value="palembang">Palembang</option>
-                            <option value="remote">Remote</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Company Size Filter -->
-                    <div>
-                        <label for="company-size" data-i18n="filter.company_size" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
-                        <select id="company-size" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_sizes">All Sizes</option>
-                            <option value="startup" data-i18n="filter.startup">Startup (1-50)</option>
-                            <option value="small" data-i18n="filter.small">Small (51-200)</option>
-                            <option value="medium" data-i18n="filter.medium">Medium (201-1000)</option>
-                            <option value="large" data-i18n="filter.large">Large (1001-5000)</option>
-                            <option value="enterprise" data-i18n="filter.enterprise">Enterprise (5000+)</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Industry Filter -->
-                    <div>
-                        <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
-                        <select id="industry" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_industries">All Industries</option>
-                            <option value="technology" data-i18n="filter.technology">Technology</option>
-                            <option value="finance" data-i18n="filter.finance">Finance</option>
-                            <option value="healthcare" data-i18n="filter.healthcare">Healthcare</option>
-                            <option value="education" data-i18n="filter.education">Education</option>
-                            <option value="marketing" data-i18n="filter.marketing">Marketing</option>
-                            <option value="manufacturing" data-i18n="filter.manufacturing">Manufacturing</option>
-                            <option value="retail" data-i18n="filter.retail">Retail</option>
-                            <option value="hospitality" data-i18n="filter.hospitality">Hospitality</option>
-                            <option value="government" data-i18n="filter.government">Government</option>
-                        </select>
-                    </div>
+        </section>
+
+        <!-- Filters -->
+        <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Province Filter -->
+                <div>
+                    <label for="province" data-i18n="filter.province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Province</label>
+                    <select id="province" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" data-i18n="filter.all_provinces">All Provinces</option>
+                        <option value="aceh">Aceh</option>
+                        <option value="sumatra-utara">Sumatra Utara</option>
+                        <option value="sumatra-barat">Sumatra Barat</option>
+                        <option value="riau">Riau</option>
+                        <option value="jambi">Jambi</option>
+                        <option value="sumatra-selatan">Sumatra Selatan</option>
+                        <option value="bengkulu">Bengkulu</option>
+                        <option value="lampung">Lampung</option>
+                        <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+                        <option value="kepulauan-riau">Kepulauan Riau</option>
+                        <option value="dki-jakarta">DKI Jakarta</option>
+                        <option value="jawa-barat">Jawa Barat</option>
+                        <option value="jawa-tengah">Jawa Tengah</option>
+                        <option value="di-yogyakarta">DI Yogyakarta</option>
+                        <option value="jawa-timur">Jawa Timur</option>
+                        <option value="banten">Banten</option>
+                        <option value="bali">Bali</option>
+                        <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+                        <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+                        <option value="kalimantan-barat">Kalimantan Barat</option>
+                        <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                        <option value="kalimantan-selatan">Kalimantan Selatan</option>
+                        <option value="kalimantan-timur">Kalimantan Timur</option>
+                        <option value="kalimantan-utara">Kalimantan Utara</option>
+                        <option value="sulawesi-utara">Sulawesi Utara</option>
+                        <option value="sulawesi-tengah">Sulawesi Tengah</option>
+                        <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                        <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+                        <option value="gorontalo">Gorontalo</option>
+                        <option value="sulawesi-barat">Sulawesi Barat</option>
+                        <option value="maluku">Maluku</option>
+                        <option value="maluku-utara">Maluku Utara</option>
+                        <option value="papua-barat">Papua Barat</option>
+                        <option value="papua-barat-daya">Papua Barat Daya</option>
+                        <option value="papua">Papua</option>
+                        <option value="papua-selatan">Papua Selatan</option>
+                        <option value="papua-tengah">Papua Tengah</option>
+                        <option value="papua-pegunungan">Papua Pegunungan</option>
+                    </select>
                 </div>
                 
-                <div class="mt-4 flex flex-wrap gap-2">
+                <!-- City/District Filter -->
+                <div>
+                    <label for="city" data-i18n="filter.city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City/District</label>
+                    <select id="city" disabled class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" data-i18n="filter.all_cities">All Cities/Districts</option>
+                        <!-- Options will be populated by JavaScript based on province selection -->
+                    </select>
+                </div>
+                
+                <!-- Company Size Filter -->
+                <div>
+                    <label for="company-size" data-i18n="filter.company_size" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
+                    <select id="company-size" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" data-i18n="filter.all_sizes">All Sizes</option>
+                        <option value="startup" data-i18n="filter.startup">Startup (1-50)</option>
+                        <option value="small" data-i18n="filter.small">Small (51-200)</option>
+                        <option value="medium" data-i18n="filter.medium">Medium (201-1000)</option>
+                        <option value="large" data-i18n="filter.large">Large (1001-5000)</option>
+                        <option value="enterprise" data-i18n="filter.enterprise">Enterprise (5000+)</option>
+                    </select>
+                </div>
+                
+                <!-- Industry Filter -->
+                <div>
+                    <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
+                    <select id="industry" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" data-i18n="filter.all_industries">All Industries</option>
+                        <option value="technology">Technology</option>
+                        <option value="finance">Finance</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="education">Education</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="retail">Retail</option>
+                        <option value="hospitality">Hospitality</option>
+                        <option value="construction">Construction</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="energy">Energy</option>
+                        <option value="telecommunications">Telecommunications</option>
+                        <option value="media">Media & Entertainment</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="fishing">Fishing</option>
+                        <option value="mining">Mining</option>
+                        <option value="pharmaceutical">Pharmaceutical</option>
+                        <option value="biotechnology">Biotechnology</option>
+                        <option value="aerospace">Aerospace</option>
+                        <option value="defense">Defense</option>
+                        <option value="chemical">Chemical</option>
+                        <option value="food-beverage">Food & Beverage</option>
+                        <option value="tobacco">Tobacco</option>
+                        <option value="textile">Textile</option>
+                        <option value="apparel">Apparel</option>
+                        <option value="luxury">Luxury Goods</option>
+                        <option value="automotive">Automotive</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="furniture">Furniture</option>
+                        <option value="publishing">Publishing</option>
+                        <option value="sports">Sports</option>
+                        <option value="recreation">Recreation</option>
+                        <option value="real-estate">Real Estate</option>
+                        <option value="legal">Legal Services</option>
+                        <option value="consulting">Consulting</option>
+                        <option value="non-profit">Non-Profit</option>
+                        <option value="government">Government</option>
+                    </select>
+                </div>
+                  <div class="mt-4 flex flex-wrap gap-2">
                     <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-full transition-colors">
                         <i class="fas fa-filter mr-1"></i>
                         <span data-i18n="button.apply_filters">Apply Filters</span>
@@ -280,252 +341,195 @@
                     </button>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- Companies Grid -->
-        <section class="mb-8">
+        <section class="mb-8 fade-on-scroll">
             <div class="flex justify-between items-center mb-4">
                 <h2 data-i18n="companies.featured" class="text-xl font-bold text-gray-900 dark:text-white">Featured Companies</h2>
                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                    <span data-i18n="companies.showing">Showing</span> <span class="font-medium text-lilac-500 dark:text-lilac-400">16</span> <span data-i18n="companies.of">of</span> <span class="font-medium">84</span> <span data-i18n="companies.found">companies</span>
+                    <span data-i18n="companies.showing">Showing</span> <span class="font-medium text-lilac-500 dark:text-lilac-400">8</span> <span data-i18n="companies.of">of</span> <span class="font-medium">24</span> <span data-i18n="companies.found">companies</span>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Company Card 1 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-center justify-center mb-4">
-                            <img class="h-20 w-20 object-contain" src="https://via.placeholder.com/80" alt="TechNova Logo">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=TechCorp" alt="TechCorp Logo">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">TechCorp</h3>
+                        <p class="text-gray-500 dark:text-gray-300 text-center mb-2">Information Technology</p>
+                        <div class="flex justify-center mb-2">
+                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">201-500 employees</span>
                         </div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center text-lg mb-1">TechNova Indonesia</h3>
-                        <div class="flex items-center justify-center mb-3">
-                            <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Jakarta</span>
-                        </div>
-                        <div class="flex items-center justify-center mb-3">
-                            <span data-i18n="filter.technology" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Technology</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
-                            Leading software development company specializing in enterprise solutions and digital transformation.
-                        </p>
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-500 dark:text-gray-400">201-500 <span data-i18n="employees">employees</span></span>
-                            <span class="text-lilac-500 dark:text-lilac-400">12 <span data-i18n="open_roles"> open roles</span></span>
-                        </div>
+                        <button class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                            View Company
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Company Card 2 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-center justify-center mb-4">
-                            <img class="h-20 w-20 object-contain" src="https://via.placeholder.com/80" alt="Finova Logo">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=DesignHub" alt="DesignHub Logo">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">DesignHub</h3>
+                        <p class="text-gray-500 dark:text-gray-300 text-center mb-2">Creative Agency</p>
+                        <div class="flex justify-center mb-2">
+                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">51-200 employees</span>
                         </div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center text-lg mb-1">Finova Financial</h3>
-                        <div class="flex items-center justify-center mb-3">
-                            <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Surabaya</span>
-                        </div>
-                        <div class="flex items-center justify-center mb-3">
-                            <span data-i18n="filter.finance" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Finance</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
-                            Innovative fintech company providing digital banking solutions for SMEs across Indonesia.
-                        </p>
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-500 dark:text-gray-400">51-200 <span data-i18n="employees">employees</span></span>
-                            <span class="text-lilac-500 dark:text-lilac-400"> 8 <span data-i18n="open_roles">open roles</span></span>
-                        </div>
+                        <button class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                            View Company
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Company Card 3 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-center justify-center mb-4">
-                            <img class="h-20 w-20 object-contain" src="https://via.placeholder.com/80" alt="MediCare Logo">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=GreenEnergy" alt="GreenEnergy Logo">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">GreenEnergy</h3>
+                        <p class="text-gray-500 dark:text-gray-300 text-center mb-2">Renewable Energy</p>
+                        <div class="flex justify-center mb-2">
+                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">1000+ employees</span>
                         </div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center text-lg mb-1">MediCare Indonesia</h3>
-                        <div class="flex items-center justify-center mb-3">
-                            <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Bandung</span>
-                        </div>
-                        <div class="flex items-center justify-center mb-3">
-                            <span data-i18n="filter.healthcare" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Healthcare</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
-                            Healthcare provider with a network of clinics and telemedicine services nationwide.
-                        </p>
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-500 dark:text-gray-400">1000+ <span data-i18n="employees">employees</span></span>
-                            <span class="text-lilac-500 dark:text-lilac-400">23 <span data-i18n="open_roles"> open roles</span></span>
-                        </div>
+                        <button class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                            View Company
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Company Card 4 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-center justify-center mb-4">
-                            <img class="h-20 w-20 object-contain" src="https://via.placeholder.com/80" alt="EduSmart Logo">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=HealthPlus" alt="HealthPlus Logo">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">HealthPlus</h3>
+                        <p class="text-gray-500 dark:text-gray-300 text-center mb-2">Healthcare</p>
+                        <div class="flex justify-center mb-2">
+                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">5000+ employees</span>
                         </div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center text-lg mb-1">EduSmart</h3>
-                        <div class="flex items-center justify-center mb-3">
-                            <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Remote</span>
+                        <button class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                            View Company
+                        </button>
+                    </div>
+                </div>
+                <!-- Company Card 1 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=TechCorp" alt="TechCorp Logo">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">TechCorp</h3>
+                        <p class="text-gray-500 dark:text-gray-300 text-center mb-2">Information Technology</p>
+                        <div class="flex justify-center mb-2">
+                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">201-500 employees</span>
                         </div>
-                        <div class="flex items-center justify-center mb-3">
-                            <span data-i18n="filter.education" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Education</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
-                            EdTech startup revolutionizing online learning with AI-powered personalized education.
-                        </p>
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-500 dark:text-gray-400">11-50 <span data-i18n="employees">employees</span></span>
-                            <span class="text-lilac-500 dark:text-lilac-400">5 <span data-i18n="open_roles"> open roles</span></span>
-                        </div>
+                        <button class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                            View Company
+                        </button>
                     </div>
                 </div>
                 
-                <!-- Company Card 5 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-center justify-center mb-4">
-                            <img class="h-20 w-20 object-contain" src="https://via.placeholder.com/80" alt="RetailPlus Logo">
+                <!-- Company Card 2 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=DesignHub" alt="DesignHub Logo">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">DesignHub</h3>
+                        <p class="text-gray-500 dark:text-gray-300 text-center mb-2">Creative Agency</p>
+                        <div class="flex justify-center mb-2">
+                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">51-200 employees</span>
                         </div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center text-lg mb-1">RetailPlus</h3>
-                        <div class="flex items-center justify-center mb-3">
-                            <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Jakarta</span>
-                        </div>
-                        <div class="flex items-center justify-center mb-3">
-                            <span data-i18n="filter.retail" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Retail</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
-                            Omnichannel retail platform with physical stores and e-commerce operations across Indonesia.
-                        </p>
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-500 dark:text-gray-400">5000+ <span data-i18n="employees">employees</span></span>
-                            <span class="text-lilac-500 dark:text-lilac-400">34 <span data-i18n="open_roles"> open roles</span></span>
-                        </div>
+                        <button class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                            View Company
+                        </button>
                     </div>
                 </div>
                 
-                <!-- Company Card 6 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-center justify-center mb-4">
-                            <img class="h-20 w-20 object-contain" src="https://via.placeholder.com/80" alt="GreenBuild Logo">
+                <!-- Company Card 3 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=GreenEnergy" alt="GreenEnergy Logo">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">GreenEnergy</h3>
+                        <p class="text-gray-500 dark:text-gray-300 text-center mb-2">Renewable Energy</p>
+                        <div class="flex justify-center mb-2">
+                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">1000+ employees</span>
                         </div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center text-lg mb-1">GreenBuild</h3>
-                        <div class="flex items-center justify-center mb-3">
-                            <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Bali</span>
-                        </div>
-                        <div class="flex items-center justify-center mb-3">
-                            <span data-i18n="filter.construction" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Construction</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
-                            Sustainable construction company specializing in eco-friendly buildings and resorts.
-                        </p>
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-500 dark:text-gray-400">201-500 <span data-i18n="employees">employees</span></span>
-                            <span class="text-lilac-500 dark:text-lilac-400">7 <span data-i18n="open_roles"> open roles</span></span>
-                        </div>
+                        <button class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                            View Company
+                        </button>
                     </div>
                 </div>
                 
-                <!-- Company Card 7 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-center justify-center mb-4">
-                            <img class="h-20 w-20 object-contain" src="https://via.placeholder.com/80" alt="FoodExpress Logo">
-                        </div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center text-lg mb-1">FoodExpress</h3>
-                        <div class="flex items-center justify-center mb-3">
-                            <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Multiple Locations</span>
-                        </div>
-                        <div class="flex items-center justify-center mb-3">
-                            <span data-i18n="filter.food_beverage" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Food & Beverage</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
-                            Fast-growing food delivery service operating in 15 cities across Indonesia.
-                        </p>
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-500 dark:text-gray-400">1001-5000 <span data-i18n="employees">employees</span></span>
-                            <span class="text-lilac-500 dark:text-lilac-400">18 <span data-i18n="open_roles"> open roles</span></span>
-                        </div>
+                <!-- Company Card 4 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=HealthPlus" alt="HealthPlus Logo">
                     </div>
-                </div>
-                
-                <!-- Company Card 8 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-center justify-center mb-4">
-                            <img class="h-20 w-20 object-contain" src="https://via.placeholder.com/80" alt="CreativeMinds Logo">
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">HealthPlus</h3>
+                        <p class="text-gray-500 dark:text-gray-300 text-center mb-2">Healthcare</p>
+                        <div class="flex justify-center mb-2">
+                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">5000+ employees</span>
                         </div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center text-lg mb-1">CreativeMinds Agency</h3>
-                        <div class="flex items-center justify-center mb-3">
-                            <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">Yogyakarta</span>
-                        </div>
-                        <div class="flex items-center justify-center mb-3">
-                            <span data-i18n="filter.marketing" class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Marketing</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 text-center">
-                            Full-service digital marketing agency helping brands grow their online presence.
-                        </p>
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-500 dark:text-gray-400">11-50 <span data-i18n="employees">employees</span></span>
-                            <span class="text-lilac-500 dark:text-lilac-400">4 <span data-i18n="open_roles"> open roles</span></span>
-                        </div>
+                        <button class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                            View Company
+                        </button>
                     </div>
                 </div>
             </div>
-            
-            <!-- Pagination -->
-            <div class="mt-8 flex justify-center">
-                <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span class="sr-only">Previous</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <a href="#" aria-current="page" class="z-10 bg-lilac-400 border-lilac-400 text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        1
-                    </a>
-                    <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        2
-                    </a>
-                    <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        3
-                    </a>
-                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-400">
-                        ...
-                    </span>
-                    <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        8
-                    </a>
-                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span class="sr-only">Next</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                </nav>
-            </div>
         </section>
-        
-        <!-- Call to Action -->
-        <section class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-8 mb-8 text-center fade-on-scroll">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Want Your Company Featured?</h2>
-            <p class="text-gray-600 dark:text-gray-300 mb-4 max-w-2xl mx-auto">
-                Join thousands of companies attracting top talent through our platform. Get started today and reach qualified candidates.
-            </p>
-            <button class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-md font-medium transition-colors">
-                <i class="fas fa-building mr-2"></i> List Your Company
-            </button>
-        </section>
+
+        <!-- Pagination -->
+        <div class="flex justify-center">
+            <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <span class="sr-only">Previous</span>
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                <a href="#" aria-current="page" class="z-10 bg-lilac-400 border-lilac-400 text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    1
+                </a>
+                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    2
+                </a>
+                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    3
+                </a>
+                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    ...
+                </a>
+                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    8
+                </a>
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <span class="sr-only">Next</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </nav>
+        </div>
     </main>
+
+    <!-- Call to Action -->
+    <section class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-6 mb-8 text-center fade-on-scroll">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Want Your Company Featured?</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4 max-w-xl mx-auto text-sm">
+            Join thousands of companies attracting top talent through our platform.
+        </p>
+        <button class="px-4 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-md text-sm font-medium transition-colors">
+            <i class="fas fa-building mr-2"></i> List Your Company
+        </button>
+    </section>
 
     <!-- Footer -->
     <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
@@ -704,7 +708,76 @@
         }
     });
 
+    // City/District data for each province
+    const cityData = {
+        "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam", "Aceh Barat", "Aceh Barat Daya", "Aceh Besar", "Aceh Jaya", "Aceh Selatan", "Aceh Singkil", "Aceh Tamiang", "Aceh Tengah", "Aceh Tenggara", "Aceh Timur", "Aceh Utara", "Bener Meriah", "Bireuen", "Gayo Lues", "Nagan Raya", "Pidie", "Pidie Jaya", "Simeulue"],
+        "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padangsidempuan", "Pematangsiantar", "Sibolga", "Tanjung Balai", "Tebing Tinggi", "Asahan", "Batu Bara", "Dairi", "Deli Serdang", "Humbang Hasundutan", "Karo", "Labuhanbatu", "Labuhanbatu Selatan", "Labuhanbatu Utara", "Langkat", "Mandailing Natal", "Nias", "Nias Barat", "Nias Selatan", "Nias Utara", "Padang Lawas", "Padang Lawas Utara", "Pakpak Bharat", "Samosir", "Serdang Bedagai", "Simalungun", "Tapanuli Selatan", "Tapanuli Tengah", "Tapanuli Utara", "Toba"],
+        "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok", "Agam", "Dharmasraya", "Kepulauan Mentawai", "Lima Puluh Kota", "Padang Pariaman", "Pasaman", "Pasaman Barat", "Pesisir Selatan", "Sijunjung", "Solok", "Solok Selatan", "Tanah Datar"],
+        "riau": ["Pekanbaru", "Dumai", "Bengkalis", "Indragiri Hilir", "Indragiri Hulu", "Kampar", "Kepulauan Meranti", "Kuantan Singingi", "Pelalawan", "Rokan Hilir", "Rokan Hulu", "Siak"],
+        "jambi": ["Jambi", "Sungai Penuh", "Batanghari", "Bungo", "Kerinci", "Merangin", "Muaro Jambi", "Sarolangun", "Tanjung Jabung Barat", "Tanjung Jabung Timur", "Tebo"],
+        "sumatra-selatan": ["Lubuklinggau", "Pagar Alam", "Palembang", "Prabumulih", "Banyuasin", "Empat Lawang", "Lahat", "Muara Enim", "Musi Banyuasin", "Musi Rawas", "Musi Rawas Utara", "Ogan Ilir", "Ogan Komering Ilir", "Ogan Komering Ulu", "Ogan Komering Ulu Selatan", "Ogan Komering Ulu Timur", "Penukal Abab Lematang Ilir"],
+        "bengkulu": ["Bengkulu", "Bengkulu Selatan", "Bengkulu Tengah", "Bengkulu Utara", "Kaur", "Kepahiang", "Lebong", "Mukomuko", "Rejang Lebong", "Seluma"],
+        "lampung": ["Bandar Lampung", "Metro", "Lampung Barat", "Lampung Selatan", "Lampung Tengah", "Lampung Timur", "Lampung Utara", "Mesuji", "Pesawaran", "Pesisir Barat", "Pringsewu", "Tulang Bawang", "Tulang Bawang Barat", "Tanggamus", "Way Kanan"],
+        "kepulauan-bangka-belitung": ["Pangkal Pinang", "Bangka", "Bangka Barat", "Bangka Selatan", "Bangka Tengah", "Belitung", "Belitung Timur"],
+        "kepulauan-riau": ["Batam", "Tanjung Pinang", "Bintan", "Karimun", "Kepulauan Anambas", "Lingga", "Natuna"],
+        "dki-jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+        "jawa-barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya", "Bandung", "Bandung Barat", "Bekasi", "Bogor", "Ciamis", "Cianjur", "Cirebon", "Garut", "Indramayu", "Karawang", "Kuningan", "Majalengka", "Pangandaran", "Purwakarta", "Subang", "Sukabumi", "Sumedang", "Tasikmalaya"],
+        "jawa-tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal", "Banjarnegara", "Banyumas", "Batang", "Blora", "Boyolali", "Brebes", "Cilacap", "Demak", "Grobogan", "Jepara", "Karanganyar", "Kebumen", "Kendal", "Klaten", "Kudus", "Magelang", "Pati", "Pekalongan", "Pemalang", "Purbalingga", "Purworejo", "Rembang", "Semarang", "Sragen", "Sukoharjo", "Tegal", "Temanggung", "Wonogiri", "Wonosobo"],
+        "di-yogyakarta": ["Yogyakarta", "Bantul", "Gunungkidul", "Kulon Progo", "Sleman"],
+        "jawa-timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya", "Bangkalan", "Banyuwangi", "Blitar", "Bojonegoro", "Bondowoso", "Gresik", "Jember", "Jombang", "Kediri", "Lamongan", "Lumajang", "Madiun", "Magetan", "Malang", "Mojokerto", "Nganjuk", "Ngawi", "Pacitan", "Pamekasan", "Pasuruan", "Ponorogo", "Probolinggo", "Sampang", "Sidoarjo", "Situbondo", "Sumenep", "Trenggalek", "Tuban", "Tulungagung"],
+        "banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan", "Lebak", "Pandeglang", "Serang", "Tangerang"],
+        "bali": ["Denpasar", "Badung", "Bangli", "Buleleng", "Gianyar", "Jembrana", "Karangasem", "Klungkung", "Tabanan"],
+        "nusa-tenggara-barat": ["Bima", "Mataram", "Bima", "Dompu", "Lombok Barat", "Lombok Tengah", "Lombok Timur", "Lombok Utara", "Sumbawa", "Sumbawa Barat"],
+        "nusa-tenggara-timur": ["Kupang", "Alor", "Belu", "Ende", "Flores Timur", "Kupang", "Lembata", "Malaka", "Manggarai", "Manggarai Barat", "Manggarai Timur", "Ngada", "Nagekeo", "Rote Ndao", "Sabu Raijua", "Sikka", "Sumba Barat", "Sumba Barat Daya", "Sumba Tengah", "Sumba Timur", "Timor Tengah Selatan", "Timor Tengah Utara"],
+        "kalimantan-barat": ["Pontianak", "Singkawang", "Bengkayang", "Kapuas Hulu", "Kayong Utara", "Ketapang", "Kubu Raya", "Landak", "Melawi", "Mempawah", "Sambas", "Sanggau", "Sekadau", "Sintang"],
+        "kalimantan-tengah": ["Palangka Raya", "Barito Selatan", "Barito Timur", "Barito Utara", "Gunung Mas", "Kapuas", "Katingan", "Kotawaringin Barat", "Kotawaringin Timur", "Lamandau", "Murung Raya", "Pulang Pisau", "Sukamara", "Seruyan"],
+        "kalimantan-selatan": ["Banjarbaru", "Banjarmasin", "Balangan", "Banjar", "Barito Kuala", "Hulu Sungai Selatan", "Hulu Sungai Tengah", "Hulu Sungai Utara", "Kotabaru", "Tabalong", "Tanah Bumbu", "Tanah Laut", "Tapin"],
+        "kalimantan-timur": ["Balikpapan", "Bontang", "Samarinda", "Berau", "Kutai Barat", "Kutai Kartanegara", "Kutai Timur", "Mahakam Ulu", "Paser", "Penajam Paser Utara"],
+        "kalimantan-utara": ["Tarakan", "Bulungan", "Malinau", "Nunukan", "Tana Tidung"],
+        "sulawesi-utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon", "Bolaang Mongondow", "Bolaang Mongondow Selatan", "Bolaang Mongondow Timur", "Bolaang Mongondow Utara", "Kepulauan Sangihe", "Kepulauan Siau Tagulandang Biaro", "Kepulauan Talaud", "Minahasa", "Minahasa Selatan", "Minahasa Tenggara", "Minahasa Utara"],
+        "sulawesi-tengah": ["Palu", "Banggai", "Banggai Kepulauan", "Banggai Laut", "Buol", "Donggala", "Morowali", "Morowali Utara", "Parigi Moutong", "Poso", "Sigi", "Tojo Una-Una", "Toli-Toli"],
+        "sulawesi-selatan": ["Makassar", "Palopo", "Parepare", "Bantaeng", "Barru", "Bone", "Bulukumba", "Enrekang", "Gowa", "Jeneponto", "Kepulauan Selayar", "Luwu", "Luwu Timur", "Luwu Utara", "Maros", "Pangkajene dan Kepulauan", "Pinrang", "Sidenreng Rappang", "Sinjai", "Soppeng", "Takalar", "Tana Toraja", "Toraja Utara", "Wajo"],
+        "sulawesi-tenggara": ["Bau-Bau", "Kendari", "Bombana", "Buton", "Buton Selatan", "Buton Tengah", "Buton Utara", "Kolaka", "Kolaka Timur", "Kolaka Utara", "Konawe", "Konawe Kepulauan", "Konawe Selatan", "Konawe Utara", "Muna", "Muna Barat", "Wakatobi"],
+        "gorontalo": ["Gorontalo", "Boalemo", "Bone Bolango", "Gorontalo", "Gorontalo Utara", "Pohuwato"],
+        "sulawesi-barat": ["Mamuju", "Majene", "Mamasa", "Mamuju", "Mamuju Tengah", "Mamuju Utara", "Polewali Mandar"],
+        "maluku": ["Ambon", "Tual", "Buru", "Buru Selatan", "Kepulauan Aru", "Maluku Barat Daya", "Maluku Tengah", "Maluku Tenggara", "Maluku Tenggara Barat", "Seram Bagian Barat", "Seram Bagian Timur"],
+        "maluku-utara": ["Ternate", "Tidore Kepulauan", "Halmahera Barat", "Halmahera Tengah", "Halmahera Utara", "Halmahera Selatan", "Kepulauan Sula", "Halmahera Timur", "Pulau Morotai", "Pulau Taliabu"],
+        "papua-barat": ["Fakfak", "Kaimana", "Manokwari", "Manokwari Selatan", "Pegunungan Arfak", "Teluk Bintuni", "Teluk Wondama"],
+        "papua-barat-daya": ["Sorong", "Raja Ampat", "Sorong", "Sorong Selatan", "Maybrat", "Tambrauw"],
+        "papua": ["Jayapura", "Biak Numfor", "Jayapura", "Keerom", "Kepulauan Yapen", "Mamberamo Raya", "Sarmi", "Supiori", "Waropen"],
+        "papua-selatan": ["Merauke", "Asmat", "Boven Digoel", "Mappi"],
+        "papua-tengah": ["Mimika", "Deiyai", "Dogiyai", "Intan Jaya", "Nabire", "Paniai", "Puncak", "Puncak Jaya"],
+        "papua-pegunungan": ["Jayawijaya", "Lanny Jaya", "Mamberamo Tengah", "Nduga", "Pegunungan Bintang", "Tolikara", "Yahukimo", "Yalimo"]
+    };
+
+    // JavaScript to handle province-city relationship
+    document.getElementById('province').addEventListener('change', function() {
+        const citySelect = document.getElementById('city');
+        const selectedProvince = this.value;
+        
+        // Clear previous options
+        citySelect.innerHTML = '<option value="" data-i18n="filter.all_cities">All Cities/Districts</option>';
+        
+        if (selectedProvince) {
+            // Enable city select
+            citySelect.disabled = false;
+            
+            // Add cities for selected province
+            cityData[selectedProvince].forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.toLowerCase().replace(/\s+/g, '-');
+                option.textContent = city;
+                citySelect.appendChild(option);
+            });
+        } else {
+            // Disable city select if no province selected
+            citySelect.disabled = true;
+        }
+    });
+
 </script>
 <script src="language.js"></script>
 <script src="darkmode.js"></script>
+
+
 </html>
