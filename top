@@ -1,8 +1,0 @@
-  feature/noTelpon          [m 35d3b6b chore (app): menambahkan nomor telepon auth
-  features/company_profile  [m 6f246e2 Merge pull request #17 from Idkwhat77/login
-  features/company_profile2 [m 5a94eb2 Merge pull request #18 from Idkwhat77/index
-  features/company_profile5 [m 932ad1f added transitions, made layout prettier and company profile actually has company stuff now wowwww
-  features/company_profile50[m fc26e98 added funny loading circle to all pages
-  features/employee_profile4[m fc096c1 fixed evil dark mode, added company profile but just copy paste for now
-* [32mfeatures/languagesandetc  [m 4c64acd added languages for companies and candidates (almost) and made profile employee horizontal
-  main                      [m 6ee51b8 [behind 5] Merge pull request #27 from Idkwhat77/homepage
