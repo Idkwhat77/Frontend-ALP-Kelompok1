@@ -188,16 +188,16 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-16">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Hero Section -->
         <section class="text-center mb-8 animate-fade-in">
             <h1 data-i18n-html="hero.title" class="text-4xl md:text-5xl font-bold lg:mb-6 font-elegant text-gray-900 dark:text-white opacity-0">
 
             </h1>
-            <h1 data-i18n-html="hero.subtitle" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
+            <h1 data-i18n-html="hero.about" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
                 About <span class="text-lilac-400">Ruang Kerja</span>
             </h1>
-            <p data-i18n="hero.description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl mx-auto text-sm">
+            <p data-i18n="hero.about_description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl mx-auto text-sm">
                 Connecting professionals with Oppurtunities
             </p>
 
@@ -520,19 +520,6 @@
             }
         });
         
-        // Dark mode toggle functionality
-        function toggleDarkMode() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('darkMode', isDark ? 'dark' : 'light');
-        }
-        
-        // Set up dark mode toggle buttons
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
-        
-        if (darkModeToggle) darkModeToggle.addEventListener('click', toggleDarkMode);
-        if (mobileDarkModeToggle) mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
-        
         // Fade-in animation on scroll
         function checkVisibility() {
             const elements = document.querySelectorAll('.fade-on-scroll');
@@ -580,5 +567,7 @@
             });
         });
     </script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
 </body>
 </html>
