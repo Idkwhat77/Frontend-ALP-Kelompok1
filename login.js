@@ -362,9 +362,7 @@ class AuthFormController {
                 // Clear form and switch to login
                 this.registerForm.reset();
                 setTimeout(() => {
-                    this.switchToLogin();
-                    // Pre-fill login email
-                    this.loginEmailField.value = email;
+                    window.location.href = 'choose.html';
                 }, 1000);
             } else {
                 throw new Error(response.message || 'Registration failed');

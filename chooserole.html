@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Choose Your Role - RuangKerja</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- Required Javascripts -->
+  <script src="js/chooserole.js"></script>
+  <script src="darkmode.js"></script>
+  <script src="language.js"></script>
+
+  <!-- Tailwind CSS Custom -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      tailwind.config = {
+          darkMode: 'class',
+          theme: {
+              extend: {
+                  colors: {
+                      lilac: {
+                          50: '#faf7fd',
+                          100: '#f4ecfb',
+                          200: '#ebddf7',
+                          300: '#dbc2f0',
+                          400: '#c69ae6',
+                          500: '#b87ce0',
+                      },
+                  },
+                  fontFamily: {
+                      elegant: ['"Playfair Display"', 'serif'],
+                      poppins: ['Poppins', 'sans-serif'],
+                  },
+                  animation: {
+                      'fade-in': 'fadeIn 1.5s ease-in forwards',
+                      'hover-scale': 'hoverScale 0.7s ease-in-out forwards',
+                      'rotate-y': 'rotatey 0.5s ease-in-out forwards',
+                      'slideOutLeft': 'slideFadeOutLeft 0.5s ease forwards',
+                      'slideOutRight': 'slideFadeOutRight 0.5s ease forwards',
+                      'slideInRight': 'slideFadeInRight 0.5s ease forwards',
+                      'slideInLeft': 'slideFadeInLeft 0.5s ease forwards',
+                  },
+                  keyframes: {
+                      fadeIn: {
+                          '0%': { opacity: '0', transform: 'translateY(70vh)' },
+                          '100%': { opacity: '1', transform: 'translateY(0)' },
+                      },
+                      hoverScale: {
+                          '0%': { transform: 'scale(1)' },
+                          '100%': { transform: 'scale(1.03)' },
+                      },
+                      rotatey: {
+                          '0%': { transform: 'rotateY(0deg)', opacity: '0' },
+                          '100%': { transform: 'rotateY(180deg)', opacity: '1' },
+                      },
+                      slideFadeOutLeft: {
+                        '0%': { opacity: 1, transform: 'translateX(0)' },
+                        '100%': { opacity: 0, transform: 'translateX(-100%)' }
+                      },
+                      slideFadeOutRight: {
+                        '0%': { opacity: 1, transform: 'translateX(0)' },
+                        '100%': { opacity: 0, transform: 'translateX(100%)' }
+                      },
+                      slideFadeInRight: {
+                        '0%': { opacity: 0, transform: 'translateX(100%)' },
+                        '100%': { opacity: 1, transform: 'translateX(0)' }
+                      },
+                      slideFadeInLeft: {
+                        '0%': { opacity: 0, transform: 'translateX(-100%)' },
+                        '100%': { opacity: 1, transform: 'translateX(0)' }
+                      }
+                  },
+                  transitionProperty: {
+                      'scale': 'transform',
+                  }
+              }
+          }
+      }
+  </script>
+    
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+      .hover-scale:hover {
+          transform: scale(1.03);
+      }
+      
+      .fade-on-scroll {
+          opacity: 0;
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      
+      .fade-on-scroll.visible {
+          opacity: 1;
+      }
+      
+      button:focus, input:focus {
+          outline: 2px solid #c69ae6;
+          outline-offset: 2px;
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+          background: #f4ecfb;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+          background: #dbc2f0;
+          border-radius: 4px;
+      }
+      
+      .dark ::-webkit-scrollbar-track {
+          background: #1a202c;
+      }
+      
+      .dark ::-webkit-scrollbar-thumb {
+          background: #4a5568;
+      }
+  </style>
+</head>
+<body class="overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center h-screen font-poppins transition duration-300 animate-fade-in">
+
+  <!-- Choose First Role Selection -->
+  <div id="first-role-selection" class="fixed bg-white dark:bg-gray-800 p-8 w-[30vw] h-auto rounded-lg shadow-lg text-center transition duration-300 animate-fade-in">
+    <div class="absolute top-0 right-0 p-4 flex items-center justify-between w-full">
+      <select id="language-selector" class="bg-lilac-100 dark:bg-gray-800 text-gray-700 dark:text-white rounded">
+        <option value="en">EN</option>
+        <option value="id">ID</option>
+      </select>
+    </div>
+    <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="w-auto h-30 mx-auto mb-4">
+    <h1 class="text-2xl font-bold text-lilac-400 mb-6">Continue as</h1>
+    <div class="flex flex-col gap-4">
+      <button onclick="goTo('employee-role-part-1')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale"><i class="fas fa-user mr-2"></i> A Employee</button>
+      <button onclick="goTo('company-role-part-1')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale"><i class="fas fa-building mr-2"></i> A Company</button>
+    </div>
+  </div>
+
+  <!-- Employee Role Part 1 -->
+  <div id="employee-role-part-1" class="fixed bg-white dark:bg-gray-800 p-8 w-[30vw] h-auto rounded-lg shadow-lg text-center hidden">
+    <div class="absolute top-0 right-0 p-4 flex items-center justify-between w-full">
+      <select id="language-selector" class="bg-lilac-100 dark:bg-gray-800 text-gray-700 dark:text-white rounded">
+        <option value="en">EN</option>
+        <option value="id">ID</option>
+      </select>
+    </div>
+
+    <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="w-auto h-24 mx-auto mb-4">
+    <h1 class="text-2xl font-bold text-lilac-400 mb-6">Employee Registration</h1>
+
+    <!-- Updated Employee Form: database‑ready field structure -->
+    <form id="employee-form" class="flex flex-col gap-3 text-left text-sm">
+      <!-- 1. Full Name -->
+      <div class="relative">
+        <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+        <input id="employee-full-name" type="text" name="full_name" placeholder="Full Name" required
+          class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+      </div>
+
+      <!-- 2. Contact Email -->
+      <div class="relative">
+        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+        <input id="employee-email" type="email" name="email" placeholder="Contact Email" required
+          class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+      </div>
+
+      <!-- 3. Birth Date -->
+      <div class="relative">
+        <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+        <input id="employee-birth-date" type="date" name="birth_date" placeholder="Birth Date" required
+          class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+      </div>
+
+      <!-- 4. City -->
+      <div class="relative">
+        <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+        <select id="employee-city" name="city" id="city" required
+          class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+          <option value="" disabled selected>City</option>
+          <option value="jakarta">Jakarta</option>
+          <option value="bandung">Bandung</option>
+          <option value="surabaya">Surabaya</option>
+          <option value="yogyakarta">Yogyakarta</option>
+          <option value="medan">Medan</option>
+          <option value="bali">Bali</option>
+          <option value="makassar">Makassar</option>
+          <option value="semarang">Semarang</option>
+          <option value="palembang">Palembang</option>
+          <option value="malang">Malang</option>
+          <option value="remote">Remote</option>
+        </select>
+      </div>
+
+      <!-- 5. Job Type -->
+      <div class="relative">
+        <i class="fas fa-briefcase absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+        <select id="employee-job-type" name="job_type" required
+          class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+          <option value="" disabled selected>Job Type</option>
+          <option>Full‑time</option>
+          <option>Part‑time</option>
+          <option>Internship</option>
+          <option>Contract</option>
+          <option>Freelance</option>
+        </select>
+      </div>
+
+      <!-- 6. Industry -->
+      <div class="relative">
+        <i class="fas fa-building absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+        <select id="employee-industry" name="industry" required
+          class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+          <option value="" disabled selected>Industry</option>
+          <option>Technology</option>
+          <option>Healthcare</option>
+          <option>Finance</option>
+          <option>Education</option>
+          <option>Manufacturing</option>
+          <option>Retail</option>
+          <option>Hospitality</option>
+          <option>Marketing</option>
+          <option>Government</option>
+        </select>
+      </div>
+
+      <!-- 7. Employment Status -->
+      <div class="relative">
+        <i class="fas fa-user-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+        <select id="employee-employment-status" name="employment_status" required
+          class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+          <option value="" disabled selected>Employment Status</option>
+          <option value="employed">Employed</option>
+          <option value="unemployed">Unemployed</option>
+        </select>
+      </div>
+    </form>
+
+    <div class="flex justify-between mt-4">
+      <button onclick="goTo('first-role-selection')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale">
+        <i class="fas fa-arrow-left mr-1"></i> Back
+      </button>
+      <button onclick="submitEmployeeForm()" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale">
+        Continue <i class="fas fa-arrow-right ml-1"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Theme Toggle -->
+  <div class="fixed bottom-6 right-6 z-10">
+    <button id="darkModeToggle" class="w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-lilac-400 dark:hover:text-lilac-300 transition-colors duration-300">
+        <i class="fas fa-moon dark:hidden"></i>
+        <i class="fas fa-sun hidden dark:inline"></i>
+    </button>
+  </div>
+</body>
+</html>
