@@ -1154,37 +1154,6 @@
             showRegister.click();
           }, 500);
         });
-
-        // Form submissions
-        document.getElementById("loginForm").addEventListener("submit", (e) => {
-          e.preventDefault();
-          alert("Login functionality would be implemented here");
-        });
-
-        document
-          .getElementById("registerForm")
-          .addEventListener("submit", (e) => {
-            e.preventDefault();
-            const password = document.getElementById("register-password").value;
-            const confirm = document.getElementById("register-confirm").value;
-            if (password !== confirm) {
-              alert("Passwords do not match!");
-              return;
-            }
-            alert("Registration functionality would be implemented here");
-          });
-
-        // Show tutorial on first visit
-        const hasSeenTutorial = localStorage.getItem("hasSeenTutorial");
-        if (!hasSeenTutorial) {
-          setTimeout(() => {
-            tutorialOverlay.style.opacity = "1";
-            showStep(1);
-            localStorage.setItem("hasSeenTutorial", "true");
-          }, 500);
-        } else {
-          authContainer.classList.remove("opacity-0");
-        }
         
         // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
         const loading_circle = document.createElement('div');
