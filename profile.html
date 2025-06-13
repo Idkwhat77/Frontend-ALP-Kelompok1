@@ -377,12 +377,6 @@
         <span data-i18n="education_nav" id="nav-education" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Education</span>
       </button>
     </div>
-    <div class="flex justify-end">
-      <button id="btn-chat" onclick="openModal('modal-chat')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
-        <i class="fa fa-comment-dots ml-0.5"></i>
-        <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
-      </button>
-    </div>
   </div>
 </body>
 <script>
@@ -483,8 +477,6 @@
   const navSkills = document.getElementById('nav-skills')
   const btnEducation = document.getElementById('btn-education');
   const navEducation = document.getElementById('nav-education')
-  const btnChat = document.getElementById('btn-chat');
-  const navChat = document.getElementById('nav-chat')
 
   btnSkills.addEventListener('mouseover', () => {
     navSkills.classList.remove('hidden');
@@ -505,16 +497,6 @@
     btnEducation.classList.remove('w-36');
     btnEducation.classList.add('w-12');
     navEducation.classList.add('hidden');
-  });
-  btnChat.addEventListener('mouseover', () => {
-    navChat.classList.remove('hidden');
-    btnChat.classList.remove('w-12');
-    btnChat.classList.add('w-36');
-  });
-  btnChat.addEventListener('mouseout', () => {
-    btnChat.classList.remove('w-36');
-    btnChat.classList.add('w-12');
-    navChat.classList.add('hidden');
   });
 
 </script>
