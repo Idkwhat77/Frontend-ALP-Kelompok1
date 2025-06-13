@@ -362,6 +362,20 @@
     </div>
   </div>
 
+  <!-- Chat Modal -->
+  <div id="modal-chat" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 h-auto overflow-y-auto">
+      <h3 class="text-2xl font-semibold text-[#C69AE6] mb-4">Chat</h3>
+      <div id="chat-box" class="bg-lilac-50 dark:bg-gray-800 rounded p-3 mb-3 h-96 overflow-y-auto text-sm text-gray-800 dark:text-gray-200"></div>
+      <div class="flex ">
+        <input id="chat-input" type="text" placeholder="Type a message..." class="flex-grow rounded-l px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+        <button onclick="sendChat()" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-r">Send</button>
+      </div>
+      <button onclick="closeModal('modal-chat')" class="text-white px-4 py-2 mt-4 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 w-full">Close</button>
+    </div>
+  </div>
+
+
   <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
   <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
     <div class="flex justify-end">
@@ -385,6 +399,29 @@
     </div>
   </div>
 </body>
+
+<script>
+  const chatBox = document.getElementById('chat-box');
+  const chatInput = document.getElementById('chat-input');
+
+  function sendChat() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    const msgElem = document.createElement('div');
+    msgElem.textContent = "You: " + message;
+    msgElem.classList.add('mb-1');
+    chatBox.appendChild(msgElem);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    chatInput.value = '';
+  }
+
+  // Allow Enter key to send
+  chatInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') sendChat();
+  });
+</script>
+
 <script>
         
   // Mobile menu toggle
