@@ -202,7 +202,7 @@
       <div class="flex flex-col items-center text-center gap-5">
         <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity duration-300 object-cover" src="img/blackswa.png" alt="A majestic llama">
         <h1 class="text-5xl font-bold text-white animate-fade-in-from-down">Black Swan LLC</h1>
-        <p class="mt-4 text-lg text-white animate-fade-in-from-down">Join us to create your future (literally)~</p>
+        <p class="mt-4 text-lg text-white animate-fade-in-from-down">Information Technology</p>
       </div>
       <div class="flex justify-center mt-6 animate-fade-in-from-down">
         <a data-i18n="cv_download" href="cv/Escoffier_Resume.pdf" download
@@ -262,52 +262,62 @@
     </div>
   </div>
 
-  <!-- Employee Education Modal Box (popup basically) -->
+  <!-- Company Members Modal Box (popup basically) -->
   <div id="modal-members" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
     <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 data-i18n="members" class="text-3xl font-semibold text-[#C69AE6] mt-4">Our Members</h3>
-      <div class="flex flex-col mt-4">
-        <div class="flex flex-row">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fleuve Cendre">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Fleuve Cendre</h2>
-            <p class="text-black dark:text-white">2025-Present</p>
+      <h3 data-i18n="members" class="text-3xl font-semibold text-[#C69AE6] mt-4">Our Team</h3>
+      <div class="flex flex-col mt-4 gap-4">
+        <!-- CEO -->
+        <div class="flex flex-row items-center">
+          <img class="rounded-full w-20 h-20 object-cover" src="img/theorist_matpat_9.webp" alt="CEO">
+          <div class="ml-5">
+            <h4 class="text-xl font-semibold text-[#C69AE6]">Alex Johnson</h4>
+            <p class="text-black dark:text-white">Chief Executive Officer (CEO)</p>
           </div>
         </div>
-        <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
+
+        <!-- CTO -->
+        <div class="flex flex-row items-center">
+          <img class="rounded-full w-20 h-20 object-cover" src="img/cto.png" alt="CTO">
+          <div class="ml-5">
+            <h4 class="text-xl font-semibold text-[#C69AE6]">Jamie Rivera</h4>
+            <p class="text-black dark:text-white">Chief Technology Officer (CTO)</p>
           </div>
         </div>
-        <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
+
+        <!-- CFO -->
+        <div class="flex flex-row items-center">
+          <img class="rounded-full w-20 h-20 object-cover" src="img/cfo.png" alt="CFO">
+          <div class="ml-5">
+            <h4 class="text-xl font-semibold text-[#C69AE6]">Morgan Lee</h4>
+            <p class="text-black dark:text-white">Chief Financial Officer (CFO)</p>
           </div>
         </div>
-        <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
+
+        <!-- HR -->
+        <div class="flex flex-row items-center">
+          <img class="rounded-full w-20 h-20 object-cover" src="img/hr.png" alt="HR">
+          <div class="ml-5">
+            <h4 class="text-xl font-semibold text-[#C69AE6]">Rina Okabe</h4>
+            <p class="text-black dark:text-white">Head of Human Resources</p>
           </div>
         </div>
       </div>
-      <button onclick="closeModal('modal-education')" class="text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 mt-5">Close</button>
+
+      <button onclick="closeModal('modal-members')" class="text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 mt-6">Close</button>
     </div>
   </div>
 
-  <!-- Employee Skills Modal Box (popups basically again)-->
-  <div id="modal-skills" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+  <!-- Company Services Modal Box (popups basically again)-->
+  <div id="modal-services" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
     <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 data-i18n="skills" class="text-2xl font-semibold text-[#C69AE6] mb-4">Skills</h3>
+      <h3 data-i18n="services" class="text-3xl font-semibold text-[#C69AE6] mb-4">Core Services</h3>
       <ul class="list-disc list-inside text-black dark:text-white mb-6">
-        <li>5-Star Cuisine Mastery</li>
-        <li>Perfect Plating</li>
-        <li>Sassy Sous Chef Handling</li>
+        <li>Custom Software Development</li>
+        <li>Cloud Infrastructure Management</li>
+        <li>Cybersecurity Solutions</li>
+        <li>AI & Machine Learning Consulting</li>
+        <li>24/7 Technical Support</li>
       </ul>
       <button onclick="closeModal('modal-skills')" class="bg text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
     </div>
@@ -316,9 +326,9 @@
   <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
   <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
     <div class="flex justify-end">
-      <button id="btn-skills" onclick="openModal('modal-skills')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+      <button id="btn-services" onclick="openModal('modal-services')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
         <i class="fa fa-dumbbell ml-0.5"></i>
-        <span data-i18n="skills_nav" id="nav-skills" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Skills</span>
+        <span data-i18n="services_nav" id="nav-services" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Services</span>
       </button>
 
     </div>
@@ -436,8 +446,8 @@
 
   // JavaScript for the navigation modal boxes that extends width to the left to show text on hover
   // and shrinks back to icon size when mouse go bye bye
-  const btnSkills = document.getElementById('btn-skills');
-  const navSkills = document.getElementById('nav-skills')
+  const btnSkills = document.getElementById('btn-services');
+  const navSkills = document.getElementById('nav-services')
   const btnMembers = document.getElementById('btn-members');
   const navMembers = document.getElementById('nav-members')
   const btnChat = document.getElementById('btn-chat');
