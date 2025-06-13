@@ -201,8 +201,8 @@
     <div class="lg:fixed flex flex-col bg-lilac-500 dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
         <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity animate-fade-in-from-up duration-300 object-cover" src="img/escoffier.png" alt="Escoffier"  id ="profile-image">
-        <h1 class="text-5xl font-bold text-white animate-fade-in-from-down">Escoffier</h1>
-        <p class="mt-4 text-lg text-white animate-fade-in-from-down">Professional Chef</p>
+        <h1 id="user-name" class="text-5xl font-bold text-white animate-fade-in-from-down">Loading...</h1>
+        <p id="user-specialty" class="mt-4 text-lg text-white animate-fade-in-from-down">Professional Chef</p>
       </div>
       <div class="flex justify-center mt-6">
         <a href="cv/Escoffier_Resume.pdf" download
@@ -232,23 +232,23 @@
           <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[28vw] w-[85vw] h-full text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
             <div class="mb-4">
               <h4 data-i18n="employee_full_name" class="font-semibold text-xl text-[#C69AE6]">Full Name</h4>
-              <p class="text-[#374151] dark:text-white">Escoffier</p>
+              <p id="user-name2" class="text-[#374151] dark:text-white">Loading...</p>
             </div>
             <div class="mb-4">
               <h4 data-i18n="employee_birth_date" class="font-semibold text-xl text-[#C69AE6]">Birth Date</h4>
-              <p class="text-[#374151] dark:text-white">April 1, 1990</p>
+              <p id="user-birthdate" class="text-[#374151] dark:text-white">April 1, 1990</p>
             </div>
             <div class="mb-4">
               <h4 data-i18n="employee_location" class="font-semibold text-xl text-[#C69AE6]">Location</h4>
-              <p class="text-[#374151] dark:text-white">Fontaine, Teyvat</p>
+              <p id="user-location" class="text-[#374151] dark:text-white">Fontaine, Teyvat</p>
             </div>
             <div class="mb-4">
               <h4 data-i18n="employee_employment_status" class="font-semibold text-xl text-[#C69AE6]">Employment Status</h4>
-              <p class="text-[#374151] dark:text-white">Employed - Fleuve Cendre</p>
+              <p id="user-employment-status" class="text-[#374151] dark:text-white">Employed - Fleuve Cendre</p>
             </div>
             <div class="mb-4">
               <h4 data-i18n="employee_contact_email" class="font-semibold text-xl text-[#C69AE6]">Contact Email</h4>
-              <p class="text-[#374151] dark:text-white">escoffier@mail.tyv</p>
+              <p id="user-email" class="text-[#374151] dark:text-white">Loading...</p>
             </div>
           </div>
         </div>
@@ -294,6 +294,7 @@
       </div>
     </div>
   </div>
+
   <!-- Employee Education Modal Box (popup basically) -->
   <div id="modal-education" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
     <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
