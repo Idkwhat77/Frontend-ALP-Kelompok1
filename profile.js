@@ -49,6 +49,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('user-industry').textContent = candidate.industry || '';
     document.getElementById('user-employment-status').textContent = candidate.employmentStatus || '';
 
+    // Fix: Use profileImageUrl instead of profileImage
+    const profileImageElement = document.getElementById('profile-image');
+    if (candidate.profileImageUrl) {
+      // Construct full URL - assuming your backend runs on localhost:8080
+      const imageUrl = `http://localhost:8080${candidate.profileImageUrl}`;
+      profileImageElement.src = imageUrl;
+    } else {
+      profileImageElement.src = 'default-profile.png';
+    }
+    
   } catch (err) {
     console.error('Error loading profile:', err);
   }
