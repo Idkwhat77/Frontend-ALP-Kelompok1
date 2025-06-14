@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <title>Choose Your Role - RuangKerja</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <!-- Required Javascripts -->
+  <script src="api.js"></script>
   <script src="js/chooserole.js"></script>
   <script src="darkmode.js"></script>
   <script src="language.js"></script>
@@ -157,34 +157,32 @@
     </div>
 
     <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="w-auto h-24 mx-auto mb-4">
-    <h1 class="text-2xl font-bold text-lilac-400 mb-6">Employee Registration</h1>
-
-    <!-- Updated Employee Form: database‑ready field structure -->
-    <form id="employee-form" class="flex flex-col gap-3 text-left text-sm">
+    <h1 class="text-2xl font-bold text-lilac-400 mb-6">Employee Registration</h1>    <!-- Updated Employee Form: database‑ready field structure -->
+    <form id="employee-form" class="flex flex-col gap-4 text-left text-sm">
       <!-- 1. Full Name -->
-      <div class="relative">
-        <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+      <div class="form-field-container">
+        <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <input id="employee-full-name" type="text" name="full_name" placeholder="Full Name" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
       </div>
 
       <!-- 2. Contact Email -->
-      <div class="relative">
-        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+      <div class="form-field-container">
+        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <input id="employee-email" type="email" name="email" placeholder="Contact Email" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
       </div>
 
       <!-- 3. Birth Date -->
-      <div class="relative">
-        <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+      <div class="form-field-container">
+        <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <input id="employee-birth-date" type="date" name="birth_date" placeholder="Birth Date" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
       </div>
 
       <!-- 4. City -->
-      <div class="relative">
-        <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+      <div class="form-field-container">
+        <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-city" name="city" id="city" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
           <option value="" disabled selected>City</option>
@@ -203,8 +201,8 @@
       </div>
 
       <!-- 5. Job Type -->
-      <div class="relative">
-        <i class="fas fa-briefcase absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+      <div class="form-field-container">
+        <i class="fas fa-briefcase absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-job-type" name="job_type" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
           <option value="" disabled selected>Job Type</option>
@@ -217,8 +215,8 @@
       </div>
 
       <!-- 6. Industry -->
-      <div class="relative">
-        <i class="fas fa-building absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+      <div class="form-field-container">
+        <i class="fas fa-building absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-industry" name="industry" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
           <option value="" disabled selected>Industry</option>
@@ -235,8 +233,8 @@
       </div>
 
       <!-- 7. Employment Status -->
-      <div class="relative">
-        <i class="fas fa-user-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+      <div class="form-field-container">
+        <i class="fas fa-user-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-employment-status" name="employment_status" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
           <option value="" disabled selected>Employment Status</option>
@@ -244,17 +242,16 @@
           <option value="unemployed">Unemployed</option>
         </select>
       </div>
+      <div class="flex justify-between mt-4">
+        <button onclick="goTo('first-role-selection')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale">
+          <i class="fas fa-arrow-left mr-1"></i> Back
+        </button>
+        <button type="submit" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale">
+          Continue <i class="fas fa-arrow-right ml-1"></i>
+        </button>
+      </div>
     </form>
-
-    <div class="flex justify-between mt-4">
-      <button onclick="goTo('first-role-selection')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale">
-        <i class="fas fa-arrow-left mr-1"></i> Back
-      </button>
-      <button onclick="submitEmployeeForm()" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale">
-        Continue <i class="fas fa-arrow-right ml-1"></i>
-      </button>
     </div>
-  </div>
 
   <!-- Theme Toggle -->
   <div class="fixed bottom-6 right-6 z-10">

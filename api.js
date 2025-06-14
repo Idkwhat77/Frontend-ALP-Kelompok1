@@ -76,13 +76,44 @@ class ApiClient {    constructor() {
         // Store user data if login successful
         if (response.success && response.user) {
             this.setCurrentUser(response.user);
-        }
+        }y
 
         return response;
     }
 
     async getUserById(userId) {
         return this.makeRequest(`/auth/me?userId=${userId}`);
+    }    
+      
+    async createEmployee(employeeData) {
+        
+        // Ensure user is authenticated and get user ID from localStorage
+        const user = this.getCurrentUser();
+        console.log('createEmployee: Current user:', user);
+        
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to create employee profile. Please login first.');
+        }
+
+        // Add user_id to the employee data
+        const dataWithUserId = {
+            ...employeeData,
+            user_id: user.id
+        };
+
+        console.log('createEmployee: Data being sent to API:', dataWithUserId);
+
+        const response = await this.makeRequest(`/candidates/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify(dataWithUserId)
+        });
+        
+        console.log('createEmployee: API response:', response);
+        return response;
     }
 
     // Logout method
