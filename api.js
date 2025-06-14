@@ -4,7 +4,8 @@
  * Simplified version without JWT authentication
  */
 
-class ApiClient {    constructor() {
+class ApiClient {    
+    constructor() {
         this.baseURL = 'http://localhost:8080/api';
         this.currentUser = JSON.parse(localStorage.getItem('current_user') || 'null');
     }
@@ -94,8 +95,8 @@ class ApiClient {    constructor() {
         }
         console.log('getCandidateByUserId: Fetching candidate for user ID:', userId);
 
-        // Fetch candidate data by user ID
-        return this.makeRequest(`/candidates/by-user/${userId}`, {
+        // Updated endpoint to match your controller
+        return this.makeRequest(`/candidates/user/${userId}`, {
             method: 'GET'
         });
     }
@@ -137,7 +138,7 @@ class ApiClient {    constructor() {
         return this.getCurrentUser() !== null;
     }
 
-    // Profile management methods (simplified)
+    // Profile management methods - UPDATED FOR CANDIDATES
     async updateProfile(userData) {
         const user = this.getCurrentUser();
         if (!user) {
@@ -150,13 +151,22 @@ class ApiClient {    constructor() {
         });
     }
 
+    // UPDATED: Profile image upload using candidate endpoint with user ID
     async uploadProfileImage(userId, formData) {
         const user = this.getCurrentUser();
         if (!user) {
             throw new Error('User not authenticated');
         }
 
-        const url = `${this.baseURL}/v1/user/upload-image/${userId}`;
+        // Ensure userId is provided
+        if (!userId) {
+            throw new Error('User ID is required for image upload');
+        }
+        console.log('uploadProfileImage: Current user:', user);
+        console.log('uploadProfileImage: User ID:', userId);
+        
+        // Updated to use candidate endpoint with user ID
+        const url = `${this.baseURL}/candidates/upload-image/user/${userId}`;
         
         try {
             const response = await fetch(url, {
@@ -177,13 +187,15 @@ class ApiClient {    constructor() {
         }
     }
 
+    // UPDATED: Profile image delete using candidate endpoint with user ID
     async deleteProfileImage(userId) {
         const user = this.getCurrentUser();
         if (!user) {
             throw new Error('User not authenticated');
         }
 
-        const url = `${this.baseURL}/v1/user/delete-image/${userId}`;
+        // Updated to use candidate endpoint with user ID
+        const url = `${this.baseURL}/candidates/delete-image/user/${userId}`;
         
         try {
             const response = await fetch(url, {
@@ -201,6 +213,32 @@ class ApiClient {    constructor() {
             console.error('Image delete failed:', error);
             throw error;
         }
+    }
+
+    // Additional candidate methods
+    async getAllCandidates() {
+        return this.makeRequest('/candidates/all', {
+            method: 'GET'
+        });
+    }
+
+    async getCandidateById(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}`, {
+            method: 'GET'
+        });
+    }
+
+    async updateCandidate(candidateId, candidateData) {
+        return this.makeRequest(`/candidates/${candidateId}`, {
+            method: 'PUT',
+            body: JSON.stringify(candidateData)
+        });
+    }
+
+    async deleteCandidate(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}`, {
+            method: 'DELETE'
+        });
     }
 }
 
