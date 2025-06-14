@@ -141,7 +141,12 @@ async function uploadImage() {
                 // Update profile image on page
                 const profileImg = document.getElementById('profile-image');
                 if (profileImg && response.imageUrl) {
-                    profileImg.src = response.imageUrl;
+                    // Ensure the image URL is absolute and points to backend at localhost:8080
+                    let imageUrl = response.imageUrl;
+                    if (!/^https?:\/\//i.test(imageUrl)) {
+                        imageUrl = `http://localhost:8080/${imageUrl.replace(/^\/+/, '')}`;
+                    }
+                    profileImg.src = imageUrl;
                 }
                 
                 resetUploadArea();
