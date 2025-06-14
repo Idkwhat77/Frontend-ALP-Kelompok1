@@ -176,6 +176,32 @@ class ApiClient {    constructor() {
             throw error;
         }
     }
+
+    async deleteProfileImage(userId) {
+        const user = this.getCurrentUser();
+        if (!user) {
+            throw new Error('User not authenticated');
+        }
+
+        const url = `${this.baseURL}/v1/user/delete-image/${userId}`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE'
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || `HTTP error! status: ${response.status}`);
+            }
+            
+            return data;
+        } catch (error) {
+            console.error('Image delete failed:', error);
+            throw error;
+        }
+    }
 }
 
 // Create and export API client instance
