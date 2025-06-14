@@ -331,7 +331,6 @@ class AuthFormController {
             });
 
             if (response.success) {
-                
                 // If registration returns user data, store it (auto-login after registration)
                 if (response.user) {
                     apiClient.setCurrentUser(response.user);

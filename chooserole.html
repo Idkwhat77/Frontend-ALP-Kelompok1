@@ -140,43 +140,45 @@
       </select>
     </div>
     <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="w-auto h-30 mx-auto mb-4">
-    <h1 class="text-2xl font-bold text-lilac-400 mb-6">Continue as</h1>
+    <h1 data-i18n="role.selection" class="text-2xl font-bold text-lilac-400 mb-6">Continue as</h1>
     <div class="flex flex-col gap-4">
-      <button onclick="goTo('employee-role-part-1')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale"><i class="fas fa-user mr-2"></i> A Employee</button>
-      <button onclick="goTo('company-role-part-1')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale"><i class="fas fa-building mr-2"></i> A Company</button>
+      <button data-i18n-html="role.employee" onclick="goTo('employee-role-part-1')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale"><i class="fas fa-user mr-2"></i> A Employee</button>
+      <button data-i18n-html="role.company" onclick="goTo('company-role-part-1')" class="px-4 py-2 bg-[#B87CE0] text-white rounded hover:bg-[#9b5fd0] transition hover-scale"><i class="fas fa-building mr-2"></i> A Company</button>
     </div>
   </div>
 
   <!-- Employee Role Part 1 -->
   <div id="employee-role-part-1" class="fixed bg-white dark:bg-gray-800 p-8 w-[30vw] h-auto rounded-lg shadow-lg text-center hidden">
     <div class="absolute top-0 right-0 p-4 flex items-center justify-between w-full">
-      <select id="language-selector" class="bg-lilac-100 dark:bg-gray-800 text-gray-700 dark:text-white rounded">
+      <select id="language-selector-employee" class="bg-lilac-100 dark:bg-gray-800 text-gray-700 dark:text-white rounded">
         <option value="en">EN</option>
         <option value="id">ID</option>
       </select>
     </div>
 
     <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="w-auto h-24 mx-auto mb-4">
-    <h1 class="text-2xl font-bold text-lilac-400 mb-6">Employee Registration</h1>    <!-- Updated Employee Form: database‑ready field structure -->
+    <h1 data-i18n="role.employee.registration" class="text-2xl font-bold text-lilac-400 mb-6">Employee Registration</h1>
+
+    <!-- Updated Employee Form: database‑ready field structure -->
     <form id="employee-form" class="flex flex-col gap-4 text-left text-sm">
       <!-- 1. Full Name -->
       <div class="form-field-container">
         <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
-        <input id="employee-full-name" type="text" name="full_name" placeholder="Full Name" required
+        <input data-i18n-placeholder="role.employee.full_name" id="employee-full-name" type="text" name="full_name" placeholder="Full Name" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
       </div>
 
       <!-- 2. Contact Email -->
       <div class="form-field-container">
         <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
-        <input id="employee-email" type="email" name="email" placeholder="Contact Email" required
+        <input data-i18n-placeholder="role.employee.email" id="employee-email" type="email" name="email" placeholder="Contact Email" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
       </div>
 
       <!-- 3. Birth Date -->
       <div class="form-field-container">
         <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
-        <input id="employee-birth-date" type="date" name="birth_date" placeholder="Birth Date" required
+        <input data-i18n-placeholder="role.employee.birth_date" id="employee-birth-date" type="date" name="birth_date" placeholder="Birth Date" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
       </div>
 
@@ -185,18 +187,18 @@
         <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-city" name="city" id="city" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
-          <option value="" disabled selected>City</option>
-          <option value="jakarta">Jakarta</option>
-          <option value="bandung">Bandung</option>
-          <option value="surabaya">Surabaya</option>
-          <option value="yogyakarta">Yogyakarta</option>
-          <option value="medan">Medan</option>
-          <option value="bali">Bali</option>
-          <option value="makassar">Makassar</option>
-          <option value="semarang">Semarang</option>
-          <option value="palembang">Palembang</option>
-          <option value="malang">Malang</option>
-          <option value="remote">Remote</option>
+          <option data-i18n="role.employee.city" value="" disabled selected>City</option>
+          <option>Jakarta</option>
+          <option>Bandung</option>
+          <option>Surabaya</option>
+          <option>Yogyakarta</option>
+          <option>Medan</option>
+          <option>Bali</option>
+          <option>Makassar</option>
+          <option>Semarang</option>
+          <option>Palembang</option>
+          <option>Malang</option>
+          <option>Remote</option>
         </select>
       </div>
 
@@ -205,7 +207,7 @@
         <i class="fas fa-briefcase absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-job-type" name="job_type" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
-          <option value="" disabled selected>Job Type</option>
+          <option data-i18n="role.employee.job_type" value="" disabled selected>Job Type</option>
           <option>Full‑time</option>
           <option>Part‑time</option>
           <option>Internship</option>
@@ -219,16 +221,16 @@
         <i class="fas fa-building absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-industry" name="industry" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
-          <option value="" disabled selected>Industry</option>
-          <option>Technology</option>
-          <option>Healthcare</option>
-          <option>Finance</option>
-          <option>Education</option>
-          <option>Manufacturing</option>
-          <option>Retail</option>
-          <option>Hospitality</option>
-          <option>Marketing</option>
-          <option>Government</option>
+          <option data-i18n="role.employee.industry" value="" disabled selected>Industry</option> 
+          <option data-i18n="technology">Technology</option>
+          <option data-i18n="healthcare">Healthcare</option>
+          <option data-i18n="finance">Finance</option>
+          <option data-i18n="education">Education</option>
+          <option data-i18n="manufacturing">Manufacturing</option>
+          <option data-i18n="retail">Retail</option>
+          <option data-i18n="hospitality">Hospitality</option>
+          <option data-i18n="marketing">Marketing</option>
+          <option data-i18n="government">Government</option>
         </select>
       </div>
 
@@ -237,9 +239,9 @@
         <i class="fas fa-user-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-employment-status" name="employment_status" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
-          <option value="" disabled selected>Employment Status</option>
-          <option value="employed">Employed</option>
-          <option value="unemployed">Unemployed</option>
+          <option data-i18n="role.employee.employment_status" value="" disabled selected>Employment Status</option>
+          <option>Employed</option>
+          <option>Unemployed</option>
         </select>
       </div>
       <div class="flex justify-between mt-4">

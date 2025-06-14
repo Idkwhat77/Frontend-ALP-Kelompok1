@@ -76,17 +76,31 @@ class ApiClient {    constructor() {
         // Store user data if login successful
         if (response.success && response.user) {
             this.setCurrentUser(response.user);
-        }y
+        }
 
         return response;
     }
 
     async getUserById(userId) {
         return this.makeRequest(`/auth/me?userId=${userId}`);
-    }    
-      
+    }
+
+    async getCandidateByUserId(userId) {
+        // Ensure user is authenticated
+        const user = this.getCurrentUser();
+        console.log('getCandidateByUserId: Current user:', user);
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to fetch candidate data. Please login first.');
+        }
+        console.log('getCandidateByUserId: Fetching candidate for user ID:', userId);
+
+        // Fetch candidate data by user ID
+        return this.makeRequest(`/candidates/by-user/${userId}`, {
+            method: 'GET'
+        });
+    }
+
     async createEmployee(employeeData) {
-        
         // Ensure user is authenticated and get user ID from localStorage
         const user = this.getCurrentUser();
         console.log('createEmployee: Current user:', user);
@@ -95,13 +109,8 @@ class ApiClient {    constructor() {
             throw new Error('User must be logged in to create employee profile. Please login first.');
         }
 
-        // Add user_id to the employee data
-        const dataWithUserId = {
-            ...employeeData,
-            user_id: user.id
-        };
-
-        console.log('createEmployee: Data being sent to API:', dataWithUserId);
+        // Don't add user_id to the body - it's passed in the header
+        console.log('createEmployee: Data being sent to API:', employeeData);
 
         const response = await this.makeRequest(`/candidates/create`, {
             method: 'POST',
@@ -109,7 +118,7 @@ class ApiClient {    constructor() {
                 'Content-Type': 'application/json',
                 'X-User-Id': user.id
             },
-            body: JSON.stringify(dataWithUserId)
+            body: JSON.stringify(employeeData) // Remove user_id from here
         });
         
         console.log('createEmployee: API response:', response);
