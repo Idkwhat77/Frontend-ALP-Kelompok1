@@ -76,7 +76,7 @@ class ApiClient {    constructor() {
         // Store user data if login successful
         if (response.success && response.user) {
             this.setCurrentUser(response.user);
-        }y
+        }
 
         return response;
     }
