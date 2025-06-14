@@ -373,48 +373,8 @@
             </div>
           </div>
 
-          <!-- Step 1: Register Name -->
+          <!-- Step 1: Register Email -->
           <div class="tutorial-step" data-step="1" data-path="register">
-            <div class="text-lilac-400 text-4xl mb-5">
-              <i class="fas fa-user"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">
-              Nama Lengkap Anda
-            </h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-              Jika Anda baru, mulai dengan memasukkan nama lengkap untuk profil Anda.
-            </p>
-
-            <div class="bg-lilac-50 dark:bg-gray-700 p-6 rounded-lg mb-6 text-left max-w-md mx-auto relative">
-              <div class="flex items-center mb-4" id="tut-name">
-                <div class="w-10 h-10 rounded-full bg-lilac-400 text-white flex items-center justify-center mr-3">
-                  <i class="fas fa-user"></i>
-                </div>
-                <div class="flex-1">
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Lengkap</label>
-                  <input type="text" class="tutorial-input block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" placeholder="John Doe" />
-                </div>
-              </div>
-
-              <div class="tutorial-tooltip right" style="top: 20px; left: calc(100% + 15px)">
-                <div class="font-medium text-lilac-500 mb-1">Masukkan nama lengkap</div>
-                <div class="text-gray-600 dark:text-gray-300">
-                  Nama ini akan ditampilkan di profil Anda.
-                </div>
-              </div>
-            </div>
-            <div class="flex justify-between max-w-md mx-auto">
-              <button class="prev-step px-4 py-2 text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 transition-colors btn-prev">
-                <i class="fas fa-arrow-left mr-2 icon"></i> Kembali
-              </button>
-              <button class="next-step px-6 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-full font-medium transition-all duration-300 btn-next">
-                Lanjut <i class="fas fa-arrow-right ml-2 icon"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Step 2: Register Email -->
-          <div class="tutorial-step" data-step="2" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-envelope"></i>
             </div>
@@ -453,8 +413,8 @@
             </div>
           </div>
 
-          <!-- Step 3: Register Phone -->
-          <div class="tutorial-step" data-step="3" data-path="register">
+          <!-- Step 2: Register Phone -->
+          <div class="tutorial-step" data-step="2" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-phone"></i>
             </div>
@@ -493,8 +453,8 @@
             </div>
           </div>
 
-          <!-- Step 6: Register Password -->
-          <div class="tutorial-step" data-step="4" data-path="register">
+          <!-- Step 3: Register Password -->
+          <div class="tutorial-step" data-step="3" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-lock"></i>
             </div>
@@ -533,8 +493,8 @@
             </div>
           </div>
 
-          <!-- Step 7: Register Confirm Password -->
-          <div class="tutorial-step" data-step="5" data-path="register">
+          <!-- Step 4: Register Confirm Password -->
+          <div class="tutorial-step" data-step="4" data-path="register">
             <div class="text-lilac-400 text-4xl mb-5">
               <i class="fas fa-lock"></i>
             </div>
@@ -574,8 +534,8 @@
             </div>
           </div>
 
-          <!-- Step 8: Register Complete -->
-          <div class="tutorial-step" data-step="6" data-path="register">
+          <!-- Step 5: Register Complete -->
+          <div class="tutorial-step" data-step="5" data-path="register">
             <div class="floating text-lilac-400 text-6xl mb-6">
               <i class="fas fa-check-circle"></i>
             </div>
@@ -750,28 +710,6 @@
           </div>
 
           <form id="registerForm" class="space-y-6">
-            <div>
-              <label
-                for="register-name"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >Full Name</label
-              >
-              <div class="relative">
-                <div
-                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                >
-                  <i class="fas fa-user text-gray-400 dark:text-gray-500"></i>
-                </div>
-                <input
-                  type="text"
-                  id="register-name"
-                  class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-            </div>
-
             <div>
               <label
                 for="register-email"
@@ -1050,12 +988,11 @@
         });
 
         choiceRegisterBtn.addEventListener("click", () => {
-          currentStep = 5; // corresponds to register step 1 (name)
+          currentStep = 5; // corresponds to register step 1 (email)
           login = false;
-          totalSteps = 10;
+          totalSteps = 9;
           showStep(currentStep);
         });
-
 
         const tutorialProgress = document.getElementById("tutorial-progress");
 

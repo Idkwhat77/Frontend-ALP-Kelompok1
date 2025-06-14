@@ -21,7 +21,6 @@ class AuthFormController {
         this.loginPasswordField = document.getElementById('login-password');
 
         // Register form fields
-        this.registerNameField = document.getElementById('register-name');
         this.registerEmailField = document.getElementById('register-email');
         this.registerPasswordField = document.getElementById('register-password');
         this.registerConfirmField = document.getElementById('register-confirm');
@@ -159,23 +158,6 @@ class AuthFormController {
         }
         
         this.showFieldSuccess(this.registerConfirmField);
-        return true;
-    }
-
-    validateName(field) {
-        const name = field.value.trim();
-        
-        if (!name) {
-            this.showFieldError(field, 'Full name is required');
-            return false;
-        }
-        
-        if (name.length < 2) {
-            this.showFieldError(field, 'Name must be at least 2 characters');
-            return false;
-        }
-        
-        this.showFieldSuccess(field);
         return true;
     }
 
@@ -324,45 +306,44 @@ class AuthFormController {
     }
 
     async handleRegister(event) {
-        event.preventDefault();        // Get form data
-        const fullName = this.registerNameField.value.trim();
+        event.preventDefault();        
+        // Get form data
         const email = this.registerEmailField.value.trim();
         const password = this.registerPasswordField.value;
 
         // Validate all fields
         let isValid = true;
 
-        if (!this.validateName(this.registerNameField)) isValid = false;
         if (!this.validateEmail(this.registerEmailField)) isValid = false;
         if (!this.validatePassword(this.registerPasswordField)) isValid = false;
         if (!this.validatePasswordConfirm()) isValid = false;
 
         if (!isValid) return;
 
-        // Generate username from email (before @ symbol)
-        const username = email.split('@')[0].toLowerCase();
-
         // Show loading state
         const submitBtn = this.registerForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         submitBtn.textContent = 'Creating account...';
-        submitBtn.disabled = true;
-
-        try {
+        submitBtn.disabled = true;        try {
             const response = await apiClient.register({
-                fullName: fullName,
-                username: username,
                 email: email,
                 password: password
             });
 
             if (response.success) {
-                this.showNotification('Registration successful! Please login with your credentials.', 'success');
                 
-                // Clear form and switch to login
+                // If registration returns user data, store it (auto-login after registration)
+                if (response.user) {
+                    apiClient.setCurrentUser(response.user);
+                    this.showNotification('Registration successful! Redirecting to profile setup...', 'success');
+                } else {
+                    this.showNotification('Registration successful! Please login with your credentials.', 'success');
+                }
+                
+                // Clear form and redirect
                 this.registerForm.reset();
                 setTimeout(() => {
-                    window.location.href = 'choose.html';
+                    window.location.href = 'chooserole.html';
                 }, 1000);
             } else {
                 throw new Error(response.message || 'Registration failed');
