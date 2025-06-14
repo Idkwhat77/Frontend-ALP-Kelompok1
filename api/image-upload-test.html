@@ -137,7 +137,7 @@
         <div id="results"></div>
     </div>
 
-    <script src="api.js"></script>
+    <script src="../api.js"></script>
     <script>
         let selectedFile = null;
         let currentUserId = 1;
@@ -225,27 +225,28 @@
             reader.readAsDataURL(file);
             
             log(`Selected file: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`, 'info');
-        }
-
-        // Upload functionality
+        }        // Upload functionality
         uploadBtn.addEventListener('click', async () => {
             if (!selectedFile) {
                 log('No file selected', 'error');
                 return;
             }
             
-            if (!window.RuangKerjaAPI) {
-                log('RuangKerjaAPI not loaded', 'error');
+            if (!window.apiClient) {
+                log('apiClient not loaded', 'error');
                 return;
             }
             
             uploadBtn.disabled = true;
             uploadBtn.textContent = 'Uploading...';
-            
-            try {
+              try {
                 log(`Starting upload for user ID: ${currentUserId}`, 'info');
                 
-                const response = await window.RuangKerjaAPI.uploadProfileImage(currentUserId, selectedFile);
+                // Create FormData and append the file
+                const formData = new FormData();
+                formData.append('image', selectedFile);
+                
+                const response = await window.apiClient.uploadProfileImage(currentUserId, formData);
                 
                 if (response && response.success) {
                     log('✅ Image uploaded successfully!', 'success');
@@ -268,12 +269,10 @@
                 uploadBtn.disabled = selectedFile === null;
                 uploadBtn.textContent = 'Upload Image';
             }
-        });
-
-        // Delete functionality
+        });        // Delete functionality
         deleteBtn.addEventListener('click', async () => {
-            if (!window.RuangKerjaAPI) {
-                log('RuangKerjaAPI not loaded', 'error');
+            if (!window.apiClient) {
+                log('apiClient not loaded', 'error');
                 return;
             }
             
@@ -283,7 +282,7 @@
             try {
                 log(`Deleting image for user ID: ${currentUserId}`, 'info');
                 
-                const response = await window.RuangKerjaAPI.deleteProfileImage(currentUserId);
+                const response = await window.apiClient.deleteProfileImage(currentUserId);
                 
                 if (response && response.success) {
                     log('✅ Image deleted successfully!', 'success');
@@ -300,15 +299,13 @@
                 deleteBtn.disabled = false;
                 deleteBtn.textContent = 'Delete Current Image';
             }
-        });
-
-        // Initialize
+        });        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.RuangKerjaAPI) {
-                log('✅ RuangKerjaAPI loaded successfully', 'success');
+            if (window.apiClient) {
+                log('✅ apiClient loaded successfully', 'success');
                 deleteBtn.disabled = false; // Enable delete button for testing
             } else {
-                log('❌ RuangKerjaAPI not loaded', 'error');
+                log('❌ apiClient not loaded', 'error');
             }
         });
     </script>
