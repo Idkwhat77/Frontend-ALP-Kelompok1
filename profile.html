@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alex Johnson - RuangKerja</title>
+  <script src="language.js"></script>
+  <script src="darkmode.js"></script>
+  <script src="api.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
       tailwind.config = {
@@ -153,7 +156,7 @@
 
                   <div class="relative">
                       <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                          <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                       </button>
                       
                       <!-- Dropdown Menu -->
@@ -186,7 +189,7 @@
               <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                   <div class="flex items-center justify-between">
                       <div class="flex items-center">
-                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                          <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                           <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                       </div>
                       <div class="flex items-center space-x-2">
@@ -250,7 +253,7 @@
   <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-lilac-50 dark:bg-[#111827]" id="main-container">
     <div class="lg:fixed flex flex-col bg-lilac-500 dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
-        <img onclick="openModal('modal-upload')" class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 animate-fade-in-from-up object-cover cursor-pointer" src="" alt="Loading Image..."  id ="profile-image">
+        <div onclick="openModal('modal-upload')" class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 animate-fade-in-from-up cursor-pointer bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png');" role="img" aria-label="Profile" id="profile-image"></div>
         <h1 id="user-name" class="text-5xl font-bold text-white animate-fade-in-from-down">Loading...</h1>
         <p id="user-industry" class="mt-4 text-lg text-white animate-fade-in-from-down">Loading...</p>
       </div>
@@ -275,7 +278,7 @@
     </div>
 
     <!-- Employee Main Profile -->
-    <div class="flex flex-col items-center h-screen justify-center w-full gap-8 mt-5 lg:pl-[29vw] pt-[50vh] lg:pt-0">
+    <div class="flex flex-col items-center h-screen justify-center w-full gap-8 mt-5 lg:pl-[29vw] pt-[20vh] lg:pt-0">
       <div class="flex lg:flex-row flex-col lg:w-[60vw] justify-between">
         <div class="text-center flex flex-col gap-6 items-center h-auto lg:mt-20">
           <h2 data-i18n="employee_details" class="text-3xl font-bold text-[#C69AE6] lg:mt-0 mt-10 ">Employee Details</h2>
@@ -327,7 +330,7 @@
         <h2 data-i18n="employee_biodata" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-6">Biodata</h2>
         <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[60vw] w-[85vw] h-auto text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
           <div class="mb-4">
-            <p class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
+            <p id="user-biodata" class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
             </p>
           </div>
         </div>
@@ -347,56 +350,61 @@
 
   <!-- Employee Education Modal Box (popup basically) -->
   <div id="modal-education" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 data-i18n="education" class="text-3xl font-semibold text-[#C69AE6]">Education</h3>
-      <div class="flex flex-col mt-4">
-        <div class="flex flex-row">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fontaine Culinary Academy">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Fontaine Culinary Academy</h2>
-            <p class="text-black dark:text-white">2020-2024</p>
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-4xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
+      <div class="flex justify-between items-center mb-6">
+        <h3 data-i18n="education" class="text-3xl font-semibold text-[#C69AE6]">Education</h3>
+        <button onclick="showAddEducationForm()" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+          <i class="fas fa-plus mr-2"></i>Add Education
+        </button>
+    </div>
+    
+      <!-- Add/Edit Education Form -->
+      <div id="education-form-container" class="hidden mb-6 p-4 bg-lilac-50 dark:bg-gray-800 rounded-lg">
+        <h4 id="education-form-title" class="text-xl font-semibold text-[#C69AE6] mb-4">Add Education</h4>
+        <form id="education-form" class="space-y-4">
+          <input type="hidden" id="education-id" value="">
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Institution Name</label>
+              <input type="text" id="institution-name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Year</label>
+              <input type="number" id="start-year" min="1900" max="2030" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Year</label>
+              <input type="number" id="end-year" min="1900" max="2030" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Institution Logo URL (Optional)</label>
+              <input type="url" id="profile-image-url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
           </div>
-        </div>
-        <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Teyvat Culinary Institute</h2>
-            <p class="text-black dark:text-white">2016-2020</p>
+          
+          <div class="flex gap-3 pt-4">
+            <button type="submit" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+              <i class="fas fa-save mr-2"></i><span id="submit-btn-text">Save Education</span>
+            </button>
+            <button type="button" onclick="hideEducationForm()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+              <i class="fas fa-times mr-2"></i>Cancel
+            </button>
           </div>
-        </div>
+        </form>
       </div>
-      <h3 data-i18n="experience" class="text-3xl font-semibold text-[#C69AE6] mt-4">Experience</h3>
-      <div class="flex flex-col mt-4">
-        <div class="flex flex-row">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fleuve Cendre">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Fleuve Cendre</h2>
-            <p class="text-black dark:text-white">2025-Present</p>
-          </div>
-        </div>
-        <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
-          </div>
-        </div>
-                <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
-          </div>
-        </div>
-                <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
-          </div>
-        </div>
+      
+      <!-- Education List -->
+      <div id="education-list" class="space-y-4">
+        <!-- Education records will be loaded here -->
       </div>
-      <button onclick="closeModal('modal-education')" class="text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 mt-5">Close</button>
+      
+      <div class="flex justify-center mt-6">
+        <button onclick="closeModal('modal-education')" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+      </div>
     </div>
   </div>
 
@@ -413,14 +421,19 @@
     </div>
   </div>
 
-  <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
+<!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
   <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
+    <div class="flex justify-end">
+      <button id="btn-settings" onclick="openModal('modal-settings')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-cog ml-1"></i>
+        <span data-i18n="settings_nav" id="nav-settings" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Settings</span>
+      </button>
+    </div>
     <div class="flex justify-end">
       <button id="btn-skills" onclick="openModal('modal-skills')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
         <i class="fa fa-dumbbell ml-0.5"></i>
         <span data-i18n="skills_nav" id="nav-skills" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Skills</span>
       </button>
-
     </div>
     <div class="flex justify-end">
       <button id="btn-education" onclick="openModal('modal-education')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
@@ -429,11 +442,119 @@
       </button>
     </div>
   </div>
+
+  <!-- Settings Modal Box-->
+  <div id="modal-settings" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+      <h3 id="profile-settings" data-i18n="profile_settings" class="text-2xl font-semibold text-[#C69AE6] mb-6">Profile Settings</h3>
+      
+      <form id="settings-form" class="space-y-4">
+        <!-- Personal Information Section -->
+        <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+          <h4 data-i18n="employee_personal_information" class="text-lg font-semibold text-[#C69AE6] mb-3">Personal Information</h4>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label data-i18n="employee_full_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+              <input type="text" id="settings-fullname" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+            <div>
+              <label data-i18n="employee_contact_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+              <input type="email" id="settings-email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+            <div>
+              <label data-i18n="employee_birth_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Birth Date</label>
+              <input type="date" id="settings-birthdate" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+            <div>
+              <label data-i18n="employee_location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
+              <select id="settings-city" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                <option id="city-default" value="">Select City</option>
+                <option value="Jakarta">Jakarta</option>
+                <option value="Bandung">Bandung</option>
+                <option value="Surabaya">Surabaya</option>
+                <option value="Yogyakarta">Yogyakarta</option>
+                <option value="Medan">Medan</option>
+                <option value="Bali">Bali</option>
+                <option value="Makassar">Makassar</option>
+                <option value="Semarang">Semarang</option>
+                <option value="Palembang">Palembang</option>
+                <option value="Malang">Malang</option>
+                <option value="Remote">Remote</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional Information Section -->
+        <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+          <h4 data-i18n="employee_professional_information" class="text-lg font-semibold text-[#C69AE6] mb-3">Professional Information</h4>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label data-i18n="employee_industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
+              <select id="settings-industry" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                <option id="industry_default" value="">Select Industry</option>
+                <option id="filter.technology" value="Technology">Technology</option>
+                <option id="filter.healthcare" value="Healthcare">Healthcare</option>
+                <option id="filter.finance" value="Finance">Finance</option>
+                <option id="filter.education" value="Education">Education</option>
+                <option id="filter.manufacturing" value="Manufacturing">Manufacturing</option>
+                <option id="filter.retail" value="Retail">Retail</option>
+                <option id="filter.hospitality" value="Hospitality">Hospitality</option>
+                <option id="filter.marketing" value="Marketing">Marketing</option>
+                <option id="filter.government" value="Government">Government</option>
+              </select>
+            </div>
+            <div>
+              <label data-i18n="employee_employment_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Employment Status</label>
+              <select id="settings-employment-status" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                <option id="employment-status-default" value="">Select Status</option>
+                <option id="employment-status-employed" value="Employed">Employed</option>
+                <option id="employment-status-unemployed" value="Unemployed">Unemployed</option>
+                <option id="employment-status-student" value="Student">Student</option>
+                <option id="employment-status-freelancer" value="Freelancer">Freelancer</option>
+              </select>
+            </div>
+            <div>
+              <label data-i18n="employee_job_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Job Type</label>
+              <select id="settings-job-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                <option value="">Select Job Type</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Internship">Internship</option>
+                <option value="Contract">Contract</option>
+                <option value="Freelance">Freelance</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bio Section -->
+        <div class="mb-4">
+          <h4 data-i18n="employee_about_me" class="text-lg font-semibold text-[#C69AE6] mb-3">About Me</h4>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
+          <textarea id="settings-biodata" rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="Tell us about yourself..."></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-3 pt-4">
+          <button type="submit" class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            <i class="fas fa-save mr-2"></i>Save Changes
+          </button>
+          <button type="button" onclick="closeModal('modal-settings')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            <i class="fas fa-times mr-2"></i>Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </body>
-<script src="api.js"></script>
 <script src="logout.js"></script>
 <script src="profile.js"></script>
 <script src="js/profile-image.js"></script>
+<script src="js/education.js"></script>
 <script>
 
   // Mobile menu toggle
@@ -477,7 +598,7 @@
   const loading_circle = document.createElement('div');
   loading_circle.id = 'load_bro';
   loading_circle.innerHTML = `
-    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
+    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80 z-50">
       <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
     </div>
   `;
@@ -531,7 +652,19 @@
   const navSkills = document.getElementById('nav-skills')
   const btnEducation = document.getElementById('btn-education');
   const navEducation = document.getElementById('nav-education')
+  const btnSettings = document.getElementById('btn-settings');
+  const navSettings = document.getElementById('nav-settings')
 
+  btnSettings.addEventListener('mouseover', () => {
+    navSettings.classList.remove('hidden');
+    btnSettings.classList.remove('w-12');
+    btnSettings.classList.add('w-36');
+  });
+  btnSettings.addEventListener('mouseout', () => {
+    btnSettings.classList.remove('w-36');
+    btnSettings.classList.add('w-12');
+    navSettings.classList.add('hidden');
+  });
   btnSkills.addEventListener('mouseover', () => {
     navSkills.classList.remove('hidden');
     btnSkills.classList.remove('w-12');
@@ -554,6 +687,4 @@
   });
 
 </script>
-<script src="language.js"></script>
-<script src="darkmode.js"></script>
 </html>

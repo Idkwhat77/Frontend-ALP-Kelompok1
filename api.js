@@ -45,19 +45,37 @@ class ApiClient {
 
         try {
             const response = await fetch(url, config);
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || `HTTP error! status: ${response.status}`);
+            
+            // Check if response has content before trying to parse JSON
+            const contentType = response.headers.get('content-type');
+            const hasJsonContent = contentType && contentType.includes('application/json');
+            
+            let data = null;
+            
+            if (hasJsonContent) {
+                const text = await response.text();
+                if (text) {
+                    data = JSON.parse(text);
+                }
             }
 
-            return data;
+            if (!response.ok) {
+                throw new Error(data?.message || `HTTP error! status: ${response.status}`);
+            }
+
+            // Return appropriate response based on content
+            if (data) {
+                return data;
+            } else {
+                // For successful requests without JSON content (like DELETE operations)
+                return { success: true, status: response.status };
+            }
         } catch (error) {
             console.error('API request failed:', error);
             throw error;
         }
     }
-
+    
     // Authentication methods
     async register(userData) {
         const response = await this.makeRequest('/auth/register', {
@@ -238,6 +256,45 @@ class ApiClient {
     async deleteCandidate(candidateId) {
         return this.makeRequest(`/candidates/${candidateId}`, {
             method: 'DELETE'
+        });
+    }
+    
+    // Education API methods
+    async createEducation(candidateId, educationData) {
+        return this.makeRequest(`/candidates/${candidateId}/education`, {
+            method: 'POST',
+            body: JSON.stringify(educationData)
+        });
+    }
+
+    async getEducationByCandidate(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/education`, {
+            method: 'GET'
+        });
+    }
+
+    async getEducationById(educationId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/education/${educationId}`, {
+            method: 'GET'
+        });
+    }
+
+    async updateEducation(educationId, educationData, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/education/${educationId}`, {
+            method: 'PUT',
+            body: JSON.stringify(educationData)
+        });
+    }
+
+    async deleteEducation(educationId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/education/${educationId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    async getAllEducation(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/education/`, {
+            method: 'GET'
         });
     }
 }
