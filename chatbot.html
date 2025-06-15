@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuangKerja Assistant - Professional Network</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf7fd',
+                            100: '#f4ecfb',
+                            200: '#ebddf7',
+                            300: '#dbc2f0',
+                            400: '#c69ae6',
+                            500: '#b87ce0',
+                        },
+                    },
+                    fontFamily: {
+                        elegant: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Chatbot specific styles */
+        #chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #chat-messages::-webkit-scrollbar-thumb {
+            background-color: #dbc2f0;
+            border-radius: 3px;
+        }
+
+        .dark #chat-messages::-webkit-scrollbar-thumb {
+            background-color: #4a5568;
+        }
+
+        /* Message animations */
+        .message-in {
+            animation: messageIn 0.3s ease-out forwards;
+        }
+
+        .message-out {
+            animation: messageOut 0.3s ease-out forwards;
+        }
+
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes messageOut {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: inline-block;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #b87ce0;
+            border-radius: 50%;
+            margin: 0 2px;
+            opacity: 0.4;
+        }
+
+        .dark .typing-indicator span {
+            background-color: #c69ae6;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation: typing 1s infinite 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation: typing 1s infinite 0.4s;
+        }
+
+        @keyframes typing {
+            0% {
+                opacity: 0.4;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-3px);
+            }
+            100% {
+                opacity: 0.4;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Custom scrollbar for the page */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f4ecfb;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #dbc2f0;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Beranda
+                        </a>
+                        <a href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                        <a href="chatbot.html" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                            Assistant
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Content -->
+        <div class="hidden sm:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                <a href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                <a href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                <a href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                <a href="chatbot.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Assistant</a>
+            </div>
+            
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                        <a href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                    </div>
+                    <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Chatbot Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center mb-6">
+                    <div class="h-12 w-12 rounded-full bg-lilac-100 dark:bg-gray-700 flex items-center justify-center mr-4">
+                        <i class="fas fa-robot text-lilac-500 dark:text-lilac-300 text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">RuangKerja Assistant</h1>
+                        <p class="text-gray-500 dark:text-gray-400">Your AI-powered career assistant</p>
+                    </div>
+                </div>
+                
+                <!-- Chat Container -->
+                <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <!-- Chat Messages Area -->
+                    <div id="chat-messages" class="h-96 p-4 overflow-y-auto space-y-3 bg-gray-50 dark:bg-gray-900">
+                        <!-- Initial greeting message -->
+                        <div class="flex justify-start">
+                            <div class="max-w-[80%] bg-lilac-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2">
+                                <p>Hello! I'm your RuangKerja assistant. How can I help you with your job search or career today?</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Just now</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Suggested questions -->
+                        <div class="flex justify-start">
+                            <div class="max-w-[80%] bg-lilac-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2">
+                                <p>Here are some things I can help with:</p>
+                                <div class="mt-2 space-y-1">
+                                    <button class="suggestion-btn w-full text-left px-2 py-1 bg-white dark:bg-gray-600 rounded hover:bg-lilac-200 dark:hover:bg-gray-500 text-xs">
+                                        How do I apply for a job?
+                                    </button>
+                                    <button class="suggestion-btn w-full text-left px-2 py-1 bg-white dark:bg-gray-600 rounded hover:bg-lilac-200 dark:hover:bg-gray-500 text-xs">
+                                        What companies are hiring?
+                                    </button>
+                                    <button class="suggestion-btn w-full text-left px-2 py-1 bg-white dark:bg-gray-600 rounded hover:bg-lilac-200 dark:hover:bg-gray-500 text-xs">
+                                        How do I update my profile?
+                                    </button>
+                                    <button class="suggestion-btn w-full text-left px-2 py-1 bg-white dark:bg-gray-600 rounded hover:bg-lilac-200 dark:hover:bg-gray-500 text-xs">
+                                        Resume writing tips
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Input Area -->
+                    <div class="border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800">
+                        <div class="flex items-center">
+                            <input id="chat-input" type="text" placeholder="Type your message..." 
+                                   class="flex-1 border border-gray-300 dark:border-gray-600 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-lilac-400 dark:bg-gray-700 dark:text-white">
+                            <button id="send-message" class="bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-r-lg transition-colors">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                            RuangKerja Assistant • Powered by AI
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Help Section -->
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-lilac-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lilac-600 dark:text-lilac-300 mb-2">Job Search Help</h3>
+                        <ul class="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Find jobs in my area</button></li>
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Remote work opportunities</button></li>
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Salary expectations</button></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-lilac-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lilac-600 dark:text-lilac-300 mb-2">Profile Assistance</h3>
+                        <ul class="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Optimize my profile</button></li>
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Add skills to profile</button></li>
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Profile visibility settings</button></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-lilac-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lilac-600 dark:text-lilac-300 mb-2">Application Tips</h3>
+                        <ul class="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Write a cover letter</button></li>
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Prepare for interviews</button></li>
+                            <li><button class="help-topic hover:text-lilac-500 dark:hover:text-lilac-200">Follow up after applying</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo and Description -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <!-- Socials and Contact in a row on the right -->
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <!-- Our Socials -->
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright and Bottom Links -->
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('chat-input');
+            const sendMessage = document.getElementById('send-message');
+            const suggestionButtons = document.querySelectorAll('.suggestion-btn');
+            const helpTopics = document.querySelectorAll('.help-topic');
+            
+            // Dark mode toggle functionality
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+            
+            // Check for saved dark mode preference or system preference
+            if (localStorage.getItem('darkMode') === 'dark' || 
+                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            // Toggle dark mode
+            function toggleDarkMode() {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('darkMode', isDark ? 'dark' : 'light');
+            }
+            
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+            mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
+            
+            // Mobile menu functionality
+            mobileMenuButton.addEventListener('click', () => {
+                const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.setAttribute('aria-expanded', !expanded);
+                mobileMenu.classList.toggle('hidden');
+                
+                // Toggle between hamburger and close icon
+                const icon = mobileMenuButton.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+            
+            // User dropdown menu functionality
+            userMenuButton.addEventListener('click', () => {
+                const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+                userMenuButton.setAttribute('aria-expanded', !expanded);
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // Close menus when clicking outside
+            document.addEventListener('click', (e) => {
+                // Close user dropdown if clicked outside
+                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenuButton.setAttribute('aria-expanded', 'false');
+                    userMenu.classList.add('hidden');
+                }
+                
+                // Close mobile menu if clicked outside
+                if (!mobileMenuButton.contains(e.target) && 
+                    !mobileMenu.contains(e.target)) {
+                    
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    mobileMenu.classList.add('hidden');
+                    
+                    // Reset mobile menu icon to hamburger
+                    const icon = mobileMenuButton.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Chat functionality
+            function sendUserMessage() {
+                const message = chatInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message to chat
+                addMessage(message, 'user');
+                chatInput.value = '';
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Simulate bot response after a delay
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    const response = getBotResponse(message);
+                    addMessage(response, 'bot');
+                }, 1000 + Math.random() * 2000); // Random delay between 1-3 seconds
+            }
+            
+            // Send message on Enter key
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendUserMessage();
+                }
+            });
+            
+            // Send message on button click
+            sendMessage.addEventListener('click', sendUserMessage);
+            
+            // Handle suggestion buttons
+            suggestionButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const question = e.target.textContent.trim();
+                    chatInput.value = question;
+                    sendUserMessage();
+                });
+            });
+            
+            // Handle help topics
+            helpTopics.forEach(topic => {
+                topic.addEventListener('click', (e) => {
+                    const question = e.target.textContent.trim();
+                    chatInput.value = question;
+                    sendUserMessage();
+                });
+            });
+            
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `flex justify-${sender === 'user' ? 'end' : 'start'}`;
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = `max-w-[80%] rounded-lg px-3 py-2 ${
+                    sender === 'user' 
+                        ? 'bg-lilac-500 text-white' 
+                        : 'bg-lilac-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                }`;
+                
+                messageContent.innerHTML = `
+                    <p>${text}</p>
+                    <p class="text-xs ${sender === 'user' ? 'text-lilac-200' : 'text-gray-500 dark:text-gray-400'} mt-1">
+                        ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                    </p>
+                `;
+                
+                messageDiv.appendChild(messageContent);
+                messageDiv.classList.add(sender === 'user' ? 'message-out' : 'message-in');
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'flex justify-start';
+                typingDiv.id = 'typing-indicator';
+                
+                const typingContent = document.createElement('div');
+                typingContent.className = 'bg-lilac-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2';
+                
+                typingContent.innerHTML = `
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                `;
+                
+                typingDiv.appendChild(typingContent);
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+
+            // Simple string similarity function
+            function similarity(str1, str2) {
+                const longer = str1.length > str2.length ? str1 : str2;
+                const shorter = str1.length > str2.length ? str2 : str1;
+                const longerLength = longer.length;
+
+                if (longerLength === 0) return 1.0;
+
+                return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+            }
+
+            function editDistance(s1, s2) {
+                s1 = s1.toLowerCase();
+                s2 = s2.toLowerCase();
+
+                const costs = [];
+
+                for (let i = 0; i <= s1.length; i++) {
+                    let lastValue = i;
+                    for (let j = 0; j <= s2.length; j++) {
+                        if (i === 0)
+                            costs[j] = j;
+                        else if (j > 0) {
+                            let newValue = costs[j - 1];
+                            if (s1.charAt(i - 1) !== s2.charAt(j - 1))
+                                newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                            costs[j - 1] = lastValue;
+                            lastValue = newValue;
+                        }
+                    }
+                    if (i > 0)
+                        costs[s2.length] = lastValue;
+                }
+                return costs[s2.length];
+            }
+
+
+            const keywords = [
+                "apply", "job", "find job", "looking for job", "application", "submit resume",
+                "company", "hiring", "employer", "open position", "available jobs",
+                "profile", "update profile", "edit profile", "change info",
+                "resume", "cv", "curriculum vitae", "document",
+                "remote", "work from home", "remote job", "telecommute",
+                "salary", "pay", "income", "wage", "compensation", "expected salary",
+                "hello", "hi", "hey", "good morning", "good evening",
+                "thank", "thanks", "thank you",
+                "interview", "interview tips", "interview question",
+                "skills", "experience", "qualifications",
+                "help", "support", "need help", "assistance",
+                "account", "sign up", "register", "log in", "create account"
+            ];
+
+
+            // Simple response logic - in a real app, you'd connect to an AI service
+            function getBotResponse(userMessage) {
+                const lowerMessage = userMessage.toLowerCase();
+                if (lowerMessage.includes("apply") || lowerMessage.includes("application")) {
+                    return "To apply for a job on RuangKerja:\n1. Browse available job listings\n2. Click 'Apply Now' on a job that interests you\n3. Ensure your profile is complete with your resume\n4. Submit any required documents\n5. Wait for the company to contact you.";
+                } else if (lowerMessage.includes("find job") || lowerMessage.includes("looking for job")) {
+                    return "To find jobs on RuangKerja:\n- Use the search bar to enter keywords or job titles\n- Filter by location, industry, or work type\n- Save jobs you’re interested in\n- Apply when ready!";
+                } else if (lowerMessage.includes("company") || lowerMessage.includes("employer")) {
+                    return "Visit the 'Companies' section to explore over 500 companies actively hiring on RuangKerja. You can view job listings, company profiles, and employee reviews.";
+                } else if (lowerMessage.includes("profile") || lowerMessage.includes("edit profile")) {
+                    return "To update your profile:\n1. Click on your profile icon (top right corner)\n2. Choose 'My Profile'\n3. Click 'Edit Profile'\n4. Update any section you want (bio, experience, skills)\n5. Click 'Save'.";
+                } else if (lowerMessage.includes("resume") || lowerMessage.includes("cv")) {
+                    return "Resume tips:\n- Keep it 1–2 pages long\n- Use action verbs like 'built', 'led', 'organized'\n- Highlight achievements, not just tasks\n- Tailor it to the job you're applying for\n- Proofread for any typos.";
+                } else if (lowerMessage.includes("remote") || lowerMessage.includes("work from home")) {
+                    return "Yes! RuangKerja has many remote opportunities. Just search for jobs and apply a 'Remote' filter. Common remote jobs include software development, digital marketing, writing, and virtual assistance.";
+                } else if (lowerMessage.includes("salary") || lowerMessage.includes("pay")) {
+                    return "Salary varies depending on role, experience, and location. To get an idea:\n- Look at similar job postings\n- Use industry benchmarks\n- Consider your experience\n- Be ready to negotiate if needed.";
+                } else if (lowerMessage.includes("interview")) {
+                    return "Interview Tips:\n- Research the company beforehand\n- Practice common questions\n- Dress appropriately\n- Be confident and authentic\n- Ask questions at the end to show interest.";
+                } else if (lowerMessage.includes("skills") || lowerMessage.includes("experience")) {
+                    return "Highlighting your skills is key! Top in-demand skills include:\n- Communication\n- Project Management\n- Coding (Python, JS, etc.)\n- UI/UX Design\n- Digital Marketing.";
+                } else if (lowerMessage.includes("account") || lowerMessage.includes("sign up") || lowerMessage.includes("register")) {
+                    return "To create an account on RuangKerja:\n1. Click 'Sign Up' on the homepage\n2. Enter your email and password\n3. Verify your email\n4. Complete your profile and start exploring jobs!";
+                } else if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
+                    return "Hi there! 👋 I’m your RuangKerja assistant. I can help you with job applications, resumes, interviews, and more. Just ask!";
+                } else if (lowerMessage.includes("thank") || lowerMessage.includes("thanks")) {
+                    return "You're welcome! 😊 Let me know if there's anything else you need help with.";
+                } else if (lowerMessage.includes("help") || lowerMessage.includes("support")) {
+                    return "I’m here to help! Ask me about:\n- Applying for jobs\n- Updating your profile\n- Resume tips\n- Interview prep\n- Company info";
+                } else {
+                    return "I'm here to assist with your job search and career questions. Try asking me something like:\n- 'How do I apply for a job?'\n- 'Tips for remote work?'\n- 'How to update my profile?'\nOr choose a help topic from the menu above.";
+                }
+                let bestMatch = "";
+                let bestScore = 0;
+
+                for (const keyword in responses) {
+                    const score = similarity(lowerMessage, keyword);
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMatch = keyword;
+                    }
+                }
+
+                if (bestScore > 0.4) {
+                    return responses[bestMatch];
+                } else {
+                    return "I'm here to assist with your job search and career questions. Try asking me something like:\n- 'How do I apply for a job?'\n- 'Tips for remote work?'\n- 'How to update my profile?'\nOr choose a help topic from the menu above.";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
