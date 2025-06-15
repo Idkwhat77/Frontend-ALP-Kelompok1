@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         return dateString;
       }
     };
-
+    
     // Update profile information with candidate data
     document.getElementById('user-name').textContent = candidate.fullName || '';
     document.getElementById('user-name2').textContent = candidate.fullName || '';
@@ -48,7 +48,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('user-location').textContent = candidate.city || '';
     document.getElementById('user-industry').textContent = candidate.industry || '';
     document.getElementById('user-employment-status').textContent = candidate.employmentStatus || '';
-    document.getElementById('user-biodata').textContent = candidate.biodata || '';
+
+    const biodataElement = document.getElementById('user-biodata');
+    if (biodataElement) {
+        if (candidate.biodata && candidate.biodata.trim()) {
+            biodataElement.textContent = candidate.biodata;
+        } else {
+            biodataElement.innerHTML = `
+                <span class="text-gray-400 dark:text-gray-500 italic text-sm">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    No biodata provided
+                </span>
+            `;
+        }
+    }
 
     // Fix: Use profileImageUrl instead of profileImage
     const profileImageElement = document.getElementById('profile-image');

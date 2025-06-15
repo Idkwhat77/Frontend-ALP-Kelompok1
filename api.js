@@ -297,6 +297,78 @@ class ApiClient {
             method: 'GET'
         });
     }
+
+    // Hobby API methods
+    async createHobby(candidateId, hobbyData) {
+        return this.makeRequest(`/candidates/${candidateId}/hobbies`, {
+            method: 'POST',
+            body: JSON.stringify(hobbyData)
+        });
+    }
+
+    async getAllHobbies(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/hobbies`, {
+            method: 'GET'
+        });
+    }
+
+    async getHobbyById(hobbyId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/hobbies/${hobbyId}`, {
+            method: 'GET'
+        });
+    }
+
+    async updateHobby(hobbyId, hobbyData, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/hobbies/${hobbyId}`, {
+            method: 'PUT',
+            body: JSON.stringify(hobbyData)
+        });
+    }
+
+    async deleteHobby(hobbyId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/hobbies/${hobbyId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    // Experience API methods
+    async createExperience(candidateId, experienceData) {
+        return this.makeRequest(`/candidates/${candidateId}/experiences`, {
+            method: 'POST',
+            body: JSON.stringify(experienceData)
+        });
+    }
+
+    async getExperienceByCandidate(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/experiences`, {
+            method: 'GET'
+        });
+    }
+
+    async getExperienceById(experienceId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/experiences/${experienceId}`, {
+            method: 'GET'
+        });
+    }
+
+    async updateExperience(experienceId, experienceData, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/experiences/${experienceId}`, {
+            method: 'PUT',
+            body: JSON.stringify(experienceData)
+        });
+    }
+
+    async deleteExperience(experienceId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/experiences/${experienceId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    async getAllExperience(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/experiences/`, {
+            method: 'GET'
+        });
+    }
 }
 
 // Create and export API client instance

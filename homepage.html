@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RuangKerja - Professional Network</title>
     
+    <script src="api.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -222,87 +223,12 @@
         <section class="mb-8 fade-on-scroll">
             <div class="flex justify-between items-center mb-4">
                 <h2 data-i18n="candidate_recommendations" class="text-xl font-bold text-gray-900 dark:text-white">Candidate Recommendations</h2>
-                <a data-i18n="see_more" href="#" class="text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 text-sm">See More</a>
+                <a data-i18n="see_more" href="candidates.html" class="text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 text-sm">See More</a>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Candidate Card 1 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-                    <div class="p-3">
-                        <div class="flex justify-center mb-2">
-                            <img class="h-16 w-16 rounded-full object-cover" src="img/theorist_matpat_9.webp" alt="Alex Johnson">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Alex Johnson</h3>
-                            <p data-i18n="software_engineer" class="text-gray-500 dark:text-gray-300 mb-2">Software Engineer</p>
-                            <div class="flex justify-center space-x-1 mb-2">
-                                <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">JavaScript</span>
-                                <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">React</span>
-                            </div>
-                            <button onclick="location.href='employee_profile.html'" data-i18n-html="view_profile" class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 2 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-                    <div class="p-3">
-                        <div class="flex justify-center mb-2">
-                            <img class="h-16 w-16 rounded-full object-cover" src="https://via.placeholder.com/80" alt="Sarah Williams">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Sarah Williams</h3>
-                            <p data-i18n="marketing_director" class="text-gray-500 dark:text-gray-300 mb-2">Marketing Director</p>
-                            <div class="flex justify-center space-x-1 mb-2">
-                                <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Digital</span>
-                                <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">SEO</span>
-                            </div>
-                            <button data-i18n-html="view_profile" class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 3 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-                    <div class="p-3">
-                        <div class="flex justify-center mb-2">
-                            <img class="h-16 w-16 rounded-full object-cover" src="https://via.placeholder.com/80" alt="Michael Chen">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Michael Chen</h3>
-                            <p data-i18n="product_manager" class="text-gray-500 dark:text-gray-300 mb-2">Product Manager</p>
-                            <div class="flex justify-center space-x-1 mb-2">
-                                <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Agile</span>
-                                <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">UX</span>
-                            </div>
-                            <button data-i18n-html="view_profile" class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 4 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-                    <div class="p-3">
-                        <div class="flex justify-center mb-2">
-                            <img class="h-16 w-16 rounded-full object-cover" src="https://via.placeholder.com/80" alt="Emma Davis">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Emma Davis</h3>
-                            <p data-i18n="ux_designer" class="text-gray-500 dark:text-gray-300 mb-2">UX Designer</p>
-                            <div class="flex justify-center space-x-1 mb-2">
-                                <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Figma</span>
-                                <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">UI</span>
-                            </div>
-                            <button data-i18n-html="view_profile" class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
+            <div id="candidates-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Dynamic candidate cards will be inserted here -->
+                <div class="col-span-full flex justify-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400"></div>
                 </div>
             </div>
         </section>
@@ -552,4 +478,5 @@
 </script>
 <script src="language.js"></script>
 <script src="darkmode.js"></script>
+<script src="js/homepage.js"></script>
 </html>

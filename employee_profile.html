@@ -253,7 +253,7 @@
   <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-lilac-50 dark:bg-[#111827]" id="main-container">
     <div class="lg:fixed flex flex-col bg-lilac-500 dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
-        <div onclick="openModal('modal-upload')" class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 animate-fade-in-from-up cursor-pointer bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png');" role="img" aria-label="Profile" id="profile-image"></div>
+        <div class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 animate-fade-in-from-up cursor-pointer bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png');" role="img" aria-label="Profile" id="profile-image"></div>
         <h1 id="user-name" class="text-5xl font-bold text-white animate-fade-in-from-down">Loading...</h1>
         <p id="user-industry" class="mt-4 text-lg text-white animate-fade-in-from-down">Loading...</p>
       </div>
@@ -306,22 +306,16 @@
           </div>
         </div>
         <div class="text-center flex flex-col gap-6 items-center h-auto lg:mt-20">
-          <h2 data-i18n="hobbies" class="text-3xl font-bold text-[#C69AE6] lg:mt-0 mt-10 ">Hobbies</h2>
+          <div class="flex justify-center items-center w-full lg:w-[28vw] lg:mt-0 mt-10">
+            <h2 data-i18n="hobbies" class="text-3xl font-bold text-[#C69AE6]">Hobbies</h2>
+          </div>
           <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[28vw] w-[85vw] h-full text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Reading</h4>
-            </div>
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Traveling</h4>
-            </div>
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Gaming</h4>
-            </div>
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Adventure</h4>
-            </div>
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Cooking</h4>
+            <div id="hobbies-list">
+              <!-- Hobbies will be loaded here dynamically -->
+              <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                <i class="fas fa-heart text-4xl mb-4"></i>
+                <p>Loading hobbies...</p>
+              </div>
             </div>
           </div>
         </div>
@@ -362,6 +356,24 @@
       
       <div class="flex justify-center mt-6">
         <button onclick="closeModal('modal-education')" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+      </div>
+    </div>
+  </div>  
+  
+  <!-- Employee Experience Modal Box (popup basically) -->
+  <div id="modal-experience" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-4xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
+      <div class="flex justify-between items-center mb-6">
+        <h3 data-i18n="experience" class="text-3xl font-semibold text-[#C69AE6]">Experience</h3>
+      </div>
+
+      <!-- Experience List -->
+      <div id="experience-list" class="space-y-4">
+        <!-- Experience records will be loaded here -->
+      </div>
+      
+      <div class="flex justify-center mt-6">
+        <button onclick="closeModal('modal-experience')" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
       </div>
     </div>
   </div>
@@ -414,12 +426,19 @@
         <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
       </button>
     </div>
-  </div>
-  
+    <div class="flex justify-end">
+      <button id="btn-experience" onclick="openModal('modal-experience')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-briefcase ml-0.5"></i>
+        <span data-i18n="experience_nav" id="nav-experience" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Experience</span>
+      </button>
+    </div>
+  </div> 
 </body>
 <script src="logout.js"></script>
 <script src="js/profile-view.js"></script>
 <script src="js/education_view.js"></script>
+<script src="js/experience_view.js"></script>
+<script src="js/hobby-view.js"></script>
 <script>
   const chatBox = document.getElementById('chat-box');
   const chatInput = document.getElementById('chat-input');
@@ -540,6 +559,14 @@
   const navEducation = document.getElementById('nav-education')
   const btnChat = document.getElementById('btn-chat');
   const navChat = document.getElementById('nav-chat')
+  const btnExperience = document.getElementById('btn-experience');
+  const navExperience = document.getElementById('nav-experience')
+
+  btnExperience.addEventListener('mouseover', () => {
+    navExperience.classList.remove('hidden');
+    btnExperience.classList.remove('w-12');
+    btnExperience.classList.add('w-36');
+  });
 
   btnSkills.addEventListener('mouseover', () => {
     navSkills.classList.remove('hidden');
@@ -571,6 +598,5 @@
     btnChat.classList.add('w-12');
     navChat.classList.add('hidden');
   });
-
 </script>
 </html>
