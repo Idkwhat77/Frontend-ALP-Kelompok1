@@ -250,7 +250,7 @@
 
   
   <!-- Main Content duh -->
-  <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-lilac-50 dark:bg-[#111827]" id="main-container">
+  <div class="flex lg:flex-row flex-col lg:h-screen h-auto items-center transition duration-300 bg-lilac-50 dark:bg-[#111827]" id="main-container">
     <div class="lg:fixed flex flex-col bg-lilac-500 dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
         <div onclick="openModal('modal-upload')" class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 animate-fade-in-from-up cursor-pointer bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png');" role="img" aria-label="Profile" id="profile-image"></div>
@@ -278,7 +278,7 @@
     </div>
 
     <!-- Employee Main Profile -->
-    <div class="flex flex-col items-center h-screen justify-center w-full gap-8 mt-5 lg:pl-[29vw] pt-[20vh] lg:pt-0">
+    <div class="flex flex-col items-center lg:h-screen h-auto justify-center w-full gap-8 mt-5 lg:pl-[29vw] lg:pt-0">
       <div class="flex lg:flex-row flex-col lg:w-[60vw] justify-between">
         <div class="text-center flex flex-col gap-6 items-center h-auto lg:mt-20">
           <h2 data-i18n="employee_details" class="text-3xl font-bold text-[#C69AE6] lg:mt-0 mt-10 ">Employee Details</h2>
@@ -306,22 +306,19 @@
           </div>
         </div>
         <div class="text-center flex flex-col gap-6 items-center h-auto lg:mt-20">
-          <h2 data-i18n="hobbies" class="text-3xl font-bold text-[#C69AE6] lg:mt-0 mt-10 ">Hobbies</h2>
+          <div class="flex justify-center items-center w-full lg:w-[28vw] lg:mt-0 mt-10 relative">
+            <h2 data-i18n="hobbies" class="text-3xl font-bold text-[#C69AE6]">Hobbies</h2>
+            <button onclick="openModal('modal-hobbies')" class="absolute right-0 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 py-2 rounded-lg transition-colors duration-300 text-sm">
+              <i class="fas fa-plus mr-1"></i>Manage
+            </button>
+          </div>
           <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[28vw] w-[85vw] h-full text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Reading</h4>
-            </div>
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Traveling</h4>
-            </div>
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Gaming</h4>
-            </div>
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Adventure</h4>
-            </div>
-            <div class="mb-4">
-              <h4 class="font-semibold text-xl text-[#C69AE6]">Cooking</h4>
+            <div id="hobbies-list">
+              <!-- Hobbies will be loaded here dynamically -->
+              <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                <i class="fas fa-heart text-4xl mb-4"></i>
+                <p>Loading hobbies...</p>
+              </div>
             </div>
           </div>
         </div>
@@ -344,6 +341,45 @@
             </ul>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hobby Management Modal -->
+  <div id="modal-hobbies" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 data-i18n="hobbies" class="text-3xl font-semibold text-[#C69AE6]">Hobbies</h3>
+      </div>
+      
+      <!-- Add Hobby Form -->
+      <div class="mb-6 p-4 bg-lilac-50 dark:bg-gray-800 rounded-lg">
+        <h4 class="text-xl font-semibold text-[#C69AE6] mb-4">Add New Hobby</h4>
+        <form id="hobby-form" class="space-y-4">
+          <div class="flex gap-3">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Hobby Name</label>
+              <input type="text" id="hobby-name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="e.g. Reading, Gaming, Cooking..." required>
+            </div>
+            <div class="flex items-end">
+              <button type="submit" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                <i class="fas fa-plus mr-2"></i>Add
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Current Hobbies List -->
+      <div class="mb-6">
+        <h4 class="text-xl font-semibold text-[#C69AE6] mb-4">Current Hobbies</h4>
+        <div id="current-hobbies-list" class="space-y-2">
+          <!-- Current hobbies will be loaded here -->
+        </div>
+      </div>
+      
+      <div class="flex justify-center">
+        <button onclick="closeModal('modal-hobbies')" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
       </div>
     </div>
   </div>
@@ -421,6 +457,66 @@
     </div>
   </div>
 
+  <!-- Employee Experience Modal Box (popup basically) -->
+  <div id="modal-experience" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-4xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
+      <div class="flex justify-between items-center mb-6">
+        <h3 data-i18n="experience" class="text-3xl font-semibold text-[#C69AE6]">Experience</h3>
+        <button onclick="showAddExperienceForm()" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+          <i class="fas fa-plus mr-2"></i>Add Experience
+        </button>
+      </div>
+      
+      <!-- Add/Edit Experience Form -->
+      <div id="experience-form-container" class="hidden mb-6 p-4 bg-lilac-50 dark:bg-gray-800 rounded-lg">
+        <h4 id="experience-form-title" class="text-xl font-semibold text-[#C69AE6] mb-4">Add Experience</h4>
+        <form id="experience-form" class="space-y-4">
+          <input type="hidden" id="experience-id" value="">
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Experience Name</label>
+              <input type="text" id="experience-name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Year</label>
+              <input type="number" id="exp-start-year" min="1900" max="2030" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Year</label>
+              <input type="number" id="exp-end-year" min="1900" max="2030" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Logo URL (Optional)</label>
+              <input type="url" id="exp-profile-image-url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+          </div>
+          
+          <div class="flex gap-3 pt-4">
+            <button type="submit" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+              <i class="fas fa-save mr-2"></i><span id="submit-btn-text">Save Experience</span>
+            </button>
+            <button type="button" onclick="hideExperienceForm()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+              <i class="fas fa-times mr-2"></i>Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Experience List -->
+      <div id="experience-list" class="space-y-4">
+        <!-- Experience records will be loaded here -->
+      </div>
+      
+      <div class="flex justify-center mt-6">
+        <button onclick="closeModal('modal-experience')" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+      </div>
+    </div>
+  </div>
+
 <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
   <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
     <div class="flex justify-end">
@@ -439,6 +535,12 @@
       <button id="btn-education" onclick="openModal('modal-education')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
         <i class="fa fa-graduation-cap ml-0.5"></i>
         <span data-i18n="education_nav" id="nav-education" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Education</span>
+      </button>
+    </div>
+    <div class="flex justify-end">
+      <button id="btn-experience" onclick="openModal('modal-experience')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+        <i class="fa fa-briefcase ml-0.5"></i>
+        <span data-i18n="experience_nav" id="nav-experience" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Experience</span>
       </button>
     </div>
   </div>
@@ -555,6 +657,8 @@
 <script src="profile.js"></script>
 <script src="js/profile-image.js"></script>
 <script src="js/education.js"></script>
+<script src="js/experience.js"></script>
+<script src="js/hobby.js"></script>
 <script>
 
   // Mobile menu toggle
@@ -654,12 +758,27 @@
   const navEducation = document.getElementById('nav-education')
   const btnSettings = document.getElementById('btn-settings');
   const navSettings = document.getElementById('nav-settings')
+  const btnExperience = document.getElementById('btn-experience');
+  const navExperience = document.getElementById('nav-experience')
+
+  btnExperience.addEventListener('mouseover', () => {
+    navExperience.classList.remove('hidden');
+    btnExperience.classList.remove('w-12');
+    btnExperience.classList.add('w-36');
+  });
+  
+  btnExperience.addEventListener('mouseout', () => {
+    btnExperience.classList.remove('w-36');
+    btnExperience.classList.add('w-12');
+    navExperience.classList.add('hidden');
+  });
 
   btnSettings.addEventListener('mouseover', () => {
     navSettings.classList.remove('hidden');
     btnSettings.classList.remove('w-12');
     btnSettings.classList.add('w-36');
   });
+  
   btnSettings.addEventListener('mouseout', () => {
     btnSettings.classList.remove('w-36');
     btnSettings.classList.add('w-12');

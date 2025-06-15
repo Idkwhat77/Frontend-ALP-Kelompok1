@@ -35,6 +35,16 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (window.initializeEmployeeEducation) {
         window.initializeEmployeeEducation(candidateId);
       }
+
+      if (window.initializeEmployeeEducation) {
+        window.initializeEmployeeExperience(candidateId);
+      }
+      
+      // Initialize hobby viewer for this candidate
+      if (window.initializeEmployeeHobbies) {
+        window.initializeEmployeeHobbies(candidateId);
+      }
+
       
     } catch (error) {
       console.error('Error loading candidate profile:', error);
@@ -125,24 +135,27 @@ function displayCandidateProfile(candidate, updateNavbar = true) {
   };
 
   // Update profile information with candidate data
-  const elements = {
-    'user-name': candidate.fullName || 'Unknown',
-    'user-name2': candidate.fullName || 'Unknown',
-    'user-email': candidate.email || 'Not provided',
-    'user-birthdate': formatBirthDate(candidate.birthDate),
-    'user-location': candidate.city || 'Not specified',
-    'user-industry': candidate.industry || 'Not specified',
-    'user-employment-status': candidate.employmentStatus || 'Not specified',
-    'user-biodata': candidate.biodata || 'No bio available'
-  };
+  document.getElementById('user-name').textContent = candidate.fullName || '';
+  document.getElementById('user-name2').textContent = candidate.fullName || '';
+  document.getElementById('user-email').textContent = candidate.email || '';
+  document.getElementById('user-birthdate').textContent = formatBirthDate(candidate.birthDate);
+  document.getElementById('user-location').textContent = candidate.city || '';
+  document.getElementById('user-industry').textContent = candidate.industry || '';
+  document.getElementById('user-employment-status').textContent = candidate.employmentStatus || '';
 
-  // Update each element if it exists
-  Object.entries(elements).forEach(([elementId, value]) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-      element.textContent = value;
-    }
-  });
+  const biodataElement = document.getElementById('user-biodata');
+  if (biodataElement) {
+      if (candidate.biodata && candidate.biodata.trim()) {
+          biodataElement.textContent = candidate.biodata;
+      } else {
+          biodataElement.innerHTML = `
+              <span class="text-gray-400 dark:text-gray-500 italic text-sm">
+                  <i class="fas fa-info-circle mr-2"></i>
+                  No biodata provided
+              </span>
+          `;
+      }
+  }
 
   // Update main profile image (always update this for the viewed profile)
   const profileImageElement = document.getElementById('profile-image');
