@@ -138,16 +138,8 @@ async function uploadImage() {
             if (response && response.success) {
                 alert('✅ Image uploaded successfully!');
                 
-                // Update profile image on page
-                const profileImg = document.getElementById('profile-image');
-                if (profileImg && response.imageUrl) {
-                    // Ensure the image URL is absolute and points to backend at localhost:8080
-                    let imageUrl = response.imageUrl;
-                    if (!/^https?:\/\//i.test(imageUrl)) {
-                        imageUrl = `http://localhost:8080/${imageUrl.replace(/^\/+/, '')}`;
-                    }
-                    profileImg.src = imageUrl;
-                }
+                // Update profile image on page using background-image
+                updateProfileImages(response.imageUrl);
                 
                 resetUploadArea();
                 closeModal('modal-upload');
@@ -159,15 +151,12 @@ async function uploadImage() {
             setTimeout(() => {
                 alert('✅ Image uploaded successfully! (Demo mode)');
                 
-                // Update profile image with selected file
-                const profileImg = document.getElementById('profile-image');
-                if (profileImg) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        profileImg.src = e.target.result;
-                    };
-                    reader.readAsDataURL(selectedFile);
-                }
+                // Update profile image with selected file using FileReader
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    updateProfileImages(e.target.result);
+                };
+                reader.readAsDataURL(selectedFile);
                 
                 resetUploadArea();
                 closeModal('modal-upload');
@@ -196,11 +185,8 @@ async function deleteImage() {
             if (response && response.success) {
                 alert('✅ Image deleted successfully!');
                 
-                // Reset profile image to default
-                const profileImg = document.getElementById('profile-image');
-                if (profileImg) {
-                    profileImg.src = 'img/escoffier.png'; // Default image
-                }
+                // Reset to default image
+                updateProfileImages('img/default-profile.png');
             } else {
                 alert(`❌ Delete failed: ${response ? response.message : 'Unknown error'}`);
             }
@@ -210,10 +196,7 @@ async function deleteImage() {
                 alert('✅ Image deleted successfully! (Demo mode)');
                 
                 // Reset to default image
-                const profileImg = document.getElementById('profile-image');
-                if (profileImg) {
-                    profileImg.src = 'img/escoffier.png';
-                }
+                updateProfileImages('img/default-profile.png');
             }, 500);
         }
     } catch (error) {
@@ -221,6 +204,32 @@ async function deleteImage() {
     } finally {
         deleteBtn.disabled = false;
         deleteBtn.textContent = 'Delete Image';
+    }
+}
+
+// Helper function to update all profile images on the page
+function updateProfileImages(imageUrl) {
+    // Ensure the image URL is absolute for API responses
+    let finalImageUrl = imageUrl;
+    if (imageUrl && !/^https?:\/\//i.test(imageUrl) && !imageUrl.startsWith('img/')) {
+        finalImageUrl = `http://localhost:8080/${imageUrl.replace(/^\/+/, '')}`;
+    }
+    
+    // Update main profile image (background-image)
+    const profileImg = document.getElementById('profile-image');
+    if (profileImg) {
+        profileImg.style.backgroundImage = `url('${finalImageUrl}')`;
+    }
+    
+    // Update navbar profile images (background-image for nav, src for mobile)
+    const profileImgNav = document.getElementById('profile-image-nav');
+    if (profileImgNav) {
+        profileImgNav.style.backgroundImage = `url('${finalImageUrl}')`;
+    }
+    
+    const profileImgMobile = document.getElementById('profile-image-mobile');
+    if (profileImgMobile) {
+        profileImgMobile.style.backgroundImage = `url('${finalImageUrl}')`;
     }
 }
 

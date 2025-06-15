@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alex Johnson - RuangKerja</title>
+  <script src="language.js"></script>
+  <script src="darkmode.js"></script>
+  <script src="api.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
       tailwind.config = {
@@ -102,6 +105,15 @@
   .dark ::-webkit-scrollbar-thumb {
       background: #4a5568;
   }
+
+  /* Profile image hover effect */
+  #profile-image {
+    transition: opacity 1s ease-in-out !important;
+  }
+  
+  #profile-image:hover {
+    opacity: 0.5 !important;
+  }
 </style>
 <body class="bg-lilac-50 dark:bg-gray-900" id="body">
   <!-- Navbar -->
@@ -144,7 +156,7 @@
 
                   <div class="relative">
                       <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                          <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                       </button>
                       
                       <!-- Dropdown Menu -->
@@ -177,7 +189,7 @@
               <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                   <div class="flex items-center justify-between">
                       <div class="flex items-center">
-                          <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                          <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                           <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                       </div>
                       <div class="flex items-center space-x-2">
@@ -196,13 +208,54 @@
       </div>
   </nav>
 
+  <!-- Upload Profile Modal Box-->
+  <div id="modal-upload" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+      <h3 data-i18n="upload_profile" class="text-2xl font-semibold text-[#C69AE6] mb-4">Upload Profile Image</h3>
+      
+      <div class="border-2 border-dashed border-[#C69AE6] rounded-xl p-10 text-center bg-lilac-50 dark:bg-gray-700 hover:bg-lilac-100 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer mb-4" 
+          id="uploadArea" 
+          onclick="document.getElementById('profile-image-input').click()">
+        <div>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5" class="mx-auto mb-4">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17,8 12,3 7,8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
+            <strong>Click to upload</strong> or drag and drop
+          </p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm">PNG, JPG or GIF (max 5MB)</p>
+        </div>
+      </div>
+      
+      <!-- Preview area -->
+      <div id="preview" class="mb-4"></div>
+      
+      <input type="file" id="profile-image-input" class="hidden" accept="image/*">
+      
+      <div class="flex gap-3">
+        <button id="uploadBtn" disabled class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
+          Upload Image
+        </button>
+        <button id="deleteBtn" class="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
+          Delete Image
+        </button>
+        <button onclick="closeModal('modal-upload')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
   <!-- Main Content duh -->
   <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-lilac-50 dark:bg-[#111827]" id="main-container">
     <div class="lg:fixed flex flex-col bg-lilac-500 dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
-        <img class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity animate-fade-in-from-up duration-300 object-cover" src="img/theorist_matpat_9.webp" alt="A majestic llama"  id ="profile-image">
-        <h1 class="text-5xl font-bold text-white animate-fade-in-from-down">Alex Johnson</h1>
-        <p class="mt-4 text-lg text-white animate-fade-in-from-down">Software Engineer</p>
+        <div onclick="openModal('modal-upload')" class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 animate-fade-in-from-up cursor-pointer bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png');" role="img" aria-label="Profile" id="profile-image"></div>
+        <h1 id="user-name" class="text-5xl font-bold text-white animate-fade-in-from-down">Loading...</h1>
+        <p id="user-industry" class="mt-4 text-lg text-white animate-fade-in-from-down">Loading...</p>
       </div>
       <div class="flex justify-center mt-6">
         <a href="cv/Escoffier_Resume.pdf" download
@@ -225,30 +278,30 @@
     </div>
 
     <!-- Employee Main Profile -->
-    <div class="flex flex-col items-center h-screen justify-center w-full gap-8 mt-5 lg:pl-[29vw] pt-[50vh] lg:pt-0">
+    <div class="flex flex-col items-center h-screen justify-center w-full gap-8 mt-5 lg:pl-[29vw] pt-[20vh] lg:pt-0">
       <div class="flex lg:flex-row flex-col lg:w-[60vw] justify-between">
         <div class="text-center flex flex-col gap-6 items-center h-auto lg:mt-20">
           <h2 data-i18n="employee_details" class="text-3xl font-bold text-[#C69AE6] lg:mt-0 mt-10 ">Employee Details</h2>
           <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[28vw] w-[85vw] h-full text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
             <div class="mb-4">
               <h4 data-i18n="employee_full_name" class="font-semibold text-xl text-[#C69AE6]">Full Name</h4>
-              <p class="text-[#374151] dark:text-white">Alex Johnson</p>
+              <p id="user-name2" class="text-[#374151] dark:text-white">Loading...</p>
             </div>
             <div class="mb-4">
               <h4 data-i18n="employee_birth_date" class="font-semibold text-xl text-[#C69AE6]">Birth Date</h4>
-              <p class="text-[#374151] dark:text-white">April 1, 1990</p>
+              <p id="user-birthdate" class="text-[#374151] dark:text-white">Loading...</p>
             </div>
             <div class="mb-4">
               <h4 data-i18n="employee_location" class="font-semibold text-xl text-[#C69AE6]">Location</h4>
-              <p class="text-[#374151] dark:text-white">Jakarta, Indonesia</p>
+              <p id="user-location" class="text-[#374151] dark:text-white">Loading...</p>
             </div>
             <div class="mb-4">
               <h4 data-i18n="employee_employment_status" class="font-semibold text-xl text-[#C69AE6]">Employment Status</h4>
-              <p class="text-[#374151] dark:text-white">Unemployed</p>
+              <p id="user-employment-status" class="text-[#374151] dark:text-white">Loading...</p>
             </div>
             <div class="mb-4">
               <h4 data-i18n="employee_contact_email" class="font-semibold text-xl text-[#C69AE6]">Contact Email</h4>
-              <p class="text-[#374151] dark:text-white">alex.johnson@mail.tyv</p>
+              <p id="user-email" class="text-[#374151] dark:text-white">Loading...</p>
             </div>
           </div>
         </div>
@@ -277,7 +330,7 @@
         <h2 data-i18n="employee_biodata" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-6">Biodata</h2>
         <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[60vw] w-[85vw] h-auto text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
           <div class="mb-4">
-            <p class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
+            <p id="user-biodata" class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
             </p>
           </div>
         </div>
@@ -294,58 +347,22 @@
       </div>
     </div>
   </div>
+
   <!-- Employee Education Modal Box (popup basically) -->
   <div id="modal-education" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 data-i18n="education" class="text-3xl font-semibold text-[#C69AE6]">Education</h3>
-      <div class="flex flex-col mt-4">
-        <div class="flex flex-row">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fontaine Culinary Academy">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Fontaine Culinary Academy</h2>
-            <p class="text-black dark:text-white">2020-2024</p>
-          </div>
-        </div>
-        <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Teyvat Culinary Institute</h2>
-            <p class="text-black dark:text-white">2016-2020</p>
-          </div>
-        </div>
+    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-4xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
+      <div class="flex justify-between items-center mb-6">
+        <h3 data-i18n="education" class="text-3xl font-semibold text-[#C69AE6]">Education</h3>
       </div>
-      <h3 data-i18n="experience" class="text-3xl font-semibold text-[#C69AE6] mt-4">Experience</h3>
-      <div class="flex flex-col mt-4">
-        <div class="flex flex-row">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Fleuve Cendre">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Fleuve Cendre</h2>
-            <p class="text-black dark:text-white">2025-Present</p>
-          </div>
-        </div>
-        <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
-          </div>
-        </div>
-                <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
-          </div>
-        </div>
-                <div class="flex flex-row mt-4">
-          <img class="rounded-lg mt-2 max-w-40 max-h-20" src="img/blackswa.png" alt="Teyvat Culinary Institute">
-          <div class="flex flex-col ml-5">
-            <h2 class="text-xl font-semibold text-[#C69AE6]">Hotel Debord</h2>
-            <p class="text-black dark:text-white">2020-2025</p>
-          </div>
-        </div>
+      
+      <!-- Education List -->
+      <div id="education-list" class="space-y-4">
+        <!-- Education records will be loaded here -->
       </div>
-      <button onclick="closeModal('modal-education')" class="text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 mt-5">Close</button>
+      
+      <div class="flex justify-center mt-6">
+        <button onclick="closeModal('modal-education')" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+      </div>
     </div>
   </div>
 
@@ -362,28 +379,13 @@
     </div>
   </div>
 
-  <!-- Chat Modal -->
-  <div id="modal-chat" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 h-auto overflow-y-auto">
-      <h3 class="text-2xl font-semibold text-[#C69AE6] mb-4">Chat</h3>
-      <div id="chat-box" class="bg-lilac-50 dark:bg-gray-800 rounded p-3 mb-3 h-96 overflow-y-auto text-sm text-gray-800 dark:text-gray-200"></div>
-      <div class="flex ">
-        <input id="chat-input" type="text" placeholder="Type a message..." class="flex-grow rounded-l px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-        <button onclick="sendChat()" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-r">Send</button>
-      </div>
-      <button onclick="closeModal('modal-chat')" class="text-white px-4 py-2 mt-4 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 w-full">Close</button>
-    </div>
-  </div>
-
-
-  <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
+<!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
   <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
     <div class="flex justify-end">
       <button id="btn-skills" onclick="openModal('modal-skills')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
         <i class="fa fa-dumbbell ml-0.5"></i>
         <span data-i18n="skills_nav" id="nav-skills" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Skills</span>
       </button>
-
     </div>
     <div class="flex justify-end">
       <button id="btn-education" onclick="openModal('modal-education')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
@@ -391,37 +393,11 @@
         <span data-i18n="education_nav" id="nav-education" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Education</span>
       </button>
     </div>
-    <div class="flex justify-end">
-      <button id="btn-chat" onclick="openModal('modal-chat')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
-        <i class="fa fa-comment-dots ml-0.5"></i>
-        <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
-      </button>
-    </div>
   </div>
 </body>
 <script src="logout.js"></script>
-<script>
-  const chatBox = document.getElementById('chat-box');
-  const chatInput = document.getElementById('chat-input');
-
-  function sendChat() {
-    const message = chatInput.value.trim();
-    if (!message) return;
-
-    const msgElem = document.createElement('div');
-    msgElem.textContent = "You: " + message;
-    msgElem.classList.add('mb-1');
-    chatBox.appendChild(msgElem);
-    chatBox.scrollTop = chatBox.scrollHeight;
-    chatInput.value = '';
-  }
-
-  // Allow Enter key to send
-  chatInput?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') sendChat();
-  });
-</script>
-
+<script src="js/profile-view.js"></script>
+<script src="js/education_view.js"></script>
 <script>
 
   // Mobile menu toggle
@@ -439,7 +415,6 @@
   userMenuButton.addEventListener('click', () => {
       userMenu.classList.toggle('hidden');
   });
-  
   
   // Close menus when clicking outside
   document.addEventListener('click', (e) => {
@@ -466,7 +441,7 @@
   const loading_circle = document.createElement('div');
   loading_circle.id = 'load_bro';
   loading_circle.innerHTML = `
-    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
+    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80 z-50">
       <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
     </div>
   `;
@@ -520,8 +495,6 @@
   const navSkills = document.getElementById('nav-skills')
   const btnEducation = document.getElementById('btn-education');
   const navEducation = document.getElementById('nav-education')
-  const btnChat = document.getElementById('btn-chat');
-  const navChat = document.getElementById('nav-chat')
 
   btnSkills.addEventListener('mouseover', () => {
     navSkills.classList.remove('hidden');
@@ -543,18 +516,6 @@
     btnEducation.classList.add('w-12');
     navEducation.classList.add('hidden');
   });
-  btnChat.addEventListener('mouseover', () => {
-    navChat.classList.remove('hidden');
-    btnChat.classList.remove('w-12');
-    btnChat.classList.add('w-36');
-  });
-  btnChat.addEventListener('mouseout', () => {
-    btnChat.classList.remove('w-36');
-    btnChat.classList.add('w-12');
-    navChat.classList.add('hidden');
-  });
 
 </script>
-<script src="language.js"></script>
-<script src="darkmode.js"></script>
 </html>
