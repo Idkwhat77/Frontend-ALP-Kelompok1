@@ -457,58 +457,93 @@ class FormErrorHandler {
       }
     }
 
-  async handleCompanyRegistration(event) {
-    const submitBtn = this.companyForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Registering...';
-    submitBtn.disabled = true;
+    async handleCompanyRegistration(event) {
+      event.preventDefault();
+      
+      const submitBtn = this.companyForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Registering...';
+      submitBtn.disabled = true;
 
-    // Collect form data
-    const companyData = {
-      companyName: this.companyName.value.trim(),
-      email: this.companyEmail.value.trim(),
-      foundationDate: this.companyFoundationDate.value,
-      hq: this.companyHq.value.trim(),
-      industry: this.companyIndustry.value,
-      companySize: parseInt(this.companySize.value, 10),
-      description: this.companyDescription.value.trim()
-    };
+      // Collect form data
+      const companyData = {
+          companyName: this.companyName.value.trim(),
+          email: this.companyEmail.value.trim(),
+          foundationDate: this.companyFoundationDate.value,
+          hq: this.companyHq.value.trim(),
+          industry: this.companyIndustry.value,
+          companySize: parseInt(this.companySize.value, 10), // Ensure it's an integer
+          description: this.companyDescription.value.trim() || "Please update your company description."
+      };
 
-    // Basic validation (add more as needed)
-    let isValid = true;
-    if (!companyData.companyName) isValid = false;
-    if (!companyData.email) isValid = false;
-    if (!companyData.foundationDate) isValid = false;
-    if (!companyData.hq) isValid = false;
-    if (!companyData.industry) isValid = false;
-    if (!companyData.companySize || isNaN(companyData.companySize)) isValid = false;
+      console.log('Company registration data:', companyData);
+      console.log('Current user:', apiClient.getCurrentUser());
 
-    if (!isValid) {
-      this.showNotification('Please fill all required fields.', 'error');
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
-      return;
-    }
-
-    try {
-      // You must implement apiClient.createCompany to POST to /api/company
-      const response = await apiClient.createCompany(companyData);
-
-      if (response.success) {
-        localStorage.setItem('user_type', 'company');
-        this.showNotification('Company registered successfully!', 'success');
-        setTimeout(() => {
-          window.location.href = 'homepage.html';
-        }, 1500);
-      } else {
-        this.showNotification(response.message || 'Failed to register company.', 'error');
+      // Validation
+      let isValid = true;
+      if (!companyData.companyName) {
+          this.showNotification('Company name is required', 'error');
+          isValid = false;
       }
-    } catch (error) {
-      console.error('Company registration error:', error);
-      this.showNotification(error.message || 'Registration failed. Please try again.', 'error');
-    } finally {
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
+      if (!companyData.email) {
+          this.showNotification('Email is required', 'error');
+          isValid = false;
+      }
+      if (!companyData.foundationDate) {
+          this.showNotification('Foundation date is required', 'error');
+          isValid = false;
+      }
+      if (!companyData.hq) {
+          this.showNotification('HQ location is required', 'error');
+          isValid = false;
+      }
+      if (!companyData.industry) {
+          this.showNotification('Industry is required', 'error');
+          isValid = false;
+      }
+      if (!companyData.companySize || isNaN(companyData.companySize) || companyData.companySize < 1) {
+          this.showNotification('Valid company size is required (must be a positive number)', 'error');
+          isValid = false;
+      }
+
+      if (!isValid) {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          return;
+      }
+
+      try {
+          console.log('Attempting to create company...');
+          const response = await apiClient.createCompany(companyData);
+          console.log('Company creation response:', response);
+
+          if (response && response.success) {
+              localStorage.setItem('user_type', 'company');
+              this.showNotification('Company registered successfully!', 'success');
+              setTimeout(() => {
+                  window.location.href = 'homepage.html';
+              }, 1500);
+          } else {
+              throw new Error(response?.message || 'Failed to register company');
+          }
+      } catch (error) {
+          console.error('Company registration error:', error);
+          
+          // More detailed error handling
+          if (error.message.includes('404')) {
+              this.showNotification('Server endpoint not found. Please check if the backend is running on the correct port.', 'error');
+          } else if (error.message.includes('User must be logged in')) {
+              this.showNotification('Please login first before creating a company profile.', 'error');
+              setTimeout(() => {
+                  window.location.href = 'login.html';
+              }, 2000);
+          } else {
+              this.showNotification(error.message || 'Registration failed. Please try again.', 'error');
+          }
+      } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+      }
     }
   }
-}
+

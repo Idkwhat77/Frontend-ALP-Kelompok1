@@ -278,4 +278,9 @@ function updateProfileDisplay(data) {
             element.textContent = value;
         }
     });
+
+    // Refresh navbar profile image when profile is updated
+    if (window.navbarProfileManager) {
+        window.navbarProfileManager.refreshNavbar();
+    }
 }
