@@ -279,22 +279,44 @@ class AuthFormController {
         submitBtn.disabled = true;
 
         try {
-            const response = await apiClient.login({
-                identifier: identifier,
-                password: password
-            });
+        const response = await apiClient.login({
+            identifier: identifier,
+            password: password
+        });
 
-            if (response.success) {
-                this.showNotification('Login successful! Redirecting...', 'success');
+        if (response.success && response.user) {
+            // After successful login, check what type of profile exists
+            try {
+                const candidateResponse = await apiClient.getCandidateByUserId(response.user.id);
+                if (candidateResponse && candidateResponse.candidate) {
+                    apiClient.setCurrentUser(response.user, 'employee');
+                    this.showNotification('Login successful! Redirecting...', 'success');
                 
-                // Redirect to homepage or dashboard
-                setTimeout(() => {
-                    window.location.href = 'homepage.html';
-                }, 1000);
-            } else {
-                throw new Error(response.message || 'Login failed');
+                    // Redirect to homepage or dashboard
+                    setTimeout(() => {
+                        window.location.href = 'homepage.html';
+                    }, 1000);
+                    return;
+                }
+            } catch (error) {
+                // No candidate profile found, check for company
             }
 
+            try {
+                const companyResponse = await apiClient.getCompanyByUserId(response.user.id);
+                if (companyResponse && companyResponse.company) {
+                    apiClient.setCurrentUser(response.user, 'company');
+                    window.location.href = 'homepage.html';
+                    return;
+                }
+            } catch (error) {
+                // No company profile found
+            }
+
+            // No profile found, redirect to role selection
+            apiClient.setCurrentUser(response.user);
+            window.location.href = 'chooserole.html';
+        }
         } catch (error) {
             console.error('Login error:', error);
             this.showNotification(error.message || 'Login failed. Please try again.', 'error');
