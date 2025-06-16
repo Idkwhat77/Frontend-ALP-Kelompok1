@@ -94,24 +94,6 @@ async function loadLoggedInUserProfile() {
   }
 }
 
-// Update only navbar profile images with logged-in user's data
-function updateNavbarProfile(candidate) {
-  const profileImageElementNav = document.getElementById('profile-image-nav');
-  const profileImageElementMobile = document.getElementById('profile-image-mobile');
-
-  const imageUrl = candidate.profileImageUrl 
-    ? `http://localhost:8080${candidate.profileImageUrl}`
-    : 'img/default-profile.png';
-
-  if (profileImageElementNav) {
-    profileImageElementNav.style.backgroundImage = `url('${imageUrl}')`;
-  }
-
-  if (profileImageElementMobile) {
-    profileImageElementMobile.style.backgroundImage = `url('${imageUrl}')`;
-  }
-}
-
 // Helper function to display candidate profile data
 function displayCandidateProfile(candidate, updateNavbar = true) {
   // Helper function to format date

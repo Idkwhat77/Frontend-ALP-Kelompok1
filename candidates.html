@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidates - RuangKerja</title>
     
+    <!-- Language and Dark Mode Scripts -->
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -135,7 +139,7 @@
 
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
                         <!-- Dropdown Menu -->
@@ -168,7 +172,7 @@
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                             <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -407,12 +411,11 @@
             </div>
         </div>
     </footer>
-</body>
+    <!-- Scripts -->
 <script src="api.js"></script>
+<script src="js/navbar-profile.js"></script>
 <script src="js/filter_candidates.js"></script>
 <script src="js/filter_candidates2.js"></script>
-<script src="language.js"></script>
-<script src="darkmode.js"></script>
 <!-- Scripts -->
 <script>
     
@@ -475,6 +478,5 @@
         }
     });
 </script>
-<script src="language.js"></script>
-<script src="darkmode.js"></script>
+</body>
 </html>
