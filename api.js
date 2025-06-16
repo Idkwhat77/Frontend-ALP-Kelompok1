@@ -179,16 +179,21 @@ class ApiClient {
 
     async createCompany(companyData) {
         const user = this.getCurrentUser();
+        console.log('createCompany: Current user:', user);
+
         if (!user || !user.id) {
             throw new Error('User must be logged in to create company profile. Please login first.');
         }
 
-        // POST to /api/company/create with X-User-Id header
+        // Don't add user_id to the body - it's passed in the header
+        console.log('createCompany: Data being sent to API:', companyData);
+        
+        // Make sure we're using the correct endpoint path
         const response = await this.makeRequest('/company', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-User-Id': user.id
+                'X-User-Id': user.id.toString() // Ensure it's a string
             },
             body: JSON.stringify(companyData)
         });
@@ -463,6 +468,133 @@ class ApiClient {
     async getCompanyByUserId(userId) {
         // Adjust the endpoint if your backend uses a different route
         return this.makeRequest(`/company/user/${userId}`, {
+            method: 'GET'
+        });
+    }
+
+    // Company API methods
+    async getCompanyByUserId(userId) {
+        return this.makeRequest(`/company/user/${userId}`, {
+            method: 'GET'
+        });
+    }
+
+    async getCompanyById(companyId) {
+        return this.makeRequest(`/company/${companyId}`, {
+            method: 'GET'
+        });
+    }
+
+async updateCompany(companyId, companyData) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to update company profile');
+        }
+
+        // Handle company size - ensure it's always an integer
+        let processedData = { ...companyData };
+        if (processedData.companySize) {
+            // If it's a string, try to parse as integer
+            if (typeof processedData.companySize === 'string') {
+                const parsed = parseInt(processedData.companySize, 10);
+                if (!isNaN(parsed)) {
+                    processedData.companySize = parsed;
+                } else {
+                    throw new Error('Company size must be a valid number');
+                }
+            }
+            // If it's already a number, make sure it's an integer
+            else if (typeof processedData.companySize === 'number') {
+                processedData.companySize = Math.floor(processedData.companySize);
+            }
+        }
+
+        return this.makeRequest(`/company/${companyId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify(processedData)
+        });
+    }
+
+    async uploadCompanyImage(companyId, formData) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to upload image');
+        }
+
+        const url = `${this.baseURL}/company/upload-image/${companyId}`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-User-Id': user.id
+                },
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || `HTTP error! status: ${response.status}`);
+            }
+            
+            return data;
+        } catch (error) {
+            console.error('Company image upload failed:', error);
+            throw error;
+        }
+    }
+
+    async deleteCompanyImage(companyId) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to delete image');
+        }
+
+        return this.makeRequest(`/company/delete-image/${companyId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-User-Id': user.id
+            }
+        });
+    }
+
+    async updateCompanyDescription(companyId, description) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to update description');
+        }
+
+        return this.makeRequest(`/company/${companyId}/description`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify({ description })
+        });
+    }
+
+    async deleteCompany(companyId) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to delete company');
+        }
+
+        return this.makeRequest(`/company/${companyId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-User-Id': user.id
+            }
+        });
+    }
+
+    async getAllCompanies() {
+        return this.makeRequest('/company', {
             method: 'GET'
         });
     }
