@@ -15,6 +15,9 @@ class ApiClient {
         this.currentUser = user;
         if (user) {
             localStorage.setItem('current_user', JSON.stringify(user));
+            if (userType) {
+                localStorage.setItem('user_type', userType);
+            }
         } else {
             localStorage.removeItem('current_user');
         }
@@ -75,7 +78,43 @@ class ApiClient {
             throw error;
         }
     }
-    
+
+    // Set current user with type
+    setCurrentUser(user, userType = null) {
+        this.currentUser = user;
+        if (user) {
+            localStorage.setItem('current_user', JSON.stringify(user));
+            if (userType) {
+                localStorage.setItem('user_type', userType);
+            }
+        } else {
+            localStorage.removeItem('current_user');
+            localStorage.removeItem('user_type');
+        }
+    }
+
+    // Get user type
+    getUserType() {
+        return localStorage.getItem('user_type');
+    }
+
+    // Clear user data and logout
+    clearCurrentUser() {
+        this.currentUser = null;
+        localStorage.removeItem('current_user');
+        localStorage.removeItem('user_type');
+    }
+
+    // Check if user is employee
+    isEmployee() {
+        return this.getUserType() === 'employee';
+    }
+
+    // Check if user is company
+    isCompany() {
+        return this.getUserType() === 'company';
+    }
+
     // Authentication methods
     async register(userData) {
         const response = await this.makeRequest('/auth/register', {
@@ -366,6 +405,45 @@ class ApiClient {
 
     async getAllExperience(candidateId) {
         return this.makeRequest(`/candidates/${candidateId}/experiences/`, {
+            method: 'GET'
+        });
+    }
+
+    // Skills API methods
+    async createSkill(candidateId, skillData) {
+        return this.makeRequest(`/candidates/${candidateId}/skills`, {
+            method: 'POST',
+            body: JSON.stringify(skillData)
+        });
+    }
+
+    async getCandidateSkills(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/skills`, {
+            method: 'GET'
+        });
+    }
+
+    async getSkillById(skillId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/skills/${skillId}`, {
+            method: 'GET'
+        });
+    }
+
+    async updateSkill(skillId, skillData, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/skills/${skillId}`, {
+            method: 'PUT',
+            body: JSON.stringify(skillData)
+        });
+    }
+
+    async deleteSkill(skillId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/skills/${skillId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    async getAllSkills() {
+        return this.makeRequest('/candidates/1/skills/all', {
             method: 'GET'
         });
     }

@@ -45,6 +45,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         window.initializeEmployeeHobbies(candidateId);
       }
 
+      // Initialize skills viewer for this candidate
+      if (window.initializeEmployeeSkills) {
+        window.initializeEmployeeSkills(candidateId);
+      }
       
     } catch (error) {
       console.error('Error loading candidate profile:', error);

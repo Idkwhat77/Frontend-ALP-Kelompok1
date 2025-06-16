@@ -1,14 +1,20 @@
 // Check if user is authenticated when page loads
 window.addEventListener("DOMContentLoaded", () => {
-  // Check user authentication
-  const currentUser = apiClient.getCurrentUser();
+    const currentUser = apiClient.getCurrentUser();
+    const userType = apiClient.getUserType();
+    
   if (!currentUser) {
-    console.warn('No authenticated user found. Redirecting to login...');
-    window.location.href = 'login.html';
-    return;
+      console.warn('No authenticated user found. Redirecting to login...');
+      window.location.href = 'login.html';
+      return;
   }
   
-  console.log('Authenticated user:', currentUser);
+  // If user already has a type, redirect to homepage
+  if (userType) {
+      console.log('User already has profile type:', userType);
+      window.location.href = 'homepage.html';
+      return;
+  }
 
   // Show body with fade-in on load
   document.body.classList.remove("hidden");
@@ -411,6 +417,10 @@ class FormErrorHandler {
       const response = await apiClient.createEmployee(employeeData);
 
       if (response.success) {
+
+        // Store user type in localStorage
+        localStorage.setItem('user_type', 'employee');
+
         this.showNotification('Employee profile created successfully!', 'success');
           setTimeout(() => {
             window.location.href = 'homepage.html';
