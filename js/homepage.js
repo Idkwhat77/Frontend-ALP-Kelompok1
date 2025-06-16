@@ -99,19 +99,6 @@ function displayErrorState() {
     `;
 }
 
-function displayErrorState() {
-    const candidatesContainer = document.querySelector('#candidates-container');
-    candidatesContainer.innerHTML = `
-        <div class="col-span-full text-center py-8">
-            <p class="text-red-500 dark:text-red-400 mb-2">Failed to load candidates</p>
-            <button onclick="loadHomepageCandidates()" 
-                    class="px-4 py-2 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md">
-                Retry
-            </button>
-        </div>
-    `;
-}
-
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', () => {
     // Load API client first
@@ -126,4 +113,19 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Loading homepage candidates...');
         loadHomepageCandidates();
     }, 100);
+
+  const viewProfileLink = document.querySelector('a[href="profile.html"][data-i18n="view_profile"]');
+  if (viewProfileLink) {
+    viewProfileLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      const userType = window.apiClient.getUserType();
+      if (userType === 'employee') {
+        window.location.href = 'profile.html';
+      } else if (userType === 'company') {
+        window.location.href = 'company_profile.html';
+      } else {
+        window.location.href = 'profile.html'; // fallback
+      }
+    });
+  }
 });

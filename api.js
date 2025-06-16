@@ -27,13 +27,7 @@ class ApiClient {
     getCurrentUser() {
         return this.currentUser || JSON.parse(localStorage.getItem('current_user') || 'null');
     }
-
-    // Clear user data and logout
-    clearCurrentUser() {
-        this.currentUser = null;
-        localStorage.removeItem('current_user');
-    }
-
+    
     // Generic API request method
     async makeRequest(endpoint, options = {}) {
         const url = `${this.baseURL}${endpoint}`;
@@ -180,6 +174,24 @@ class ApiClient {
         });
         
         console.log('createEmployee: API response:', response);
+        return response;
+    }
+
+    async createCompany(companyData) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to create company profile. Please login first.');
+        }
+
+        // POST to /api/company/create with X-User-Id header
+        const response = await this.makeRequest('/company', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify(companyData)
+        });
         return response;
     }
 
@@ -444,6 +456,13 @@ class ApiClient {
 
     async getAllSkills() {
         return this.makeRequest('/candidates/1/skills/all', {
+            method: 'GET'
+        });
+    }
+
+    async getCompanyByUserId(userId) {
+        // Adjust the endpoint if your backend uses a different route
+        return this.makeRequest(`/company/user/${userId}`, {
             method: 'GET'
         });
     }
