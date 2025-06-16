@@ -62,7 +62,6 @@ class CompanyProfileManager {
         this.updateElement('company-name', company.companyName);
         this.updateElement('company-name-header', company.companyName);
         this.updateElement('company-industry', company.industry);
-        // Display company size as integer with "employees" text
         this.updateElement('company-size', `${company.companySize} Employees`);
         this.updateElement('company-foundation-date', this.formatDate(company.foundationDate));
         this.updateElement('company-hq', company.hq);
@@ -165,7 +164,6 @@ class CompanyProfileManager {
         document.getElementById('settings-company-name').value = this.currentCompany.companyName || '';
         document.getElementById('settings-company-email').value = this.currentCompany.email || '';
         document.getElementById('settings-company-industry').value = this.currentCompany.industry || '';
-        // Set company size as integer value
         document.getElementById('settings-company-size').value = this.currentCompany.companySize || '';
         document.getElementById('settings-company-hq').value = this.currentCompany.hq || '';
         document.getElementById('settings-foundation-date').value = this.formatDateForInput(this.currentCompany.foundationDate);
@@ -193,7 +191,7 @@ class CompanyProfileManager {
                 companyName: document.getElementById('settings-company-name').value.trim(),
                 email: document.getElementById('settings-company-email').value.trim(),
                 industry: document.getElementById('settings-company-industry').value,
-                companySize: parseInt(document.getElementById('settings-company-size').value, 10),
+                companySize: document.getElementById('settings-company-size').value,
                 hq: document.getElementById('settings-company-hq').value.trim(),
                 foundationDate: document.getElementById('settings-foundation-date').value,
                 description: document.getElementById('settings-company-description').value.trim()
@@ -210,11 +208,6 @@ class CompanyProfileManager {
                 throw new Error('Please enter a valid email address');
             }
 
-            // Validate company size
-            if (!formData.companySize || isNaN(formData.companySize) || formData.companySize < 1) {
-                throw new Error('Please enter a valid company size (number of employees)');
-            }
-
             // Update company via API
             if (window.apiClient && window.apiClient.updateCompany) {
                 const response = await window.apiClient.updateCompany(this.currentCompany.id, formData);
@@ -228,11 +221,6 @@ class CompanyProfileManager {
                     // Update the profile display
                     this.displayCompanyProfile(this.currentCompany);
                     
-                    // Refresh navbar profile
-                    if (window.navbarProfileManager) {
-                        window.navbarProfileManager.refreshNavbar();
-                    }
-                    
                     // Close the modal
                     closeModal('modal-settings');
                 } else {
@@ -244,12 +232,6 @@ class CompanyProfileManager {
                     alert('✅ Company profile updated successfully! (Demo mode)');
                     this.currentCompany = { ...this.currentCompany, ...formData };
                     this.displayCompanyProfile(this.currentCompany);
-                    
-                    // Refresh navbar profile
-                    if (window.navbarProfileManager) {
-                        window.navbarProfileManager.refreshNavbar();
-                    }
-                    
                     closeModal('modal-settings');
                 }, 1000);
             }
