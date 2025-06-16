@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuangKerja - Profile</title>
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf7fd',
+                            100: '#f4ecfb',
+                            200: '#ebddf7',
+                            300: '#dbc2f0',
+                            400: '#c69ae6',
+                            500: '#b87ce0',
+                        },
+                    },
+                    fontFamily: {
+                        elegant: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    },
+                    transitionProperty: {
+                        'scale': 'transform',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+        
+        .fade-on-scroll {
+            opacity: 0;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-on-scroll.visible {
+            opacity: 1;
+        }
+        
+        button:focus, input:focus {
+            outline: 2px solid #c69ae6;
+            outline-offset: 2px;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f4ecfb;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #dbc2f0;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
+    
+    <!-- Navbar -->
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                            Beranda
+                        </a>
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
+
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-16">
+        <!-- Profile Header Section -->
+        <section class="relative mb-8">
+            <!-- Cover Photo -->
+            <div class="h-48 w-full rounded-xl bg-gray-200 dark:bg-gray-800 overflow-hidden mb-4">
+                <img id="cover-photo" src="img/default-cover.jpg" alt="Cover photo" class="w-full h-full object-cover">
+                <button id="change-cover-btn" class="absolute top-4 right-4 bg-white/80 dark:bg-gray-700/80 hover:bg-white dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1 rounded-full text-sm flex items-center transition-all">
+                    <i class="fas fa-camera mr-2"></i>
+                    <span>Change Cover</span>
+                </button>
+            </div>
+            
+            <!-- Profile Info -->
+            <div class="flex flex-col md:flex-row items-start md:items-end -mt-16 md:-mt-12 ml-4 md:ml-6">
+                <!-- Profile Picture -->
+                <div class="relative group">
+                    <img id="profile-picture" src="img/default-profile.png" alt="Profile picture" class="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white dark:border-gray-900 object-cover shadow-lg">
+                    <button id="change-profile-btn" class="absolute bottom-2 right-2 bg-lilac-500 hover:bg-lilac-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class="fas fa-camera text-sm"></i>
+                    </button>
+                </div>
+                
+                <!-- Name and Basic Info -->
+                <div class="mt-4 md:mt-0 md:ml-6">
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">John Doe</h1>
+                    <p class="text-gray-600 dark:text-gray-300">Senior Frontend Developer at Black Swan LLC</p>
+                    
+                    <div class="flex flex-wrap items-center mt-2 gap-x-4 gap-y-2 text-sm">
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt mr-2 text-lilac-400"></i>
+                            Jakarta, Indonesia
+                        </span>
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-briefcase mr-2 text-lilac-400"></i>
+                            5+ years experience
+                        </span>
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-envelope mr-2 text-lilac-400"></i>
+                            john.doe@example.com
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex items-center mt-4 md:mt-0 md:ml-auto space-x-3">
+                    <button class="bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-lg flex items-center transition-colors">
+                        <i class="fas fa-file-export mr-2"></i>
+                        <span>Export CV</span>
+                    </button>
+                    <button id="edit-profile-btn" class="border border-lilac-500 text-lilac-500 dark:text-lilac-300 dark:border-lilac-300 hover:bg-lilac-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg flex items-center transition-colors">
+                        <i class="fas fa-pen mr-2"></i>
+                        <span>Edit Profile</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Profile Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- About Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">About</h2>
+                        <button class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Passionate frontend developer with 5+ years of experience building responsive and accessible web applications. 
+                        Specialized in React, Vue.js, and modern JavaScript. Strong advocate for clean code and user-centered design. 
+                        Currently leading the frontend team at Black Swan LLC, building innovative SaaS solutions.
+                    </p>
+                </section>
+
+                <!-- Experience Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Experience</h2>
+                        <button class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <!-- Experience Item 1 -->
+                        <div class="flex">
+                            <div class="mr-4">
+                                <div class="h-12 w-12 rounded-lg bg-lilac-100 dark:bg-gray-700 flex items-center justify-center">
+                                    <img src="img/blackswa.png" alt="Black Swan LLC" class="h-8 w-8 object-contain">
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Senior Frontend Developer</h3>
+                                <p class="text-lilac-500">Black Swan LLC</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Jan 2021 - Present · 2 yrs 8 mos</p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Lead the frontend development team, architecting scalable React applications. 
+                                    Implemented CI/CD pipelines reducing deployment time by 40%. Mentored junior developers.
+                                </p>
+                            </div>
+                            <div class="ml-4 flex space-x-2">
+                                <button class="text-gray-400 hover:text-lilac-500">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                                <button class="text-gray-400 hover:text-red-500">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Experience Item 2 -->
+                        <div class="flex">
+                            <div class="mr-4">
+                                <div class="h-12 w-12 rounded-lg bg-lilac-100 dark:bg-gray-700 flex items-center justify-center">
+                                    <img src="https://via.placeholder.com/48x48?text=TechCorp" alt="TechCorp" class="h-8 w-8 object-contain">
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Frontend Developer</h3>
+                                <p class="text-lilac-500">TechCorp Indonesia</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Mar 2018 - Dec 2020 · 2 yrs 10 mos</p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Developed responsive web applications using Vue.js. Collaborated with UX designers to implement 
+                                    pixel-perfect interfaces. Improved frontend performance by 30%.
+                                </p>
+                            </div>
+                            <div class="ml-4 flex space-x-2">
+                                <button class="text-gray-400 hover:text-lilac-500">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                                <button class="text-gray-400 hover:text-red-500">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Education Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Education</h2>
+                        <button class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex">
+                        <div class="mr-4">
+                            <div class="h-12 w-12 rounded-lg bg-lilac-100 dark:bg-gray-700 flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-lilac-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-900 dark:text-white">University of Indonesia</h3>
+                            <p class="text-lilac-500">Bachelor's degree, Computer Science</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">2014 - 2018</p>
+                            <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                Graduated with honors. Specialized in Human-Computer Interaction and Web Technologies.
+                            </p>
+                        </div>
+                        <div class="ml-4 flex space-x-2">
+                            <button class="text-gray-400 hover:text-lilac-500">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button class="text-gray-400 hover:text-red-500">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Skills</h2>
+                        <button class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                            <span>JavaScript</span>
+                            <button class="ml-1 text-lilac-600 dark:text-lilac-400 hover:text-lilac-800 dark:hover:text-lilac-200">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                            <span>React</span>
+                            <button class="ml-1 text-lilac-600 dark:text-lilac-400 hover:text-lilac-800 dark:hover:text-lilac-200">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                            <span>Vue.js</span>
+                            <button class="ml-1 text-lilac-600 dark:text-lilac-400 hover:text-lilac-800 dark:hover:text-lilac-200">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                            <span>TypeScript</span>
+                            <button class="ml-1 text-lilac-600 dark:text-lilac-400 hover:text-lilac-800 dark:hover:text-lilac-200">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                            <span>HTML/CSS</span>
+                            <button class="ml-1 text-lilac-600 dark:text-lilac-400 hover:text-lilac-800 dark:hover:text-lilac-200">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                            <span>Tailwind CSS</span>
+                            <button class="ml-1 text-lilac-600 dark:text-lilac-400 hover:text-lilac-800 dark:hover:text-lilac-200">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                            <span>Git</span>
+                            <button class="ml-1 text-lilac-600 dark:text-lilac-400 hover:text-lilac-800 dark:hover:text-lilac-200">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- Availability Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Availability</h2>
+                        <button class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-gray-600 dark:text-gray-300">Open to work</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-briefcase mt-1 mr-2 text-lilac-400"></i>
+                            <span class="text-gray-600 dark:text-gray-300">Looking for full-time positions</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                            <span class="text-gray-600 dark:text-gray-300">Open to remote work or in Jakarta area</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-money-bill-wave mt-1 mr-2 text-lilac-400"></i>
+                            <span class="text-gray-600 dark:text-gray-300">Expected salary: Rp15.000.000 - Rp20.000.000</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Languages Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Languages</h2>
+                        <button class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600 dark:text-gray-300">Indonesian</span>
+                                <span class="text-gray-500 dark:text-gray-400 text-sm">Native</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-lilac-500 h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600 dark:text-gray-300">English</span>
+                                <span class="text-gray-500 dark:text-gray-400 text-sm">Professional</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-lilac-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Certifications Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Certifications</h2>
+                        <button class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex">
+                            <div class="mr-3">
+                                <div class="h-10 w-10 rounded-md bg-lilac-100 dark:bg-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-certificate text-lilac-500"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900 dark:text-white">Advanced React</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Frontend Masters · Issued 2022</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="mr-3">
+                                <div class="h-10 w-10 rounded-md bg-lilac-100 dark:bg-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-certificate text-lilac-500"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900 dark:text-white">JavaScript Algorithms</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">freeCodeCamp · Issued 2021</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Portfolio Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Portfolio</h2>
+                        <button class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="#" class="group">
+                            <div class="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="https://via.placeholder.com/300x200?text=Project+1" alt="Project 1" class="w-full h-full object-cover group-hover:opacity-90 transition-opacity">
+                            </div>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300 group-hover:text-lilac-500">E-commerce Dashboard</p>
+                        </a>
+                        <a href="#" class="group">
+                            <div class="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="https://via.placeholder.com/300x200?text=Project+2" alt="Project 2" class="w-full h-full object-cover group-hover:opacity-90 transition-opacity">
+                            </div>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300 group-hover:text-lilac-500">Task Management App</p>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Same footer as your homepage -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo and Description -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p data-i18n="footer.company_description" class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <!-- Socials and Contact in a row on the right -->
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <!-- Our Socials -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.socials" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.contact" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright and Bottom Links -->
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Profile Picture Upload Modal -->
+    <div id="profile-picture-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Update Profile Picture</h3>
+                <button id="close-profile-modal" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center mb-4">
+                <i class="fas fa-cloud-upload-alt text-4xl text-lilac-400 mb-2"></i>
+                <p class="text-gray-600 dark:text-gray-300 mb-2">Drag & drop your photo here</p>
+                <p class="text-gray-400 dark:text-gray-500 text-sm mb-4">or</p>
+                <label for="profile-upload" class="bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-lg cursor-pointer">
+                    Select from computer
+                </label>
+                <input type="file" id="profile-upload" class="hidden" accept="image/*">
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-profile-upload" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    Cancel
+                </button>
+                <button id="save-profile-picture" class="px-4 py-2 rounded-lg bg-lilac-500 hover:bg-lilac-600 text-white disabled:opacity-50" disabled>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cover Photo Upload Modal -->
+    <div id="cover-photo-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Update Cover Photo</h3>
+                <button id="close-cover-modal" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center mb-4">
+                <i class="fas fa-cloud-upload-alt text-4xl text-lilac-400 mb-2"></i>
+                <p class="text-gray-600 dark:text-gray-300 mb-2">Drag & drop your cover photo here</p>
+                <p class="text-gray-400 dark:text-gray-500 text-sm mb-4">or</p>
+                <label for="cover-upload" class="bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-lg cursor-pointer">
+                    Select from computer
+                </label>
+                <input type="file" id="cover-upload" class="hidden" accept="image/*">
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-cover-upload" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    Cancel
+                </button>
+                <button id="save-cover-photo" class="px-4 py-2 rounded-lg bg-lilac-500 hover:bg-lilac-600 text-white disabled:opacity-50" disabled>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Profile Picture Modal
+        const profilePictureBtn = document.getElementById('change-profile-btn');
+        const profilePictureModal = document.getElementById('profile-picture-modal');
+        const closeProfileModal = document.getElementById('close-profile-modal');
+        const cancelProfileUpload = document.getElementById('cancel-profile-upload');
+        
+        profilePictureBtn.addEventListener('click', () => {
+            profilePictureModal.classList.remove('hidden');
+        });
+        
+        [closeProfileModal, cancelProfileUpload].forEach(btn => {
+            btn.addEventListener('click', () => {
+                profilePictureModal.classList.add('hidden');
+            });
+        });
+        
+        // Cover Photo Modal
+        const coverPhotoBtn = document.getElementById('change-cover-btn');
+        const coverPhotoModal = document.getElementById('cover-photo-modal');
+        const closeCoverModal = document.getElementById('close-cover-modal');
+        const cancelCoverUpload = document.getElementById('cancel-cover-upload');
+        
+        coverPhotoBtn.addEventListener('click', () => {
+            coverPhotoModal.classList.remove('hidden');
+        });
+        
+        [closeCoverModal, cancelCoverUpload].forEach(btn => {
+            btn.addEventListener('click', () => {
+                coverPhotoModal.classList.add('hidden');
+            });
+        });
+        
+        // File Upload Handling (simplified)
+        const profileUpload = document.getElementById('profile-upload');
+        const saveProfileBtn = document.getElementById('save-profile-picture');
+        
+        profileUpload.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                saveProfileBtn.disabled = false;
+            }
+        });
+        
+        saveProfileBtn.addEventListener('click', () => {
+            // In a real app, you would upload the file to your server here
+            const file = profileUpload.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('profile-picture').src = e.target.result;
+                    profilePictureModal.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Similar for cover photo
+        const coverUpload = document.getElementById('cover-upload');
+        const saveCoverBtn = document.getElementById('save-cover-photo');
+        
+        coverUpload.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                saveCoverBtn.disabled = false;
+            }
+        });
+        
+        saveCoverBtn.addEventListener('click', () => {
+            const file = coverUpload.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('cover-photo').src = e.target.result;
+                    coverPhotoModal.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Edit Profile Button
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        editProfileBtn.addEventListener('click', () => {
+            // In a real app, this would enable edit mode for the profile
+            alert('Edit profile functionality would be implemented here');
+        });
+    </script>
+</body>
+</html>
