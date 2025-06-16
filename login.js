@@ -306,7 +306,12 @@ class AuthFormController {
                 const companyResponse = await apiClient.getCompanyByUserId(response.user.id);
                 if (companyResponse && companyResponse.company) {
                     apiClient.setCurrentUser(response.user, 'company');
-                    window.location.href = 'homepage.html';
+                    this.showNotification('Login successful! Redirecting...', 'success');
+                
+                    // Redirect to homepage or dashboard
+                    setTimeout(() => {
+                        window.location.href = 'homepage.html';
+                    }, 1000);
                     return;
                 }
             } catch (error) {

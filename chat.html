@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - RuangKerja</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf7fd',
+                            100: '#f4ecfb',
+                            200: '#ebddf7',
+                            300: '#dbc2f0',
+                            400: '#c69ae6',
+                            500: '#b87ce0',
+                        },
+                    },
+                    fontFamily: {
+                        elegant: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Chat specific styles */
+        #chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #chat-messages::-webkit-scrollbar-thumb {
+            background-color: #dbc2f0;
+            border-radius: 3px;
+        }
+
+        .dark #chat-messages::-webkit-scrollbar-thumb {
+            background-color: #4a5568;
+        }
+
+        /* Message animations */
+        .message-in {
+            animation: messageIn 0.3s ease-out forwards;
+        }
+
+        .message-out {
+            animation: messageOut 0.3s ease-out forwards;
+        }
+
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes messageOut {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: inline-block;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #b87ce0;
+            border-radius: 50%;
+            margin: 0 2px;
+            opacity: 0.4;
+        }
+
+        .dark .typing-indicator span {
+            background-color: #c69ae6;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation: typing 1s infinite 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation: typing 1s infinite 0.4s;
+        }
+
+        @keyframes typing {
+            0% {
+                opacity: 0.4;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-3px);
+            }
+            100% {
+                opacity: 0.4;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Custom scrollbar for the page */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f4ecfb;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #dbc2f0;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+        
+        /* Active chat item */
+        .active-chat {
+            background-color: #f4ecfb;
+            border-left: 3px solid #b87ce0;
+        }
+        
+        .dark .active-chat {
+            background-color: #2d3748;
+            border-left: 3px solid #c69ae6;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 pt-24">
+    <!-- Navbar -->
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                            Beranda
+                        </a>
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
+
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Chat Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+            <div class="flex flex-col md:flex-row h-[calc(100vh-180px)]">
+                <!-- Left sidebar - Conversations -->
+                <div class="w-full md:w-80 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Messages</h2>
+                        <div class="mt-3 relative">
+                            <input type="text" placeholder="Search conversations..." 
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-lilac-400 dark:bg-gray-800 dark:text-white text-sm">
+                            <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 dark:text-gray-500"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Scrollable conversation list with custom scrollbar -->
+                    <div class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
+                        <!-- Conversation List -->
+                        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Active Conversation -->
+                            <div class="p-4 bg-gray-100 dark:bg-gray-800 cursor-pointer active-conversation" data-conversation="sarah">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user1.jpg" alt="Sarah Johnson">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Sarah Johnson</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">10:30 AM</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Hey, about the project timeline...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Other Conversations -->
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="michael">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user2.jpg" alt="Michael Chen">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Michael Chen</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Yesterday</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">The design files are ready for review</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="recruiter">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user3.jpg" alt="Black Swan Recruiter">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Black Swan Recruiter</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 15</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Interview scheduled for next week</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="team">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user4.jpg" alt="DesignHub Team">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">DesignHub Team</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 12</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Welcome to the team!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="aisha">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user5.jpg" alt="Aisha Rahman">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Aisha Rahman</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 10</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Let's connect about the UX position</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Additional Users -->
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="david">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user6.jpg" alt="David Wilson">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">David Wilson</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 8</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Can we reschedule our meeting?</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="emily">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user7.jpg" alt="Emily Rodriguez">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Emily Rodriguez</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 5</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">The budget has been approved</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="james">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user8.jpg" alt="James Park">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">James Park</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 3</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">New project requirements attached</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="sophia">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user9.jpg" alt="Sophia Chen">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Sophia Chen</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Feb 28</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Thanks for your help on this!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="alex">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user10.jpg" alt="Alex Turner">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Alex Turner</p>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">Feb 25</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Let me know your thoughts</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right side - Chat area -->
+                <div class="flex-1 flex flex-col">
+                    <!-- Chat header -->
+                    <div id="chat-header" class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center">
+                        <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user1.jpg" alt="Sarah Johnson">
+                        <div>
+                            <h3 class="font-medium text-gray-900 dark:text-white">Sarah Johnson</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Product Manager at TechCorp</p>
+                        </div>
+                        <div class="ml-auto flex space-x-2">
+                            <button class="p-2 text-gray-500 dark:text-gray-400 hover:text-lilac-500 dark:hover:text-lilac-400 rounded-full hover:bg-lilac-50 dark:hover:bg-gray-700">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages area -->
+                    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50 dark:bg-gray-900">
+                        <!-- Date divider -->
+                        <div class="flex justify-center">
+                            <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-xs text-gray-500 dark:text-gray-400 rounded-full">Today</span>
+                        </div>
+                        
+                        <!-- Received message -->
+                        <div class="flex justify-start">
+                            <div class="max-w-[70%] bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm">
+                                <p class="text-gray-800 dark:text-gray-200">Hey! I wanted to follow up about the project timeline we discussed last week. Do you think we can still meet the deadline?</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">10:30 AM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Sent message -->
+                        <div class="flex justify-end">
+                            <div class="max-w-[70%] bg-lilac-500 text-white rounded-lg px-4 py-2">
+                                <p>Hi Sarah! Yes, I've been making good progress. I should have the first prototype ready by Friday as planned.</p>
+                                <p class="text-xs text-lilac-200 mt-1 text-right">10:32 AM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Received message -->
+                        <div class="flex justify-start">
+                            <div class="max-w-[70%] bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm">
+                                <p class="text-gray-800 dark:text-gray-200">That's great to hear! The client is really excited to see it. Would you be available for a quick call tomorrow to go over any questions?</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">10:33 AM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Sent message -->
+                        <div class="flex justify-end">
+                            <div class="max-w-[70%] bg-lilac-500 text-white rounded-lg px-4 py-2">
+                                <p>Absolutely. I'm free between 2-4 PM. Would that work for you?</p>
+                                <p class="text-xs text-lilac-200 mt-1 text-right">10:34 AM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Received message -->
+                        <div class="flex justify-start">
+                            <div class="max-w-[70%] bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm">
+                                <p class="text-gray-800 dark:text-gray-200">Perfect! Let's schedule for 2:30 PM. I'll send you a calendar invite with the Zoom link.</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">10:35 AM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Sent message -->
+                        <div class="flex justify-end">
+                            <div class="max-w-[70%] bg-lilac-500 text-white rounded-lg px-4 py-2">
+                                <p>Sounds good. Looking forward to it!</p>
+                                <p class="text-xs text-lilac-200 mt-1 text-right">10:36 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message input -->
+                    <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                        <div class="flex items-center">
+                            <button class="p-2 text-gray-500 dark:text-gray-400 hover:text-lilac-500 dark:hover:text-lilac-400 rounded-full hover:bg-lilac-50 dark:hover:bg-gray-700 mr-2">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <input type="text" placeholder="Type a message..." 
+                                   class="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-lilac-400 dark:bg-gray-700 dark:text-white" id="message-input">
+                            <button class="ml-2 p-2 text-gray-500 dark:text-gray-400 hover:text-lilac-500 dark:hover:text-lilac-400 rounded-full hover:bg-lilac-50 dark:hover:bg-gray-700">
+                                <i class="far fa-smile"></i>
+                            </button>
+                            <button class="ml-2 bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-lg transition-colors" id="send-button">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo and Description -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <!-- Socials and Contact in a row on the right -->
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <!-- Our Socials -->
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright and Bottom Links -->
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+            const conversationItems = document.querySelectorAll('[data-conversation]');
+            const chatHeader = document.getElementById('chat-header');
+            
+            // Conversation data
+            const conversations = {
+                'sarah': {
+                    name: 'Sarah Johnson',
+                    title: 'Product Manager at TechCorp',
+                    img: 'img/user1.jpg',
+                    messages: [
+                        { type: 'received', text: 'Hey! I wanted to follow up about the project timeline we discussed last week. Do you think we can still meet the deadline?', time: '10:30 AM' },
+                        { type: 'sent', text: 'Hi Sarah! Yes, I\'ve been making good progress. I should have the first prototype ready by Friday as planned.', time: '10:32 AM' },
+                        { type: 'received', text: 'That\'s great to hear! The client is really excited to see it. Would you be available for a quick call tomorrow to go over any questions?', time: '10:33 AM' },
+                        { type: 'sent', text: 'Absolutely. I\'m free between 2-4 PM. Would that work for you?', time: '10:34 AM' },
+                        { type: 'received', text: 'Perfect! Let\'s schedule for 2:30 PM. I\'ll send you a calendar invite with the Zoom link.', time: '10:35 AM' },
+                        { type: 'sent', text: 'Sounds good. Looking forward to it!', time: '10:36 AM' }
+                    ]
+                },
+                'michael': {
+                    name: 'Michael Chen',
+                    title: 'Design Lead at CreativeStudio',
+                    img: 'img/user2.jpg',
+                    messages: [
+                        { type: 'received', text: 'The design files are ready for review', time: 'Yesterday' },
+                        { type: 'sent', text: 'Great! I\'ll take a look this afternoon', time: 'Yesterday' },
+                        { type: 'received', text: 'Thanks! Let me know if you have any feedback', time: 'Yesterday' }
+                    ]
+                },
+                'recruiter': {
+                    name: 'Black Swan Recruiter',
+                    title: 'HR at Black Swan',
+                    img: 'img/user3.jpg',
+                    messages: [
+                        { type: 'received', text: 'Interview scheduled for next week', time: 'Mar 15' },
+                        { type: 'sent', text: 'Thank you for the update. What time works best?', time: 'Mar 15' }
+                    ]
+                },
+                'team': {
+                    name: 'DesignHub Team',
+                    title: 'Team Channel',
+                    img: 'img/user4.jpg',
+                    messages: [
+                        { type: 'received', text: 'Welcome to the team!', time: 'Mar 12' },
+                        { type: 'sent', text: 'Thank you! Excited to be here', time: 'Mar 12' }
+                    ]
+                },
+                'aisha': {
+                    name: 'Aisha Rahman',
+                    title: 'UX Director at DigitalAgency',
+                    img: 'img/user5.jpg',
+                    messages: [
+                        { type: 'received', text: 'Let\'s connect about the UX position', time: 'Mar 10' },
+                        { type: 'sent', text: 'I\'d love to! When would be a good time?', time: 'Mar 10' }
+                    ]
+                }
+            };
+            
+            // Initialize with Sarah's conversation as active
+            let currentConversation = 'sarah';
+            
+            // Dark mode toggle functionality
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+            
+            // Check for saved dark mode preference or system preference
+            if (localStorage.getItem('darkMode') === 'dark' || 
+                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            // Toggle dark mode
+            function toggleDarkMode() {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('darkMode', isDark ? 'dark' : 'light');
+            }
+            
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+            mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
+            
+            // Mobile menu functionality
+            mobileMenuButton.addEventListener('click', () => {
+                const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.setAttribute('aria-expanded', !expanded);
+                mobileMenu.classList.toggle('hidden');
+                
+                // Toggle between hamburger and close icon
+                const icon = mobileMenuButton.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+            
+            // User dropdown menu functionality
+            userMenuButton.addEventListener('click', () => {
+                const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+                userMenuButton.setAttribute('aria-expanded', !expanded);
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // Close menus when clicking outside
+            document.addEventListener('click', (e) => {
+                // Close user dropdown if clicked outside
+                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenuButton.setAttribute('aria-expanded', 'false');
+                    userMenu.classList.add('hidden');
+                }
+                
+                // Close mobile menu if clicked outside
+                if (!mobileMenuButton.contains(e.target) && 
+                    !mobileMenu.contains(e.target)) {
+                    
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    mobileMenu.classList.add('hidden');
+                    
+                    // Reset mobile menu icon to hamburger
+                    const icon = mobileMenuButton.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Switch conversations
+            conversationItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Get conversation ID
+                    const conversationId = this.getAttribute('data-conversation');
+                    currentConversation = conversationId;
+                    
+                    // Update UI
+                    updateChatArea(conversationId);
+                });
+            });
+            
+            // Update chat area with selected conversation
+            function updateChatArea(conversationId) {
+                const conversation = conversations[conversationId];
+                
+                if (!conversation) return;
+                
+                // Update active conversation in sidebar
+                document.querySelectorAll('[data-conversation]').forEach(el => {
+                    el.classList.remove('active-chat', 'bg-gray-100', 'dark:bg-gray-800');
+                });
+                
+                document.querySelector(`[data-conversation="${conversationId}"]`).classList.add('active-chat', 'bg-gray-100', 'dark:bg-gray-800');
+            
+                // Update chat header
+            chatHeader.innerHTML = `
+                <img class="h-10 w-10 rounded-full object-cover mr-3" src="${conversation.img}" alt="${conversation.name}">
+                <div>
+                    <h3 class="font-medium text-gray-900 dark:text-white">${conversation.name}</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">${conversation.title}</p>
+                </div>
+                <div class="ml-auto flex space-x-2">
+                    <button class="p-2 text-gray-500 dark:text-gray-400 hover:text-lilac-500 dark:hover:text-lilac-400 rounded-full hover:bg-lilac-50 dark:hover:bg-gray-700">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Clear and rebuild messages
+            chatMessages.innerHTML = '';
+            
+            // Add date divider
+            const dateDivider = document.createElement('div');
+            dateDivider.className = 'flex justify-center';
+            dateDivider.innerHTML = '<span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-xs text-gray-500 dark:text-gray-400 rounded-full">Today</span>';
+            chatMessages.appendChild(dateDivider);
+            
+            // Add messages
+            conversation.messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `flex justify-${msg.type === 'received' ? 'start' : 'end'} message-${msg.type === 'received' ? 'in' : 'out'}`;
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = msg.type === 'received' 
+                    ? 'max-w-[70%] bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm'
+                    : 'max-w-[70%] bg-lilac-500 text-white rounded-lg px-4 py-2';
+                
+                messageContent.innerHTML = `
+                    <p class="${msg.type === 'received' ? 'text-gray-800 dark:text-gray-200' : ''}">${msg.text}</p>
+                    <p class="text-xs ${msg.type === 'received' ? 'text-gray-500 dark:text-gray-400' : 'text-lilac-200'} mt-1 text-right">${msg.time}</p>
+                `;
+                
+                messageDiv.appendChild(messageContent);
+                chatMessages.appendChild(messageDiv);
+            });
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Send message functionality
+        function sendMessage() {
+            const messageText = chatInput.value.trim();
+            if (!messageText) return;
+            
+            // Add message to current conversation
+            const newMessage = {
+                type: 'sent',
+                text: messageText,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+            
+            conversations[currentConversation].messages.push(newMessage);
+            
+            // Clear input
+            chatInput.value = '';
+            
+            // Update chat area
+            updateChatArea(currentConversation);
+            
+            // Simulate reply after 1-3 seconds
+            if (Math.random() > 0.3) { // 70% chance of reply
+                setTimeout(() => {
+                    const replies = [
+                        "Thanks for your message!",
+                        "I'll get back to you soon.",
+                        "That's a good point.",
+                        "Let me check and get back to you.",
+                        "Sounds good!",
+                        "Can we discuss this tomorrow?",
+                        "I appreciate your feedback."
+                    ];
+                    
+                    const replyMessage = {
+                        type: 'received',
+                        text: replies[Math.floor(Math.random() * replies.length)],
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    };
+                    
+                    conversations[currentConversation].messages.push(replyMessage);
+                    updateChatArea(currentConversation);
+                }, 1000 + Math.random() * 2000);
+            }
+        }
+        
+        // Event listeners for sending messages
+        sendButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Language selector functionality
+        const languageSelectors = document.querySelectorAll('#language-selector, #language-selector-mobile');
+        languageSelectors.forEach(selector => {
+            selector.addEventListener('change', function() {
+                const lang = this.value;
+                // In a real app, you would implement actual translation here
+                console.log(`Language changed to ${lang}`);
+            });
+        });
+        
+        // Initialize the chat with the first conversation
+        updateChatArea(currentConversation);
+    });
+</script>
