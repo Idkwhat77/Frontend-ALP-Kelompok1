@@ -104,7 +104,7 @@ function viewCandidateProfile(candidateId) {
 }
 
 function updateCandidateCount(showing, total) {
-    const countElement = document.querySelector('.text-sm.text-gray-500');
+    const countElement = document.getElementById('showing-candidates');
     if (countElement) {
         countElement.innerHTML = `
             <span data-i18n="candidates.showing">Showing</span> 

@@ -397,6 +397,7 @@ class FormErrorHandler {
     const city = this.employeeCity.value;
     const industry = this.employeeIndustry.value;
     const jobType = this.employeeJobType.value;
+    console.log('Selected job type:', jobType, 'Character codes:', [...jobType].map(c => c.charCodeAt(0)));
     const employmentStatus = this.employeeStatus.value;
 
     // Prepare employee data
