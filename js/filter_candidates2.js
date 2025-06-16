@@ -7,12 +7,32 @@ class CandidateFilter {
     }
 
     initializeEventListeners() {
-        // Search input
-        const searchInput = document.querySelector('input[placeholder*="Search"]');
+        // Search input - Updated to work with multiple selectors
+        const searchInput = document.querySelector('#candidate-search') || 
+                           document.querySelector('input[placeholder*="Search"]') ||
+                           document.querySelector('input[placeholder*="search"]');
+        
         if (searchInput) {
             searchInput.addEventListener('input', this.debounce(() => {
                 this.applyFilters();
             }, 300));
+            
+            // Also listen for Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.applyFilters();
+                }
+            });
+        }
+
+        // Search button click
+        const searchButton = document.querySelector('#search-button');
+        if (searchButton) {
+            searchButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.applyFilters();
+            });
         }
 
         // Filter buttons
@@ -44,9 +64,13 @@ class CandidateFilter {
         }
 
         const filters = this.getFilterValues();
+        console.log('Applying filters:', filters); // Debug log
+        
         this.filteredCandidates = allCandidates.filter(candidate => {
             return this.matchesSearchCriteria(candidate, filters);
         });
+
+        console.log(`Filtered ${this.filteredCandidates.length} candidates from ${allCandidates.length} total`); // Debug log
 
         this.currentPage = 1; // Reset to first page
         this.displayFilteredResults();
@@ -54,7 +78,10 @@ class CandidateFilter {
     }
 
     getFilterValues() {
-        const searchInput = document.querySelector('input[placeholder*="Search"]');
+        // Try multiple selectors for search input
+        const searchInput = document.querySelector('#candidate-search') || 
+                           document.querySelector('input[placeholder*="Search"]') ||
+                           document.querySelector('input[placeholder*="search"]');
         
         return {
             search: searchInput ? searchInput.value.toLowerCase().trim() : '',
@@ -65,17 +92,24 @@ class CandidateFilter {
     }
 
     matchesSearchCriteria(candidate, filters) {
-        // Search filter (name, email, industry, job type)
+        // Search filter (name, email, industry, job type, city, biodata)
         if (filters.search) {
             const searchableText = [
                 candidate.fullName,
                 candidate.email,
                 candidate.industry,
                 candidate.jobType,
-                candidate.city
+                candidate.city,
+                candidate.biodata,
+                candidate.employmentStatus
             ].filter(Boolean).join(' ').toLowerCase();
 
-            if (!searchableText.includes(filters.search)) {
+            const searchTerms = filters.search.split(' ').filter(term => term.length > 0);
+            const matchesAllTerms = searchTerms.every(term => 
+                searchableText.includes(term)
+            );
+            
+            if (!matchesAllTerms) {
                 return false;
             }
         }
@@ -84,7 +118,7 @@ class CandidateFilter {
         if (filters.location) {
             const candidateLocation = candidate.city?.toLowerCase() || '';
             if (filters.location === 'remote') {
-                // Check if candidate accepts remote work (you might need to add this field)
+                // Check if candidate accepts remote work
                 if (!candidateLocation.includes('remote')) {
                     return false;
                 }
@@ -121,6 +155,84 @@ class CandidateFilter {
 
         displayCandidateCards(candidatesToShow);
         updateCandidateCount(candidatesToShow.length, this.filteredCandidates.length);
+        
+        // Show search results message
+        this.showSearchResultsMessage();
+    }
+
+    showSearchResultsMessage() {
+        const filters = this.getFilterValues();
+        const messageContainer = document.querySelector('.search-results-message');
+        
+        // Remove existing message
+        if (messageContainer) {
+            messageContainer.remove();
+        }
+
+        // Add search results message if there's an active search
+        if (filters.search || filters.location || filters.jobType || filters.industry) {
+            const candidatesSection = document.querySelector('#candidates-container').parentElement;
+            const message = document.createElement('div');
+            message.className = 'search-results-message bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4';
+            
+            let messageText = '';
+            if (filters.search) {
+                messageText += `Search: "${filters.search}"`;
+            }
+            if (filters.location) {
+                messageText += messageText ? ` | Location: ${filters.location}` : `Location: ${filters.location}`;
+            }
+            if (filters.jobType) {
+                messageText += messageText ? ` | Job Type: ${filters.jobType}` : `Job Type: ${filters.jobType}`;
+            }
+            if (filters.industry) {
+                messageText += messageText ? ` | Industry: ${filters.industry}` : `Industry: ${filters.industry}`;
+            }
+            
+            message.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-800 dark:text-blue-200 text-sm">
+                        <i class="fas fa-filter mr-2"></i>Active filters: ${messageText}
+                    </span>
+                    <button onclick="candidateFilter.resetFilters()" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 text-sm">
+                        <i class="fas fa-times mr-1"></i>Clear all
+                    </button>
+                </div>
+            `;
+            
+            candidatesSection.insertBefore(message, candidatesSection.firstChild);
+        }
+    }
+
+    resetFilters() {
+        // Clear search input - try multiple selectors
+        const searchInput = document.querySelector('#candidate-search') || 
+                           document.querySelector('input[placeholder*="Search"]') ||
+                           document.querySelector('input[placeholder*="search"]');
+        if (searchInput) {
+            searchInput.value = '';
+        }
+
+        // Reset all select elements
+        const selects = ['#location', '#job-type', '#industry'];
+        selects.forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.value = '';
+            }
+        });
+
+        // Remove search results message
+        const messageContainer = document.querySelector('.search-results-message');
+        if (messageContainer) {
+            messageContainer.remove();
+        }
+
+        // Show all candidates
+        this.filteredCandidates = [...allCandidates];
+        this.currentPage = 1;
+        this.displayFilteredResults();
+        this.updatePagination();
     }
 
     updatePagination() {
@@ -245,29 +357,6 @@ class CandidateFilter {
         });
     }
 
-    resetFilters() {
-        // Clear search input
-        const searchInput = document.querySelector('input[placeholder*="Search"]');
-        if (searchInput) {
-            searchInput.value = '';
-        }
-
-        // Reset all select elements
-        const selects = ['#location', '#job-type', '#industry'];
-        selects.forEach(selector => {
-            const element = document.querySelector(selector);
-            if (element) {
-                element.value = '';
-            }
-        });
-
-        // Show all candidates
-        this.filteredCandidates = [...allCandidates];
-        this.currentPage = 1;
-        this.displayFilteredResults();
-        this.updatePagination();
-    }
-
     // Utility function to debounce search input
     debounce(func, wait) {
         let timeout;
@@ -295,5 +384,6 @@ window.loadFilterCandidates = async function() {
         candidateFilter = new CandidateFilter();
         candidateFilter.filteredCandidates = [...allCandidates];
         candidateFilter.updatePagination();
+        console.log('CandidateFilter initialized with', allCandidates.length, 'candidates');
     }
 };
