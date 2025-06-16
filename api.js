@@ -485,27 +485,19 @@ class ApiClient {
         });
     }
 
-async updateCompany(companyId, companyData) {
+    async updateCompany(companyId, companyData) {
         const user = this.getCurrentUser();
         if (!user || !user.id) {
             throw new Error('User must be logged in to update company profile');
         }
 
-        // Handle company size - ensure it's always an integer
+        // Handle company size conversion
         let processedData = { ...companyData };
-        if (processedData.companySize) {
-            // If it's a string, try to parse as integer
-            if (typeof processedData.companySize === 'string') {
-                const parsed = parseInt(processedData.companySize, 10);
-                if (!isNaN(parsed)) {
-                    processedData.companySize = parsed;
-                } else {
-                    throw new Error('Company size must be a valid number');
-                }
-            }
-            // If it's already a number, make sure it's an integer
-            else if (typeof processedData.companySize === 'number') {
-                processedData.companySize = Math.floor(processedData.companySize);
+        if (processedData.companySize && typeof processedData.companySize === 'string') {
+            // Extract number from size range like "1-10" -> 10, "1000+" -> 1000
+            const sizeMatch = processedData.companySize.match(/(\d+)/);
+            if (sizeMatch) {
+                processedData.companySize = parseInt(sizeMatch[1], 10);
             }
         }
 

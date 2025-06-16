@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RuangKerja - Professional Network</title>
-    
-
-
     <script src="api.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -138,7 +135,7 @@
 
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
                         <!-- Dropdown Menu -->
@@ -171,7 +168,7 @@
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                             <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -336,64 +333,13 @@
         <section class="mb-8 fade-on-scroll">
             <div class="flex justify-between items-center mb-4">
                 <h2 data-i18n="featured_companies" class="text-xl font-bold text-gray-900 dark:text-white">Companies Recommendations</h2>
-                <a data-i18n="see_more" href="#" class="text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 text-sm">See More</a>
+                <a data-i18n="see_more" href="companies.html" class="text-lilac-400 hover:text-lilac-500 dark:hover:text-lilac-300 text-sm">See More</a>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Company Card 1 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
-                        <img class="h-16 w-16 rounded-full object-cover" src="img/blackswa.png" alt="TechCorp Logo">
-                    </div>
-                    <div class="p-3">
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">Black Swan LLC</h3>
-                        <p data-i18n="information_technology" class="text-gray-500 dark:text-gray-300 text-center mb-2">Information Technology</p>
-                        <button onclick="location.href='company_profile.html'" data-i18n-html="view_company" class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                            View Company
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Company Card 2 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
-                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=DesignHub" alt="DesignHub Logo">
-                    </div>
-                    <div class="p-3">
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">DesignHub</h3>
-                        <p data-i18n="creative_agency" class="text-gray-500 dark:text-gray-300 text-center mb-2">Creative Agency</p>
-                        <button data-i18n-html="view_company" class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                            View Company
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Company Card 3 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
-                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=GreenEnergy" alt="GreenEnergy Logo">
-                    </div>
-                    <div class="p-3">
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">GreenEnergy</h3>
-                        <p data-i18n="renewable_energy" class="text-gray-500 dark:text-gray-300 text-center mb-2">Renewable Energy</p>
-                        <button data-i18n-html="view_company" class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                            View Company
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Company Card 4 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-                    <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
-                        <img class="h-12 object-contain" src="https://via.placeholder.com/120x50?text=HealthPlus" alt="HealthPlus Logo">
-                    </div>
-                    <div class="p-3">
-                        <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">HealthPlus</h3>
-                        <p data-i18n="healthcare" class="text-gray-500 dark:text-gray-300 text-center mb-2">Healthcare</p>
-                        <button data-i18n-html="view_company" class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                            View Company
-                        </button>
-                    </div>
+            <div id="companies-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Dynamic company cards will be inserted here -->
+                <div class="col-span-full flex justify-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400"></div>
                 </div>
             </div>
         </section>
@@ -495,6 +441,7 @@
     }
 </style>
 
+<script src="js/navbar-profile.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Wait a bit longer to ensure everything is loaded
