@@ -95,10 +95,13 @@ function handleFileSelect(file) {
     const reader = new FileReader();
     reader.onload = (e) => {
         if (preview) {
+            const previewText = window.currentLanguage === 'id' ? 'Pratinjau' : 'Preview';
+            const fileInfoText = window.currentLanguage === 'id' ? 'KB' : 'KB';
+            
             preview.innerHTML = `
                 <div class="text-center">
-                    <img src="${e.target.result}" class="max-w-32 max-h-32 mx-auto rounded-lg mb-2" alt="Preview">
-                    <p class="text-sm text-gray-600 dark:text-gray-400">${file.name} (${(file.size / 1024).toFixed(1)} KB)</p>
+                    <img src="${e.target.result}" class="max-w-32 max-h-32 mx-auto rounded-lg mb-2" alt="${previewText}" data-i18n-alt="image.preview">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">${file.name} (${(file.size / 1024).toFixed(1)} ${fileInfoText})</p>
                 </div>
             `;
         }

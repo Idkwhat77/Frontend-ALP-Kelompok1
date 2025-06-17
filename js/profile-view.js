@@ -14,7 +14,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     if (!candidateId) {
       console.error('No candidate ID provided in URL');
-      document.getElementById('user-name').textContent = 'Candidate not found';
+      const errorText = window.currentLanguage === 'id' ? 'Kandidat tidak ditemukan' : 'Candidate not found';
+      document.getElementById('user-name').textContent = errorText;
+      document.getElementById('user-name').setAttribute('data-i18n', 'profile.candidate_not_found');
       return;
     }
     
@@ -24,38 +26,42 @@ window.addEventListener('DOMContentLoaded', async () => {
       
       if (!response || !response.candidate) {
         console.error('No candidate data found for ID:', candidateId);
-        document.getElementById('user-name').textContent = 'Candidate not found';
+        const errorText = window.currentLanguage === 'id' ? 'Kandidat tidak ditemukan' : 'Candidate not found';
+        document.getElementById('user-name').textContent = errorText;
+        document.getElementById('user-name').setAttribute('data-i18n', 'profile.candidate_not_found');
         return;
       }
       
       const candidate = response.candidate;
       displayCandidateProfile(candidate, false); // false = don't update navbar
       
-      // Initialize education viewer for this candidate
+      // Initialize viewers for this candidate
       if (window.initializeEmployeeEducation) {
         window.initializeEmployeeEducation(candidateId);
       }
 
-      if (window.initializeEmployeeEducation) {
+      if (window.initializeEmployeeExperience) {
         window.initializeEmployeeExperience(candidateId);
       }
       
-      // Initialize hobby viewer for this candidate
       if (window.initializeEmployeeHobbies) {
         window.initializeEmployeeHobbies(candidateId);
       }
-
-      // Initialize skills viewer for this candidate
+      
       if (window.initializeEmployeeSkills) {
         window.initializeEmployeeSkills(candidateId);
       }
+
+      // Load social media and portfolio data
+      loadSocialMediaData(candidateId);
+      loadPortfolioData(candidateId);
       
     } catch (error) {
       console.error('Error loading candidate profile:', error);
       document.getElementById('user-name').textContent = 'Error loading profile';
     }
   } else {
-    // Original behavior for profile.html (current user's profile)
+    // Original behavior for profiledesign.html (current user's profile)
     const storedUser = JSON.parse(localStorage.getItem('current_user'));
 
     if (!storedUser || !storedUser.id) return;
@@ -120,28 +126,59 @@ function displayCandidateProfile(candidate, updateNavbar = true) {
     }
   };
 
+  // Helper function to format province name
+  const formatProvinceName = (province) => {
+    if (!province) return '';
+    return province
+      .split('-')
+      .map(word => {
+        if (word === 'dki') return 'DKI';
+        if (word === 'di') return 'DI';
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(' ');
+  };
+
+  // Helper function to format location
+  const formatLocation = (city, province) => {
+    const formattedProvince = formatProvinceName(province);
+    if (city && formattedProvince) {
+      return `${formattedProvince}, ${city}`;
+    } else if (city) {
+      return city;
+    } else if (formattedProvince) {
+      return formattedProvince;
+    }
+    return 'Not specified';
+  };
+
   // Store candidate data globally for chat functionality
   window.currentCandidateData = candidate;
   console.log('Storing candidate data globally:', window.currentCandidateData);
-  
+
   // Update profile information with candidate data
   document.getElementById('user-name').textContent = candidate.fullName || '';
-  
-  // Check if user-name2 exists before updating
-  const userName2Element = document.getElementById('user-name2');
-  if (userName2Element) {
-    userName2Element.textContent = candidate.fullName || '';
-  }
-  
   document.getElementById('user-email').textContent = candidate.email || '';
   document.getElementById('user-birthdate').textContent = formatBirthDate(candidate.birthDate);
-  document.getElementById('user-location').textContent = candidate.city || '';
+  document.getElementById('user-location').textContent = formatLocation(candidate.city, candidate.province);
   document.getElementById('user-industry').textContent = candidate.industry || '';
   
   // Check if employment status element exists
   const employmentStatusElement = document.getElementById('user-employment-status');
   if (employmentStatusElement) {
     employmentStatusElement.textContent = candidate.employmentStatus || '';
+  }
+
+  // Update contact information in right column
+  const emailContactElement = document.getElementById('user-email-contact');
+  const locationContactElement = document.getElementById('user-location-contact');
+  
+  if (emailContactElement) {
+    emailContactElement.textContent = candidate.email || 'Not provided';
+  }
+  
+  if (locationContactElement) {
+    locationContactElement.textContent = formatLocation(candidate.city, candidate.province);
   }
 
   const biodataElement = document.getElementById('user-biodata');
@@ -173,8 +210,163 @@ function displayCandidateProfile(candidate, updateNavbar = true) {
     updateNavbarProfile(candidate);
   }
   
+  // Update page title for employee profiles
+  if (candidate.fullName) {
+    document.title = `${candidate.fullName} - RuangKerja`;
+  }
+  
   // Trigger a custom event to notify that candidate data is loaded
   window.dispatchEvent(new CustomEvent('candidateDataLoaded', { 
     detail: { candidate: candidate }
   }));
+}
+
+// Helper function to update navbar profile images
+function updateNavbarProfile(candidate) {
+  const imageUrl = candidate.profileImageUrl 
+    ? `http://localhost:8080${candidate.profileImageUrl}`
+    : 'img/default-profile.png';
+
+  // Update navbar profile images
+  const profileImageElementNav = document.getElementById('profile-image-nav');
+  const profileImageElementMobile = document.getElementById('profile-image-mobile');
+
+  if (profileImageElementNav) {
+    profileImageElementNav.style.backgroundImage = `url('${imageUrl}')`;
+  }
+
+  if (profileImageElementMobile) {
+    profileImageElementMobile.style.backgroundImage = `url('${imageUrl}')`;
+  }
+}
+
+// Load social media data for employee profile view
+async function loadSocialMediaData(candidateId) {
+  try {
+    const socialsList = document.getElementById('current-socials-list');
+    if (!socialsList) return;
+
+    // Try to get social media data from API
+    const response = await window.apiClient.getCandidateSocials?.(candidateId);
+    
+    if (response && response.success && response.socials && response.socials.length > 0) {
+      const socialsHTML = response.socials.map(social => {
+        const iconClass = getSocialIconClass(social.platform);
+        return `
+          <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <i class="${iconClass} text-[#C69AE6] mr-3"></i>
+            <a href="${social.url}" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-[#C69AE6] hover:underline">
+              ${social.platform.charAt(0).toUpperCase() + social.platform.slice(1)}
+            </a>
+          </div>
+        `;
+      }).join('');
+      
+      socialsList.innerHTML = socialsHTML;
+    } else {
+      socialsList.innerHTML = `
+        <div class="text-center py-4 text-gray-500 dark:text-gray-400">
+          <i class="fas fa-share-alt text-2xl mb-2"></i>
+          <p>No social media links available</p>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Error loading social media data:', error);
+    const socialsList = document.getElementById('current-socials-list');
+    if (socialsList) {
+      socialsList.innerHTML = `
+        <div class="text-center py-4 text-gray-500 dark:text-gray-400">
+          <i class="fas fa-share-alt text-2xl mb-2"></i>
+          <p>No social media links available</p>
+        </div>
+      `;
+    }
+  }
+}
+
+// Load portfolio data for employee profile view
+async function loadPortfolioData(candidateId) {
+  try {
+    const portfolioList = document.getElementById('current-portfolio-list');
+    if (!portfolioList) return;
+
+    // Try to get portfolio data from API
+    const response = await window.apiClient.getCandidatePortfolio?.(candidateId);
+    
+    if (response && response.success && response.portfolio && response.portfolio.length > 0) {
+      const portfolioHTML = response.portfolio.map(item => {
+        // Fix: Format the image URL properly
+        const imageUrl = item.imageUrl ? 
+          (item.imageUrl.startsWith('http') ? 
+            item.imageUrl : 
+            `http://localhost:8080${item.imageUrl.startsWith('/') ? item.imageUrl : '/' + item.imageUrl}`
+          ) : null;
+        
+        return `
+          <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+            ${imageUrl ? 
+              `<div class="mb-3">
+                <img src="${imageUrl}" alt="${item.title}" class="w-full h-32 object-cover rounded-lg" 
+                     onerror="this.src='img/default-portfolio.png';">
+              </div>` : 
+              `<div class="mb-3">
+                <div class="w-full h-32 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-image text-2xl text-gray-400"></i>
+                </div>
+              </div>`
+            }
+            <h4 class="font-semibold text-[#C69AE6] mb-2">${item.title}</h4>
+            ${item.description ? 
+              `<p class="text-gray-600 dark:text-gray-300 text-sm mb-2">${item.description}</p>` : ''
+            }
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">
+                ${item.type || 'Project'}
+              </span>
+              <a href="${item.url}" target="_blank" class="text-[#C69AE6] hover:text-[#9f7aea] text-sm">
+                <i class="fas fa-external-link-alt mr-1"></i>View
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      portfolioList.innerHTML = portfolioHTML;
+    } else {
+      portfolioList.innerHTML = `
+        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+          <i class="fas fa-briefcase text-2xl mb-2"></i>
+          <p>No portfolio items available</p>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Error loading portfolio data:', error);
+    const portfolioList = document.getElementById('current-portfolio-list');
+    if (portfolioList) {
+      portfolioList.innerHTML = `
+        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+          <i class="fas fa-briefcase text-2xl mb-2"></i>
+          <p>No portfolio items available</p>
+        </div>
+      `;
+    }
+  }
+}
+
+// Helper function to get social media icon class
+function getSocialIconClass(platform) {
+  const iconMap = {
+    instagram: 'fab fa-instagram',
+    facebook: 'fab fa-facebook',
+    twitter: 'fab fa-twitter',
+    linkedin: 'fab fa-linkedin',
+    github: 'fab fa-github',
+    youtube: 'fab fa-youtube',
+    tiktok: 'fab fa-tiktok',
+    website: 'fas fa-globe'
+  };
+  
+  return iconMap[platform.toLowerCase()] || 'fas fa-link';
 }

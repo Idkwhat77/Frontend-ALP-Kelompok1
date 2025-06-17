@@ -616,6 +616,92 @@ class ApiClient {
             method: 'PUT'
         });
     }
+
+    // Social Media endpoints
+    async getCandidateSocials(candidateId) {
+        try {
+            return await this.makeRequest(`/candidates/${candidateId}/socials`, {
+                method: 'GET'
+            });
+        } catch (error) {
+            console.error('Error fetching candidate socials:', error);
+            // Return empty response structure on error
+            return {
+                success: false,
+                socials: [],
+                message: 'Failed to fetch social media links'
+            };
+        }
+    }
+
+    async addCandidateSocial(socialData) {
+        return this.makeRequest('/candidates/socials', {
+            method: 'POST',
+            body: JSON.stringify(socialData)
+        });
+    }
+
+    async updateCandidateSocial(socialId, socialData) {
+        return this.makeRequest(`/candidates/socials/${socialId}`, {
+            method: 'PUT',
+            body: JSON.stringify(socialData)
+        });
+    }
+
+    async deleteCandidateSocial(socialId) {
+        return this.makeRequest(`/candidates/socials/${socialId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    // Portfolio endpoints
+    async getCandidatePortfolio(candidateId) {
+        try {
+            return await this.makeRequest(`/candidates/${candidateId}/portfolio`, {
+                method: 'GET'
+            });
+        } catch (error) {
+            console.error('Error fetching candidate portfolio:', error);
+            return {
+                success: false,
+                portfolio: [],
+                message: 'Failed to fetch portfolio items'
+            };
+        }
+    }
+
+    async addCandidatePortfolio(portfolioData) {
+        return this.makeRequest('/candidates/portfolio', {
+            method: 'POST',
+            body: JSON.stringify(portfolioData)
+        });
+    }
+
+    async updateCandidatePortfolio(portfolioId, portfolioData) {
+        return this.makeRequest(`/candidates/portfolio/${portfolioId}`, {
+            method: 'PUT',
+            body: JSON.stringify(portfolioData)
+        });
+    }
+
+    async deleteCandidatePortfolio(portfolioId) {
+        return this.makeRequest(`/candidates/portfolio/${portfolioId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    async uploadPortfolioImage(portfolioId, formData) {
+        return this.makeRequest(`/candidates/portfolio/${portfolioId}/upload-image`, {
+            method: 'POST',
+            body: formData
+        });
+    }
+
+    async deletePortfolioImage(portfolioId) {
+        return this.makeRequest(`/candidates/portfolio/${portfolioId}/delete-image`, {
+            method: 'DELETE'
+        });
+    }
 }
 
 // Create and export API client instance

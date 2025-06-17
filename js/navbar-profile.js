@@ -74,8 +74,8 @@ class NavbarProfileManager {
             profileImageMobile.style.backgroundImage = `url('${imageUrl}')`;
         }
 
-        // Update any other navbar profile images
-        const navbarProfileImages = document.querySelectorAll('[id*="profile-image"]');
+        // Update any other navbar profile images (but not the main profile image on profile pages)
+        const navbarProfileImages = document.querySelectorAll('[id*="profile-image"]:not(#profile-image)');
         navbarProfileImages.forEach(img => {
             if (img.tagName === 'IMG') {
                 img.src = imageUrl;
@@ -87,17 +87,23 @@ class NavbarProfileManager {
 
     updateProfileLinks() {
         // Determine correct profile page based on user type
-        const profileUrl = this.userType === 'company' ? 'company_profile.html' : 'profile.html';
+        const profileUrl = this.userType === 'company' ? 'company_profile.html' : 'profiledesign.html';
         
-        // Update all "View Profile" links
-        const profileLinks = document.querySelectorAll('a[href="profile.html"]');
-        profileLinks.forEach(link => {
-            if (link.getAttribute('data-i18n') === 'view_profile' || 
-                link.textContent.includes('Profile') || 
-                link.textContent.includes('Profil')) {
-                link.href = profileUrl;
-            }
-        });
+        // Update all "View Profile" links, but not if we're on employee_profile.html viewing someone else
+        const isViewingOtherProfile = window.location.pathname.includes('employee_profile.html') || 
+                                    window.location.pathname.includes('company_profile_view.html');
+        
+        if (!isViewingOtherProfile) {
+            // Update links that point to profile.html or profiledesign.html
+            const profileLinks = document.querySelectorAll('a[href="profile.html"], a[href="profiledesign.html"]');
+            profileLinks.forEach(link => {
+                if (link.getAttribute('data-i18n') === 'view_profile' || 
+                    link.textContent.includes('Profile') || 
+                    link.textContent.includes('Profil')) {
+                    link.href = profileUrl;
+                }
+            });
+        }
     }
 
     setupLogoutHandlers() {

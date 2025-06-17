@@ -23,17 +23,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const loadingElement = document.getElementById("load_bro");
   if (loadingElement) loadingElement.remove();
 
-  // Province and City selection for employees
-  const provinceCityMap = {
-        "DKI Jakarta": ["Jakarta"],
-        "Jawa Barat": ["Bandung", "Bekasi", "Depok", "Bogor"],
-        "Jawa Tengah": ["Semarang", "Surakarta", "Magelang"],
-        "Jawa Timur": ["Surabaya", "Malang", "Kediri"],
-        "Bali": ["Denpasar", "Ubud"]
-    };
-
-    // Extended province-city mapping for companies
-    const companyProvinceCityMap = {
+    // Use the same comprehensive province-city mapping for both employee and company forms
+    const provinceCityMap = {
         "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
         "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padang Sidempuan", "Pematangsiantar", "Sibolga", "Tanjungbalai", "Tebing Tinggi"],
         "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
@@ -74,26 +65,37 @@ window.addEventListener("DOMContentLoaded", () => {
         "papua-pegunungan": ["Jayawijaya"]
     };
 
+    // Extended province-city mapping for companies (use same as employee)
+    const companyProvinceCityMap = provinceCityMap;
+
     // Employee Province-City handling (existing code)
-    const provinceSelect = document.getElementById("province");
-    const citySelect = document.getElementById("city");
+    const provinceSelect = document.getElementById("employee-province");
+    const citySelect = document.getElementById("employee-city");
 
     if (provinceSelect && citySelect) {
         provinceSelect.addEventListener("change", () => {
-      const cities = provinceCityMap[provinceSelect.value] || [];
-      citySelect.innerHTML = cities.length
-        ? `<option value="" disabled selected>Select City</option>`
-        : `<option value="" disabled selected>No cities available</option>`;
-
-      cities.forEach(city => {
-        const opt = document.createElement("option");
-        opt.textContent = city;
-        opt.value = city;
-        citySelect.appendChild(opt);
-      });
-
-      citySelect.disabled = !cities.length;
-    });
+            const selectedProvince = provinceSelect.value;
+            const cities = provinceCityMap[selectedProvince] || [];
+            
+            // Clear previous options
+            citySelect.innerHTML = '<option value="" disabled selected data-i18n="role.employee.city">City</option>';
+            
+            if (selectedProvince) {
+                // Enable city select
+                citySelect.disabled = false;
+                
+                // Add cities for selected province
+                cities.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            } else {
+                // Disable city select if no province selected
+                citySelect.disabled = true;
+            }
+        });
     }
 
     // Company Province-City handling (NEW CODE)
@@ -198,12 +200,13 @@ class FormErrorHandler {
     this.employeeFullName = document.getElementById("employee-full-name");
     this.employeeEmail = document.getElementById("employee-email"); 
     this.employeeBirthDate = document.getElementById("employee-birth-date");
+    this.employeeProvince = document.getElementById("employee-province");
     this.employeeCity = document.getElementById("employee-city");
     this.employeeIndustry = document.getElementById("employee-industry");
     this.employeeJobType = document.getElementById("employee-job-type");
     this.employeeStatus = document.getElementById("employee-employment-status");
   }
-
+  
   attachEventListeners() {
     // Employee form submit
     if (this.employeeForm) {
@@ -288,6 +291,12 @@ class FormErrorHandler {
     if (this.employeeBirthDate) {
       this.employeeBirthDate.addEventListener('blur', () => this.validateBirthDate(this.employeeBirthDate));
       this.employeeBirthDate.addEventListener('input', () => this.clearFieldError(this.employeeBirthDate));
+    }
+
+    // Province validation
+    if (this.employeeProvince) {
+      this.employeeProvince.addEventListener('blur', () => this.validateSelect(this.employeeProvince, "Please select your province."));
+      this.employeeProvince.addEventListener('change', () => this.clearFieldError(this.employeeProvince));
     }
 
     // City validation
@@ -467,6 +476,7 @@ class FormErrorHandler {
     if (!this.validateName(this.employeeFullName)) isValid = false;
     if (!this.validateEmail(this.employeeEmail)) isValid = false;
     if (!this.validateBirthDate(this.employeeBirthDate)) isValid = false;
+    if (!this.validateSelect(this.employeeProvince, "Please select your province.")) isValid = false;
     if (!this.validateSelect(this.employeeCity, "Please select your city.")) isValid = false;
     if (!this.validateSelect(this.employeeIndustry, "Please select your industry.")) isValid = false;
     if (!this.validateSelect(this.employeeJobType, "Please select your job type.")) isValid = false;
@@ -481,10 +491,13 @@ class FormErrorHandler {
     const submitBtn = this.employeeForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Creating profile...';
-    submitBtn.disabled = true;    // Get form data
+    submitBtn.disabled = true;
+
+    // Get form data
     const fullName = this.employeeFullName.value.trim();
     const email = this.employeeEmail.value.trim();
     const birthDate = this.employeeBirthDate.value;
+    const province = this.employeeProvince.value;
     const city = this.employeeCity.value;
     const industry = this.employeeIndustry.value;
     const jobType = this.employeeJobType.value;
@@ -496,6 +509,7 @@ class FormErrorHandler {
       fullName,
       email,
       birthDate,
+      province,
       city,
       industry,
       jobType,
