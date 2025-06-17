@@ -214,8 +214,9 @@ function renderGlobalSearchResults(results) {
             ${results.map(item => {
                 const isCandidate = item.type === 'candidate';
                 const name = isCandidate ? (item.fullName || 'Unknown') : (item.name || 'Unknown');
+                // Ambil kota dari city untuk kandidat, location untuk company
                 const location = isCandidate
-                    ? (item.location || '-') // gunakan 'location' untuk kandidat
+                    ? (item.city || '-') 
                     : (item.location || item.hq || '-');
                 const icon = isCandidate
                     ? '<i class="fas fa-user text-lilac-400 text-lg"></i>'
@@ -224,8 +225,13 @@ function renderGlobalSearchResults(results) {
                 const jenisColor = isCandidate
                     ? 'bg-lilac-100 text-lilac-700'
                     : 'bg-lilac-50 text-lilac-500';
+                const id = item.id;
                 return `
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow text-xs flex flex-col items-center min-w-[180px] max-w-[200px] p-3">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow text-xs flex flex-col items-center min-w-[180px] max-w-[200px] p-3 cursor-pointer hover:ring-2 hover:ring-lilac-400 transition"
+                        onclick="${isCandidate
+                            ? `viewCandidateProfile('${id}')`
+                            : `viewCompanyProfile('${id}')`
+                        }">
                         <div class="mb-2">${icon}</div>
                         <div class="font-semibold text-gray-900 dark:text-white truncate w-full text-center">${name}</div>
                         <div class="text-[11px] text-gray-500 dark:text-gray-400 truncate w-full text-center mb-1">
@@ -237,6 +243,13 @@ function renderGlobalSearchResults(results) {
             }).join('')}
         </div>
     `;
+}
+
+function viewCandidateProfile(candidateId) {
+    if (candidateId) window.location.href = `employee_profile.html?id=${candidateId}`;
+}
+function viewCompanyProfile(companyId) {
+    if (companyId) window.location.href = `company_profile_view.html?id=${companyId}`;
 }
 
 async function globalSearch(query) {
