@@ -6,6 +6,10 @@
     <title>Messages - RuangKerja</title>
     
     <script src="api.js"></script>
+    <!-- Add before your existing scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+    <script src="js/websocket-manager.js"></script>
     <script src="language.js"></script>
     <script src="darkmode.js"></script>
     <!-- Tailwind CSS -->
@@ -135,6 +139,32 @@
             100% {
                 opacity: 0.4;
                 transform: translateY(0);
+            }
+        }
+
+        /* Add to existing styles */
+        .typing-dots span {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background-color: #6b7280;
+            border-radius: 50%;
+            margin: 0 1px;
+            animation: typing-bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes typing-bounce {
+            0%, 80%, 100% { 
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% { 
+                transform: scale(1);
+                opacity: 1;
             }
         }
         
@@ -272,240 +302,50 @@
             <div class="flex flex-col md:flex-row h-[calc(100vh-180px)]">
                 <!-- Left sidebar - Conversations -->
                 <div class="w-full md:w-80 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col">
+                    <!-- Header -->
                     <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Messages</h2>
-                        <div class="mt-3 relative">
-                            <input type="text" placeholder="Search conversations..." 
-                                class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-lilac-400 dark:bg-gray-800 dark:text-white text-sm">
-                            <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 dark:text-gray-500"></i>
-                        </div>
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Messages</h2>
+                        <input type="text" 
+                               placeholder="Search conversations..." 
+                               class="mt-2 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-lilac-400 dark:bg-gray-700 dark:text-white">
                     </div>
                     
-                    <!-- Scrollable conversation list with custom scrollbar -->
-                    <div class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
-                        <!-- Conversation List -->
-                        <div class="divide-y divide-gray-200 dark:divide-gray-700">
-                            <!-- Active Conversation -->
-                            <div class="p-4 bg-gray-100 dark:bg-gray-800 cursor-pointer active-conversation" data-conversation="sarah">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user1.jpg" alt="Sarah Johnson">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Sarah Johnson</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">10:30 AM</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Hey, about the project timeline...</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Other Conversations -->
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="michael">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user2.jpg" alt="Michael Chen">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Michael Chen</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Yesterday</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">The design files are ready for review</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="recruiter">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user3.jpg" alt="Black Swan Recruiter">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Black Swan Recruiter</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 15</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Interview scheduled for next week</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="team">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user4.jpg" alt="DesignHub Team">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">DesignHub Team</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 12</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Welcome to the team!</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="aisha">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user5.jpg" alt="Aisha Rahman">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Aisha Rahman</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 10</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Let's connect about the UX position</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Additional Users -->
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="david">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user6.jpg" alt="David Wilson">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">David Wilson</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 8</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Can we reschedule our meeting?</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="emily">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user7.jpg" alt="Emily Rodriguez">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Emily Rodriguez</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 5</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">The budget has been approved</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="james">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user8.jpg" alt="James Park">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">James Park</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Mar 3</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">New project requirements attached</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="sophia">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user9.jpg" alt="Sophia Chen">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Sophia Chen</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Feb 28</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Thanks for your help on this!</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" data-conversation="alex">
-                                <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user10.jpg" alt="Alex Turner">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Alex Turner</p>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400">Feb 25</span>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Let me know your thoughts</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Conversations List -->
+                    <div class="flex-1 overflow-y-auto divide-y divide-gray-200 dark:divide-gray-700">
+                        <!-- Conversations will be populated here by JavaScript -->
                     </div>
                 </div>
                 
                 <!-- Right side - Chat area -->
                 <div class="flex-1 flex flex-col">
                     <!-- Chat header -->
-                    <div id="chat-header" class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center">
-                        <img class="h-10 w-10 rounded-full object-cover mr-3" src="img/user1.jpg" alt="Sarah Johnson">
-                        <div>
-                            <h3 class="font-medium text-gray-900 dark:text-white">Sarah Johnson</h3>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">Product Manager at TechCorp</p>
-                        </div>
-                        <div class="ml-auto flex space-x-2">
-                            <button class="p-2 text-gray-500 dark:text-gray-400 hover:text-lilac-500 dark:hover:text-lilac-400 rounded-full hover:bg-lilac-50 dark:hover:bg-gray-700">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
+                    <div id="chat-header" class="p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center">
+                        <!-- Chat header will be populated by JavaScript -->
+                        <div class="flex items-center justify-center h-full w-full text-gray-500 dark:text-gray-400">
+                            <div class="text-center">
+                                <i class="fas fa-comments text-4xl mb-4"></i>
+                                <p class="text-lg font-medium">Select a conversation to start messaging</p>
+                            </div>
                         </div>
                     </div>
                     
                     <!-- Messages area -->
                     <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50 dark:bg-gray-900">
-                        <!-- Date divider -->
-                        <div class="flex justify-center">
-                            <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-xs text-gray-500 dark:text-gray-400 rounded-full">Today</span>
-                        </div>
-                        
-                        <!-- Received message -->
-                        <div class="flex justify-start">
-                            <div class="max-w-[70%] bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm">
-                                <p class="text-gray-800 dark:text-gray-200">Hey! I wanted to follow up about the project timeline we discussed last week. Do you think we can still meet the deadline?</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">10:30 AM</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Sent message -->
-                        <div class="flex justify-end">
-                            <div class="max-w-[70%] bg-lilac-500 text-white rounded-lg px-4 py-2">
-                                <p>Hi Sarah! Yes, I've been making good progress. I should have the first prototype ready by Friday as planned.</p>
-                                <p class="text-xs text-lilac-200 mt-1 text-right">10:32 AM</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Received message -->
-                        <div class="flex justify-start">
-                            <div class="max-w-[70%] bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm">
-                                <p class="text-gray-800 dark:text-gray-200">That's great to hear! The client is really excited to see it. Would you be available for a quick call tomorrow to go over any questions?</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">10:33 AM</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Sent message -->
-                        <div class="flex justify-end">
-                            <div class="max-w-[70%] bg-lilac-500 text-white rounded-lg px-4 py-2">
-                                <p>Absolutely. I'm free between 2-4 PM. Would that work for you?</p>
-                                <p class="text-xs text-lilac-200 mt-1 text-right">10:34 AM</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Received message -->
-                        <div class="flex justify-start">
-                            <div class="max-w-[70%] bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm">
-                                <p class="text-gray-800 dark:text-gray-200">Perfect! Let's schedule for 2:30 PM. I'll send you a calendar invite with the Zoom link.</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">10:35 AM</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Sent message -->
-                        <div class="flex justify-end">
-                            <div class="max-w-[70%] bg-lilac-500 text-white rounded-lg px-4 py-2">
-                                <p>Sounds good. Looking forward to it!</p>
-                                <p class="text-xs text-lilac-200 mt-1 text-right">10:36 AM</p>
-                            </div>
-                        </div>
+                        <!-- Messages will be populated here by JavaScript -->
                     </div>
                     
                     <!-- Message input -->
                     <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                        <div class="flex items-center">
-                            <button class="p-2 text-gray-500 dark:text-gray-400 hover:text-lilac-500 dark:hover:text-lilac-400 rounded-full hover:bg-lilac-50 dark:hover:bg-gray-700 mr-2">
-                                <i class="fas fa-paperclip"></i>
-                            </button>
-                            <input type="text" placeholder="Type a message..." 
-                                   class="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-lilac-400 dark:bg-gray-700 dark:text-white" id="message-input">
-                            <button class="ml-2 p-2 text-gray-500 dark:text-gray-400 hover:text-lilac-500 dark:hover:text-lilac-400 rounded-full hover:bg-lilac-50 dark:hover:bg-gray-700">
-                                <i class="far fa-smile"></i>
-                            </button>
-                            <button class="ml-2 bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-lg transition-colors" id="send-button">
-                                Send
+                        <div class="flex items-center space-x-3">
+                            <input type="text" 
+                                   id="message-input" 
+                                   placeholder="Type a message..." 
+                                   class="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-lilac-400 dark:bg-gray-700 dark:text-white"
+                                   disabled>
+                            <button id="send-button" 
+                                    class="bg-lilac-500 hover:bg-lilac-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg transition-colors"
+                                    disabled>
+                                <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </div>

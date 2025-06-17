@@ -4,6 +4,8 @@ class ChatManager {
         this.activeConversation = null;
         this.conversations = [];
         this.messages = [];
+        this.typingTimer = null;
+        this.isTyping = false;
         this.init();
     }
 
@@ -14,164 +16,86 @@ class ChatManager {
             return;
         }
         
+        console.log('Initializing ChatManager for user:', this.currentUser);
+        
         this.setupDOMElements();
         this.setupEventListeners();
+        
+        // Wait a bit before initializing WebSocket to ensure everything is loaded
+        setTimeout(() => {
+            this.initializeWebSocket();
+        }, 1000);
+        
+        // Load conversations
         await this.loadConversations();
         
         // Check for URL parameters to auto-select conversation
         await this.handleURLParameters();
     }
 
-    async handleURLParameters() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('user');
-        const conversationId = urlParams.get('conversation');
-        const isNew = urlParams.get('new') === 'true';
-        
-        if (conversationId) {
-            // Find and select specific conversation
-            const conversation = this.conversations.find(c => c.id == conversationId);
-            if (conversation) {
-                await this.selectConversation(conversation);
-            }
-        } else if (userId) {
-            // Find conversation with specific user
-            const conversation = this.conversations.find(c => 
-                c.otherUser.userId == userId
-            );
-            
-            if (conversation) {
-                await this.selectConversation(conversation);
-            } else {
-                // **ENHANCED: Create a new conversation context with better user info**
-                await this.createNewConversationContext(userId, isNew);
-            }
+    initializeWebSocket() {
+        if (!window.webSocketManager) {
+            console.error('WebSocketManager not available');
+            return;
         }
         
-        // Clean URL
-        if (userId || conversationId) {
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
+        console.log('Initializing WebSocket for user:', this.currentUser.id);
+        
+        // Connect to WebSocket
+        window.webSocketManager.connect(this.currentUser.id);
+        
+        // Add message handler
+        window.webSocketManager.addMessageHandler((message) => {
+            console.log('Received WebSocket message:', message);
+            this.handleIncomingMessage(message);
+        });
+
+        // Add typing handler
+        window.webSocketManager.addTypingHandler((typingMessage) => {
+            console.log('Received typing indicator:', typingMessage);
+            this.handleTypingIndicator(typingMessage);
+        });
     }
 
-    async createNewConversationContext(otherUserId, isNew = false) {
-        try {
-            // **ENHANCED: Get user profile data from candidate or company endpoints**
-            let otherUserProfile = await this.fetchUserProfileInfo(otherUserId);
+    handleIncomingMessage(message) {
+        // Only handle if it's for the active conversation
+        if (this.activeConversation && 
+            this.activeConversation.otherUser.userId === message.senderId) {
             
-            if (otherUserProfile) {
-                // Create a temporary conversation object
-                this.activeConversation = {
-                    id: null,
-                    isNew: isNew,
-                    otherUser: otherUserProfile
-                };
-                
-                this.updateChatHeader(this.activeConversation.otherUser);
-                this.showNewConversationState();
-            }
-        } catch (error) {
-            console.error('Error creating new conversation context:', error);
-            this.showError('Unable to load user information');
-        }
-    }
-
-    // Add new method to fetch user profile information
-    async fetchUserProfileInfo(userId) {
-        try {
-            // Try to get candidate info first
-            try {
-                const candidateResponse = await window.apiClient.getCandidateByUserId(userId);
-                if (candidateResponse && candidateResponse.candidate) {
-                    const candidate = candidateResponse.candidate;
-                    return {
-                        userId: userId,
-                        fullName: candidate.fullName,
-                        profileImageUrl: candidate.profileImageUrl,
-                        type: 'candidate',
-                        industry: candidate.industry,
-                        city: candidate.city,
-                        email: candidate.email
-                    };
-                }
-            } catch (candidateError) {
-                console.log('Not a candidate, trying company...');
-            }
-
-            // Try to get company info
-            try {
-                const companyResponse = await window.apiClient.getCompanyByUserId(userId);
-                if (companyResponse && companyResponse.company) {
-                    const company = companyResponse.company;
-                    return {
-                        userId: userId,
-                        fullName: company.companyName,
-                        profileImageUrl: company.profileImageUrl,
-                        type: 'company',
-                        industry: company.industry,
-                        hq: company.hq,
-                        email: company.email
-                    };
-                }
-            } catch (companyError) {
-                console.log('Not a company either...');
-            }
-
-            // Fallback to basic user info
-            return {
-                userId: userId,
-                fullName: 'Unknown User',
-                profileImageUrl: null,
-                type: 'user',
-                industry: 'Unknown',
-                city: 'Unknown',
-                email: 'Unknown'
+            // Create message object compatible with existing UI
+            const messageObj = {
+                id: message.id,
+                content: message.content,
+                sender: { id: message.senderId },
+                receiver: { id: message.receiverId },
+                createdAt: message.createdAt
             };
-
-        } catch (error) {
-            console.error('Error fetching user profile info:', error);
-            return null;
+            
+            // Add to UI
+            this.addMessageToUI(messageObj, true);
+            
+            // Update conversation in sidebar
+            this.updateConversationLastMessage(messageObj);
+            
+            // Mark as read
+            this.markMessagesAsRead(message.senderId);
+        } else {
+            // Show notification for other conversations
+            this.showMessageNotification(message);
         }
     }
 
-    // Add new method to show empty conversation state with better messaging
-    showNewConversationState() {
-        if (this.chatMessages) {
-            const otherUser = this.activeConversation.otherUser;
-            this.chatMessages.innerHTML = `
-                <div class="flex items-center justify-center h-full text-center">
-                    <div class="text-gray-500 dark:text-gray-400 max-w-md">
-                        <div class="mb-6">
-                            <img class="h-16 w-16 rounded-full object-cover mx-auto mb-4" 
-                                 src="${otherUser.profileImageUrl ? `http://localhost:8080${otherUser.profileImageUrl}` : 'img/default-profile.png'}" 
-                                 alt="${otherUser.fullName}"
-                                 onerror="this.src='img/default-profile.png'">
-                            <h3 class="text-xl font-medium mb-2 text-gray-900 dark:text-white">
-                                Start a conversation with ${otherUser.fullName}
-                            </h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                                ${otherUser.type === 'candidate' 
-                                    ? `${otherUser.industry} • ${otherUser.city}` 
-                                    : `${otherUser.industry} • ${otherUser.hq}`}
-                            </p>
-                        </div>
-                        <div class="space-y-2 text-sm">
-                            <p>💬 Send your first message below</p>
-                            <p>🤝 Start building a professional connection</p>
-                            <p>📋 Share opportunities or insights</p>
-                        </div>
-                    </div>
-                </div>
-            `;
+    handleTypingIndicator(typingMessage) {
+        if (!this.activeConversation || 
+            this.activeConversation.otherUser.userId !== typingMessage.senderId) {
+            return;
         }
-    }
 
-    setupDOMElements() {
-        this.chatMessages = document.getElementById('chat-messages');
-        this.chatInput = document.getElementById('message-input');
-        this.sendButton = document.getElementById('send-button');
-        this.chatHeader = document.getElementById('chat-header');
-        this.conversationsContainer = document.querySelector('.divide-y');
+        if (typingMessage.type === 'typing') {
+            this.showTypingIndicator(typingMessage.senderName);
+        } else if (typingMessage.type === 'stopTyping') {
+            this.hideTypingIndicator();
+        }
     }
 
     setupEventListeners() {
@@ -185,15 +109,317 @@ class ChatManager {
             }
         });
 
+        // Typing indicators
+        this.chatInput?.addEventListener('input', () => {
+            this.handleTypingStart();
+        });
+
+        this.chatInput?.addEventListener('blur', () => {
+            this.handleTypingStop();
+        });
+
         // Search conversations
         const searchInput = document.querySelector('input[placeholder="Search conversations..."]');
         searchInput?.addEventListener('input', (e) => this.searchConversations(e.target.value));
     }
 
+    handleTypingStart() {
+        if (!this.activeConversation) return;
+
+        if (!this.isTyping) {
+            this.isTyping = true;
+            window.webSocketManager.sendTyping(
+                this.activeConversation.otherUser.userId,
+                this.currentUser.fullName || 'User'
+            );
+        }
+
+        // Reset timer
+        clearTimeout(this.typingTimer);
+        this.typingTimer = setTimeout(() => {
+            this.handleTypingStop();
+        }, 3000); // Stop typing after 3 seconds of inactivity
+    }
+
+    handleTypingStop() {
+        if (this.isTyping && this.activeConversation) {
+            this.isTyping = false;
+            window.webSocketManager.sendStopTyping(
+                this.activeConversation.otherUser.userId,
+                this.currentUser.fullName || 'User'
+            );
+        }
+        clearTimeout(this.typingTimer);
+    }
+
+    showTypingIndicator(senderName) {
+        // Remove existing typing indicator
+        this.hideTypingIndicator();
+        
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'flex justify-start typing-indicator-message';
+        typingDiv.innerHTML = `
+            <div class="max-w-[80%] bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2">
+                <div class="flex items-center space-x-2">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="text-xs text-gray-500">${senderName} is typing...</span>
+                </div>
+            </div>
+        `;
+        
+        this.chatMessages.appendChild(typingDiv);
+        this.scrollToBottom();
+    }
+
+    hideTypingIndicator() {
+        const typingIndicator = document.querySelector('.typing-indicator-message');
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+
+    showMessageNotification(message) {
+        // Create browser notification if permission granted
+        if (Notification.permission === 'granted') {
+            new Notification(`New message from ${message.senderName}`, {
+                body: message.content,
+                icon: message.senderProfileImageUrl || 'img/default-profile.png'
+            });
+        }
+
+        // Update conversation count or highlight
+        const conversationElement = document.querySelector(`[data-other-user-id="${message.senderId}"]`);
+        if (conversationElement) {
+            conversationElement.style.backgroundColor = '#f0f9ff';
+        }
+    }
+
+    setupDOMElements() {
+        this.chatMessages = document.getElementById('chat-messages');
+        this.chatInput = document.getElementById('message-input');
+        this.sendButton = document.getElementById('send-button');
+        this.chatHeader = document.getElementById('chat-header');
+        this.conversationsContainer = document.querySelector('.divide-y');
+        
+        console.log('DOM Elements found:');
+        console.log('chatMessages:', !!this.chatMessages);
+        console.log('chatInput:', !!this.chatInput);
+        console.log('sendButton:', !!this.sendButton);
+        console.log('chatHeader:', !!this.chatHeader);
+        console.log('conversationsContainer:', !!this.conversationsContainer);
+    }
+
+    async handleURLParameters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('user');
+        const conversationId = urlParams.get('conversation');
+        const isNew = urlParams.get('new') === 'true';
+        
+        if (conversationId) {
+            // Find and select conversation by ID
+            const conversation = this.conversations.find(c => c.id === parseInt(conversationId));
+            if (conversation) {
+                await this.selectConversation(conversation);
+            }
+        } else if (userId) {
+            // Create new conversation or find existing one
+            await this.createNewConversationContext(parseInt(userId), isNew);
+        }
+        
+        // Clean URL
+        if (userId || conversationId) {
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+        }
+    }
+
+    async createNewConversationContext(otherUserId, isNew = false) {
+        try {
+            // Check if conversation already exists
+            const existingConversation = this.conversations.find(c => 
+                c.otherUser.userId === otherUserId
+            );
+            
+            if (existingConversation) {
+                await this.selectConversation(existingConversation);
+                return;
+            }
+            
+            // Fetch user profile information
+            const otherUser = await this.fetchUserProfileInfo(otherUserId);
+            if (!otherUser) {
+                this.showError('User not found');
+                return;
+            }
+            
+            // Create new conversation context
+            this.activeConversation = {
+                id: null,
+                isNew: true,
+                otherUser: otherUser,
+                messages: []
+            };
+            
+            // ENABLE INPUT AND SEND BUTTON FOR NEW CONVERSATIONS
+            if (this.chatInput) {
+                this.chatInput.disabled = false;
+                this.chatInput.placeholder = `Message ${otherUser.fullName}...`;
+            }
+            if (this.sendButton) {
+                this.sendButton.disabled = false;
+            }
+            
+            // Update UI
+            this.updateChatHeader(otherUser);
+            this.showNewConversationState();
+            
+        } catch (error) {
+            console.error('Error creating new conversation context:', error);
+            this.showError('Failed to start conversation');
+        }
+    }
+
+    async fetchUserProfileInfo(userId) {
+        try {
+            console.log('Fetching profile info for user ID:', userId);
+            
+            // Try to get candidate first
+            try {
+                let response = await window.apiClient.getCandidateByUserId(userId);
+                if (response && response.candidate) {
+                    const candidate = response.candidate;
+                    console.log('Found candidate profile:', candidate);
+                    return {
+                        userId: userId,
+                        type: 'candidate',
+                        fullName: candidate.fullName,
+                        profileImageUrl: candidate.profileImageUrl,
+                        industry: candidate.industry,
+                        city: candidate.city
+                    };
+                }
+            } catch (candidateError) {
+                console.log('No candidate found, trying company...');
+            }
+            
+            // Try to get company
+            try {
+                let response = await window.apiClient.getCompanyByUserId(userId);
+                if (response && response.company) {
+                    const company = response.company;
+                    console.log('Found company profile:', company);
+                    return {
+                        userId: userId,
+                        type: 'company',
+                        fullName: company.companyName,
+                        profileImageUrl: company.profileImageUrl,
+                        industry: company.industry,
+                        hq: company.hq
+                    };
+                }
+            } catch (companyError) {
+                console.log('No company found either');
+            }
+            
+            // If both fail, try to get basic user info
+            try {
+                let response = await window.apiClient.getUserById(userId);
+                if (response && response.user) {
+                    const user = response.user;
+                    console.log('Found basic user profile:', user);
+                    return {
+                        userId: userId,
+                        type: 'user',
+                        fullName: user.email || 'User',
+                        profileImageUrl: null,
+                        industry: null,
+                        city: null
+                    };
+                }
+            } catch (userError) {
+                console.log('No user found at all');
+            }
+            
+            console.error('No profile found for user ID:', userId);
+            return null;
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+            return null;
+        }
+    }
+
+    showNewConversationState() {
+        if (this.chatMessages) {
+            const otherUser = this.activeConversation.otherUser;
+            const imageUrl = otherUser.profileImageUrl 
+                ? `http://localhost:8080${otherUser.profileImageUrl}` 
+                : 'img/default-profile.png';
+                
+            this.chatMessages.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full text-center p-8">
+                    <div class="mb-6">
+                        <img class="h-20 w-20 rounded-full object-cover mx-auto mb-4" 
+                             src="${imageUrl}" 
+                             alt="${otherUser.fullName}"
+                             onerror="this.src='img/default-profile.png'">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            ${otherUser.fullName}
+                        </h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                            ${otherUser.type === 'candidate' 
+                                ? `${otherUser.industry || ''} • ${otherUser.city || ''}` 
+                                : `${otherUser.industry || ''} • ${otherUser.hq || ''}`}
+                        </p>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                        <p class="flex items-center justify-center"><i class="fas fa-comment-dots mr-2 text-lilac-500"></i>Start a new conversation</p>
+                        <p class="flex items-center justify-center"><i class="fas fa-handshake mr-2 text-lilac-500"></i>Build professional connections</p>
+                        <p class="flex items-center justify-center"><i class="fas fa-share mr-2 text-lilac-500"></i>Share opportunities and insights</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // ENSURE INPUT IS ENABLED
+        if (this.chatInput) {
+            this.chatInput.disabled = false;
+            this.chatInput.placeholder = `Message ${this.activeConversation.otherUser.fullName}...`;
+        }
+        if (this.sendButton) {
+            this.sendButton.disabled = false;
+        }
+    }
+
+    setupDOMElements() {
+        this.chatMessages = document.getElementById('chat-messages');
+        this.chatInput = document.getElementById('message-input');
+        this.sendButton = document.getElementById('send-button');
+        this.chatHeader = document.getElementById('chat-header');
+        this.conversationsContainer = document.querySelector('.divide-y');
+        
+        // If elements don't exist, create them or handle gracefully
+        if (!this.chatMessages) {
+            console.warn('chat-messages element not found');
+        }
+        if (!this.chatInput) {
+            console.warn('message-input element not found');
+        }
+        if (!this.sendButton) {
+            console.warn('send-button element not found');
+        }
+    }
+
     async loadConversations() {
         try {
-            const response = await window.apiClient.getUserConversations(this.currentUser.id);
-            this.conversations = response || [];
+            console.log('Loading conversations for user:', this.currentUser.id);
+            const conversations = await window.apiClient.getUserConversations(this.currentUser.id);
+            console.log('Loaded conversations:', conversations);
+            
+            this.conversations = conversations || [];
             this.displayConversations();
             
             // Load first conversation if exists
@@ -209,7 +435,10 @@ class ChatManager {
     }
 
     displayConversations() {
-        if (!this.conversationsContainer) return;
+        if (!this.conversationsContainer) {
+            console.error('Conversations container not found');
+            return;
+        }
 
         if (this.conversations.length === 0) {
             this.conversationsContainer.innerHTML = `
@@ -250,11 +479,9 @@ class ChatManager {
                                 <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
                                     ${otherUser.fullName}
                                 </p>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">
-                                    ${timeDisplay}
-                                </span>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">${timeDisplay}</p>
                             </div>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
                                 ${lastMessage ? lastMessage.content : 'No messages yet'}
                             </p>
                         </div>
@@ -266,8 +493,8 @@ class ChatManager {
         // Add click listeners
         this.conversationsContainer.querySelectorAll('[data-conversation-id]').forEach(element => {
             element.addEventListener('click', () => {
-                const conversationId = element.dataset.conversationId;
-                const conversation = this.conversations.find(c => c.id == conversationId);
+                const conversationId = parseInt(element.dataset.conversationId);
+                const conversation = this.conversations.find(c => c.id === conversationId);
                 if (conversation) {
                     this.selectConversation(conversation);
                 }
@@ -276,7 +503,18 @@ class ChatManager {
     }
 
     async selectConversation(conversation) {
+        console.log('Selecting conversation:', conversation);
+        
         this.activeConversation = conversation;
+        
+        // Enable input and send button
+        if (this.chatInput) {
+            this.chatInput.disabled = false;
+            this.chatInput.placeholder = `Message ${conversation.otherUser.fullName}...`;
+        }
+        if (this.sendButton) {
+            this.sendButton.disabled = false;
+        }
         
         // Update active state in sidebar
         document.querySelectorAll('[data-conversation-id]').forEach(el => {
@@ -311,7 +549,7 @@ class ChatManager {
             <div>
                 <h3 class="font-medium text-gray-900 dark:text-white">${otherUser.fullName}</h3>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
-                    ${otherUser.type === 'candidate' ? `${otherUser.industry} • ${otherUser.city}` : `${otherUser.industry} • ${otherUser.hq}`}
+                    ${otherUser.type === 'candidate' ? `${otherUser.industry || ''} • ${otherUser.city || ''}` : `${otherUser.industry || ''} • ${otherUser.hq || ''}`}
                 </p>
             </div>
             <div class="ml-auto flex space-x-2">
@@ -415,6 +653,9 @@ class ChatManager {
         const content = this.chatInput.value.trim();
         this.chatInput.value = '';
 
+        // Stop typing indicator
+        this.handleTypingStop();
+
         try {
             const messageData = {
                 sender: { id: this.currentUser.id },
@@ -422,25 +663,36 @@ class ChatManager {
                 content: content
             };
             
+            console.log('Sending message:', messageData);
             const response = await window.apiClient.sendMessage(messageData);
+            
             if (response) {
-                // **ENHANCED: Handle first message in new conversation**
+                // Handle first message in new conversation
                 if (this.activeConversation.isNew || this.activeConversation.id === null) {
-                    // This is the first message - reload conversations to get the new conversation
+                    console.log('First message sent, reloading conversations...');
                     await this.loadConversations();
                     
-                    // Find the newly created conversation
+                    // Find the new conversation
                     const newConversation = this.conversations.find(c => 
                         c.otherUser.userId === this.activeConversation.otherUser.userId
                     );
                     
                     if (newConversation) {
+                        console.log('Found new conversation:', newConversation);
                         this.activeConversation = newConversation;
                         this.activeConversation.isNew = false;
+                        
+                        // Update active state in sidebar
+                        document.querySelectorAll('[data-conversation-id]').forEach(el => {
+                            el.classList.remove('active-chat', 'bg-gray-100', 'dark:bg-gray-800');
+                        });
+                        
+                        const activeElement = document.querySelector(`[data-conversation-id="${newConversation.id}"]`);
+                        activeElement?.classList.add('active-chat', 'bg-gray-100', 'dark:bg-gray-800');
                     }
                 }
                 
-                // Add message to UI immediately
+                // Add message to UI immediately (optimistic update)
                 this.addMessageToUI(response, true);
                 
                 // Update the conversation in the sidebar
@@ -574,44 +826,56 @@ class ChatManager {
     showEmptyState() {
         if (this.chatMessages) {
             this.chatMessages.innerHTML = `
-                <div class="flex items-center justify-center h-full text-center">
-                    <div class="text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-comments text-6xl mb-4"></i>
-                        <h3 class="text-xl font-medium mb-2">No conversation selected</h3>
-                        <p>Choose a conversation from the sidebar to start messaging</p>
+                <div class="flex flex-col items-center justify-center h-full text-center p-8">
+                    <div class="text-gray-400 dark:text-gray-500 mb-4">
+                        <i class="fas fa-comments text-4xl"></i>
                     </div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        No conversation selected
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Choose a conversation from the sidebar to start messaging
+                    </p>
                 </div>
             `;
         }
         
-        if (this.chatHeader) {
-            this.chatHeader.innerHTML = `
-                <div class="text-gray-500 dark:text-gray-400">
-                    <h3 class="font-medium">Select a conversation</h3>
-                </div>
-            `;
+        // ONLY DISABLE IF NO ACTIVE CONVERSATION
+        if (!this.activeConversation) {
+            if (this.chatInput) {
+                this.chatInput.disabled = true;
+                this.chatInput.placeholder = 'Select a conversation to start messaging...';
+            }
+            if (this.sendButton) {
+                this.sendButton.disabled = true;
+            }
         }
     }
 
     showError(message) {
-        const notification = document.createElement('div');
-        notification.className = 'fixed top-4 right-4 z-50 p-4 rounded-md text-white bg-red-500 shadow-lg';
-        notification.innerHTML = `
-            <div class="flex items-center">
-                <i class="fas fa-exclamation-circle mr-2"></i>
-                <span>${message}</span>
-            </div>
-        `;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
+        if (this.chatMessages) {
+            this.chatMessages.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full text-center p-8">
+                    <div class="text-red-400 mb-4">
+                        <i class="fas fa-exclamation-triangle text-4xl"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        Error
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        ${message}
+                    </p>
+                </div>
+            `;
+        }
     }
 }
 
-// Initialize chat when DOM is loaded
+// Request notification permission when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    if (Notification.permission === 'default') {
+        Notification.requestPermission();
+    }
+    
     window.chatManager = new ChatManager();
 });

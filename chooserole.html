@@ -289,7 +289,6 @@
         <div class="form-field-container relative">
           <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
           <input id="company-foundation-date" name="foundationDate" type="date" required
-            placeholder="Foundation Date"
             class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
         </div>
 
@@ -301,21 +300,82 @@
             class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
         </div>
 
-        <!-- Industry (select or text) -->
+        <!-- Province -->
+        <div class="form-field-container relative">
+          <i class="fas fa-map absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <select id="company-province" name="province" 
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+            <option value="">Select Province (Optional)</option>
+            <option value="aceh">Aceh</option>
+            <option value="sumatra-utara">Sumatra Utara</option>
+            <option value="sumatra-barat">Sumatra Barat</option>
+            <option value="riau">Riau</option>
+            <option value="jambi">Jambi</option>
+            <option value="sumatra-selatan">Sumatra Selatan</option>
+            <option value="bengkulu">Bengkulu</option>
+            <option value="lampung">Lampung</option>
+            <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+            <option value="kepulauan-riau">Kepulauan Riau</option>
+            <option value="dki-jakarta">DKI Jakarta</option>
+            <option value="jawa-barat">Jawa Barat</option>
+            <option value="jawa-tengah">Jawa Tengah</option>
+            <option value="di-yogyakarta">DI Yogyakarta</option>
+            <option value="jawa-timur">Jawa Timur</option>
+            <option value="banten">Banten</option>
+            <option value="bali">Bali</option>
+            <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+            <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+            <option value="kalimantan-barat">Kalimantan Barat</option>
+            <option value="kalimantan-tengah">Kalimantan Tengah</option>
+            <option value="kalimantan-selatan">Kalimantan Selatan</option>
+            <option value="kalimantan-timur">Kalimantan Timur</option>
+            <option value="kalimantan-utara">Kalimantan Utara</option>
+            <option value="sulawesi-utara">Sulawesi Utara</option>
+            <option value="sulawesi-tengah">Sulawesi Tengah</option>
+            <option value="sulawesi-selatan">Sulawesi Selatan</option>
+            <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+            <option value="gorontalo">Gorontalo</option>
+            <option value="sulawesi-barat">Sulawesi Barat</option>
+            <option value="maluku">Maluku</option>
+            <option value="maluku-utara">Maluku Utara</option>
+            <option value="papua-barat">Papua Barat</option>
+            <option value="papua-barat-daya">Papua Barat Daya</option>
+            <option value="papua">Papua</option>
+            <option value="papua-selatan">Papua Selatan</option>
+            <option value="papua-tengah">Papua Tengah</option>
+            <option value="papua-pegunungan">Papua Pegunungan</option>
+          </select>
+        </div>
+
+        <!-- City -->
+        <div class="form-field-container relative">
+          <i class="fas fa-city absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <select id="company-city" name="city" disabled
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+            <option value="">Select City (Optional)</option>
+          </select>
+        </div>
+
+        <!-- Industry -->
         <div class="form-field-container relative">
           <i class="fas fa-industry absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
           <select id="company-industry" name="industry" required
-            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400">
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
             <option value="">Select Industry</option>
-            <option data-i18n="filter.technology" value="Technology">Technology</option>
-            <option data-i18n="filter.healthcare" value="Healthcare">Healthcare</option>
-            <option data-i18n="filter.finance" value="Finance">Finance</option>
-            <option data-i18n="filter.education" value="Education">Education</option>
-            <option data-i18n="filter.manufacturing" value="Manufacturing">Manufacturing</option>
-            <option data-i18n="filter.retail" value="Retail">Retail</option>
-            <option data-i18n="filter.hospitality" value="Hospitality">Hospitality</option>
-            <option data-i18n="filter.marketing" value="Marketing">Marketing</option>
-            <option data-i18n="filter.government" value="Government">Government</option>
+            <option value="Technology">Technology</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Finance">Finance</option>
+            <option value="Education">Education</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Retail">Retail</option>
+            <option value="Hospitality">Hospitality</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Government">Government</option>
+            <option value="Construction">Construction</option>
+            <option value="Real Estate">Real Estate</option>
+            <option value="Legal Services">Legal Services</option>
+            <option value="Consulting">Consulting</option>
+            <option value="Non-Profit">Non-Profit</option>
           </select>
         </div>
 
@@ -327,10 +387,26 @@
             class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
         </div>
 
-        <!-- Description (optional) -->
+        <!-- Website URL (Optional) -->
         <div class="form-field-container relative">
-          <textarea id="company-description" name="description"
-            placeholder="Company Description (optional)"
+          <i class="fas fa-globe absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-website" name="websiteUrl" type="url"
+            placeholder="Website URL (Optional)"
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- Phone Number (Optional) -->
+        <div class="form-field-container relative">
+          <i class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-phone" name="phoneNumber" type="tel"
+            placeholder="Phone Number (Optional)"
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- Description (Optional) -->
+        <div class="form-field-container relative">
+          <textarea id="company-description" name="description" rows="3"
+            placeholder="Company Description (Optional)"
             class="block w-full pl-3 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"></textarea>
         </div>
 

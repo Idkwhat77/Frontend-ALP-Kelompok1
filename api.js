@@ -593,11 +593,15 @@ class ApiClient {
 
     // Chat API methods
     async getUserConversations(userId) {
-        return this.makeRequest(`/chat/conversations/${userId}`);
+        return this.makeRequest(`/chat/conversations/${userId}`, {
+            method: 'GET'
+        });
     }
 
     async getMessagesBetweenUsers(user1Id, user2Id, page = 0, size = 20) {
-        return this.makeRequest(`/chat/messages/${user1Id}/${user2Id}?page=${page}&size=${size}`);
+        return this.makeRequest(`/chat/messages/${user1Id}/${user2Id}?page=${page}&size=${size}`, {
+            method: 'GET'
+        });
     }
 
     async sendMessage(messageData) {
@@ -608,17 +612,9 @@ class ApiClient {
     }
 
     async markMessagesAsRead(senderId, receiverId) {
-        console.log('API: Marking messages as read:', senderId, receiverId);
-        try {
-            const result = await this.makeRequest(`/chat/mark-read/${senderId}/${receiverId}`, {
-                method: 'PUT'
-            });
-            console.log('API: Messages marked as read');
-            return result;
-        } catch (error) {
-            console.error('API: Error marking messages as read:', error);
-            throw error;
-        }
+        return this.makeRequest(`/chat/mark-read/${senderId}/${receiverId}`, {
+            method: 'PUT'
+        });
     }
 }
 
