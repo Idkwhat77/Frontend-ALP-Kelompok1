@@ -113,8 +113,12 @@ async function loadHomepageCompanies() {
         const response = await window.apiClient.getAllCompanies();
         
         if (response && response.success && response.companies) {
-            // Limit to first 4 companies for homepage
-            const companies = response.companies.slice(0, 4);
+            // Ensure IDs are numbers and limit to first 4 companies for homepage
+            const companies = response.companies.map(company => ({
+                ...company,
+                id: parseInt(company.id, 10)
+            })).slice(0, 4);
+            
             displayCompanyCards(companies);
         } else {
             throw new Error('No companies data received');

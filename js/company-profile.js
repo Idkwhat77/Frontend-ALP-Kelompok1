@@ -11,6 +11,7 @@ class CompanyProfileManager {
         try {
             await this.loadCompanyProfile();
             this.setupEventListeners();
+            this.initializeProvinceCityHandling();
         } catch (error) {
             console.error('Failed to initialize company profile:', error);
             this.showError('Failed to load company profile');
@@ -168,6 +169,27 @@ class CompanyProfileManager {
         document.getElementById('settings-company-hq').value = this.currentCompany.hq || '';
         document.getElementById('settings-foundation-date').value = this.formatDateForInput(this.currentCompany.foundationDate);
         document.getElementById('settings-company-description').value = this.currentCompany.description || '';
+        document.getElementById('settings-company-website').value = this.currentCompany.websiteUrl || '';
+        document.getElementById('settings-company-phone').value = this.currentCompany.phoneNumber || '';
+
+        // Handle province and city
+        const provinceSelect = document.getElementById('settings-company-province');
+        const citySelect = document.getElementById('settings-company-city');
+        
+        if (provinceSelect && this.currentCompany.province) {
+            provinceSelect.value = this.currentCompany.province;
+            
+            // Trigger change event to populate cities
+            const event = new Event('change');
+            provinceSelect.dispatchEvent(event);
+            
+            // Set city after a brief delay to ensure cities are loaded
+            setTimeout(() => {
+                if (citySelect && this.currentCompany.city) {
+                    citySelect.value = this.currentCompany.city;
+                }
+            }, 100);
+        }
     }
 
     async handleSettingsSubmit(event) {
@@ -193,8 +215,12 @@ class CompanyProfileManager {
                 industry: document.getElementById('settings-company-industry').value,
                 companySize: document.getElementById('settings-company-size').value,
                 hq: document.getElementById('settings-company-hq').value.trim(),
+                province: document.getElementById('settings-company-province').value || null,
+                city: document.getElementById('settings-company-city').value || null,
                 foundationDate: document.getElementById('settings-foundation-date').value,
-                description: document.getElementById('settings-company-description').value.trim()
+                description: document.getElementById('settings-company-description').value.trim(),
+                websiteUrl: document.getElementById('settings-company-website').value.trim() || null,
+                phoneNumber: document.getElementById('settings-company-phone').value.trim() || null
             };
 
             // Validate required fields
@@ -243,6 +269,80 @@ class CompanyProfileManager {
             // Re-enable submit button
             submitButton.disabled = false;
             submitButton.innerHTML = originalText;
+        }
+    }
+
+    // Add province-city handling in company profile settings
+    initializeProvinceCityHandling() {
+        // Define the same province-city mapping locally
+        const companyProvinceCityMap = {
+            "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
+            "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padang Sidempuan", "Pematangsiantar", "Sibolga", "Tanjungbalai", "Tebing Tinggi"],
+            "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
+            "riau": ["Pekanbaru", "Dumai"],
+            "jambi": ["Jambi", "Sungai Penuh"],
+            "sumatra-selatan": ["Palembang", "Pagar Alam", "Prabumulih", "Lubuklinggau"],
+            "bengkulu": ["Bengkulu"],
+            "lampung": ["Bandar Lampung", "Metro"],
+            "kepulauan-bangka-belitung": ["Pangkal Pinang"],
+            "kepulauan-riau": ["Batam", "Tanjung Pinang"],
+            "dki-jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+            "jawa-barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya"],
+            "jawa-tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal"],
+            "di-yogyakarta": ["Yogyakarta"],
+            "jawa-timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya"],
+            "banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan"],
+            "bali": ["Denpasar"],
+            "nusa-tenggara-barat": ["Bima", "Mataram"],
+            "nusa-tenggara-timur": ["Kupang"],
+            "kalimantan-barat": ["Pontianak", "Singkawang"],
+            "kalimantan-tengah": ["Palangka Raya"],
+            "kalimantan-selatan": ["Banjarbaru", "Banjarmasin"],
+            "kalimantan-timur": ["Balikpapan", "Bontang", "Samarinda"],
+            "kalimantan-utara": ["Tarakan"],
+            "sulawesi-utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon"],
+            "sulawesi-tengah": ["Palu"],
+            "sulawesi-selatan": ["Makassar", "Palopo", "Parepare"],
+            "sulawesi-tenggara": ["Bau-Bau", "Kendari"],
+            "gorontalo": ["Gorontalo"],
+            "sulawesi-barat": ["Mamuju"],
+            "maluku": ["Ambon", "Tual"],
+            "maluku-utara": ["Ternate", "Tidore Kepulauan"],
+            "papua-barat": ["Manokwari", "Sorong"],
+            "papua-barat-daya": ["Sorong"],
+            "papua": ["Jayapura"],
+            "papua-selatan": ["Merauke"],
+            "papua-tengah": ["Mimika"],
+            "papua-pegunungan": ["Jayawijaya"]
+        };
+
+        const settingsProvinceSelect = document.getElementById("settings-company-province");
+        const settingsCitySelect = document.getElementById("settings-company-city");
+
+        if (settingsProvinceSelect && settingsCitySelect) {
+            settingsProvinceSelect.addEventListener("change", () => {
+                const selectedProvince = settingsProvinceSelect.value;
+                const cities = companyProvinceCityMap[selectedProvince] || [];
+                
+                // Clear previous options
+                settingsCitySelect.innerHTML = '<option value="">Select City</option>';
+                
+                if (selectedProvince) {
+                    // Enable city select
+                    settingsCitySelect.disabled = false;
+                    
+                    // Add cities for selected province
+                    cities.forEach(city => {
+                        const option = document.createElement("option");
+                        option.value = city;
+                        option.textContent = city;
+                        settingsCitySelect.appendChild(option);
+                    });
+                } else {
+                    // Disable city select if no province selected
+                    settingsCitySelect.disabled = true;
+                }
+            });
         }
     }
 
