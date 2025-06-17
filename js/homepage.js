@@ -201,6 +201,71 @@ function displayCompanyCards(companies) {
     }).join('');
 }
 
+function renderGlobalSearchResults(results) {
+    const container = document.getElementById('global-search-results');
+    container.innerHTML = '';
+    if (!results || results.length === 0) {
+        container.innerHTML = '<div class="text-gray-500 text-center py-8">Tidak ada hasil ditemukan.</div>';
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="flex gap-3 overflow-x-auto py-2 px-1">
+            ${results.map(item => {
+                const isCandidate = item.type === 'candidate';
+                const name = isCandidate ? (item.fullName || 'Unknown') : (item.name || 'Unknown');
+                const location = isCandidate
+                    ? (item.location || '-') // gunakan 'location' untuk kandidat
+                    : (item.location || item.hq || '-');
+                const icon = isCandidate
+                    ? '<i class="fas fa-user text-lilac-400 text-lg"></i>'
+                    : '<i class="fas fa-building text-lilac-500 text-lg"></i>';
+                const jenis = isCandidate ? 'Kandidat' : 'Perusahaan';
+                const jenisColor = isCandidate
+                    ? 'bg-lilac-100 text-lilac-700'
+                    : 'bg-lilac-50 text-lilac-500';
+                return `
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow text-xs flex flex-col items-center min-w-[180px] max-w-[200px] p-3">
+                        <div class="mb-2">${icon}</div>
+                        <div class="font-semibold text-gray-900 dark:text-white truncate w-full text-center">${name}</div>
+                        <div class="text-[11px] text-gray-500 dark:text-gray-400 truncate w-full text-center mb-1">
+                            <i class="fas fa-map-marker-alt mr-1"></i>${location}
+                        </div>
+                        <span class="mt-1 px-2 py-1 text-xs rounded-full ${jenisColor}">${jenis}</span>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+async function globalSearch(query) {
+    try {
+        const response = await fetch(`http://localhost:8080/api/search?query=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        renderGlobalSearchResults(data);
+    } catch (err) {
+        renderGlobalSearchResults([]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('global-search-input');
+    const searchBtn = document.getElementById('global-search-btn');
+    if (searchBtn && searchInput) {
+        searchBtn.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (query) globalSearch(query);
+        });
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                if (query) globalSearch(query);
+            }
+        });
+    }
+});
+
 function viewCompanyProfile(companyId) {
     // Navigate to company profile page with company ID
     window.location.href = `company_profile_view.html?id=${companyId}`;
