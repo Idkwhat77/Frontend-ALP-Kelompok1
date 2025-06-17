@@ -590,6 +590,36 @@ class ApiClient {
             method: 'GET'
         });
     }
+
+    // Chat API methods
+    async getUserConversations(userId) {
+        return this.makeRequest(`/chat/conversations/${userId}`);
+    }
+
+    async getMessagesBetweenUsers(user1Id, user2Id, page = 0, size = 20) {
+        return this.makeRequest(`/chat/messages/${user1Id}/${user2Id}?page=${page}&size=${size}`);
+    }
+
+    async sendMessage(messageData) {
+        return this.makeRequest('/chat/send', {
+            method: 'POST',
+            body: JSON.stringify(messageData)
+        });
+    }
+
+    async markMessagesAsRead(senderId, receiverId) {
+        console.log('API: Marking messages as read:', senderId, receiverId);
+        try {
+            const result = await this.makeRequest(`/chat/mark-read/${senderId}/${receiverId}`, {
+                method: 'PUT'
+            });
+            console.log('API: Messages marked as read');
+            return result;
+        } catch (error) {
+            console.error('API: Error marking messages as read:', error);
+            throw error;
+        }
+    }
 }
 
 // Create and export API client instance

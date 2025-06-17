@@ -20,6 +20,34 @@ class ExperienceManager {
         }
     }
 
+    async showNotification(message, type = 'success') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
     async loadUserExperience() {
         try {
             // Get current user and candidate data
@@ -150,7 +178,7 @@ class ExperienceManager {
             }
 
             if (response && response.success) {
-                alert(`✅ Experience ${this.isEditing ? 'updated' : 'created'} successfully!`);
+                await this.showNotification(`Experience ${this.isEditing ? 'updated' : 'created'} successfully!`);
                 this.hideExperienceForm();
                 await this.loadExperienceRecords();
             } else {
@@ -159,7 +187,7 @@ class ExperienceManager {
 
         } catch (error) {
             console.error('Error saving experience:', error);
-            alert(`❌ Error: ${error.message}`);
+            await this.showNotification(`❌ Error: ${error.message}`, 'error');
         }
     }
 
@@ -193,12 +221,44 @@ class ExperienceManager {
             }
         } catch (error) {
             console.error('Error loading experience for edit:', error);
-            alert('❌ Error loading experience data');
+            await this.showNotification('❌ Error loading experience data', 'error');
         }
     }
 
     async deleteExperience(experienceId) {
-        if (!confirm('Are you sure you want to delete this experience record?')) {
+        // Custom confirmation modal instead of alert box
+        const confirmed = await new Promise((resolve) => {
+            // Create modal elements
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50';
+
+            const modalBox = document.createElement('div');
+            modalBox.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-sm w-full';
+
+            modalBox.innerHTML = `
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Delete Experience</h3>
+            <p class="mb-6 text-gray-600 dark:text-gray-300">Are you sure you want to delete this experience record?</p>
+            <div class="flex justify-end gap-2">
+                <button id="cancel-delete-experience" class="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
+                <button id="confirm-delete-experience" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">Delete</button>
+            </div>
+            `;
+
+            modalOverlay.appendChild(modalBox);
+            document.body.appendChild(modalOverlay);
+
+            // Event listeners
+            document.getElementById('cancel-delete-experience').onclick = () => {
+            document.body.removeChild(modalOverlay);
+            resolve(false);
+            };
+            document.getElementById('confirm-delete-experience').onclick = () => {
+            document.body.removeChild(modalOverlay);
+            resolve(true);
+            };
+        });
+
+        if (!confirmed) {
             return;
         }
 
@@ -209,14 +269,14 @@ class ExperienceManager {
 
             const response = await window.apiClient.deleteExperience(experienceId, this.currentCandidateId);
             if (response && response.success) {
-                alert('✅ Experience deleted successfully!');
+                await this.showNotification('Experience deleted successfully!');
                 await this.loadExperienceRecords();
             } else {
                 throw new Error(response?.message || 'Delete failed');
             }
         } catch (error) {
             console.error('Error deleting experience:', error);
-            alert(`❌ Error: ${error.message}`);
+            await this.showNotification(`❌ Error: ${error.message}`, 'error');
         }
     }
 

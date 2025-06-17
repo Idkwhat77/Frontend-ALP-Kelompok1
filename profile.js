@@ -128,6 +128,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function showNotification(message, type = 'success') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+        type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+
+    // Animate out and remove
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
 // Load current profile data into the settings form
 async function loadCurrentProfileData() {
     try {
@@ -208,8 +237,7 @@ async function handleSettingsSubmit(event) {
             const response = await window.apiClient.updateCandidate(user.id, formData);
             
             if (response && response.success) {
-                alert('✅ Profile updated successfully!');
-                
+                showNotification('Profile updated successfully!');
                 // Update the profile display
                 updateProfileDisplay(formData);
                 
@@ -221,7 +249,7 @@ async function handleSettingsSubmit(event) {
         } else {
             // Fallback: simulate update for demo
             setTimeout(() => {
-                alert('✅ Profile updated successfully! (Demo mode)');
+                showNotification('Profile updated successfully! (Demo mode)');
                 updateProfileDisplay(formData);
                 closeModal('modal-settings');
             }, 1000);
@@ -229,7 +257,7 @@ async function handleSettingsSubmit(event) {
         
     } catch (error) {
         console.error('Settings update error:', error);
-        alert(`❌ Error updating profile: ${error.message}`);
+        showNotification(`Error updating profile: ${error.message}`, 'error');
     } finally {
         // Re-enable submit button
         submitButton.disabled = false;
