@@ -1,10 +1,12 @@
 async function loadHomepageCandidates() {
     try {
+        const loadingText = window.currentLanguage === 'id' ? 'Memuat...' : 'Loading...';
+        
         // Show loading state
         const candidatesContainer = document.querySelector('#candidates-container');
         candidatesContainer.innerHTML = `
             <div class="col-span-full flex justify-center py-8">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400"></div>
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400" aria-label="${loadingText}" data-i18n-aria="common.loading"></div>
             </div>
         `;
 
@@ -36,6 +38,32 @@ function displayCandidateCards(candidates) {
         return;
     }
 
+    // Helper function to format province name
+    const formatProvinceName = (province) => {
+        if (!province) return '';
+        return province
+            .split('-')
+            .map(word => {
+                if (word === 'dki') return 'DKI';
+                if (word === 'di') return 'DI';
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            })
+            .join(' ');
+    };
+
+    // Helper function to format location
+    const formatLocation = (city, province) => {
+        const formattedProvince = formatProvinceName(province);
+        if (city && formattedProvince) {
+            return `${formattedProvince}, ${city}`;
+        } else if (city) {
+            return city;
+        } else if (formattedProvince) {
+            return formattedProvince;
+        }
+        return 'Location not specified';
+    };
+
     candidatesContainer.innerHTML = candidates.map(candidate => `
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
             <div class="p-3">
@@ -47,7 +75,11 @@ function displayCandidateCards(candidates) {
                 </div>
                 <div class="text-center">
                     <h3 class="font-semibold text-gray-900 dark:text-white">${candidate.fullName || 'Unknown'}</h3>
-                    <p class="text-gray-500 dark:text-gray-300 mb-2">${candidate.jobType || 'Professional'}</p>
+                    <p class="text-gray-500 dark:text-gray-300 mb-1">${candidate.jobType || 'Professional'}</p>
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
+                        <span class="text-gray-500 dark:text-gray-400 text-xs">${formatLocation(candidate.city, candidate.province)}</span>
+                    </div>
                     <div class="flex justify-center space-x-1 mb-2">
                         ${generateSkillTags(candidate.industry)}
                     </div>
@@ -314,19 +346,5 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Loading homepage companies...');
         loadHomepageCompanies();
     }, 100);
-    
-    const viewProfileLink = document.querySelector('a[href="profile.html"][data-i18n="view_profile"]');
-    if (viewProfileLink) {
-        viewProfileLink.addEventListener('click', function (e) {
-            e.preventDefault();
-            const userType = window.apiClient.getUserType();
-            if (userType === 'employee') {
-                window.location.href = 'profile.html';
-            } else if (userType === 'company') {
-                window.location.href = 'company_profile.html';
-            } else {
-                window.location.href = 'profile.html'; // fallback
-            }
-        });
-    }
+
 });

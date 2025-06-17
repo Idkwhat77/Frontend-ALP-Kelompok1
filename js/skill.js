@@ -25,9 +25,12 @@ class SkillsManager {
         notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
             type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
         }`;
+        
+        const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
         notification.innerHTML = `
             <div class="flex items-center">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+                <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
                 <span>${message}</span>
             </div>
         `;
@@ -86,11 +89,46 @@ class SkillsManager {
     }
 
     displaySkills(skills) {
+        // Update both the main skills display and modal skills list
+        this.updateMainSkillsDisplay(skills);
+        this.updateModalSkillsList(skills);
+    }
+
+    updateMainSkillsDisplay(skills) {
         const skillsList = document.getElementById('current-skills-list');
         if (!skillsList) return;
 
         if (skills.length === 0) {
             skillsList.innerHTML = `
+                <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-code text-4xl mb-4"></i>
+                    <p>No skills added yet. Click the + button to add your first skill!</p>
+                </div>
+            `;
+            return;
+        }
+
+        // For profiledesign.html - use flex wrap layout like other sections
+        skillsList.innerHTML = `
+            <div class="flex flex-wrap gap-2">
+                ${skills.map(skill => `
+                    <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                        <span>${skill.name}</span>
+                        <button onclick="skillsManager.deleteSkill(${skill.id})" class="ml-1 text-lilac-600 dark:text-lilac-400 hover:text-lilac-800 dark:hover:text-lilac-200">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    updateModalSkillsList(skills) {
+        const modalSkillsList = document.getElementById('modal-skills-list');
+        if (!modalSkillsList) return;
+
+        if (skills.length === 0) {
+            modalSkillsList.innerHTML = `
                 <div class="text-center py-8 text-gray-500 dark:text-gray-400">
                     <i class="fas fa-code text-4xl mb-4"></i>
                     <p>No skills added yet. Add your first skill above!</p>
@@ -99,7 +137,7 @@ class SkillsManager {
             return;
         }
 
-        skillsList.innerHTML = skills.map(skill => `
+        modalSkillsList.innerHTML = skills.map(skill => `
             <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                 <div class="flex items-center">
                     <i class="fas fa-code text-[#C69AE6] mr-3"></i>
@@ -210,6 +248,37 @@ class SkillsManager {
         } catch (error) {
             console.error('Error removing skill:', error);
             await this.showNotification(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+}
+
+// Global functions for HTML onclick handlers
+function showAddSkillsForm() {
+    if (window.skillsManager) {
+        // Use global modal function if available (for profiledesign.html)
+        if (typeof openModal === 'function') {
+            openModal('skills-form-container');
+        } else {
+            // Fallback for other pages
+            const skillsContainer = document.getElementById('skills-form-container');
+            if (skillsContainer) {
+                skillsContainer.classList.remove('hidden');
+            }
+        }
+    }
+}
+
+function hideSkillsForm() {
+    if (window.skillsManager) {
+        // Use global modal function if available (for profiledesign.html)
+        if (typeof closeModal === 'function') {
+            closeModal('skills-form-container');
+        } else {
+            // Fallback for other pages
+            const skillsContainer = document.getElementById('skills-form-container');
+            if (skillsContainer) {
+                skillsContainer.classList.add('hidden');
+            }
         }
     }
 }

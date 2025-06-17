@@ -63,9 +63,11 @@ class EducationManager {
         notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
             type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
         }`;
+        const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
         notification.innerHTML = `
             <div class="flex items-center">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+                <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
                 <span>${message}</span>
             </div>
         `;
@@ -101,34 +103,31 @@ class EducationManager {
         }
 
         educationList.innerHTML = educations.map(education => `
-            <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
-                <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-4">
-                            ${education.profileImageUrl ? 
-                                `<img src="${education.profileImageUrl}" alt="${education.institutionName}" class="w-16 h-16 rounded-lg object-cover">` :
-                                `<div class="w-16 h-16 rounded-lg bg-[#C69AE6] flex items-center justify-center">
-                                    <i class="fas fa-graduation-cap text-white text-xl"></i>
-                                 </div>`
-                            }
-                            <div>
-                                <h4 class="text-lg font-semibold text-[#C69AE6]">${education.institutionName}</h4>
-                                <p class="text-gray-600 dark:text-gray-300">
-                                    ${education.startYear}${education.endYear ? ` - ${education.endYear}` : ' - Present'}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="educationManager.editEducation(${education.id})" class="text-blue-600 hover:text-blue-800 p-2">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="educationManager.deleteEducation(${education.id})" class="text-red-600 hover:text-red-800 p-2">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+        <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-3">
+            <div class="mr-4">
+                <div class="h-12 w-12 rounded-lg bg-lilac-100 dark:bg-gray-600 flex items-center justify-center">
+                    ${education.profileImageUrl ? 
+                        `<img src="${education.profileImageUrl}" alt="${education.institutionName}" class="h-12 w-12 rounded-lg object-cover">` :
+                        `<i class="fas fa-graduation-cap text-lilac-500 text-xl"></i>`
+                    }
                 </div>
             </div>
+            <div class="flex-1">
+                <h3 class="font-semibold text-gray-900 dark:text-white">${education.institutionName}</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">
+                    ${education.startYear}${education.endYear ? ` - ${education.endYear}` : ' - Present'}
+                </p>
+                ${education.degree ? `<p class="text-sm text-gray-500 dark:text-gray-400">${education.degree}</p>` : ''}
+            </div>
+            <div class="ml-4 flex space-x-2">
+                <button onclick="window.educationManager.editEducation(${education.id})" class="text-gray-400 hover:text-lilac-500 transition-colors duration-200" title="Edit Education">
+                    <i class="fas fa-pen"></i>
+                </button>
+                <button onclick="window.educationManager.deleteEducation(${education.id})" class="text-gray-400 hover:text-red-500 transition-colors duration-200" title="Delete Education">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
         `).join('');
     }
 
@@ -209,8 +208,14 @@ class EducationManager {
                 document.getElementById('education-form-title').textContent = 'Edit Education';
                 document.getElementById('submit-btn-text').textContent = 'Update Education';
                 
-                // Show the form
-                this.showAddEducationForm();
+                // FIXED: Use the correct method for profiledesign.html
+                if (typeof openModal === 'function') {
+                    // For profiledesign.html - use global openModal function
+                    openModal('education-form-container');
+                } else {
+                    // For profile.html - use the local method
+                    this.showAddEducationForm();
+                }
             }
         } catch (error) {
             console.error('Error loading education for edit:', error);
@@ -295,7 +300,6 @@ class EducationManager {
         const form = document.getElementById('education-form');
         
         if (formContainer && form) {
-            formContainer.classList.add('hidden');
             form.reset();
             
             // Reset editing state
