@@ -400,20 +400,6 @@
     </div>
   </div>
 
-  <!-- Chat Modal -->
-  <div id="modal-chat" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 h-auto overflow-y-auto">
-      <h3 class="text-2xl font-semibold text-[#C69AE6] mb-4">Chat</h3>
-      <div id="chat-box" class="bg-lilac-50 dark:bg-gray-800 rounded p-3 mb-3 h-96 overflow-y-auto text-sm text-gray-800 dark:text-gray-200"></div>
-      <div class="flex ">
-        <input id="chat-input" type="text" placeholder="Type a message..." class="flex-grow rounded-l px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-        <button onclick="sendChat()" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-r">Send</button>
-      </div>
-      <button onclick="closeModal('modal-chat')" class="text-white px-4 py-2 mt-4 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 w-full">Close</button>
-    </div>
-  </div>
-
-
   <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
   <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
     <div class="flex justify-end">
@@ -436,7 +422,7 @@
       </button>
     </div>
     <div class="flex justify-end">
-      <button id="btn-chat" onclick="openModal('modal-chat')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
+      <button id="btn-chat" onclick="startChatWithCandidate()" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
         <i class="fa fa-comment-dots ml-0.5"></i>
         <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
       </button>
@@ -450,6 +436,237 @@
 <script src="js/experience_view.js"></script>
 <script src="js/hobby-view.js"></script>
 <script src="js/skill_view.js"></script>
+<script>
+let currentViewedCandidate = null;
+
+// Function to start chat with the candidate being viewed
+async function startChatWithCandidate() {
+    console.log('=== Starting Chat Process ===');
+    
+    const currentUser = window.apiClient?.getCurrentUser();
+    console.log('Current user:', currentUser);
+    
+    if (!currentUser) {
+        alert('Please log in to start a conversation');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Handle different user data structures
+    let userId = null;
+    if (currentUser.id) {
+        userId = currentUser.id;
+    } else if (currentUser.userId) {
+        userId = currentUser.userId;
+    } else if (currentUser.user_id) {
+        userId = currentUser.user_id;
+    } else {
+        console.error('No valid user ID found in currentUser:', currentUser);
+        alert('Unable to identify current user. Please log in again.');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Try to get candidate data from multiple sources
+    if (!currentViewedCandidate) {
+        if (window.currentCandidateData) {
+            currentViewedCandidate = window.currentCandidateData;
+            console.log('Got candidate from window.currentCandidateData');
+        } else {
+            // Try to get from URL and fetch fresh data
+            const urlParams = new URLSearchParams(window.location.search);
+            const candidateId = urlParams.get('id');
+            
+            if (candidateId) {
+                console.log('Fetching fresh candidate data for ID:', candidateId);
+                try {
+                    const response = await window.apiClient.getCandidateById(candidateId);
+                    if (response && response.candidate) {
+                        currentViewedCandidate = response.candidate;
+                        console.log('Fetched fresh candidate data:', currentViewedCandidate);
+                    }
+                } catch (error) {
+                    console.error('Error fetching candidate data:', error);
+                }
+            }
+        }
+    }
+
+    if (!currentViewedCandidate) {
+        console.error('No candidate data available after all attempts');
+        alert('Unable to start conversation. Profile data not loaded. Please refresh the page and try again.');
+        return;
+    }
+
+    // Handle different candidate user ID structures
+    let candidateUserId = null;
+    if (currentViewedCandidate.user?.id) {
+        candidateUserId = currentViewedCandidate.user.id;
+    } else if (currentViewedCandidate.userId) {
+        candidateUserId = currentViewedCandidate.userId;
+    } else if (currentViewedCandidate.user_id) {
+        candidateUserId = currentViewedCandidate.user_id;
+    } else {
+        console.error('No valid user ID found in candidate data:', currentViewedCandidate);
+        alert('Unable to identify candidate user. Please try again.');
+        return;
+    }
+
+    console.log('Candidate user ID:', candidateUserId);
+
+    // Check if trying to chat with yourself
+    if (userId === candidateUserId) {
+        alert('You cannot start a conversation with yourself.');
+        return;
+    }
+
+    try {
+        // Show loading state
+        const chatBtn = document.getElementById('btn-chat');
+        if (!chatBtn) {
+            console.error('Chat button not found');
+            return;
+        }
+        
+        const originalContent = chatBtn.innerHTML;
+        chatBtn.innerHTML = '<i class="fas fa-spinner fa-spin ml-0.5"></i>';
+        chatBtn.disabled = true;
+
+        console.log('Checking for existing conversations...');
+
+        // Check if conversation already exists
+        const conversations = await window.apiClient.getUserConversations(userId);
+        console.log('User conversations:', conversations);
+        
+        const existingConversation = conversations?.find(conv => 
+            conv.otherUser.userId === candidateUserId
+        );
+
+        if (existingConversation) {
+            console.log('Found existing conversation:', existingConversation);
+            // Redirect to chat with existing conversation
+            window.location.href = `chat.html?conversation=${existingConversation.id}&user=${candidateUserId}`;
+        } else {
+            console.log('No existing conversation found, redirecting to empty chat...');
+            // **CHANGED: Direct redirect to chat without sending initial message**
+            window.location.href = `chat.html?user=${candidateUserId}&new=true`;
+        }
+
+    } catch (error) {
+        console.error('Error starting chat:', error);
+        alert(`Unable to start conversation. Error: ${error.message}`);
+        
+        // Restore button
+        const chatBtn = document.getElementById('btn-chat');
+        if (chatBtn) {
+            chatBtn.innerHTML = '<i class="fa fa-comment-dots ml-0.5"></i>';
+            chatBtn.disabled = false;
+        }
+    }
+}
+
+// Enhanced candidate data loading with multiple listeners
+window.addEventListener('DOMContentLoaded', () => {
+    console.log('=== DOM Content Loaded ===');
+    
+    // Debug current user data structure
+    const currentUser = window.apiClient?.getCurrentUser();
+    console.log('Current user on page load:', currentUser);
+    console.log('User type:', window.apiClient?.getUserType());
+    console.log('LocalStorage current_user:', localStorage.getItem('current_user'));
+    
+    // Get candidate ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const candidateId = urlParams.get('id');
+    
+    console.log('Candidate ID from URL:', candidateId);
+    
+    if (candidateId) {
+        // Method 1: Listen for custom event from profile-view.js
+        window.addEventListener('candidateDataLoaded', (event) => {
+            console.log('Received candidateDataLoaded event:', event.detail);
+            currentViewedCandidate = event.detail.candidate;
+            showChatButton();
+        });
+        
+        // Method 2: Polling for candidate data
+        let attempts = 0;
+        const maxAttempts = 100; // 10 seconds total
+        
+        const checkForCandidate = setInterval(() => {
+            attempts++;
+            
+            // Check if profile data is loaded by looking at the name element
+            const nameElement = document.getElementById('user-name');
+            const nameText = nameElement?.textContent;
+            
+            console.log(`Attempt ${attempts}: Name element text:`, nameText);
+            
+            if (nameElement && nameText && 
+                nameText !== 'Loading...' && 
+                nameText !== 'Candidate not found' && 
+                nameText !== 'Error loading profile' &&
+                nameText.trim() !== '') {
+                
+                // Try to get candidate data
+                if (window.currentCandidateData) {
+                    currentViewedCandidate = window.currentCandidateData;
+                    console.log('Successfully stored candidate data from polling:', currentViewedCandidate);
+                    showChatButton();
+                    clearInterval(checkForCandidate);
+                }
+            }
+            
+            // Stop checking after max attempts
+            if (attempts >= maxAttempts) {
+                console.error('Max attempts reached, could not load candidate data');
+                clearInterval(checkForCandidate);
+                
+                // Try one more time with direct API call
+                tryDirectApiCall(candidateId);
+            }
+        }, 100);
+        
+    } else {
+        console.log('No candidate ID in URL, hiding chat button');
+        hideChatButton();
+    }
+});
+
+// Helper function to show chat button
+function showChatButton() {
+    const chatBtn = document.getElementById('btn-chat');
+    if (chatBtn) {
+        chatBtn.style.display = 'flex';
+        console.log('Chat button shown');
+    }
+}
+
+// Helper function to hide chat button
+function hideChatButton() {
+    const chatBtn = document.getElementById('btn-chat');
+    if (chatBtn) {
+        chatBtn.style.display = 'none';
+        console.log('Chat button hidden');
+    }
+}
+
+// Fallback method to get candidate data directly
+async function tryDirectApiCall(candidateId) {
+    console.log('Attempting direct API call for candidate:', candidateId);
+    try {
+        const response = await window.apiClient.getCandidateById(candidateId);
+        if (response && response.candidate) {
+            currentViewedCandidate = response.candidate;
+            window.currentCandidateData = response.candidate;
+            console.log('Successfully got candidate data via direct API call:', currentViewedCandidate);
+            showChatButton();
+        }
+    } catch (error) {
+        console.error('Direct API call failed:', error);
+    }
+}
+</script>
 <script>
   const chatBox = document.getElementById('chat-box');
   const chatInput = document.getElementById('chat-input');

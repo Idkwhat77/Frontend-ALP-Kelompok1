@@ -184,7 +184,7 @@
                         <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                        <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Beranda
                         </a>
                         <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
@@ -597,273 +597,39 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="js/chat.js"></script>
+    <script src="logout.js"></script>
     <script src="js/navbar-profile.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const chatMessages = document.getElementById('chat-messages');
-            const chatInput = document.getElementById('message-input');
-            const sendButton = document.getElementById('send-button');
-            const conversationItems = document.querySelectorAll('[data-conversation]');
-            const chatHeader = document.getElementById('chat-header');
-            
-            // Conversation data
-            const conversations = {
-                'sarah': {
-                    name: 'Sarah Johnson',
-                    title: 'Product Manager at TechCorp',
-                    img: 'img/user1.jpg',
-                    messages: [
-                        { type: 'received', text: 'Hey! I wanted to follow up about the project timeline we discussed last week. Do you think we can still meet the deadline?', time: '10:30 AM' },
-                        { type: 'sent', text: 'Hi Sarah! Yes, I\'ve been making good progress. I should have the first prototype ready by Friday as planned.', time: '10:32 AM' },
-                        { type: 'received', text: 'That\'s great to hear! The client is really excited to see it. Would you be available for a quick call tomorrow to go over any questions?', time: '10:33 AM' },
-                        { type: 'sent', text: 'Absolutely. I\'m free between 2-4 PM. Would that work for you?', time: '10:34 AM' },
-                        { type: 'received', text: 'Perfect! Let\'s schedule for 2:30 PM. I\'ll send you a calendar invite with the Zoom link.', time: '10:35 AM' },
-                        { type: 'sent', text: 'Sounds good. Looking forward to it!', time: '10:36 AM' }
-                    ]
-                },
-                'michael': {
-                    name: 'Michael Chen',
-                    title: 'Design Lead at CreativeStudio',
-                    img: 'img/user2.jpg',
-                    messages: [
-                        { type: 'received', text: 'The design files are ready for review', time: 'Yesterday' },
-                        { type: 'sent', text: 'Great! I\'ll take a look this afternoon', time: 'Yesterday' },
-                        { type: 'received', text: 'Thanks! Let me know if you have any feedback', time: 'Yesterday' }
-                    ]
-                },
-                'recruiter': {
-                    name: 'Black Swan Recruiter',
-                    title: 'HR at Black Swan',
-                    img: 'img/user3.jpg',
-                    messages: [
-                        { type: 'received', text: 'Interview scheduled for next week', time: 'Mar 15' },
-                        { type: 'sent', text: 'Thank you for the update. What time works best?', time: 'Mar 15' }
-                    ]
-                },
-                'team': {
-                    name: 'DesignHub Team',
-                    title: 'Team Channel',
-                    img: 'img/user4.jpg',
-                    messages: [
-                        { type: 'received', text: 'Welcome to the team!', time: 'Mar 12' },
-                        { type: 'sent', text: 'Thank you! Excited to be here', time: 'Mar 12' }
-                    ]
-                },
-                'aisha': {
-                    name: 'Aisha Rahman',
-                    title: 'UX Director at DigitalAgency',
-                    img: 'img/user5.jpg',
-                    messages: [
-                        { type: 'received', text: 'Let\'s connect about the UX position', time: 'Mar 10' },
-                        { type: 'sent', text: 'I\'d love to! When would be a good time?', time: 'Mar 10' }
-                    ]
-                }
-            };
-            
-            // Initialize with Sarah's conversation as active
-            let currentConversation = 'sarah';
-            
-            // Dark mode toggle functionality
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const userMenuButton = document.getElementById('user-menu-button');
-            const userMenu = document.getElementById('user-menu');
-            
-            // Check for saved dark mode preference or system preference
-            if (localStorage.getItem('darkMode') === 'dark' || 
-                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            }
-            
-            // Toggle dark mode
-            function toggleDarkMode() {
-                const isDark = document.documentElement.classList.toggle('dark');
-                localStorage.setItem('darkMode', isDark ? 'dark' : 'light');
-            }
-            
-            darkModeToggle.addEventListener('click', toggleDarkMode);
-            mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
-            
-            // Mobile menu functionality
-            mobileMenuButton.addEventListener('click', () => {
-                const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-                mobileMenuButton.setAttribute('aria-expanded', !expanded);
-                mobileMenu.classList.toggle('hidden');
-                
-                // Toggle between hamburger and close icon
-                const icon = mobileMenuButton.querySelector('i');
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
-            });
-            
-            // User dropdown menu functionality
-            userMenuButton.addEventListener('click', () => {
-                const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-                userMenuButton.setAttribute('aria-expanded', !expanded);
-                userMenu.classList.toggle('hidden');
-            });
-            
-            // Close menus when clicking outside
-            document.addEventListener('click', (e) => {
-                // Close user dropdown if clicked outside
-                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
-                    userMenuButton.setAttribute('aria-expanded', 'false');
-                    userMenu.classList.add('hidden');
-                }
-                
-                // Close mobile menu if clicked outside
-                if (!mobileMenuButton.contains(e.target) && 
-                    !mobileMenu.contains(e.target)) {
-                    
-                    mobileMenuButton.setAttribute('aria-expanded', 'false');
-                    mobileMenu.classList.add('hidden');
-                    
-                    // Reset mobile menu icon to hamburger
-                    const icon = mobileMenuButton.querySelector('i');
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-            
-            // Switch conversations
-            conversationItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Get conversation ID
-                    const conversationId = this.getAttribute('data-conversation');
-                    currentConversation = conversationId;
-                    
-                    // Update UI
-                    updateChatArea(conversationId);
-                });
-            });
-            
-            // Update chat area with selected conversation
-            function updateChatArea(conversationId) {
-                const conversation = conversations[conversationId];
-                
-                if (!conversation) return;
-                
-                // Update active conversation in sidebar
-                document.querySelectorAll('[data-conversation]').forEach(el => {
-                    el.classList.remove('active-chat', 'bg-gray-100', 'dark:bg-gray-800');
-                });
-                
-                document.querySelector(`[data-conversation="${conversationId}"]`).classList.add('active-chat', 'bg-gray-100', 'dark:bg-gray-800');
-            
-                // Update chat header
-            chatHeader.innerHTML = `
-                <img class="h-10 w-10 rounded-full object-cover mr-3" src="${conversation.img}" alt="${conversation.name}">
-                <div>
-                    <h3 class="font-medium text-gray-900 dark:text-white">${conversation.name}</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">${conversation.title}</p>
-                </div>
-                <div class="ml-auto flex space-x-2">
-                    <button class="p-2 text-gray-500 dark:text-gray-400 hover:text-lilac-500 dark:hover:text-lilac-400 rounded-full hover:bg-lilac-50 dark:hover:bg-gray-700">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </div>
-            `;
-            
-            // Clear and rebuild messages
-            chatMessages.innerHTML = '';
-            
-            // Add date divider
-            const dateDivider = document.createElement('div');
-            dateDivider.className = 'flex justify-center';
-            dateDivider.innerHTML = '<span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-xs text-gray-500 dark:text-gray-400 rounded-full">Today</span>';
-            chatMessages.appendChild(dateDivider);
-            
-            // Add messages
-            conversation.messages.forEach(msg => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `flex justify-${msg.type === 'received' ? 'start' : 'end'} message-${msg.type === 'received' ? 'in' : 'out'}`;
-                
-                const messageContent = document.createElement('div');
-                messageContent.className = msg.type === 'received' 
-                    ? 'max-w-[70%] bg-white dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm'
-                    : 'max-w-[70%] bg-lilac-500 text-white rounded-lg px-4 py-2';
-                
-                messageContent.innerHTML = `
-                    <p class="${msg.type === 'received' ? 'text-gray-800 dark:text-gray-200' : ''}">${msg.text}</p>
-                    <p class="text-xs ${msg.type === 'received' ? 'text-gray-500 dark:text-gray-400' : 'text-lilac-200'} mt-1 text-right">${msg.time}</p>
-                `;
-                
-                messageDiv.appendChild(messageContent);
-                chatMessages.appendChild(messageDiv);
-            });
-            
-            // Scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuButton.addEventListener('click', () => {
+        const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !expanded);
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between hamburger and close icon
+        const icon = mobileMenuButton.querySelector('i');
+        if (expanded) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        } else {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
         }
-        
-        // Send message functionality
-        function sendMessage() {
-            const messageText = chatInput.value.trim();
-            if (!messageText) return;
-            
-            // Add message to current conversation
-            const newMessage = {
-                type: 'sent',
-                text: messageText,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            };
-            
-            conversations[currentConversation].messages.push(newMessage);
-            
-            // Clear input
-            chatInput.value = '';
-            
-            // Update chat area
-            updateChatArea(currentConversation);
-            
-            // Simulate reply after 1-3 seconds
-            if (Math.random() > 0.3) { // 70% chance of reply
-                setTimeout(() => {
-                    const replies = [
-                        "Thanks for your message!",
-                        "I'll get back to you soon.",
-                        "That's a good point.",
-                        "Let me check and get back to you.",
-                        "Sounds good!",
-                        "Can we discuss this tomorrow?",
-                        "I appreciate your feedback."
-                    ];
-                    
-                    const replyMessage = {
-                        type: 'received',
-                        text: replies[Math.floor(Math.random() * replies.length)],
-                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                    };
-                    
-                    conversations[currentConversation].messages.push(replyMessage);
-                    updateChatArea(currentConversation);
-                }, 1000 + Math.random() * 2000);
-            }
-        }
-        
-        // Event listeners for sending messages
-        sendButton.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-        
-        // Language selector functionality
-        const languageSelectors = document.querySelectorAll('#language-selector, #language-selector-mobile');
-        languageSelectors.forEach(selector => {
-            selector.addEventListener('change', function() {
-                const lang = this.value;
-                // In a real app, you would implement actual translation here
-                console.log(`Language changed to ${lang}`);
-            });
-        });
-        
-        // Initialize the chat with the first conversation
-        updateChatArea(currentConversation);
     });
-</script>
+    
+    // User menu dropdown
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    
+    userMenuButton.addEventListener('click', () => {
+        const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+        userMenuButton.setAttribute('aria-expanded', !expanded);
+        userMenu.classList.toggle('hidden');
+    });
+    </script>
+</body>
 </html>

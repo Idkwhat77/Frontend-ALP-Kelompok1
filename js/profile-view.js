@@ -120,14 +120,29 @@ function displayCandidateProfile(candidate, updateNavbar = true) {
     }
   };
 
+  // Store candidate data globally for chat functionality
+  window.currentCandidateData = candidate;
+  console.log('Storing candidate data globally:', window.currentCandidateData);
+  
   // Update profile information with candidate data
   document.getElementById('user-name').textContent = candidate.fullName || '';
-  document.getElementById('user-name2').textContent = candidate.fullName || '';
+  
+  // Check if user-name2 exists before updating
+  const userName2Element = document.getElementById('user-name2');
+  if (userName2Element) {
+    userName2Element.textContent = candidate.fullName || '';
+  }
+  
   document.getElementById('user-email').textContent = candidate.email || '';
   document.getElementById('user-birthdate').textContent = formatBirthDate(candidate.birthDate);
   document.getElementById('user-location').textContent = candidate.city || '';
   document.getElementById('user-industry').textContent = candidate.industry || '';
-  document.getElementById('user-employment-status').textContent = candidate.employmentStatus || '';
+  
+  // Check if employment status element exists
+  const employmentStatusElement = document.getElementById('user-employment-status');
+  if (employmentStatusElement) {
+    employmentStatusElement.textContent = candidate.employmentStatus || '';
+  }
 
   const biodataElement = document.getElementById('user-biodata');
   if (biodataElement) {
@@ -157,4 +172,9 @@ function displayCandidateProfile(candidate, updateNavbar = true) {
   if (updateNavbar) {
     updateNavbarProfile(candidate);
   }
+  
+  // Trigger a custom event to notify that candidate data is loaded
+  window.dispatchEvent(new CustomEvent('candidateDataLoaded', { 
+    detail: { candidate: candidate }
+  }));
 }
