@@ -113,12 +113,8 @@ async function loadHomepageCompanies() {
         const response = await window.apiClient.getAllCompanies();
         
         if (response && response.success && response.companies) {
-            // Ensure IDs are numbers and limit to first 4 companies for homepage
-            const companies = response.companies.map(company => ({
-                ...company,
-                id: parseInt(company.id, 10)
-            })).slice(0, 4);
-            
+            // Limit to first 4 companies for homepage
+            const companies = response.companies.slice(0, 4);
             displayCompanyCards(companies);
         } else {
             throw new Error('No companies data received');
@@ -141,30 +137,68 @@ function displayCompanyCards(companies) {
         return;
     }
 
-    companiesContainer.innerHTML = companies.map(company => `
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-            <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
-                <img class="h-12 object-contain" 
-                     src="${company.profileImageUrl ? `http://localhost:8080${company.profileImageUrl}` : 'img/default-profile.png'}" 
-                     alt="${company.companyName} Logo"
-                     onerror="this.src='img/default-profile.png'">
-            </div>
-            <div class="p-3">
-                <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">${company.companyName || 'Unknown Company'}</h3>
-                <p class="text-gray-500 dark:text-gray-300 text-center mb-2">${company.industry || 'Various Industries'}</p>
-                <div class="flex justify-center mb-2">
-                    <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">
-                        ${company.companySize ? `${company.companySize} employees` : 'Company'}
-                    </span>
+    companiesContainer.innerHTML = companies.map(company => {
+        // Format province name
+        const formatProvinceName = (province) => {
+            if (!province) return '';
+            return province
+                .split('-')
+                .map(word => {
+                    if (word === 'dki') return 'DKI';
+                    if (word === 'di') return 'DI';
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                })
+                .join(' ');
+        };
+
+        // Format location string
+        let locationText = '';
+        const formattedProvince = formatProvinceName(company.province);
+        
+        if (company.city && formattedProvince) {
+            locationText = `${company.city}, ${formattedProvince}`;
+        } else if (company.city) {
+            locationText = company.city;
+        } else if (formattedProvince) {
+            locationText = formattedProvince;
+        } else if (company.hq) {
+            locationText = company.hq;
+        } else {
+            locationText = 'Location not specified';
+        }
+
+        return `
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                    <img class="h-12 object-contain" 
+                         src="${company.profileImageUrl ? `http://localhost:8080${company.profileImageUrl}` : 'img/default-profile.png'}" 
+                         alt="${company.companyName} Logo"
+                         onerror="this.src='img/default-profile.png'">
                 </div>
-                <button onclick="viewCompanyProfile(${company.id})" 
-                        data-i18n-html="view_company" 
-                        class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                    View Company
-                </button>
+                <div class="p-3">
+                    <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1 line-clamp-1">${company.companyName || 'Unknown Company'}</h3>
+                    <p class="text-gray-500 dark:text-gray-300 text-center mb-2 text-xs">${company.industry || 'Various Industries'}</p>
+                    
+                    <!-- Location Information -->
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
+                        <span class="text-gray-500 dark:text-gray-400 text-xs text-center line-clamp-1" title="${locationText}">${locationText}</span>
+                    </div>
+                    
+                    <div class="flex justify-center mb-2">
+                        <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">
+                            ${company.companySize ? `${company.companySize} employees` : 'Company'}
+                        </span>
+                    </div>
+                    <button onclick="viewCompanyProfile(${company.id})" 
+                            data-i18n-html="view_company" 
+                            class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                        View Company
+                    </button>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function viewCompanyProfile(companyId) {
