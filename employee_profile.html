@@ -1,602 +1,658 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alex Johnson - RuangKerja</title>
-  <script src="language.js"></script>
-  <script src="darkmode.js"></script>
-  <script src="api.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-      tailwind.config = {
-          darkMode: 'class',
-          theme: {
-              extend: {
-                  colors: {
-                      lilac: {
-                          50: '#faf7fd',
-                          100: '#f4ecfb',
-                          200: '#ebddf7',
-                          300: '#dbc2f0',
-                          400: '#c69ae6',
-                          500: '#b87ce0',
-                      },
-                  },
-                  fontFamily: {
-                      elegant: ['"Playfair Display"', 'serif'],
-                      poppins: ['Poppins', 'sans-serif'],
-                  },
-                  animation: {
-                      'fade-in-from-up': 'fadeInUp 1s ease-in forwards',
-                      'fade-in-from-right' : 'fadeInRight 1s ease-in forwards',
-                      'fade-in-from-down': 'fadeInDown 0.5s ease-in forwards',
-                      'expand-down': 'expandDown 0.6s ease-out forwards',
-                      'expand-left': 'expandLeft 0.6s ease-out forwards',
-                  },
-                  keyframes: {
-                      fadeInUp: {
-                          '0%': { opacity: '0', transform: 'translateY(-100px)' },
-                          '100%': { opacity: '1', transform: 'translateY(0)' },
-                      },
-                      fadeInRight: {
-                          '0%': { opacity: '0', transform: 'translateX(100px)' },
-                          '100%': { opacity: '1', transform: 'translateX(0)' },
-                      },
-                      fadeInDown: {
-                          '0%': { opacity: '0', transform: 'translateY(50px)' },
-                          '100%': { opacity: '1', transform: 'translateY(0)' },
-                      },
-                      expandDown: {
-                        '0%': { height: '0', opacity: '0' },
-                        '100%': { height: '100vh', opacity: '1' },
-                      },
-                      expandLeft: {
-                        '0%': { width: '0', opacity: '0' },
-                        '100%': { width: '100vw', opacity: '1' },
-                      }
-                  },
-                  transitionProperty: {
-                      'scale': 'transform',
-                  }
-              }
-          }
-      }
-  </script>
-  <link rel="stylesheet" href="src/output.css">
-  <link class="favicon" rel="icon" href="img/blackswa.png" type="image/x-icon">
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  integrity="sha512-..."
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-  />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Profile - RuangKerja</title>
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf7fd',
+                            100: '#f4ecfb',
+                            200: '#ebddf7',
+                            300: '#dbc2f0',
+                            400: '#c69ae6',
+                            500: '#b87ce0',
+                        },
+                    },
+                    fontFamily: {
+                        elegant: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-from-up': 'fadeInFromUp 1s ease-out forwards',
+                        'fade-in-from-down': 'fadeInFromDown 1s ease-out forwards',
+                        'expand-down': 'expandDown 0.8s ease-out forwards',
+                        'expand-left': 'expandLeft 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInFromUp: {
+                            '0%': { opacity: '0', transform: 'translateY(-50px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInFromDown: {
+                            '0%': { opacity: '0', transform: 'translateY(50px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        expandDown: {
+                            '0%': { height: '0', opacity: '0' },
+                            '100%': { height: '100vh', opacity: '1' },
+                        },
+                        expandLeft: {
+                            '0%': { width: '0', opacity: '0' },
+                            '100%': { width: '100vw', opacity: '1' },
+                        }
+                    },
+                    transitionProperty: {
+                        'scale': 'transform',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="src/output.css">
+    <link class="favicon" rel="icon" href="img/blackswa.png" type="image/x-icon">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-..."
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 </head>
 <style>
-  /* Font Family */
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #FAF7FD;
-  }
+    /* Font Family */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #FAF7FD;
+    }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-      background: #f4ecfb;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-      background: #dbc2f0;
-      border-radius: 4px;
-  }
-  
-  .dark ::-webkit-scrollbar-track {
-      background: #1a202c;
-  }
-  
-  .dark ::-webkit-scrollbar-thumb {
-      background: #4a5568;
-  }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
 
-  /* Profile image hover effect */
-  #profile-image {
-    transition: opacity 1s ease-in-out !important;
-  }
-  
-  #profile-image:hover {
-    opacity: 0.5 !important;
-  }
+    ::-webkit-scrollbar-track {
+        background: #f4ecfb;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #dbc2f0;
+        border-radius: 4px;
+    }
+
+    .dark ::-webkit-scrollbar-track {
+        background: #1a202c;
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+        background: #4a5568;
+    }
 </style>
-<body class="bg-lilac-50 dark:bg-gray-900" id="body">
-  <!-- Navbar -->
-  <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
-          <div class="flex justify-between items-center h-16">
-              <div class="flex items-center">
-                  <div class="flex-shrink-0">
-                      <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
-                  </div>
-                  <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                      <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
-                          Beranda
-                      </a>
-                      <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
-                          Tentang
-                      </a>
-                      <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
-                          Kandidat
-                      </a>
-                      <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
-                          Perusahaan
-                      </a>
-                  </div>
-              </div>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
+    
+    <!-- Navbar -->
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Beranda
+                        </a>
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                    </div>
+                </div>
 
-              <!-- Desktop Dark Mode & Profile -->
-              <div class="hidden sm:flex items-center space-x-4">
-                  <div class="ml-4">
-                      <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
-                      <option value="en">EN</option>
-                      <option value="id">ID</option>
-                      </select>
-                  </div>
-                  <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
-                      <i class="fas fa-moon dark:hidden"></i>
-                      <i class="fas fa-sun hidden dark:inline"></i>
-                  </button>
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
 
-                  <div class="relative">
-                      <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                          <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
-                      </button>
-                      
-                      <!-- Dropdown Menu -->
-                      <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                          <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
-                          <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
-                      </div>
-                  </div>
-              </div>
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profiledesign.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
 
-              <!-- Mobile Menu Button -->
-              <div class="sm:hidden flex items-center">
-                  <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
-                      <span class="sr-only">Buka Menu Utama</span>
-                      <i class="fas fa-bars"></i>
-                  </button>
-              </div>
-          </div>
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
 
-          <!-- Mobile Menu Content -->
-          <div class="hidden sm:hidden" id="mobile-menu">
-              <div class="pt-2 pb-3 space-y-1">
-                  <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
-                  <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
-                  <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
-                  <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
-              </div>
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
 
-              <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
-              <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
-                  <div class="flex items-center justify-between">
-                      <div class="flex items-center">
-                          <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
-                          <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
-                      </div>
-                      <div class="flex items-center space-x-2">
-                          <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
-                              <option value="en">EN</option>
-                              <option value="id">ID</option>
-                          </select>
-                          <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
-                              <i class="fas fa-moon dark:hidden"></i>
-                              <i class="fas fa-sun hidden dark:inline"></i>
-                          </button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </nav>
-
-  <!-- Upload Profile Modal Box-->
-  <div id="modal-upload" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
-      <h3 data-i18n="upload_profile" class="text-2xl font-semibold text-[#C69AE6] mb-4">Upload Profile Image</h3>
-      
-      <div class="border-2 border-dashed border-[#C69AE6] rounded-xl p-10 text-center bg-lilac-50 dark:bg-gray-700 hover:bg-lilac-100 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer mb-4" 
-          id="uploadArea" 
-          onclick="document.getElementById('profile-image-input').click()">
-        <div>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5" class="mx-auto mb-4">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17,8 12,3 7,8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-          </svg>
-          <p class="text-gray-700 dark:text-gray-300 mb-2">
-            <strong>Click to upload</strong> or drag and drop
-          </p>
-          <p class="text-gray-500 dark:text-gray-400 text-sm">PNG, JPG or GIF (max 5MB)</p>
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      
-      <!-- Preview area -->
-      <div id="preview" class="mb-4"></div>
-      
-      <input type="file" id="profile-image-input" class="hidden" accept="image/*">
-      
-      <div class="flex gap-3">
-        <button id="uploadBtn" disabled class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
-          Upload Image
-        </button>
-        <button id="deleteBtn" class="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
-          Delete Image
-        </button>
-        <button onclick="closeModal('modal-upload')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
+    </nav>
 
-  
-  <!-- Main Content duh -->
-  <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-lilac-50 dark:bg-[#111827]" id="main-container">
-    <div class="lg:fixed flex flex-col bg-lilac-500 dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative lg:animate-expand-down animate-expand-left" id="profile-container">
-      <div class="flex flex-col items-center text-center gap-5">
-        <div class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 animate-fade-in-from-up cursor-pointer bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png');" role="img" aria-label="Profile" id="profile-image"></div>
-        <h1 id="user-name" class="text-5xl font-bold text-white animate-fade-in-from-down">Loading...</h1>
-        <p id="user-industry" class="mt-4 text-lg text-white animate-fade-in-from-down">Loading...</p>
-      </div>
-      <div class="flex justify-center mt-6">
-        <a href="cv/Escoffier_Resume.pdf" download
-          class="bg-[#7F4CA5] text-white px-6 py-3 rounded-full shadow-md transition-all duration-300 animate-fade-in-from-down">
-          <i class="fa-solid fa-file-pdf"></i>
-          <span data-i18n="cv_download">Download CV</span>
-        </a>
-      </div>
-      <div class="flex flex-row space-x-4 text-3xl bottom-10 absolute transition duration-300 animate-fade-in-from-down">
-        <a href="https://facebook.com" target="_blank" class="hover:text-blue-600">
-          <i class="fab fa-facebook"></i>
-        </a>
-        <a href="https://instagram.com" target="_blank" class="hover:text-pink-500">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://x.com" target="_blank" class="hover:text-gray-600">
-          <i class="fab fa-x-twitter"></i>
-        </a>
-      </div>
-    </div>
+    <!-- Main Content -->
+    <main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-16 transition duration-300">
+        <!-- Profile Header Section -->
+        <section class="relative mb-8">
+            <!-- Cover Photo -->
+            <div class="h-48 w-full rounded-xl bg-gray-200 dark:bg-gray-800 overflow-hidden mb-4">
+                <img id="cover-photo" src="img/default-cover.jpg" alt="Cover photo" class="w-full h-full object-cover">
+            </div>
+            
+            <!-- Profile Info -->
+            <div class="flex flex-col md:flex-row items-start md:items-end -mt-16 md:-mt-12 ml-4 md:ml-6">
+                <!-- Profile Picture -->
+                <div class="relative group">
+                    <div id="profile-image" alt="Profile picture" 
+                         class="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white dark:border-gray-900 object-cover shadow-lg bg-cover bg-center bg-no-repeat" 
+                         style="background-image: url('img/default-profile.png');">
+                    </div>
+                </div>
+                
+                <!-- Name and Basic Info -->
+                <div class="mt-4 md:mt-0 md:ml-6">
+                    <h1 id="user-name" class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Loading...</h1>
+                    <p id="user-industry" class="text-gray-600 dark:text-gray-300">Loading...</p>
+                    
+                    <div class="flex flex-wrap items-center mt-2 gap-x-4 gap-y-2 text-sm">
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt mr-2 text-lilac-400"></i>
+                            <span id="user-location">Loading...</span>
+                        </span>
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-birthday-cake mr-2 text-lilac-400"></i>
+                            <span id="user-birthdate">Loading...</span>
+                        </span>
+                    </div>
+                    <div class="flex flex-wrap items-center mt-2 gap-x-4 gap-y-2 text-sm">
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-briefcase mr-2 text-lilac-400"></i>
+                            <span id="user-employment-status">Loading...</span>
+                        </span>
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-envelope mr-2 text-lilac-400"></i>
+                            <span id="user-email">Loading...</span>
+                        </span>
+                    </div>     
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex items-center mt-4 md:mt-0 md:ml-auto space-x-3">
+                    <button class="bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-lg flex items-center transition-colors">
+                        <i class="fas fa-file-export mr-2"></i>
+                        <span data-i18n="cv_download">Export CV</span>
+                    </button>
+                    <button onclick="startChatWithCandidate()" class="border border-lilac-500 text-lilac-500 dark:text-lilac-300 dark:border-lilac-300 hover:bg-lilac-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg flex items-center transition-colors">
+                        <i class="fas fa-comment-dots mr-2"></i>
+                        <span data-i18n="start_chat">Start Chat</span>
+                    </button>
+                </div>
+            </div>
+        </section>
 
-    <!-- Employee Main Profile -->
-    <div class="flex flex-col items-center h-screen justify-center w-full gap-8 mt-5 lg:pl-[29vw] pt-[20vh] lg:pt-0">
-      <div class="flex lg:flex-row flex-col lg:w-[60vw] justify-between">
-        <div class="text-center flex flex-col gap-6 items-center h-auto lg:mt-20">
-          <h2 data-i18n="employee_details" class="text-3xl font-bold text-[#C69AE6] lg:mt-0 mt-10 ">Employee Details</h2>
-          <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[28vw] w-[85vw] h-full text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
-            <div class="mb-4">
-              <h4 data-i18n="employee_full_name" class="font-semibold text-xl text-[#C69AE6]">Full Name</h4>
-              <p id="user-name2" class="text-[#374151] dark:text-white">Loading...</p>
+        <!-- Main Profile Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- About Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="employee_biodata" class="text-xl font-bold text-gray-900 dark:text-white">About</h2>
+                    </div>
+                    <p id="user-biodata" class="text-gray-600 dark:text-gray-300">
+                        Loading biodata...
+                    </p>
+                </section>
+
+                <!-- Experience Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="experience" class="text-xl font-bold text-gray-900 dark:text-white">Experience</h2>
+                    </div>
+                    
+                    <div class="w-full">
+                        <div id="experience-list" class="space-y-4">
+                            <!-- Experience records will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Education Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="education" class="text-xl font-bold text-gray-900 dark:text-white">Education</h2>
+                    </div>
+                    
+                    <div class="w-full">
+                        <div id="education-list" class="space-y-4">
+                            <!-- Education records will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="skills" class="text-xl font-bold text-gray-900 dark:text-white">Skills</h2>
+                    </div>
+                    
+                    <div class="w-full">
+                        <div id="current-skills-list" class="space-y-4">
+                            <!-- Skills will be loaded here -->
+                        </div>
+                    </div>
+                </section>
             </div>
-            <div class="mb-4">
-              <h4 data-i18n="employee_birth_date" class="font-semibold text-xl text-[#C69AE6]">Birth Date</h4>
-              <p id="user-birthdate" class="text-[#374151] dark:text-white">Loading...</p>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+
+                <!-- Socials -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <h2 data-i18n="socials" class="text-xl font-bold text-gray-900 dark:text-white mb-4">Socials</h2>
+                    <div id="current-socials-list" class="space-y-3">
+                        <!-- Social media links will be loaded here -->
+                        <div class="text-center py-4 text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-share-alt text-2xl mb-2"></i>
+                            <p>No social media links available</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Work & Projects Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <h2 data-i18n="work_projects" class="text-xl font-bold text-gray-900 dark:text-white mb-4">Work & Projects</h2>
+                    
+                    <div id="current-portfolio-list" class="space-y-3">
+                        <!-- Portfolio items will be loaded here -->
+                        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-briefcase text-2xl mb-2"></i>
+                            <p>No portfolio items available</p>
+                        </div>
+                    </div>
+                </section>
             </div>
-            <div class="mb-4">
-              <h4 data-i18n="employee_location" class="font-semibold text-xl text-[#C69AE6]">Location</h4>
-              <p id="user-location" class="text-[#374151] dark:text-white">Loading...</p>
-            </div>
-            <div class="mb-4">
-              <h4 data-i18n="employee_employment_status" class="font-semibold text-xl text-[#C69AE6]">Employment Status</h4>
-              <p id="user-employment-status" class="text-[#374151] dark:text-white">Loading...</p>
-            </div>
-            <div class="mb-4">
-              <h4 data-i18n="employee_contact_email" class="font-semibold text-xl text-[#C69AE6]">Contact Email</h4>
-              <p id="user-email" class="text-[#374151] dark:text-white">Loading...</p>
-            </div>
-          </div>
         </div>
-        <div class="text-center flex flex-col gap-6 items-center h-auto lg:mt-20">
-          <div class="flex justify-center items-center w-full lg:w-[28vw] lg:mt-0 mt-10">
-            <h2 data-i18n="hobbies" class="text-3xl font-bold text-[#C69AE6]">Hobbies</h2>
-          </div>
-          <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[28vw] w-[85vw] h-full text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
-            <div id="hobbies-list">
-              <!-- Hobbies will be loaded here dynamically -->
-              <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                <i class="fas fa-heart text-4xl mb-4"></i>
-                <p>Loading hobbies...</p>
-              </div>
+    </main>
+
+    <!-- Same footer as your homepage -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo and Description -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p data-i18n="footer.company_description" class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <!-- Socials and Contact in a row on the right -->
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <!-- Our Socials -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.socials" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.contact" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <!-- Copyright and Bottom Links -->
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="text-center flex flex-col gap-6 items-center lg:w-[60vw] min-h-[160px] lg:mb-0 mb-10">
-        <h2 data-i18n="employee_biodata" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-6">Biodata</h2>
-        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[60vw] w-[85vw] h-auto text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
-          <div class="mb-4">
-            <p id="user-biodata" class="text-[#374151] dark:text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum reiciendis officiis dignissimos eos dolore repudiandae ratione et odit iste tempora, nobis nam necessitatibus rem, quos soluta numquam quae. Est, ipsum.
-            </p>
-          </div>
-        </div>
-        <h2 data-i18n="employee_highlights" class="text-3xl font-bold text-[#C69AE6] lg:m-0 m-6">Employee Highlights</h2>
-        <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[60vw] w-[85vw] h-auto text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
-          <div class="mb-4">
-            <ul class="list-disc list-inside">
-              <li class="text-[#374151] dark:text-white">github.com/escoffier/spaghetti-python</li>
-              <li class="text-[#374151] dark:text-white">www.gamer.com</li>
-              <li class="text-[#374151] dark:text-white">youtube.com</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    </footer>
 
-  <!-- Employee Education Modal Box (popup basically) -->
-  <div id="modal-education" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-4xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <div class="flex justify-between items-center mb-6">
-        <h3 data-i18n="education" class="text-3xl font-semibold text-[#C69AE6]">Education</h3>
-      </div>
-      
-      <!-- Education List -->
-      <div id="education-list" class="space-y-4">
-        <!-- Education records will be loaded here -->
-      </div>
-      
-      <div class="flex justify-center mt-6">
-        <button onclick="closeModal('modal-education')" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
-      </div>
-    </div>
-  </div>  
-  
-  <!-- Employee Experience Modal Box (popup basically) -->
-  <div id="modal-experience" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-4xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <div class="flex justify-between items-center mb-6">
-        <h3 data-i18n="experience" class="text-3xl font-semibold text-[#C69AE6]">Experience</h3>
-      </div>
+    <script src="js/navbar-profile.js"></script>
+    <script src="js/profile-view.js"></script>
+    <script src="js/education_view.js"></script>
+    <script src="js/experience_view.js"></script>
+    <script src="js/hobby-view.js"></script>
+    <script src="js/skill_view.js"></script>
 
-      <!-- Experience List -->
-      <div id="experience-list" class="space-y-4">
-        <!-- Experience records will be loaded here -->
-      </div>
-      
-      <div class="flex justify-center mt-6">
-        <button onclick="closeModal('modal-experience')" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
-      </div>
-    </div>
-  </div>
+    <script>
+        let currentViewedCandidate = null;
 
-  <!-- Employee Skills Modal Box (popups basically again)-->
-  <div id="modal-skills" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto pr-2">
-      <h3 data-i18n="skills" class="text-2xl font-semibold text-[#C69AE6] mb-4">Skills</h3>
-      <ul class="list-disc list-inside text-black dark:text-white mb-6">
-        <li>JavaScript</li>
-        <li>React</li>
-        <li>Sassy Sous Chef Handling</li>
-      </ul>
-      <button onclick="closeModal('modal-skills')" class="bg text-white px-4 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
-    </div>
-  </div>
+        // Function to start chat with the candidate being viewed
+        async function startChatWithCandidate() {
+            console.log('=== Starting Chat Process ===');
+            
+            const currentUser = window.apiClient?.getCurrentUser();
+            console.log('Current user:', currentUser);
+            
+            if (!currentUser) {
+                alert('Please log in to start a conversation');
+                window.location.href = 'login.html';
+                return;
+            }
 
-  <!-- Chat Modal -->
-  <div id="modal-chat" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 h-auto overflow-y-auto">
-      <h3 class="text-2xl font-semibold text-[#C69AE6] mb-4">Chat</h3>
-      <div id="chat-box" class="bg-lilac-50 dark:bg-gray-800 rounded p-3 mb-3 h-96 overflow-y-auto text-sm text-gray-800 dark:text-gray-200"></div>
-      <div class="flex ">
-        <input id="chat-input" type="text" placeholder="Type a message..." class="flex-grow rounded-l px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-        <button onclick="sendChat()" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-r">Send</button>
-      </div>
-      <button onclick="closeModal('modal-chat')" class="text-white px-4 py-2 mt-4 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300 w-full">Close</button>
-    </div>
-  </div>
+            // Handle different user data structures
+            let userId = null;
+            if (currentUser.id) {
+                userId = currentUser.id;
+            } else if (currentUser.userId) {
+                userId = currentUser.userId;
+            } else if (currentUser.user_id) {
+                userId = currentUser.user_id;
+            } else {
+                console.error('No valid user ID found in currentUser:', currentUser);
+                alert('Unable to identify current user. Please log in again.');
+                window.location.href = 'login.html';
+                return;
+            }
 
+            // Try to get candidate data from multiple sources
+            if (!currentViewedCandidate) {
+                if (window.currentCandidateData) {
+                    currentViewedCandidate = window.currentCandidateData;
+                    console.log('Got candidate from window.currentCandidateData');
+                } else {
+                    // Try to get from URL and fetch fresh data
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const candidateId = urlParams.get('id');
+                    
+                    if (candidateId) {
+                        console.log('Fetching fresh candidate data for ID:', candidateId);
+                        try {
+                            const response = await window.apiClient.getCandidateById(candidateId);
+                            if (response && response.candidate) {
+                                currentViewedCandidate = response.candidate;
+                                console.log('Fetched fresh candidate data:', currentViewedCandidate);
+                            }
+                        } catch (error) {
+                            console.error('Error fetching candidate data:', error);
+                        }
+                    }
+                }
+            }
 
-  <!-- Navigation Buttons for the Modal Boxes (buttons to show the popup boxes) -->
-  <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
-    <div class="flex justify-end">
-      <button id="btn-skills" onclick="openModal('modal-skills')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
-        <i class="fa fa-dumbbell ml-0.5"></i>
-        <span data-i18n="skills_nav" id="nav-skills" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Skills</span>
-      </button>
+            if (!currentViewedCandidate) {
+                console.error('No candidate data available after all attempts');
+                alert('Unable to start conversation. Profile data not loaded. Please refresh the page and try again.');
+                return;
+            }
 
-    </div>
-    <div class="flex justify-end">
-      <button id="btn-education" onclick="openModal('modal-education')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
-        <i class="fa fa-graduation-cap ml-0.5"></i>
-        <span data-i18n="education_nav" id="nav-education" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Education</span>
-      </button>
-    </div>
-    <div class="flex justify-end">
-      <button id="btn-chat" onclick="openModal('modal-chat')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
-        <i class="fa fa-comment-dots ml-0.5"></i>
-        <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
-      </button>
-    </div>
-    <div class="flex justify-end">
-      <button id="btn-experience" onclick="openModal('modal-experience')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
-        <i class="fa fa-briefcase ml-0.5"></i>
-        <span data-i18n="experience_nav" id="nav-experience" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Experience</span>
-      </button>
-    </div>
-  </div> 
+            // Handle different candidate user ID structures
+            let candidateUserId = null;
+            if (currentViewedCandidate.user?.id) {
+                candidateUserId = currentViewedCandidate.user.id;
+            } else if (currentViewedCandidate.userId) {
+                candidateUserId = currentViewedCandidate.userId;
+            } else if (currentViewedCandidate.user_id) {
+                candidateUserId = currentViewedCandidate.user_id;
+            } else {
+                console.error('No valid user ID found in candidate data:', currentViewedCandidate);
+                alert('Unable to identify candidate user. Please try again.');
+                return;
+            }
+
+            console.log('Candidate user ID:', candidateUserId);
+
+            // Check if trying to chat with yourself
+            if (userId === candidateUserId) {
+                alert('You cannot start a conversation with yourself.');
+                return;
+            }
+
+            try {
+                console.log('Checking for existing conversations...');
+
+                // Check if conversation already exists
+                const conversations = await window.apiClient.getUserConversations(userId);
+                console.log('User conversations:', conversations);
+                
+                const existingConversation = conversations?.find(conv => 
+                    conv.otherUser.userId === candidateUserId
+                );
+
+                if (existingConversation) {
+                    console.log('Found existing conversation:', existingConversation);
+                    window.location.href = `chat.html?conversation=${existingConversation.id}&user=${candidateUserId}`;
+                } else {
+                    console.log('No existing conversation found, redirecting to empty chat...');
+                    window.location.href = `chat.html?user=${candidateUserId}&new=true`;
+                }
+
+            } catch (error) {
+                console.error('Error starting chat:', error);
+                alert(`Unable to start conversation. Error: ${error.message}`);
+            }
+        }
+
+        // Enhanced candidate data loading with multiple listeners
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('=== DOM Content Loaded ===');
+            
+            // Get candidate ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const candidateId = urlParams.get('id');
+            
+            console.log('Candidate ID from URL:', candidateId);
+            
+            if (candidateId) {
+                // Listen for custom event from profile-view.js
+                window.addEventListener('candidateDataLoaded', (event) => {
+                    console.log('Received candidateDataLoaded event:', event.detail);
+                    currentViewedCandidate = event.detail.candidate;
+                });
+                
+                // Polling for candidate data
+                let attempts = 0;
+                const maxAttempts = 100;
+                
+                const checkForCandidate = setInterval(() => {
+                    attempts++;
+                    
+                    // Check if profile data is loaded by looking at the name element
+                    const nameElement = document.getElementById('user-name');
+                    const nameText = nameElement?.textContent;
+                    
+                    if (nameElement && nameText && 
+                        nameText !== 'Loading...' && 
+                        nameText !== 'Candidate not found' && 
+                        nameText !== 'Error loading profile' &&
+                        nameText.trim() !== '') {
+                        
+                        // Try to get candidate data
+                        if (window.currentCandidateData) {
+                            currentViewedCandidate = window.currentCandidateData;
+                            console.log('Successfully stored candidate data from polling:', currentViewedCandidate);
+                            clearInterval(checkForCandidate);
+                        }
+                    }
+                    
+                    // Stop checking after max attempts
+                    if (attempts >= maxAttempts) {
+                        console.error('Max attempts reached, could not load candidate data');
+                        clearInterval(checkForCandidate);
+                        
+                        // Try one more time with direct API call
+                        tryDirectApiCall(candidateId);
+                    }
+                }, 100);
+            }
+        });
+
+        // Fallback method to get candidate data directly
+        async function tryDirectApiCall(candidateId) {
+            console.log('Attempting direct API call for candidate:', candidateId);
+            try {
+                const response = await window.apiClient.getCandidateById(candidateId);
+                if (response && response.candidate) {
+                    currentViewedCandidate = response.candidate;
+                    window.currentCandidateData = response.candidate;
+                    console.log('Successfully got candidate data via direct API call:', currentViewedCandidate);
+                }
+            } catch (error) {
+                console.error('Direct API call failed:', error);
+            }
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // User menu toggle
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        
+        userMenuButton.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+        
+        // Close menus when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+            
+            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Loading circle
+        const loading_circle = document.createElement('div');
+        loading_circle.id = 'load_bro';
+        loading_circle.innerHTML = `
+            <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80 z-50">
+                <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+            </div>
+        `;
+        document.body.appendChild(loading_circle);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('load_bro');
+            if (l) {
+                l.remove();
+            }
+        });
+    </script>
 </body>
-<script src="logout.js"></script>
-<script src="js/profile-view.js"></script>
-<script src="js/education_view.js"></script>
-<script src="js/experience_view.js"></script>
-<script src="js/hobby-view.js"></script>
-<script>
-  const chatBox = document.getElementById('chat-box');
-  const chatInput = document.getElementById('chat-input');
-
-  function sendChat() {
-    const message = chatInput.value.trim();
-    if (!message) return;
-
-    const msgElem = document.createElement('div');
-    msgElem.textContent = "You: " + message;
-    msgElem.classList.add('mb-1');
-    chatBox.appendChild(msgElem);
-    chatBox.scrollTop = chatBox.scrollHeight;
-    chatInput.value = '';
-  }
-
-  // Allow Enter key to send
-  chatInput?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') sendChat();
-  });
-</script>
-<script>
-
-  // Mobile menu toggle
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-  
-  mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-  });
-  
-  // User menu toggle
-  const userMenuButton = document.getElementById('user-menu-button');
-  const userMenu = document.getElementById('user-menu');
-  
-  userMenuButton.addEventListener('click', () => {
-      userMenu.classList.toggle('hidden');
-  });
-  
-  // Close menus when clicking outside
-  document.addEventListener('click', (e) => {
-      if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
-          userMenu.classList.add('hidden');
-      }
-      
-      if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
-          mobileMenu.classList.add('hidden');
-      }
-  });
-
-  // JavaScript for navbar open when website loaded
-    window.addEventListener('DOMContentLoaded', () => {
-    const navbarEmployees = document.getElementById('navbar-employees');
-
-    if (navbarEmployees) {
-      navbarEmployees.classList.remove('opacity-0', 'h-0');
-      navbarEmployees.classList.add('opacity-100', 'h-16');
-    }
-    });
-
-  // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
-  const loading_circle = document.createElement('div');
-  loading_circle.id = 'load_bro';
-  loading_circle.innerHTML = `
-    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80 z-50">
-      <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
-    </div>
-  `;
-  document.body.appendChild(loading_circle);
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const l = document.getElementById('load_bro');
-    if (l) {
-      l.remove();
-    }
-  });
-
-  // JavaScript for opening and closing le popup boxes (education and skills)
-  function openModal(id) {
-    const modal = document.getElementById(id);
-    const content = modal.querySelector('div');
-    const main = document.getElementById('main-container');
-
-    modal.classList.remove('hidden');
-    setTimeout(() => {
-      content.classList.remove('scale-0', 'opacity-0');
-      content.classList.add('scale-100', 'opacity-100');
-      main.classList.add('opacity-50');
-    }, 10);
-
-    // Close modal if clicked outside the box
-    modal.onclick = (e) => {
-      if (e.target === modal) closeModal(id);
-    };
-  }
-
-  function closeModal(id) {
-    const modal = document.getElementById(id);
-    const content = modal.querySelector('div');
-    const main = document.getElementById('main-container');
-
-    setTimeout(() => {
-      content.classList.remove('scale-100');
-      content.classList.add('scale-0');
-      main.classList.remove('opacity-50');
-    }, 10);
-    setTimeout(() => {
-      modal.classList.add('hidden');
-    }, 300);
-
-  }
-
-  // JavaScript for the navigation modal boxes that extends width to the left to show text on hover
-  // and shrinks back to icon size when mouse go bye bye
-  const btnSkills = document.getElementById('btn-skills');
-  const navSkills = document.getElementById('nav-skills')
-  const btnEducation = document.getElementById('btn-education');
-  const navEducation = document.getElementById('nav-education')
-  const btnChat = document.getElementById('btn-chat');
-  const navChat = document.getElementById('nav-chat')
-  const btnExperience = document.getElementById('btn-experience');
-  const navExperience = document.getElementById('nav-experience')
-
-  btnExperience.addEventListener('mouseover', () => {
-    navExperience.classList.remove('hidden');
-    btnExperience.classList.remove('w-12');
-    btnExperience.classList.add('w-36');
-  });
-
-  btnSkills.addEventListener('mouseover', () => {
-    navSkills.classList.remove('hidden');
-    btnSkills.classList.remove('w-12');
-    btnSkills.classList.add('w-36');
-  });
-  btnSkills.addEventListener('mouseout', () => {
-    btnSkills.classList.remove('w-36');
-    btnSkills.classList.add('w-12');
-    navSkills.classList.add('hidden');
-  });
-  btnEducation.addEventListener('mouseover', () => {
-    navEducation.classList.remove('hidden');
-    btnEducation.classList.remove('w-12');
-    btnEducation.classList.add('w-36');
-  });
-  btnEducation.addEventListener('mouseout', () => {
-    btnEducation.classList.remove('w-36');
-    btnEducation.classList.add('w-12');
-    navEducation.classList.add('hidden');
-  });
-  btnChat.addEventListener('mouseover', () => {
-    navChat.classList.remove('hidden');
-    btnChat.classList.remove('w-12');
-    btnChat.classList.add('w-36');
-  });
-  btnChat.addEventListener('mouseout', () => {
-    btnChat.classList.remove('w-36');
-    btnChat.classList.add('w-12');
-    navChat.classList.add('hidden');
-  });
-</script>
 </html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - RuangKerja</title>
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#f7f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
+    <!-- Navbar -->
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Beranda
+                        </a>
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+
+                    <!-- Notification Bell -->
+                    <div class="relative">
+                        <button type="button" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative" id="notification-button" aria-expanded="false" aria-haspopup="true">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                    </div>
+
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
+
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-lilac-500 mx-auto"></div>
+            <p class="mt-4 text-gray-600 dark:text-gray-400">Loading job details...</p>
+        </div>
+
+        <!-- Job Details Container -->
+        <div id="job-details" class="hidden">
+            <!-- Job Header -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-6">
+                <div class="flex items-start justify-between mb-6">
+                    <div class="flex items-start">
+                        <img id="company-logo" class="h-16 w-16 rounded-lg object-cover mr-6" 
+                                src="" alt="Company Logo">
+                        <div>
+                            <h1 id="job-title" class="text-3xl font-bold text-gray-900 dark:text-white mb-2"></h1>
+                            <p id="company-name" class="text-xl text-lilac-500 mb-2"></p>
+                            <div class="flex items-center text-gray-600 dark:text-gray-400">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span id="job-location"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div id="job-salary" class="text-2xl font-bold text-gray-900 dark:text-white mb-2"></div>
+                        <div id="job-posted" class="text-sm text-gray-500 dark:text-gray-400"></div>
+                    </div>
+                </div>
+
+                <!-- Job Meta -->
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span id="job-type" class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-4 py-2 rounded-full text-sm font-medium"></span>
+                    <span id="job-experience" class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 px-4 py-2 rounded-full text-sm"></span>
+                    <div id="job-skills" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Apply Button -->
+                <button id="apply-btn" class="w-full sm:w-auto bg-lilac-500 hover:bg-lilac-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-200">
+                    <i class="fas fa-paper-plane mr-2"></i>Apply for this Position
+                </button>
+            </div>
+
+            <!-- Job Description -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Job Description</h2>
+                <div id="job-description" class="prose dark:prose-invert max-w-none"></div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Benefits -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Benefits</h3>
+                    <ul id="job-benefits" class="space-y-2"></ul>
+                </div>
+
+                <!-- Update the Company Info section in the HTML -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">About Company</h3>
+                    <div id="company-info">
+                        <div class="animate-pulse">
+                            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+                            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
+                            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deadline Info -->
+            <div id="deadline-info" class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-6 mt-6">
+                <div class="flex items-center">
+                    <i class="fas fa-clock text-yellow-600 dark:text-yellow-400 mr-3"></i>
+                    <div>
+                        <h4 class="font-semibold text-yellow-800 dark:text-yellow-200">Application Deadline</h4>
+                        <p id="job-deadline" class="text-yellow-700 dark:text-yellow-300"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update the error section to be more helpful -->
+        <div id="error" class="hidden text-center py-12">
+            <div class="text-red-400 mb-4">
+                <i class="fas fa-exclamation-triangle text-6xl"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">Job Not Found</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-4">The job you're looking for doesn't exist, has been removed, or the link may be incorrect.</p>
+            <div class="space-x-4">
+                <a href="oprec.html" class="inline-block bg-lilac-500 hover:bg-lilac-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                    Browse Other Jobs
+                </a>
+                <button onclick="window.history.back()" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                    Go Back
+                </button>
+            </div>
+        </div>
+    </main>
+<!-- Footer -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo and Description -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p data-i18n="footer.company_description" class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <!-- Socials and Contact in a row on the right -->
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <!-- Our Socials -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.socials" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.contact" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright and Bottom Links -->
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/navbar-profile.js"></script>
+    <script>
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // User menu toggle
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        
+        userMenuButton.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+        
+        // Close menus when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+            
+            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const jobId = urlParams.get('id');
+            
+            if (jobId) {
+                loadJobDetails(jobId);
+            } else {
+                showError();
+            }
+        });
+
+        async function loadJobDetails(jobId) {
+            try {
+                console.log('Loading job details for ID:', jobId);
+                const response = await fetch(`http://localhost:8080/api/jobs/${jobId}`);
+                const data = await response.json();
+                
+                console.log('Job details response:', data);
+                
+                if (data.success && data.job) {
+                    displayJobDetails(data.job);
+                } else {
+                    console.error('Job not found or error:', data.message);
+                    showError();
+                }
+            } catch (error) {
+                console.error('Error loading job details:', error);
+                showError();
+            }
+        }
+
+        function displayJobDetails(job) {
+            console.log('Displaying job details:', job);
+            
+            // Hide loading, show content
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('job-details').classList.remove('hidden');
+
+            // Basic info
+            document.getElementById('job-title').textContent = job.title || 'Job Title';
+            document.getElementById('company-name').textContent = job.company?.name || job.company?.companyName || 'Company';
+            document.getElementById('job-location').textContent = formatLocation(job.city, job.province);
+            document.getElementById('job-salary').textContent = formatSalary(job.salaryMin, job.salaryMax);
+            document.getElementById('job-posted').textContent = `Posted ${formatRealDate(job.createdAt)}`;
+            document.getElementById('job-type').textContent = formatJobType(job.type);
+            document.getElementById('job-experience').textContent = job.experience || 'Any Level';
+
+            // Company logo
+            const logo = job.company?.profileImageUrl 
+                ? `http://localhost:8080${job.company.profileImageUrl}` 
+                : 'img/default-company.png';
+            document.getElementById('company-logo').src = logo;
+            document.getElementById('company-logo').alt = `${job.company?.name || 'Company'} Logo`;
+
+            // Skills - Handle both array and string formats
+            const skillsContainer = document.getElementById('job-skills');
+            let skills = [];
+            
+            if (Array.isArray(job.skills)) {
+                skills = job.skills.filter(skill => skill && skill.trim());
+            } else if (typeof job.skills === 'string' && job.skills.trim()) {
+                skills = job.skills.split(',').map(s => s.trim()).filter(s => s);
+            }
+            
+            if (skills.length > 0) {
+                skillsContainer.innerHTML = skills.map(skill => 
+                    `<span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full text-sm">${skill}</span>`
+                ).join('');
+            } else {
+                skillsContainer.innerHTML = '<span class="text-gray-500 dark:text-gray-400 text-sm">No specific skills listed</span>';
+            }
+
+            // Description
+            const descriptionElement = document.getElementById('job-description');
+            if (job.description && job.description.trim()) {
+                descriptionElement.innerHTML = job.description;
+            } else {
+                descriptionElement.innerHTML = '<p class="text-gray-500 dark:text-gray-400">No detailed description available for this position.</p>';
+            }
+
+            // Benefits - Handle both array and string formats
+            const benefitsContainer = document.getElementById('job-benefits');
+            let benefits = [];
+            
+            if (Array.isArray(job.benefits)) {
+                benefits = job.benefits.filter(benefit => benefit && benefit.trim());
+            } else if (typeof job.benefits === 'string' && job.benefits.trim()) {
+                benefits = job.benefits.split(',').map(s => s.trim()).filter(s => s);
+            }
+            
+            if (benefits.length > 0) {
+                benefitsContainer.innerHTML = benefits.map(benefit => 
+                    `<li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <i class="fas fa-check text-green-500 mr-2"></i>${benefit}
+                    </li>`
+                ).join('');
+            } else {
+                benefitsContainer.innerHTML = '<li class="text-gray-500 dark:text-gray-400">No specific benefits listed</li>';
+            }
+
+            // Company info
+            const companyInfo = document.getElementById('company-info');
+            const company = job.company;
+            
+            let companyLocation = 'Not specified';
+            if (company?.city && company?.province) {
+                companyLocation = formatLocation(company.city, company.province);
+            } else if (company?.hq) {
+                companyLocation = company.hq;
+            }
+            
+            companyInfo.innerHTML = `
+                <div class="space-y-3">
+                    <p class="text-gray-700 dark:text-gray-300">
+                        <strong class="text-gray-900 dark:text-white">Industry:</strong> 
+                        ${company?.industry || 'Not specified'}
+                    </p>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        <strong class="text-gray-900 dark:text-white">Company Size:</strong> 
+                        ${company?.companySize ? `${company.companySize} employees` : 'Not specified'}
+                    </p>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        <strong class="text-gray-900 dark:text-white">Location:</strong> 
+                        ${companyLocation}
+                    </p>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        <strong class="text-gray-900 dark:text-white">Founded:</strong> 
+                        ${company?.foundationDate ? formatDate(company.foundationDate) : 'Not specified'}
+                    </p>
+                    ${company?.websiteUrl ? `
+                        <p class="text-gray-700 dark:text-gray-300">
+                            <strong class="text-gray-900 dark:text-white">Website:</strong> 
+                            <a href="${company.websiteUrl}" target="_blank" class="text-lilac-500 hover:text-lilac-600">
+                                ${company.websiteUrl}
+                            </a>
+                        </p>
+                    ` : ''}
+                    ${company?.description ? `
+                        <div class="mt-4">
+                            <strong class="text-gray-900 dark:text-white">About the Company:</strong>
+                            <p class="text-gray-700 dark:text-gray-300 mt-2">${company.description}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Deadline
+            const deadlineInfo = document.getElementById('deadline-info');
+            if (job.deadline) {
+                document.getElementById('job-deadline').textContent = formatDeadline(job.deadline);
+                deadlineInfo.style.display = 'block';
+            } else {
+                deadlineInfo.style.display = 'none';
+            }
+
+            // Apply button
+            const applyBtn = document.getElementById('apply-btn');
+            applyBtn.onclick = function() {
+                // Check if deadline has passed
+                if (job.deadline) {
+                    const deadlineDate = new Date(job.deadline);
+                    const today = new Date();
+                    if (deadlineDate < today) {
+                        alert('Sorry, the application deadline for this job has passed.');
+                        return;
+                    }
+                }
+                
+                // For now, show alert - later implement actual application process
+                alert(`Application feature will be implemented soon!\n\nJob: ${job.title}\nCompany: ${job.company?.name || 'Company'}`);
+            };
+
+            // Update page title
+            document.title = `${job.title} - ${job.company?.name || job.company?.companyName || 'Company'} | RuangKerja`;
+            
+            // Show additional job details if available
+            displayAdditionalJobInfo(job);
+        }
+
+        function displayAdditionalJobInfo(job) {
+            // Add hiring process info if available
+            if (job.hiringProcess) {
+                const additionalInfo = document.createElement('div');
+                additionalInfo.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6';
+                additionalInfo.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Hiring Process</h3>
+                    <div class="text-gray-700 dark:text-gray-300">${job.hiringProcess}</div>
+                `;
+                document.querySelector('#job-details').appendChild(additionalInfo);
+            }
+
+            // Add application questions if available
+            if (job.applicationQuestions) {
+                const questionsInfo = document.createElement('div');
+                questionsInfo.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6';
+                questionsInfo.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Application Questions</h3>
+                    <div class="text-gray-700 dark:text-gray-300">${job.applicationQuestions}</div>
+                `;
+                document.querySelector('#job-details').appendChild(questionsInfo);
+            }
+        }
+
+        function formatJobType(type) {
+            const typeMap = {
+                'fulltime': 'Full-time',
+                'parttime': 'Part-time',
+                'contract': 'Contract',
+                'internship': 'Internship',
+                'freelance': 'Freelance',
+                'remote': 'Remote',
+                'hybrid': 'Hybrid',
+                'temporary': 'Temporary'
+            };
+            return typeMap[type?.toLowerCase()] || type || 'Full-time';
+        }
+
+        function formatLocation(city, province) {
+            const formatProvinceName = (province) => {
+                if (!province) return '';
+                
+                // Handle different province formats
+                if (province.includes('-')) {
+                    return province
+                        .split('-')
+                        .map(word => {
+                            if (word === 'dki') return 'DKI';
+                            if (word === 'di') return 'DI';
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        })
+                        .join(' ');
+                }
+                
+                // Already formatted province name
+                return province;
+            };
+
+            const formattedProvince = formatProvinceName(province);
+            
+            if (city && formattedProvince) {
+                return `${city}, ${formattedProvince}`;
+            } else if (city) {
+                return city;
+            } else if (formattedProvince) {
+                return formattedProvince;
+            }
+            return 'Location not specified';
+        }
+
+        function formatSalary(salaryMin, salaryMax) {
+            if (salaryMin && salaryMax) {
+                const minInMillions = (salaryMin / 1000000).toFixed(0);
+                const maxInMillions = (salaryMax / 1000000).toFixed(0);
+                return `IDR ${minInMillions}M - ${maxInMillions}M`;
+            } else if (salaryMin) {
+                const minInMillions = (salaryMin / 1000000).toFixed(0);
+                return `IDR ${minInMillions}M+`;
+            } else if (salaryMax) {
+                const maxInMillions = (salaryMax / 1000000).toFixed(0);
+                return `Up to IDR ${maxInMillions}M`;
+            }
+            return 'Competitive Salary';
+        }
+
+        function formatRealDate(dateString) {
+            if (!dateString) return 'recently';
+            
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                
+                if (diffHours < 24) {
+                    return diffHours <= 1 ? 'today' : `${diffHours} hours ago`;
+                } else if (diffDays === 1) {
+                    return 'yesterday';
+                } else if (diffDays <= 7) {
+                    return `${diffDays} days ago`;
+                } else if (diffDays <= 30) {
+                    const weeks = Math.ceil(diffDays / 7);
+                    return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+                } else {
+                    const months = Math.ceil(diffDays / 30);
+                    return months === 1 ? '1 month ago' : `${months} months ago`;
+                }
+            } catch (error) {
+                return 'recently';
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            try {
+                const date = new Date(dateString);
+                return date.getFullYear().toString();
+            } catch (error) {
+                return dateString;
+            }
+        }
+
+        function formatDeadline(deadline) {
+            try {
+                const date = new Date(deadline);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            } catch (error) {
+                return deadline;
+            }
+        }
+
+        function showError() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

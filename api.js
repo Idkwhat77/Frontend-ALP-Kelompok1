@@ -15,6 +15,9 @@ class ApiClient {
         this.currentUser = user;
         if (user) {
             localStorage.setItem('current_user', JSON.stringify(user));
+            if (userType) {
+                localStorage.setItem('user_type', userType);
+            }
         } else {
             localStorage.removeItem('current_user');
         }
@@ -24,13 +27,7 @@ class ApiClient {
     getCurrentUser() {
         return this.currentUser || JSON.parse(localStorage.getItem('current_user') || 'null');
     }
-
-    // Clear user data and logout
-    clearCurrentUser() {
-        this.currentUser = null;
-        localStorage.removeItem('current_user');
-    }
-
+    
     // Generic API request method
     async makeRequest(endpoint, options = {}) {
         const url = `${this.baseURL}${endpoint}`;
@@ -75,7 +72,43 @@ class ApiClient {
             throw error;
         }
     }
-    
+
+    // Set current user with type
+    setCurrentUser(user, userType = null) {
+        this.currentUser = user;
+        if (user) {
+            localStorage.setItem('current_user', JSON.stringify(user));
+            if (userType) {
+                localStorage.setItem('user_type', userType);
+            }
+        } else {
+            localStorage.removeItem('current_user');
+            localStorage.removeItem('user_type');
+        }
+    }
+
+    // Get user type
+    getUserType() {
+        return localStorage.getItem('user_type');
+    }
+
+    // Clear user data and logout
+    clearCurrentUser() {
+        this.currentUser = null;
+        localStorage.removeItem('current_user');
+        localStorage.removeItem('user_type');
+    }
+
+    // Check if user is employee
+    isEmployee() {
+        return this.getUserType() === 'employee';
+    }
+
+    // Check if user is company
+    isCompany() {
+        return this.getUserType() === 'company';
+    }
+
     // Authentication methods
     async register(userData) {
         const response = await this.makeRequest('/auth/register', {
@@ -141,6 +174,29 @@ class ApiClient {
         });
         
         console.log('createEmployee: API response:', response);
+        return response;
+    }
+
+    async createCompany(companyData) {
+        const user = this.getCurrentUser();
+        console.log('createCompany: Current user:', user);
+
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to create company profile. Please login first.');
+        }
+
+        // Don't add user_id to the body - it's passed in the header
+        console.log('createCompany: Data being sent to API:', companyData);
+        
+        // Make sure we're using the correct endpoint path
+        const response = await this.makeRequest('/company', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id.toString() // Ensure it's a string
+            },
+            body: JSON.stringify(companyData)
+        });
         return response;
     }
 
@@ -367,6 +423,283 @@ class ApiClient {
     async getAllExperience(candidateId) {
         return this.makeRequest(`/candidates/${candidateId}/experiences/`, {
             method: 'GET'
+        });
+    }
+
+    // Skills API methods
+    async createSkill(candidateId, skillData) {
+        return this.makeRequest(`/candidates/${candidateId}/skills`, {
+            method: 'POST',
+            body: JSON.stringify(skillData)
+        });
+    }
+
+    async getCandidateSkills(candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/skills`, {
+            method: 'GET'
+        });
+    }
+
+    async getSkillById(skillId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/skills/${skillId}`, {
+            method: 'GET'
+        });
+    }
+
+    async updateSkill(skillId, skillData, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/skills/${skillId}`, {
+            method: 'PUT',
+            body: JSON.stringify(skillData)
+        });
+    }
+
+    async deleteSkill(skillId, candidateId) {
+        return this.makeRequest(`/candidates/${candidateId}/skills/${skillId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    async getAllSkills() {
+        return this.makeRequest('/candidates/1/skills/all', {
+            method: 'GET'
+        });
+    }
+
+    async getCompanyByUserId(userId) {
+        // Adjust the endpoint if your backend uses a different route
+        return this.makeRequest(`/company/user/${userId}`, {
+            method: 'GET'
+        });
+    }
+
+    // Company API methods
+    async getCompanyByUserId(userId) {
+        return this.makeRequest(`/company/user/${userId}`, {
+            method: 'GET'
+        });
+    }
+
+    async getCompanyById(companyId) {
+        return this.makeRequest(`/company/${companyId}`, {
+            method: 'GET'
+        });
+    }
+
+    async updateCompany(companyId, companyData) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to update company profile');
+        }
+
+        // Handle company size conversion
+        let processedData = { ...companyData };
+        if (processedData.companySize && typeof processedData.companySize === 'string') {
+            // Extract number from size range like "1-10" -> 10, "1000+" -> 1000
+            const sizeMatch = processedData.companySize.match(/(\d+)/);
+            if (sizeMatch) {
+                processedData.companySize = parseInt(sizeMatch[1], 10);
+            }
+        }
+
+        return this.makeRequest(`/company/${companyId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify(processedData)
+        });
+    }
+
+    async uploadCompanyImage(companyId, formData) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to upload image');
+        }
+
+        const url = `${this.baseURL}/company/upload-image/${companyId}`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-User-Id': user.id
+                },
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || `HTTP error! status: ${response.status}`);
+            }
+            
+            return data;
+        } catch (error) {
+            console.error('Company image upload failed:', error);
+            throw error;
+        }
+    }
+
+    async deleteCompanyImage(companyId) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to delete image');
+        }
+
+        return this.makeRequest(`/company/delete-image/${companyId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-User-Id': user.id
+            }
+        });
+    }
+
+    async updateCompanyDescription(companyId, description) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to update description');
+        }
+
+        return this.makeRequest(`/company/${companyId}/description`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify({ description })
+        });
+    }
+
+    async deleteCompany(companyId) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to delete company');
+        }
+
+        return this.makeRequest(`/company/${companyId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-User-Id': user.id
+            }
+        });
+    }
+
+    async getAllCompanies() {
+        return this.makeRequest('/company', {
+            method: 'GET'
+        });
+    }
+
+    // Chat API methods
+    async getUserConversations(userId) {
+        return this.makeRequest(`/chat/conversations/${userId}`, {
+            method: 'GET'
+        });
+    }
+
+    async getMessagesBetweenUsers(user1Id, user2Id, page = 0, size = 20) {
+        return this.makeRequest(`/chat/messages/${user1Id}/${user2Id}?page=${page}&size=${size}`, {
+            method: 'GET'
+        });
+    }
+
+    async sendMessage(messageData) {
+        return this.makeRequest('/chat/send', {
+            method: 'POST',
+            body: JSON.stringify(messageData)
+        });
+    }
+
+    async markMessagesAsRead(senderId, receiverId) {
+        return this.makeRequest(`/chat/mark-read/${senderId}/${receiverId}`, {
+            method: 'PUT'
+        });
+    }
+
+    // Social Media endpoints
+    async getCandidateSocials(candidateId) {
+        try {
+            return await this.makeRequest(`/candidates/${candidateId}/socials`, {
+                method: 'GET'
+            });
+        } catch (error) {
+            console.error('Error fetching candidate socials:', error);
+            // Return empty response structure on error
+            return {
+                success: false,
+                socials: [],
+                message: 'Failed to fetch social media links'
+            };
+        }
+    }
+
+    async addCandidateSocial(socialData) {
+        return this.makeRequest('/candidates/socials', {
+            method: 'POST',
+            body: JSON.stringify(socialData)
+        });
+    }
+
+    async updateCandidateSocial(socialId, socialData) {
+        return this.makeRequest(`/candidates/socials/${socialId}`, {
+            method: 'PUT',
+            body: JSON.stringify(socialData)
+        });
+    }
+
+    async deleteCandidateSocial(socialId) {
+        return this.makeRequest(`/candidates/socials/${socialId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    // Portfolio endpoints
+    async getCandidatePortfolio(candidateId) {
+        try {
+            return await this.makeRequest(`/candidates/${candidateId}/portfolio`, {
+                method: 'GET'
+            });
+        } catch (error) {
+            console.error('Error fetching candidate portfolio:', error);
+            return {
+                success: false,
+                portfolio: [],
+                message: 'Failed to fetch portfolio items'
+            };
+        }
+    }
+
+    async addCandidatePortfolio(portfolioData) {
+        return this.makeRequest('/candidates/portfolio', {
+            method: 'POST',
+            body: JSON.stringify(portfolioData)
+        });
+    }
+
+    async updateCandidatePortfolio(portfolioId, portfolioData) {
+        return this.makeRequest(`/candidates/portfolio/${portfolioId}`, {
+            method: 'PUT',
+            body: JSON.stringify(portfolioData)
+        });
+    }
+
+    async deleteCandidatePortfolio(portfolioId) {
+        return this.makeRequest(`/candidates/portfolio/${portfolioId}`, {
+            method: 'DELETE'
+        });
+    }
+
+    async uploadPortfolioImage(portfolioId, formData) {
+        return this.makeRequest(`/candidates/portfolio/${portfolioId}/upload-image`, {
+            method: 'POST',
+            body: formData
+        });
+    }
+
+    async deletePortfolioImage(portfolioId) {
+        return this.makeRequest(`/candidates/portfolio/${portfolioId}/delete-image`, {
+            method: 'DELETE'
         });
     }
 }

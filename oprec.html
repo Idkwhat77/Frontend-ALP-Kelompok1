@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuangKerja - Open Recruitment</title>
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf7fd',
+                            100: '#f4ecfb',
+                            200: '#ebddf7',
+                            300: '#dbc2f0',
+                            400: '#c69ae6',
+                            500: '#b87ce0',
+                        },
+                    },
+                    fontFamily: {
+                        elegant: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    },
+                    transitionProperty: {
+                        'scale': 'transform',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+        
+        .fade-on-scroll {
+            opacity: 0;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-on-scroll.visible {
+            opacity: 1;
+        }
+        
+        button:focus, input:focus {
+            outline: 2px solid #c69ae6;
+            outline-offset: 2px;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f4ecfb;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #dbc2f0;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+    </style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
+    <!-- Navbar -->
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Beranda
+                        </a>
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+
+                    <!-- Notification Bell -->
+                    <div class="relative">
+                        <button type="button" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative" id="notification-button" aria-expanded="false" aria-haspopup="true">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                    </div>
+
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
+
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+        <!-- Hero Section -->
+        <div class="mb-12 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                Open <span class="text-lilac-500">Recruitment</span>
+            </h1>
+            <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Browse through our latest job openings and find your perfect career match
+            </p>
+        </div>
+
+        <!-- Search and Filter Bar -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8">
+            <div class="flex flex-col md:flex-row gap-4">
+                <!-- Search Input -->
+                <div class="flex-1">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" id="jobSearch" placeholder="Search jobs, companies, or keywords"
+                            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500">
+                    </div>
+                </div>
+                
+                <!-- Job Type Filter -->
+                <div class="w-full md:w-48">
+                    <select id="jobTypeFilter" class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500">
+                        <option value="">All Job Types</option>
+                        <option value="fulltime">Full-time</option>
+                        <option value="parttime">Part-time</option>
+                        <option value="contract">Contract</option>
+                        <option value="internship">Internship</option>
+                        <option value="freelance">Freelance</option>
+                        <option value="remote">Remote</option>
+                        <option value="hybrid">Hybrid</option>
+                        <option value="temporary">Temporary</option>
+                    </select>
+                </div>
+                
+                <!-- Province Filter -->
+                <div class="w-full md:w-48">
+                    <select id="provinceFilter" class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500">
+                        <option value="">All Provinces</option>
+                        <!-- Options will be populated by JavaScript from citiesByProvince -->
+                    </select>
+                </div>
+                
+                <!-- City/Regency Filter -->
+                <div class="w-full md:w-48">
+                    <select id="cityFilter" class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500" disabled>
+                        <option value="">Select Province First</option>
+                    </select>
+                </div>
+                
+                <!-- Search Button -->
+                <button id="searchButton" class="px-6 py-3 bg-lilac-500 text-white rounded-lg hover:bg-lilac-600 focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:ring-offset-2 transition duration-150">
+                    Search
+                </button>
+            </div>
+            
+            <!-- Advanced Filters (Collapsible) -->
+            <div class="mt-4">
+                <button id="toggleFilters" class="text-sm text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 flex items-center">
+                    <span>Advanced Filters</span>
+                    <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                </button>
+                
+                <div id="advancedFilters" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Experience Level (now dropdown) -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Experience Level</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-lilac-500 focus:border-lilac-500">
+                                <option value="">All Levels</option>
+                                <option value="entry">Entry Level (0-2 years)</option>
+                                <option value="mid">Mid Level (2-5 years)</option>
+                                <option value="senior">Senior Level (5+ years)</option>
+                                <option value="executive">Executive Level</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Salary Range -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Salary Range (IDR)</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="number" placeholder="Min" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-lilac-500 focus:border-lilac-500">
+                                <span class="text-gray-500">to</span>
+                                <input type="number" placeholder="Max" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-lilac-500 focus:border-lilac-500">
+                            </div>
+                        </div>
+                        
+                        <!-- Posted Date -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Posted Date</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-lilac-500 focus:border-lilac-500">
+                                <option value="">Any Time</option>
+                                <option value="1">Last 24 hours</option>
+                                <option value="7">Last 7 days</option>
+                                <option value="14">Last 14 days</option>
+                                <option value="30">Last 30 days</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply Filters Button -->
+                    <div class="mt-6 flex justify-end">
+                        <button id="applyFilters" class="px-4 py-2 bg-lilac-500 text-white rounded-md hover:bg-lilac-600 focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:ring-offset-2 transition-colors duration-200">
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Job Listings Section -->
+        <div class="mb-16 py-12s">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                    <span id="jobCount">24</span> Jobs Available
+                </h2>
+                <div class="flex items-center">
+                    <span class="text-sm text-gray-600 dark:text-gray-300 mr-2">Sort by:</span>
+                    <select id="sortBy" class="text-sm border-0 bg-transparent text-gray-900 dark:text-white focus:ring-2 focus:ring-lilac-500 rounded-md">
+                        <option value="newest">Newest First</option>
+                        <option value="relevance">Relevance</option>
+                        <option value="salary_high">Salary (High to Low)</option>
+                        <option value="salary_low">Salary (Low to High)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Job Listings Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Job Card 1 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
+                    <div class="p-6">
+                        <div class="flex items-start mb-4">
+                            <img class="h-12 w-12 rounded-lg object-cover mr-4" src="img/blackswa.png" alt="Black Swan LLC">
+                            <div>
+                                <h3 class="font-semibold text-lg text-gray-900 dark:text-white">Frontend Developer</h3>
+                                <p class="text-lilac-500 text-sm">Black Swan LLC</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">Full-time</span>
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">Remote</span>
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">JavaScript</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">We're looking for an experienced Frontend Developer to join our team and help build innovative web applications using React and Next.js.</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex items-center text-gray-500 dark:text-gray-400">
+                                <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
+                                <span>Jakarta</span>
+                            </div>
+                            <span class="text-gray-500 dark:text-gray-400">Posted 2 days ago</span>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-900 dark:text-white">IDR 12-18M</span>
+                            <a href="job-detail.html" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 font-medium text-sm flex items-center">
+                                View Details <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Card 2 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
+                    <div class="p-6">
+                        <div class="flex items-start mb-4">
+                            <img class="h-12 w-12 rounded-lg object-cover mr-4" src="img/techcorp.png" alt="TechCorp">
+                            <div>
+                                <h3 class="font-semibold text-lg text-gray-900 dark:text-white">UX/UI Designer</h3>
+                                <p class="text-lilac-500 text-sm">TechCorp</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">Full-time</span>
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">Hybrid</span>
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">Figma</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">Join our design team to create beautiful and intuitive user experiences for our enterprise software products.</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex items-center text-gray-500 dark:text-gray-400">
+                                <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
+                                <span>Bandung</span>
+                            </div>
+                            <span class="text-gray-500 dark:text-gray-400">Posted 1 week ago</span>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-900 dark:text-white">IDR 10-15M</span>
+                            <a href="job-detail.html" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 font-medium text-sm flex items-center">
+                                View Details <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Card 3 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
+                    <div class="p-6">
+                        <div class="flex items-start mb-4">
+                            <img class="h-12 w-12 rounded-lg object-cover mr-4" src="img/digitalbank.png" alt="Digital Bank">
+                            <div>
+                                <h3 class="font-semibold text-lg text-gray-900 dark:text-white">Backend Engineer</h3>
+                                <p class="text-lilac-500 text-sm">Digital Bank</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">Full-time</span>
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">On-site</span>
+                            <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">Node.js</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">We need a skilled Backend Engineer to develop and maintain our banking platform's core services and APIs.</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex items-center text-gray-500 dark:text-gray-400">
+                                <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
+                                <span>Jakarta</span>
+                            </div>
+                            <span class="text-gray-500 dark:text-gray-400">Posted 3 days ago</span>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-900 dark:text-white">IDR 15-25M</span>
+                            <a href="job-detail.html" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 font-medium text-sm flex items-center">
+                                View Details <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Pagination -->
+            <div class="mt-10 flex justify-center">
+                <nav class="flex items-center space-x-2">
+                    <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="px-3 py-1 rounded-md bg-lilac-500 text-white">1</button>
+                    <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">2</button>
+                    <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">3</button>
+                    <span class="px-2 text-gray-500">...</span>
+                    <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">8</button>
+                    <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Newsletter Section -->
+        <section class="bg-lilac-50 dark:bg-gray-800 rounded-xl p-8 mb-12">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Get Job Alerts</h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">Sign up for our newsletter and get the latest job openings delivered to your inbox</p>
+                <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                    <input type="email" placeholder="Your email address" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white">
+                    <button class="px-6 py-3 bg-lilac-500 text-white rounded-lg hover:bg-lilac-600 focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:ring-offset-2 transition duration-150">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo and Description -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p data-i18n="footer.company_description" class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <!-- Socials and Contact in a row on the right -->
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <!-- Our Socials -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.socials" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.contact" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright and Bottom Links -->
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
+                   
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/navbar-profile.js"></script>
+    <script>
+        // Province and city mapping (same as in posting_oprec.js)
+        const citiesByProvince = {
+            "Aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
+            "Sumatera Utara": ["Binjai", "Gunungsitoli", "Medan", "Padangsidempuan", "Pematangsiantar", "Sibolga", "Tanjung Balai", "Tebing Tinggi"],
+            "Sumatera Barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
+            "Riau": ["Pekanbaru", "Dumai"],
+            "Jambi": ["Jambi", "Sungai Penuh"],
+            "Sumatera Selatan": ["Lubuklinggau", "Pagar Alam", "Palembang", "Prabumulih"],
+            "Bengkulu": ["Bengkulu"],
+            "Lampung": ["Bandar Lampung", "Metro"],
+            "Kepulauan Bangka Belitung": ["Pangkal Pinang"],
+            "Kepulauan Riau": ["Batam", "Tanjung Pinang"],
+            "DKI Jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+            "Jawa Barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya"],
+            "Jawa Tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal"],
+            "DI Yogyakarta": ["Yogyakarta"],
+            "Jawa Timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya"],
+            "Banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan"],
+            "Bali": ["Denpasar"],
+            "Nusa Tenggara Barat": ["Bima", "Mataram"],
+            "Nusa Tenggara Timur": ["Kupang"],
+            "Kalimantan Barat": ["Pontianak", "Singkawang"],
+            "Kalimantan Tengah": ["Palangka Raya"],
+            "Kalimantan Selatan": ["Banjarbaru", "Banjarmasin"],
+            "Kalimantan Timur": ["Balikpapan", "Bontang", "Samarinda"],
+            "Kalimantan Utara": ["Tarakan"],
+            "Sulawesi Utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon"],
+            "Sulawesi Tengah": ["Palu"],
+            "Sulawesi Selatan": ["Makassar", "Palopo", "Parepare"],
+            "Sulawesi Tenggara": ["Bau-Bau", "Kendari"],
+            "Gorontalo": ["Gorontalo"],
+            "Sulawesi Barat": ["Mamuju"],
+            "Maluku": ["Ambon", "Tual"],
+            "Maluku Utara": ["Ternate", "Tidore Kepulauan"],
+            "Papua Barat": ["Manokwari", "Sorong"],
+            "Papua": ["Jayapura"],
+            "Papua Selatan": ["Merauke"],
+            "Papua Tengah": ["Nabire"],
+            "Papua Pegunungan": ["Jayawijaya"]
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProvinceDropdown();
+            loadJobs();
+            initializeFilters();
+        });
+
+        function initializeProvinceDropdown() {
+            const provinceSelect = document.getElementById('provinceFilter');
+            const citySelect = document.getElementById('cityFilter');
+            
+            // Clear existing options except the first one
+            provinceSelect.innerHTML = '<option value="">All Provinces</option>';
+            
+            // Populate provinces
+            Object.keys(citiesByProvince).forEach(province => {
+                const option = document.createElement('option');
+                option.value = province;
+                option.textContent = province;
+                provinceSelect.appendChild(option);
+            });
+
+            // Handle province change
+            provinceSelect.addEventListener('change', function() {
+                const selectedProvince = this.value;
+                citySelect.innerHTML = '<option value="">All Cities</option>';
+                
+                if (selectedProvince && citiesByProvince[selectedProvince]) {
+                    citySelect.disabled = false;
+                    citiesByProvince[selectedProvince].forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                } else {
+                    citySelect.disabled = true;
+                    citySelect.innerHTML = '<option value="">Select Province First</option>';
+                }
+                
+                // Apply filters when province changes
+                applyFilters();
+            });
+
+            // Handle city change
+            citySelect.addEventListener('change', function() {
+                applyFilters();
+            });
+
+            // Handle job type change
+            document.getElementById('jobTypeFilter')?.addEventListener('change', function() {
+                applyFilters();
+            });
+        }
+
+        async function loadJobs(filters = {}) {
+            try {
+                // Build query parameters
+                const params = new URLSearchParams();
+                
+                if (filters.search?.trim()) {
+                    params.append('search', filters.search.trim());
+                }
+                if (filters.type) {
+                    params.append('type', filters.type);
+                }
+                if (filters.province) {
+                    params.append('province', filters.province);
+                }
+                if (filters.city) {
+                    params.append('city', filters.city);
+                }
+                
+                const url = 'http://localhost:8080/api/jobs' + (params.toString() ? '?' + params.toString() : '');
+                console.log('Fetching jobs from:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.success && data.jobs) {
+                    displayJobs(data.jobs);
+                    updateJobCount(data.totalElements || data.jobs.length);
+                    showFilterMessage(filters);
+                } else {
+                    console.error('Failed to load jobs:', data.message);
+                    displayNoJobs();
+                }
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+                displayNoJobs();
+            }
+        }
+
+        function displayJobs(jobs) {
+            const jobContainer = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-3');
+            
+            if (!jobs || jobs.length === 0) {
+                displayNoJobs();
+                return;
+            }
+            
+            jobContainer.innerHTML = jobs.map(job => {
+                // Format location properly
+                const location = formatJobLocation(job.city, job.province);
+                
+                // Format salary properly
+                const salary = formatSalary(job.salaryMin, job.salaryMax);
+                
+                // Format posted date properly
+                const postedDate = formatRealDate(job.createdAt);
+                
+                // Get company logo URL
+                const companyLogo = job.company?.profileImageUrl 
+                    ? `http://localhost:8080${job.company.profileImageUrl}` 
+                    : 'img/default-company.png';
+                
+                // Get company name
+                const companyName = job.company?.name || job.company?.companyName || 'Company';
+                
+                // Format skills array
+                const skillsArray = Array.isArray(job.skills) ? job.skills : 
+                    (typeof job.skills === 'string' ? job.skills.split(',').map(s => s.trim()) : []);
+                
+                // Format job type display
+                const jobTypeDisplay = formatJobType(job.type);
+                
+                return `
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
+                        <div class="p-6">
+                            <div class="flex items-start mb-4">
+                                <img class="h-12 w-12 rounded-lg object-cover mr-4" 
+                                     src="${companyLogo}" 
+                                     alt="${companyName} Logo"
+                                     onerror="this.src='img/default-company.png'">
+                                <div>
+                                    <h3 class="font-semibold text-lg text-gray-900 dark:text-white">${job.title || 'Job Title'}</h3>
+                                    <p class="text-lilac-500 text-sm">${companyName}</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${jobTypeDisplay}</span>
+                                ${skillsArray.slice(0, 2).map(skill => 
+                                    `<span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${skill}</span>`
+                                ).join('')}
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                                ${job.description ? stripHtmlAndTruncate(job.description, 100) : 'No description available'}
+                            </p>
+                            <div class="flex justify-between items-center text-sm">
+                                <div class="flex items-center text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
+                                    <span>${location}</span>
+                                </div>
+                                <span class="text-gray-500 dark:text-gray-400">${postedDate}</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium text-gray-900 dark:text-white">${salary}</span>
+                                <a href="job-detail.html?id=${job.id}" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 font-medium text-sm flex items-center">
+                                    View Details <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatJobType(type) {
+            const typeMap = {
+                'fulltime': 'Full-time',
+                'parttime': 'Part-time',
+                'contract': 'Contract',
+                'internship': 'Internship',
+                'freelance': 'Freelance',
+                'remote': 'Remote',
+                'hybrid': 'Hybrid',
+                'temporary': 'Temporary'
+            };
+            return typeMap[type] || type || 'Full-time';
+        }
+
+        function formatJobLocation(city, province) {
+            if (city && province) {
+                return `${city}, ${province}`;
+            } else if (city) {
+                return city;
+            } else if (province) {
+                return province;
+            }
+            return 'Location not specified';
+        }
+
+        function formatSalary(salaryMin, salaryMax) {
+            if (salaryMin && salaryMax) {
+                const minInMillions = (salaryMin / 1000000).toFixed(0);
+                const maxInMillions = (salaryMax / 1000000).toFixed(0);
+                return `IDR ${minInMillions}M-${maxInMillions}M`;
+            } else if (salaryMin) {
+                const minInMillions = (salaryMin / 1000000).toFixed(0);
+                return `IDR ${minInMillions}M+`;
+            } else if (salaryMax) {
+                const maxInMillions = (salaryMax / 1000000).toFixed(0);
+                return `Up to IDR ${maxInMillions}M`;
+            }
+            return 'Competitive Salary';
+        }
+
+        function formatRealDate(dateString) {
+            if (!dateString) return 'Recently posted';
+            
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                const diffMinutes = Math.floor(diffTime / (1000 * 60));
+                
+                if (diffMinutes < 60) {
+                    return diffMinutes <= 1 ? 'Just posted' : `${diffMinutes} minutes ago`;
+                } else if (diffHours < 24) {
+                    return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+                } else if (diffDays === 1) {
+                    return '1 day ago';
+                } else if (diffDays <= 7) {
+                    return `${diffDays} days ago`;
+                } else if (diffDays <= 30) {
+                    const weeks = Math.ceil(diffDays / 7);
+                    return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+                } else {
+                    const months = Math.ceil(diffDays / 30);
+                    return months === 1 ? '1 month ago' : `${months} months ago`;
+                }
+            } catch (error) {
+                console.error('Error formatting date:', error);
+                return 'Recently posted';
+            }
+        }
+
+        function stripHtmlAndTruncate(html, maxLength) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            const text = div.textContent || div.innerText || '';
+            
+            if (text.length <= maxLength) {
+                return text;
+            }
+            
+            return text.substring(0, maxLength) + '...';
+        }
+
+        function showFilterMessage(filters) {
+            // Remove existing message
+            const existingMessage = document.querySelector('.search-results-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            // Add search results message if there's an active filter
+            if (filters.search || filters.type || filters.province || filters.city) {
+                const jobSection = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-3').parentElement;
+                const message = document.createElement('div');
+                message.className = 'search-results-message bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4';
+                
+                let messageText = '';
+                if (filters.search) {
+                    messageText += `Search: "${filters.search}"`;
+                }
+                if (filters.type) {
+                    messageText += messageText ? ` | Type: ${formatJobType(filters.type)}` : `Type: ${formatJobType(filters.type)}`;
+                }
+                if (filters.province) {
+                    messageText += messageText ? ` | Province: ${filters.province}` : `Province: ${filters.province}`;
+                }
+                if (filters.city) {
+                    messageText += messageText ? ` | City: ${filters.city}` : `City: ${filters.city}`;
+                }
+                
+                message.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-800 dark:text-blue-200 text-sm">
+                            <i class="fas fa-filter mr-2"></i>Active filters: ${messageText}
+                        </span>
+                        <button onclick="clearAllFilters()" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 text-sm">
+                            <i class="fas fa-times mr-1"></i>Clear all
+                        </button>
+                    </div>
+                `;
+                
+                jobSection.insertBefore(message, jobSection.firstChild);
+            }
+        }
+
+        function clearAllFilters() {
+            // Clear search input
+            const searchInput = document.getElementById('jobSearch');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            // Reset dropdowns
+            const provinceSelect = document.getElementById('provinceFilter');
+            const citySelect = document.getElementById('cityFilter');
+            const jobTypeSelect = document.getElementById('jobTypeFilter');
+            
+            if (provinceSelect) provinceSelect.value = '';
+            if (citySelect) {
+                citySelect.value = '';
+                citySelect.disabled = true;
+                citySelect.innerHTML = '<option value="">Select Province First</option>';
+            }
+            if (jobTypeSelect) jobTypeSelect.value = '';
+            
+            // Remove filter message
+            const messageContainer = document.querySelector('.search-results-message');
+            if (messageContainer) {
+                messageContainer.remove();
+            }
+            
+            // Reload all jobs
+            loadJobs();
+        }
+
+        function displayNoJobs() {
+            const jobContainer = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-3');
+            jobContainer.innerHTML = `
+                <div class="col-span-3 text-center py-12">
+                    <div class="text-gray-400 mb-4">
+                        <i class="fas fa-briefcase text-6xl"></i>
+                    </div>
+                    <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">No Jobs Found</h3>
+                    <p class="text-gray-500 dark:text-gray-400">Try adjusting your search criteria or check back later for new postings.</p>
+                    <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg">
+                        Clear Filters
+                    </button>
+                </div>
+            `;
+            updateJobCount(0);
+        }
+
+        function updateJobCount(count) {
+            const jobCountElement = document.getElementById('jobCount');
+            if (jobCountElement) {
+                jobCountElement.textContent = count || 0;
+            }
+        }
+
+        function initializeFilters() {
+            // Search functionality
+            const searchButton = document.getElementById('searchButton');
+            const applyFiltersButton = document.getElementById('applyFilters');
+            
+            if (searchButton) {
+                searchButton.addEventListener('click', function() {
+                    applyFilters();
+                });
+            }
+            
+            if (applyFiltersButton) {
+                applyFiltersButton.addEventListener('click', function() {
+                    applyFilters();
+                });
+            }
+
+            // Handle search on Enter key
+            const searchInput = document.getElementById('jobSearch');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        applyFilters();
+                    }
+                });
+                
+                // Real-time search with debounce
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        applyFilters();
+                    }, 500);
+                });
+            }
+
+            // Advanced filters toggle
+            const toggleFiltersButton = document.getElementById('toggleFilters');
+            const advancedFilters = document.getElementById('advancedFilters');
+            
+            if (toggleFiltersButton && advancedFilters) {
+                toggleFiltersButton.addEventListener('click', function() {
+                    const isHidden = advancedFilters.classList.contains('hidden');
+                    advancedFilters.classList.toggle('hidden');
+                    
+                    const icon = this.querySelector('i');
+                    if (isHidden) {
+                        icon.className = 'fas fa-chevron-up ml-2 text-xs';
+                    } else {
+                        icon.className = 'fas fa-chevron-down ml-2 text-xs';
+                    }
+                });
+            }
+        }
+
+        function applyFilters() {
+            const filters = {
+                search: document.getElementById('jobSearch')?.value || '',
+                type: document.getElementById('jobTypeFilter')?.value || '',
+                province: document.getElementById('provinceFilter')?.value || '',
+                city: document.getElementById('cityFilter')?.value || ''
+            };
+            
+            console.log('Applying filters:', filters);
+            loadJobs(filters);
+        }
+
+        // Make function available globally for the clear button
+        window.clearAllFilters = clearAllFilters;
+    </script>
+</body>
+</html>

@@ -20,6 +20,36 @@ class ExperienceManager {
         }
     }
 
+    async showNotification(message, type = 'success') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
     async loadUserExperience() {
         try {
             // Get current user and candidate data
@@ -72,32 +102,29 @@ class ExperienceManager {
         }
 
         experienceList.innerHTML = experiences.map(experience => `
-            <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
-                <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-4">
-                            ${experience.profileImageUrl ? 
-                                `<img src="${experience.profileImageUrl}" alt="${experience.experienceName}" class="w-16 h-16 rounded-lg object-cover">` :
-                                `<div class="w-16 h-16 rounded-lg bg-[#C69AE6] flex items-center justify-center">
-                                    <i class="fas fa-briefcase text-white text-xl"></i>
-                                 </div>`
-                            }
-                            <div>
-                                <h4 class="text-lg font-semibold text-[#C69AE6]">${experience.experienceName}</h4>
-                                <p class="text-gray-600 dark:text-gray-300">
-                                    ${experience.startYear}${experience.endYear ? ` - ${experience.endYear}` : ' - Present'}
-                                </p>
-                            </div>
-                        </div>
+            <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-3">
+                <div class="mr-4">
+                    <div class="h-12 w-12 rounded-lg bg-lilac-100 dark:bg-gray-600 flex items-center justify-center">
+                        ${experience.profileImageUrl ? 
+                            `<img src="${experience.profileImageUrl}" alt="${experience.experienceName}" class="h-12 w-12 rounded-lg object-cover">` :
+                            `<i class="fas fa-briefcase text-lilac-500 text-xl"></i>`
+                        }
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="experienceManager.editExperience(${experience.id})" class="text-blue-600 hover:text-blue-800 p-2">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="experienceManager.deleteExperience(${experience.id})" class="text-red-600 hover:text-red-800 p-2">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-semibold text-gray-900 dark:text-white">${experience.experienceName}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                        ${experience.startYear}${experience.endYear ? ` - ${experience.endYear}` : ' - Present'}
+                    </p>
+                    ${experience.degree ? `<p class="text-sm text-gray-500 dark:text-gray-400">${experience.degree}</p>` : ''}
+                </div>
+                <div class="ml-4 flex space-x-2">
+                    <button onclick="window.experienceManager.editExperience(${experience.id})" class="text-gray-400 hover:text-lilac-500 transition-colors duration-200" title="Edit Experience">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button onclick="window.experienceManager.deleteExperience(${experience.id})" class="text-gray-400 hover:text-red-500 transition-colors duration-200" title="Delete Experience">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </div>
         `).join('');
@@ -150,7 +177,7 @@ class ExperienceManager {
             }
 
             if (response && response.success) {
-                alert(`✅ Experience ${this.isEditing ? 'updated' : 'created'} successfully!`);
+                await this.showNotification(`Experience ${this.isEditing ? 'updated' : 'created'} successfully!`);
                 this.hideExperienceForm();
                 await this.loadExperienceRecords();
             } else {
@@ -159,7 +186,7 @@ class ExperienceManager {
 
         } catch (error) {
             console.error('Error saving experience:', error);
-            alert(`❌ Error: ${error.message}`);
+            await this.showNotification(`❌ Error: ${error.message}`, 'error');
         }
     }
 
@@ -188,17 +215,55 @@ class ExperienceManager {
                 document.getElementById('experience-form-title').textContent = 'Edit Experience';
                 document.getElementById('submit-btn-text').textContent = 'Update Experience';
                 
-                // Show the form
-                this.showAddExperienceForm();
+                // Show the form using the appropriate method
+                if (typeof openModal === 'function') {
+                    // For profiledesign.html - use global openModal function
+                    openModal('experience-form-container');
+                } else {
+                    // For profile.html - use the local method
+                    this.showAddExperienceForm();
+                }
             }
         } catch (error) {
             console.error('Error loading experience for edit:', error);
-            alert('❌ Error loading experience data');
+            await this.showNotification('❌ Error loading experience data', 'error');
         }
     }
 
     async deleteExperience(experienceId) {
-        if (!confirm('Are you sure you want to delete this experience record?')) {
+        // Custom confirmation modal instead of alert box
+        const confirmed = await new Promise((resolve) => {
+            // Create modal elements
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50';
+
+            const modalBox = document.createElement('div');
+            modalBox.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-sm w-full';
+
+            modalBox.innerHTML = `
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Delete Experience</h3>
+            <p class="mb-6 text-gray-600 dark:text-gray-300">Are you sure you want to delete this experience record?</p>
+            <div class="flex justify-end gap-2">
+                <button id="cancel-delete-experience" class="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
+                <button id="confirm-delete-experience" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">Delete</button>
+            </div>
+            `;
+
+            modalOverlay.appendChild(modalBox);
+            document.body.appendChild(modalOverlay);
+
+            // Event listeners
+            document.getElementById('cancel-delete-experience').onclick = () => {
+            document.body.removeChild(modalOverlay);
+            resolve(false);
+            };
+            document.getElementById('confirm-delete-experience').onclick = () => {
+            document.body.removeChild(modalOverlay);
+            resolve(true);
+            };
+        });
+
+        if (!confirmed) {
             return;
         }
 
@@ -209,14 +274,14 @@ class ExperienceManager {
 
             const response = await window.apiClient.deleteExperience(experienceId, this.currentCandidateId);
             if (response && response.success) {
-                alert('✅ Experience deleted successfully!');
+                await this.showNotification('Experience deleted successfully!');
                 await this.loadExperienceRecords();
             } else {
                 throw new Error(response?.message || 'Delete failed');
             }
         } catch (error) {
             console.error('Error deleting experience:', error);
-            alert(`❌ Error: ${error.message}`);
+            await this.showNotification(`❌ Error: ${error.message}`, 'error');
         }
     }
 
@@ -225,7 +290,13 @@ class ExperienceManager {
         const form = document.getElementById('experience-form');
         
         if (formContainer && form) {
-            formContainer.classList.remove('hidden');
+            // Use global modal function if available (for profiledesign.html)
+            if (typeof openModal === 'function') {
+                openModal('experience-form-container');
+            } else {
+                // Fallback for other pages
+                formContainer.classList.remove('hidden');
+            }
             
             // Reset form if not editing
             if (!this.isEditing) {
@@ -242,7 +313,14 @@ class ExperienceManager {
         const form = document.getElementById('experience-form');
         
         if (formContainer && form) {
-            formContainer.classList.add('hidden');
+            // Use global modal function if available (for profiledesign.html)
+            if (typeof closeModal === 'function') {
+                closeModal('experience-form-container');
+            } else {
+                // Fallback for other pages
+                formContainer.classList.add('hidden');
+            }
+            
             form.reset();
             
             // Reset editing state

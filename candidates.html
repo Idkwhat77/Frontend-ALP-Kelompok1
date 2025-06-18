@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidates - RuangKerja</title>
     
+    <!-- Language and Dark Mode Scripts -->
+    <script src="darkmode.js"></script>
+    <script src="language.js"></script>
+    <script src="api.js"></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -135,7 +140,7 @@
 
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
                         <!-- Dropdown Menu -->
@@ -168,7 +173,7 @@
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                             <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -188,391 +193,194 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">        
-        <!-- Search and Filter Section -->
-        <section class="mb-8 animate-fade-in">
-            <h1 data-i18n-html="hero.title" class="text-4xl md:text-5xl font-bold lg:mb-6 font-elegant text-gray-900 dark:text-white opacity-0">
-
-            </h1>
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+        <!-- Hero Section -->
+        <section class="text-center mb-8 animate-fade-in">
             <h1 data-i18n-html="candidates.find_talented" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
                 Find <span class="text-lilac-400">Talented Candidates</span>
             </h1>
-            <p data-i18n="candidates.browse_description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl text-sm">
+            <p data-i18n="candidates.browse_description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl mx-auto text-sm">
                 Browse through our network of skilled professionals ready for their next opportunity
             </p>
-              <!-- Search Bar -->
-            <div class="mb-6">
+            
+            <!-- Search Bar -->
+            <div class="max-w-xl mx-auto mb-6">
                 <div class="flex shadow-sm rounded-lg overflow-hidden text-sm">
                     <input 
                         type="text" 
-                        class="flex-grow px-4 py-3 focus:outline-none dark:bg-gray-800 dark:text-white" 
+                        id="candidate-search"
+                        class="flex-grow px-4 py-2 focus:outline-none dark:bg-gray-800 dark:text-white" 
                         data-i18n-placeholder="search.candidate_placeholder" 
                         data-i18n-aria="search.aria_label"
                         placeholder="Search by name, skills, or job title..." 
                         aria-label="Search candidates">
-                    <button class="bg-lilac-400 hover:bg-lilac-500 text-white px-6 py-3 transition-colors">
+                    <button class="bg-lilac-400 hover:bg-lilac-500 text-white px-4 py-2 transition-colors">
                         <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Filters -->
-            <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">                    <!-- Location Filter -->
-                    <div>
-                        <label for="location" data-i18n="filter.location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
-                        <select id="location" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_locations">All Indonesia</option>
-                            <option value="jakarta">Jakarta</option>
-                            <option value="surabaya">Surabaya</option>
-                            <option value="bandung">Bandung</option>
-                            <option value="medan">Medan</option>
-                            <option value="makassar">Makassar</option>
-                            <option value="bali">Bali</option>
-                            <option value="yogyakarta">Yogyakarta</option>
-                            <option value="semarang">Semarang</option>
-                            <option value="palembang">Palembang</option>
-                            <option value="remote">Remote</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Job Type Filter -->
-                    <div>
-                        <label for="job-type" data-i18n="filter.job_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Job Type</label>
-                        <select id="job-type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_job_types">All Job Types</option>
-                            <option value="full-time">Full-time</option>
-                            <option value="part-time">Part-time</option>
-                            <option value="contract">Contract</option>
-                            <option value="freelance">Freelance</option>
-                            <option value="internship">Internship</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Industry Filter -->
-                    <div>
-                        <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
-                        <select id="industry" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_industries">All Industries</option>
-                            <option value="technology" data-i18n="filter.technology">Technology</option>
-                            <option value="finance" data-i18n="filter.finance">Finance</option>
-                            <option value="healthcare" data-i18n="filter.healthcare">Healthcare</option>
-                            <option value="education" data-i18n="filter.education">Education</option>
-                            <option value="marketing" data-i18n="filter.marketing">Marketing</option>
-                            <option value="manufacturing" data-i18n="filter.manufacturing">Manufacturing</option>
-                            <option value="retail" data-i18n="filter.retail">Retail</option>
-                            <option value="hospitality" data-i18n="filter.hospitality">Hospitality</option>
-                            <option value="government" data-i18n="filter.government">Government</option>
-                        </select>
-                    </div>
-                </div>
-                  <div class="mt-4 flex flex-wrap gap-2">
-                    <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-full transition-colors">
-                        <i class="fas fa-filter mr-1"></i>
-                        <span data-i18n="button.apply_filters">Apply Filters</span>
-                    </button>
-                    <button class="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-full transition-colors">
-                        <i class="fas fa-sync-alt mr-1"></i> 
-                        <span data-i18n="button.reset">Reset</span>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- Candidates Grid -->
-        <section class="mb-8">            
-            <div class="flex justify-between items-center mb-4">
-                <h2 data-i18n="candidates.available" class="text-xl font-bold text-gray-900 dark:text-white">Available Candidates</h2>
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                    <span data-i18n="candidates.showing">Showing</span> <span class="font-medium text-lilac-500 dark:text-lilac-400">24</span> <span data-i18n="candidates.of">of</span> <span class="font-medium">128</span> <span data-i18n="candidates.found">candidates</span>
+        <!-- Filters -->
+        <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Province Filter -->
+                <div>
+                    <label for="province" data-i18n="filter.province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Province</label>
+                    <select id="province" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" data-i18n="filter.all_provinces">All Provinces</option>
+                        <option value="aceh">Aceh</option>
+                        <option value="sumatra-utara">Sumatra Utara</option>
+                        <option value="sumatra-barat">Sumatra Barat</option>
+                        <option value="riau">Riau</option>
+                        <option value="jambi">Jambi</option>
+                        <option value="sumatra-selatan">Sumatra Selatan</option>
+                        <option value="bengkulu">Bengkulu</option>
+                        <option value="lampung">Lampung</option>
+                        <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+                        <option value="kepulauan-riau">Kepulauan Riau</option>
+                        <option value="dki-jakarta">DKI Jakarta</option>
+                        <option value="jawa-barat">Jawa Barat</option>
+                        <option value="jawa-tengah">Jawa Tengah</option>
+                        <option value="di-yogyakarta">DI Yogyakarta</option>
+                        <option value="jawa-timur">Jawa Timur</option>
+                        <option value="banten">Banten</option>
+                        <option value="bali">Bali</option>
+                        <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+                        <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+                        <option value="kalimantan-barat">Kalimantan Barat</option>
+                        <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                        <option value="kalimantan-selatan">Kalimantan Selatan</option>
+                        <option value="kalimantan-timur">Kalimantan Timur</option>
+                        <option value="kalimantan-utara">Kalimantan Utara</option>
+                        <option value="sulawesi-utara">Sulawesi Utara</option>
+                        <option value="sulawesi-tengah">Sulawesi Tengah</option>
+                        <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                        <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+                        <option value="gorontalo">Gorontalo</option>
+                        <option value="sulawesi-barat">Sulawesi Barat</option>
+                        <option value="maluku">Maluku</option>
+                        <option value="maluku-utara">Maluku Utara</option>
+                        <option value="papua-barat">Papua Barat</option>
+                        <option value="papua-barat-daya">Papua Barat Daya</option>
+                        <option value="papua">Papua</option>
+                        <option value="papua-selatan">Papua Selatan</option>
+                        <option value="papua-tengah">Papua Tengah</option>
+                        <option value="papua-pegunungan">Papua Pegunungan</option>
+                    </select>
+                </div>
+                
+                <!-- City Filter -->
+                <div>
+                    <label for="city" data-i18n="filter.city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City/District</label>
+                    <select id="city" disabled class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" data-i18n="filter.all_cities">All Cities/Districts</option>
+                        <!-- Options will be populated by JavaScript based on province selection -->
+                    </select>
+                </div>
+                
+                <!-- Job Type Filter -->
+                <div>
+                    <label for="job-type" data-i18n="filter.job_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Job Type</label>
+                    <select id="job-type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" data-i18n="filter.all_job_types">All Job Types</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Freelance">Freelance</option>
+                    </select>
+                </div>
+                
+                <!-- Industry Filter -->
+                <div>
+                    <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
+                    <select id="industry" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" data-i18n="filter.all_industries">All Industries</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Education">Education</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Hospitality">Hospitality</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Government">Government</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Legal Services">Legal Services</option>
+                        <option value="Consulting">Consulting</option>
+                        <option value="Non-Profit">Non-Profit</option>
+                    </select>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Candidate Card 1 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-start mb-3">
-                            <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Alex Johnson">
-                            <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Alexandra Johnson</h3>
-                                <p data-i18n="software_engineer" class="text-gray-500 dark:text-gray-300 text-xs">Software Engineer</p>
-                                <div class="flex items-center mt-1">
-                                    <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Jakarta</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
-                            Experienced full-stack developer with 5+ years in JavaScript, React, and Node.js. Passionate about building scalable web applications.
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">JavaScript</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">React</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Node.js</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 2 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-start mb-3">
-                            <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Sarah Williams">
-                            <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Sarah Williams</h3>
-                                <p data-i18n="marketing_director" class="text-gray-500 dark:text-gray-300 text-xs">Marketing Director</p>
-                                <div class="flex items-center mt-1">
-                                    <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Bali</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
-                            Digital marketing expert with 8 years experience in SEO, content strategy, and social media marketing for global brands.
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Digital</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">SEO</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Social Media</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Remote</span>
-                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 3 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-start mb-3">
-                            <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Michael Chen">
-                            <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Michael Chen</h3>
-                                <p data-i18n="product_manager" class="text-gray-500 dark:text-gray-300 text-xs">Product Manager</p>
-                                <div class="flex items-center mt-1">
-                                    <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Bandung</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
-                            Product leader with experience in SaaS platforms, agile methodologies, and user-centered design. MBA from ITB.
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Agile</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">UX</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">SaaS</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 4 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-start mb-3">
-                            <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Emma Davis">
-                            <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Emma Davis</h3>
-                                <p data-i18n="ux_designer" class="text-gray-500 dark:text-gray-300 text-xs">UX Designer</p>
-                                <div class="flex items-center mt-1">
-                                    <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Yogyakarta</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
-                            Creative UX/UI designer with strong background in user research and interaction design. Portfolio available upon request.
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Figma</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">UI</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">User Research</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Contract</span>
-                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 5 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-start mb-3">
-                            <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Rizky Pratama">
-                            <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Rizky Pratama</h3>
-                                <p data-i18n="data_scientist" class="text-gray-500 dark:text-gray-300 text-xs">Data Scientist</p>
-                                <div class="flex items-center mt-1">
-                                    <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Jakarta</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
-                            Data science professional with expertise in machine learning, Python, and big data analytics. Master's degree in Computer Science.
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Python</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Machine Learning</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">SQL</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 6 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-start mb-3">
-                            <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Dewi Sari">
-                            <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Dewi Sari</h3>
-                                <p data-i18n="financial_analyst" class="text-gray-500 dark:text-gray-300 text-xs">Financial Analyst</p>
-                                <div class="flex items-center mt-1">
-                                    <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Surabaya</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
-                            CFA-certified financial analyst with 7 years experience in investment banking and corporate finance.
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Financial Modeling</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Excel</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Valuation</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 7 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-start mb-3">
-                            <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Budi Santoso">
-                            <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Budi Santoso</h3>
-                                <p data-i18n="devops_engineer" class="text-gray-500 dark:text-gray-300 text-xs">DevOps Engineer</p>
-                                <div class="flex items-center mt-1">
-                                    <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Remote</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
-                            DevOps specialist with expertise in AWS, Kubernetes, and CI/CD pipelines. Automating infrastructure for scalable applications.
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">AWS</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Docker</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Kubernetes</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Contract</span>
-                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Candidate Card 8 -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 fade-on-scroll">
-                    <div class="p-4">
-                        <div class="flex items-start mb-3">
-                            <img class="h-14 w-14 rounded-full object-cover mr-3" src="https://via.placeholder.com/80" alt="Anita Wijaya">
-                            <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white text-sm line-clamp-1">Anita Wijaya</h3>
-                                <p data-i18n="hr_manager" class="text-gray-500 dark:text-gray-300 text-xs">HR Manager</p>
-                                <div class="flex items-center mt-1">
-                                    <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Medan</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
-                            Strategic HR leader with experience in talent acquisition, organizational development, and employee engagement.
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Recruitment</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Training</span>
-                            <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">Compensation</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Full-time</span>
-                            <button data-i18n="view_profile" class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors">
-                                View Profile
-                            </button>
-                        </div>
-                    </div>
+            <!-- Filter Buttons -->
+            <div class="mt-4 flex flex-wrap gap-2">
+                <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-full transition-colors">
+                    <i class="fas fa-filter mr-1"></i>
+                    <span data-i18n="button.apply_filters">Apply Filters</span>
+                </button>
+                <button class="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-full transition-colors">
+                    <i class="fas fa-sync-alt mr-1"></i> 
+                    <span data-i18n="button.reset">Reset</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Candidates Grid -->
+        <section class="mb-8 ">
+            <div class="flex justify-between items-center mb-4">
+                <h2 data-i18n="candidates.available" class="text-xl font-bold text-gray-900 dark:text-white">Available Candidates</h2>
+                <div id="showing-candidates" class="text-sm text-gray-500 dark:text-gray-400">
+                    <span data-i18n="candidates.showing">Showing</span> <span class="font-medium text-lilac-500 dark:text-lilac-400">0</span> <span data-i18n="candidates.of">of</span> <span class="font-medium">0</span> <span data-i18n="candidates.found">candidates</span>
                 </div>
             </div>
-              <!-- Pagination -->
-            <div class="mt-8 flex justify-center">
-                <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span data-i18n="candidates.pagination.previous" class="sr-only">Previous</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <a href="#" aria-current="page" class="z-10 bg-lilac-400 border-lilac-400 text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        1
-                    </a>
-                    <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        2
-                    </a>
-                    <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        3
-                    </a>
-                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-400">
-                        ...
-                    </span>
-                                        <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        8
-                    </a>
-                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span data-i18n="candidates.pagination.next" class="sr-only">Next</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                </nav>
+            
+            <div id="candidates-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Dynamic candidate cards will be inserted here -->
+                <div class="col-span-full flex justify-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400"></div>
+                </div>
             </div>
         </section>
-          <!-- Call to Action -->
-        <section class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-8 mb-8 text-center fade-on-scroll">
-            <h2 data-i18n="cta.cant_find" class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Can't Find What You're Looking For?</h2>
-            <p data-i18n="cta.help_text" class="text-gray-600 dark:text-gray-300 mb-4 max-w-2xl mx-auto">
+
+        <!-- Pagination -->
+        <div class="flex justify-center">
+            <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <span class="sr-only">Previous</span>
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                <a href="#" aria-current="page" class="bg-lilac-400 border-lilac-400 text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    1
+                </a>
+                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    2
+                </a>
+                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    3
+                </a>
+                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    ...
+                </a>
+                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    8
+                </a>
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <span class="sr-only">Next</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Call to Action -->
+        <section class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-6 mb-8 text-center fade-on-scroll">
+            <h2 data-i18n="cta.cant_find" class="text-xl font-bold text-gray-900 dark:text-white mb-2">Can't Find What You're Looking For?</h2>
+            <p data-i18n="cta.help_text" class="text-gray-600 dark:text-gray-300 mb-4 max-w-xl mx-auto text-sm">
                 Let us help you find the perfect candidate. Our recruitment specialists can source and screen candidates tailored to your specific needs.
             </p>
-            <button data-i18n="cta.request_search" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-md font-medium transition-colors">
+            <button class="px-4 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-md text-sm font-medium transition-colors">
                 <i class="fas fa-headset mr-2"></i> Request Talent Search
             </button>
         </section>
@@ -659,70 +467,150 @@
             </div>
         </div>
     </footer>
-</body>
+    <!-- Scripts -->
+<script src="js/navbar-profile.js"></script>
+<script src="js/filter_candidates.js"></script>
 
-<!-- Scripts -->
 <script>
-    
+
     // Mobile menu toggle
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
-
+    
     mobileMenuButton.addEventListener('click', () => {
+        const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !expanded);
         mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between hamburger and close icon
+        const icon = mobileMenuButton.querySelector('i');
+        if (expanded) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        } else {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        }
     });
-
-    // User menu toggle
+    
+    // User menu dropdown
     const userMenuButton = document.getElementById('user-menu-button');
     const userMenu = document.getElementById('user-menu');
-
+    
     userMenuButton.addEventListener('click', () => {
+        const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+        userMenuButton.setAttribute('aria-expanded', !expanded);
         userMenu.classList.toggle('hidden');
     });
-
-    // Close menus when clicking outside
+    
+    // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+            userMenuButton.setAttribute('aria-expanded', 'false');
             userMenu.classList.add('hidden');
         }
-        
-        if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
-            mobileMenu.classList.add('hidden');
-        }
     });
+    
+// Create loading circle
+const loading_circle = document.createElement('div');
+loading_circle.id = 'load_bro';
+loading_circle.innerHTML = `
+    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
+    <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+    </div>
+`;
+document.body.appendChild(loading_circle);        
 
-    // Fade-in animation on scroll
-    const fadeElements = document.querySelectorAll('.fade-on-scroll');
-
-    const fadeInOnScroll = () => {
-        fadeElements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-            
-            if (elementTop < windowHeight - 100) {
-                element.classList.add('visible');
-            }
-        });
-    };
-
-    window.addEventListener('load', fadeInOnScroll);
-    window.addEventListener('scroll', fadeInOnScroll);
-
-    // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
-    const loading_circle = document.createElement('div');
-    loading_circle.id = 'load_bro';
-    loading_circle.innerHTML = `
-        <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
-        <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
-        </div>
-    `;
-    document.body.appendChild(loading_circle);        window.addEventListener('DOMContentLoaded', () => {
-        const l = document.getElementById('load_bro');
-        if (l) {
-        l.remove();
-        }
-    });
+window.addEventListener('DOMContentLoaded', () => {
+    const l = document.getElementById('load_bro');
+    if (l) {
+    l.remove();
+    }
+});
 </script>
-<script src="language.js"></script>
-<script src="darkmode.js"></script>
+
+<script>
+// Add the same province-city mapping as in companies.html
+const candidateProvinceCityMap = {
+    "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
+    "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padang Sidempuan", "Pematangsiantar", "Sibolga", "Tanjungbalai", "Tebing Tinggi"],
+    "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
+    "riau": ["Pekanbaru", "Dumai"],
+    "jambi": ["Jambi", "Sungai Penuh"],
+    "sumatra-selatan": ["Palembang", "Pagar Alam", "Prabumulih", "Lubuklinggau"],
+    "bengkulu": ["Bengkulu"],
+    "lampung": ["Bandar Lampung", "Metro"],
+    "kepulauan-bangka-belitung": ["Pangkal Pinang"],
+    "kepulauan-riau": ["Batam", "Tanjung Pinang"],
+    "dki-jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+    "jawa-barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya"],
+    "jawa-tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal"],
+    "di-yogyakarta": ["Yogyakarta"],
+    "jawa-timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya"],
+    "banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan"],
+    "bali": ["Denpasar"],
+    "nusa-tenggara-barat": ["Bima", "Mataram"],
+    "nusa-tenggara-timur": ["Kupang"],
+    "kalimantan-barat": ["Pontianak", "Singkawang"],
+    "kalimantan-tengah": ["Palangka Raya"],
+    "kalimantan-selatan": ["Banjarbaru", "Banjarmasin"],
+    "kalimantan-timur": ["Balikpapan", "Bontang", "Samarinda"],
+    "kalimantan-utara": ["Tarakan"],
+    "sulawesi-utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon"],
+    "sulawesi-tengah": ["Palu"],
+    "sulawesi-selatan": ["Makassar", "Palopo", "Parepare"],
+    "sulawesi-tenggara": ["Bau-Bau", "Kendari"],
+    "gorontalo": ["Gorontalo"],
+    "sulawesi-barat": ["Mamuju"],
+    "maluku": ["Ambon", "Tual"],
+    "maluku-utara": ["Ternate", "Tidore Kepulauan"],
+    "papua-barat": ["Manokwari", "Sorong"],
+    "papua-barat-daya": ["Sorong"],
+    "papua": ["Jayapura"],
+    "papua-selatan": ["Merauke"],
+    "papua-tengah": ["Mimika"],
+    "papua-pegunungan": ["Jayawijaya"]
+};
+
+// JavaScript to handle province-city relationship for candidates
+document.getElementById('province').addEventListener('change', function() {
+    const citySelect = document.getElementById('city');
+    const selectedProvince = this.value;
+    
+    // Clear previous options
+    citySelect.innerHTML = '<option value="" data-i18n="filter.all_cities">All Cities/Districts</option>';
+    
+    if (selectedProvince && candidateProvinceCityMap[selectedProvince]) {
+        // Enable city select
+        citySelect.disabled = false;
+        
+        // Add cities for selected province
+        candidateProvinceCityMap[selectedProvince].forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    } else {
+        // Disable city select if no province selected
+        citySelect.disabled = true;
+    }
+});
+
+// Add this to the script section at the bottom of candidates.html
+console.log('API Client available:', typeof window.apiClient);
+console.log('API Client instance:', window.apiClient);
+
+// Test API call directly
+if (window.apiClient) {
+    window.apiClient.getAllCandidates()
+        .then(response => {
+            console.log('Direct API test response:', response);
+        })
+        .catch(error => {
+            console.error('Direct API test error:', error);
+        });
+}
+</script>
+</body>
 </html>

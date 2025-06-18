@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Johnson - RuangKerja</title>
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf7fd',
+                            100: '#f4ecfb',
+                            200: '#ebddf7',
+                            300: '#dbc2f0',
+                            400: '#c69ae6',
+                            500: '#b87ce0',
+                        },
+                    },
+                    fontFamily: {
+                        elegant: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-from-up': 'fadeInFromUp 1s ease-out forwards',
+                        'fade-in-from-down': 'fadeInFromDown 1s ease-out forwards',
+                        'expand-down': 'expandDown 0.8s ease-out forwards',
+                        'expand-left': 'expandLeft 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInFromUp: {
+                            '0%': { opacity: '0', transform: 'translateY(-50px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInFromDown: {
+                            '0%': { opacity: '0', transform: 'translateY(50px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        expandDown: {
+                            '0%': { height: '0', opacity: '0' },
+                            '100%': { height: '100vh', opacity: '1' },
+                        },
+                        expandLeft: {
+                            '0%': { width: '0', opacity: '0' },
+                            '100%': { width: '100vw', opacity: '1' },
+                        }
+                    },
+                    transitionProperty: {
+                        'scale': 'transform',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="src/output.css">
+    <link class="favicon" rel="icon" href="img/blackswa.png" type="image/x-icon">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-..."
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+</head>
+<style>
+    /* Font Family */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #FAF7FD;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f4ecfb;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #dbc2f0;
+        border-radius: 4px;
+    }
+
+    .dark ::-webkit-scrollbar-track {
+        background: #1a202c;
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+        background: #4a5568;
+    }
+
+    /* Profile image hover effect */
+    #profile-image {
+        transition: opacity 1s ease-in-out !important;
+    }
+
+    #profile-image:hover {
+        opacity: 0.5 !important;
+    }
+</style>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
+    
+    <!-- Navbar -->
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                            Beranda
+                        </a>
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
+
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-16 transition duration-300">
+        <!-- Profile Header Section -->
+        <section class="relative mb-8">
+            <!-- Cover Photo -->
+            <div class="h-48 w-full rounded-xl bg-gray-200 dark:bg-gray-800 overflow-hidden mb-4">
+                <img id="cover-photo" src="img/default-cover.jpg" alt="Cover photo" class="w-full h-full object-cover">
+                <button id="change-cover-btn" class="absolute top-4 right-4 bg-white/80 dark:bg-gray-700/80 hover:bg-white dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1 rounded-full text-sm flex items-center transition-all">
+                    <i class="fas fa-camera mr-2"></i>
+                    <span>Change Cover</span>
+                </button>
+            </div>
+            
+            <!-- Profile Info -->
+            <div class="flex flex-col md:flex-row items-start md:items-end -mt-16 md:-mt-12 ml-4 md:ml-6">
+                <!-- Profile Picture -->
+                <div class="relative group">
+                    <div id="profile-image" alt="Profile picture" 
+                         onclick="openModal('modal-upload')"
+                         class="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white dark:border-gray-900 object-cover shadow-lg cursor-pointer hover:opacity-75 transition-opacity bg-cover bg-center bg-no-repeat" 
+                         style="background-image: url('img/default-profile.png');">
+                    </div>
+                </div>
+                
+                <!-- Name and Basic Info -->
+                <div class="mt-4 md:mt-0 md:ml-6">
+                    <h1 id="user-name" class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Loading...</h1>
+                    <p id="user-industry" class="text-gray-600 dark:text-gray-300">Loading...</p>
+                    
+                    <div class="flex flex-wrap items-center mt-2 gap-x-4 gap-y-2 text-sm">
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt mr-2 text-lilac-400"></i>
+                            <span id="user-location">Loading...</span>
+                        </span>
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-birthday-cake mr-2 text-lilac-400"></i>
+                            <span id="user-birthdate">Loading...</span>
+                        </span>
+                    </div>
+                    <div class="flex flex-wrap items-center mt-2 gap-x-4 gap-y-2 text-sm">
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-briefcase mr-2 text-lilac-400"></i>
+                            <span id="user-employment-status">Loading...</span>
+                        </span>
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-envelope mr-2 text-lilac-400"></i>
+                            <span id="user-email">Loading...</span>
+                        </span>
+                    </div>                        
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex items-center mt-4 md:mt-0 md:ml-auto space-x-3">
+                    <button class="bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-lg flex items-center transition-colors">
+                        <i class="fas fa-file-export mr-2"></i>
+                        <span data-i18n="cv_download">Export CV</span>
+                    </button>
+                    <button onclick="openModal('modal-settings')" id="edit-profile-btn" class="border border-lilac-500 text-lilac-500 dark:text-lilac-300 dark:border-lilac-300 hover:bg-lilac-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg flex items-center transition-colors">
+                        <i class="fas fa-pen mr-2"></i>
+                        <span data-i18n="settings">Edit Profile</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Profile Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- About Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="employee_biodata" class="text-xl font-bold text-gray-900 dark:text-white">About</h2>
+                    </div>
+                    <p id="user-biodata" class="text-gray-600 dark:text-gray-300">
+                        Loading biodata...
+                    </p>
+                </section>
+
+                <!-- Experience Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="experience" class="text-xl font-bold text-gray-900 dark:text-white">Experience</h2>
+                        <button onclick="openModal('experience-form-container')" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="w-full">
+                        <div id="experience-list" class="space-y-4">
+                            <!-- Experience records will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Education Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="education" class="text-xl font-bold text-gray-900 dark:text-white">Education</h2>
+                        <button onclick="openModal('education-form-container')" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="w-full">
+                        <div id="education-list" class="space-y-4">
+                            <!-- Education records will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="skills" class="text-xl font-bold text-gray-900 dark:text-white">Skills</h2>
+                        <button onclick="openModal('skills-form-container')" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="w-full">
+                        <div id="current-skills-list" class="space-y-4">
+                            <!-- Skills will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                
+                <!-- Socials -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="socials" class="text-xl font-bold text-gray-900 dark:text-white">Socials</h2>
+                        <button onclick="openModal('socials-form-container')" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div id="current-socials-list" class="space-y-3">
+                        <!-- Social media links will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Work & Projects Section -->
+                <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 data-i18n="work_projects" class="text-xl font-bold text-gray-900 dark:text-white">Work & Projects</h2>
+                        <button onclick="openModal('portfolio-form-container')" class="text-lilac-500 hover:text-lilac-600">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="current-portfolio-list" class="space-y-3">
+                        <!-- Portfolio items will be loaded here -->
+                        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-briefcase text-2xl mb-2"></i>
+                            <p>No portfolio items added yet</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Same footer as your homepage -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo and Description -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p data-i18n="footer.company_description" class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <!-- Socials and Contact in a row on the right -->
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <!-- Our Socials -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.socials" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.contact" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright and Bottom Links -->
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+        <!-- Settings Modal Box-->
+    <div id="modal-settings" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+        <h3 id="profile-settings" data-i18n="profile_settings" class="text-2xl font-semibold text-[#C69AE6] mb-6">Profile Settings</h3>
+        
+        <form id="settings-form" class="space-y-4">
+            <!-- Personal Information Section -->
+            <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+            <h4 data-i18n="employee_personal_information" class="text-lg font-semibold text-[#C69AE6] mb-3">Personal Information</h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                <label data-i18n="employee_full_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                <input type="text" id="settings-fullname" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+                <div>
+                <label data-i18n="employee_contact_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                <input type="email" id="settings-email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+                <div>
+                <label data-i18n="employee_birth_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Birth Date</label>
+                <input type="date" id="settings-birthdate" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+                <div>
+                <label data-i18n="employee_province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Province</label>
+                <select id="settings-province" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    <option value="">Select Province</option>
+                    <option value="aceh">Aceh</option>
+                    <option value="sumatra-utara">Sumatra Utara</option>
+                    <option value="sumatra-barat">Sumatra Barat</option>
+                    <option value="riau">Riau</option>
+                    <option value="jambi">Jambi</option>
+                    <option value="sumatra-selatan">Sumatra Selatan</option>
+                    <option value="bengkulu">Bengkulu</option>
+                    <option value="lampung">Lampung</option>
+                    <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+                    <option value="kepulauan-riau">Kepulauan Riau</option>
+                    <option value="dki-jakarta">DKI Jakarta</option>
+                    <option value="jawa-barat">Jawa Barat</option>
+                    <option value="jawa-tengah">Jawa Tengah</option>
+                    <option value="di-yogyakarta">DI Yogyakarta</option>
+                    <option value="jawa-timur">Jawa Timur</option>
+                    <option value="banten">Banten</option>
+                    <option value="bali">Bali</option>
+                    <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+                    <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+                    <option value="kalimantan-barat">Kalimantan Barat</option>
+                    <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                    <option value="kalimantan-selatan">Kalimantan Selatan</option>
+                    <option value="kalimantan-timur">Kalimantan Timur</option>
+                    <option value="kalimantan-utara">Kalimantan Utara</option>
+                    <option value="sulawesi-utara">Sulawesi Utara</option>
+                    <option value="sulawesi-tengah">Sulawesi Tengah</option>
+                    <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                    <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+                    <option value="gorontalo">Gorontalo</option>
+                    <option value="sulawesi-barat">Sulawesi Barat</option>
+                    <option value="maluku">Maluku</option>
+                    <option value="maluku-utara">Maluku Utara</option>
+                    <option value="papua-barat">Papua Barat</option>
+                    <option value="papua-barat-daya">Papua Barat Daya</option>
+                    <option value="papua">Papua</option>
+                    <option value="papua-selatan">Papua Selatan</option>
+                    <option value="papua-tengah">Papua Tengah</option>
+                    <option value="papua-pegunungan">Papua Pegunungan</option>
+                </select>
+                </div>
+                <div>
+                <label data-i18n="employee_city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
+                <select id="settings-city" disabled class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    <option value="">Select City</option>
+                </select>
+                </div>
+            </div>
+            </div>
+
+            <!-- Professional Information Section -->
+            <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+            <h4 data-i18n="employee_professional_information" class="text-lg font-semibold text-[#C69AE6] mb-3">Professional Information</h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                <label data-i18n="employee_industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
+                <select id="settings-industry" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    <option id="industry_default" value="">Select Industry</option>
+                    <option id="filter.technology" value="Technology">Technology</option>
+                    <option id="filter.healthcare" value="Healthcare">Healthcare</option>
+                    <option id="filter.finance" value="Finance">Finance</option>
+                    <option id="filter.education" value="Education">Education</option>
+                    <option id="filter.manufacturing" value="Manufacturing">Manufacturing</option>
+                    <option id="filter.retail" value="Retail">Retail</option>
+                    <option id="filter.hospitality" value="Hospitality">Hospitality</option>
+                    <option id="filter.marketing" value="Marketing">Marketing</option>
+                    <option id="filter.government" value="Government">Government</option>
+                </select>
+                </div>
+                <div>
+                <label data-i18n="employee_employment_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Employment Status</label>
+                <select id="settings-employment-status" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    <option id="employment-status-default" value="">Select Status</option>
+                    <option id="employment-status-employed" value="Employed">Employed</option>
+                    <option id="employment-status-unemployed" value="Unemployed">Unemployed</option>
+                    <option id="employment-status-student" value="Student">Student</option>
+                    <option id="employment-status-freelancer" value="Freelancer">Freelancer</option>
+                </select>
+                </div>
+                <div>
+                <label data-i18n="employee_job_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Job Type</label>
+                <select id="settings-job-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    <option value="">Select Job Type</option>
+                    <option value="Full-time">Full‑time</option>
+                    <option value="Part-time">Part‑time</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Freelance">Freelance</option>
+                </select>
+                </div>
+            </div>
+            </div>
+
+            <!-- Bio Section -->
+            <div class="mb-4">
+            <h4 data-i18n="employee_about_me" class="text-lg font-semibold text-[#C69AE6] mb-3">About Me</h4>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
+            <textarea id="settings-biodata" rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="Tell us about yourself..."></textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3 pt-4">
+            <button type="submit" class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                <i class="fas fa-save mr-2"></i><span data-i18n="save_changes">Save Changes</span>
+            </button>
+            <button type="button" onclick="closeModal('modal-settings')" data-i18n="cancel" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                <i class="fas fa-times mr-2"></i>Cancel
+            </button>
+            </div>
+        </form>
+        </div>
+    </div>
+    
+    <!-- Cover Photo Upload Modal -->
+    <div id="cover-photo-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Update Cover Photo</h3>
+                <button id="close-cover-modal" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center mb-4">
+                <i class="fas fa-cloud-upload-alt text-4xl text-lilac-400 mb-2"></i>
+                <p class="text-gray-600 dark:text-gray-300 mb-2">Drag & drop your cover photo here</p>
+                <p class="text-gray-400 dark:text-gray-500 text-sm mb-4">or</p>
+                <label for="cover-upload" class="bg-lilac-500 hover:bg-lilac-600 text-white px-4 py-2 rounded-lg cursor-pointer">
+                    Select from computer
+                </label>
+                <input type="file" id="cover-upload" class="hidden" accept="image/*">
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-cover-upload" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    Cancel
+                </button>
+                <button id="save-cover-photo" class="px-4 py-2 rounded-lg bg-lilac-500 hover:bg-lilac-600 text-white disabled:opacity-50" disabled>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Profile Modal Box-->
+    <div id="modal-upload" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+        <h3 data-i18n="upload_profile" class="text-2xl font-semibold text-[#C69AE6] mb-4">Upload Profile Image</h3>
+        
+        <div class="border-2 border-dashed border-[#C69AE6] rounded-xl p-10 text-center bg-lilac-50 dark:bg-gray-700 hover:bg-lilac-100 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer mb-4" 
+            id="uploadArea" 
+            onclick="document.getElementById('profile-image-input').click()">
+            <div>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5" class="mx-auto mb-4">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17,8 12,3 7,8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p class="text-gray-700 dark:text-gray-300 mb-2">
+                <strong>Click to upload</strong> or drag and drop
+            </p>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">PNG, JPG or GIF (max 5MB)</p>
+            </div>
+        </div>
+        
+        <!-- Preview area -->
+        <div id="preview" class="mb-4"></div>
+        
+        <input type="file" id="profile-image-input" class="hidden" accept="image/*">
+        
+        <div class="flex gap-3">
+            <button id="uploadBtn" disabled class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            Upload Image
+            </button>
+            <button id="deleteBtn" class="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            Delete Image
+            </button>
+            <button onclick="closeModal('modal-upload')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            Close
+            </button>
+        </div>
+        </div>
+    </div>
+
+    <!-- Hobbies Modal Box -->
+    <div id="modal-hobbies" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 data-i18n="hobbies" class="text-3xl font-semibold text-[#C69AE6]">Hobbies</h3>
+            </div>
+            
+            <div class="bg-white dark:bg-[#1F2937] shadow-xl rounded-2xl p-6 lg:w-[28vw] w-[85vw] h-full text-left border-t-4 border-b-4 border-[#B87CE0] dark:border-[#C69AE6]">
+                <div id="hobbies-list">
+                    <!-- Hobbies will be loaded here dynamically -->
+                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-heart text-4xl mb-4"></i>
+                        <p data-i18n="loading_hobbies">Loading hobbies...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-6">
+                <button onclick="closeModal('modal-hobbies')" data-i18n="close" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Form Modal Box -->
+    <div id="skills-form-container" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+            <h4 id="skills-form-title" data-i18n="manage_skills" class="text-2xl font-semibold text-[#C69AE6] mb-6">Manage Skills</h4>
+            
+            <!-- Add Skill Form -->
+            <div class="mb-6 p-4 bg-lilac-50 dark:bg-gray-800 rounded-lg">
+                <h4 data-i18n="add_new_skill" class="text-xl font-semibold text-[#C69AE6] mb-4">Add New Skill</h4>
+                <form id="skill-form" class="space-y-4">
+                    <div class="flex gap-3">
+                        <div class="flex-1">
+                            <label data-i18n="skill_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Skill Name</label>
+                            <input type="text" id="skill-name" data-i18n-placeholder="skill_placeholder" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="e.g. JavaScript, React, Python..." required>
+                        </div>
+                        <div class="flex items-end">
+                            <button type="submit" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                                <i class="fas fa-plus mr-2"></i><span data-i18n="add">Add</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Current Skills List -->
+            <div class="mb-6">
+                <h4 data-i18n="current_skills" class="text-xl font-semibold text-[#C69AE6] mb-4">Current Skills</h4>
+                <div id="modal-skills-list" class="space-y-2">
+                    <!-- Current skills will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="flex justify-center">
+                <button onclick="closeModal('skills-form-container')" data-i18n="close" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education Form Modal Box -->
+    <div id="education-form-container" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+            <h4 id="education-form-title" data-i18n="add_education" class="text-2xl font-semibold text-[#C69AE6] mb-6">Add Education</h4>
+            <form id="education-form" class="space-y-4">
+                <input type="hidden" id="education-id" value="">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label data-i18n="institution_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Institution Name</label>
+                        <input type="text" id="institution-name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+                    </div>
+                    
+                    <div>
+                        <label data-i18n="start_year" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Year</label>
+                        <input type="number" id="start-year" min="1900" max="2030" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+                    </div>
+                    
+                    <div>
+                        <label data-i18n="end_year_optional" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Year (Optional)</label>
+                        <input type="number" id="end-year" min="1900" max="2030" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label data-i18n="institution_logo_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Institution Logo URL (Optional)</label>
+                        <input type="url" id="profile-image-url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                    <button type="submit" class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                        <i class="fas fa-save mr-2"></i><span id="submit-btn-text" data-i18n="save_education">Save Education</span>
+                    </button>
+                    <button type="button" onclick="closeModal('education-form-container')" data-i18n="cancel" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Experience Form Modal Box -->
+    <div id="experience-form-container" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+            <h4 id="experience-form-title" data-i18n="add_experience" class="text-2xl font-semibold text-[#C69AE6] mb-6">Add Experience</h4>
+            <form id="experience-form" class="space-y-4">
+                <input type="hidden" id="experience-id" value="">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label data-i18n="experience_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Experience Name</label>
+                        <input type="text" id="experience-name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+                    </div>
+                    
+                    <div>
+                        <label data-i18n="start_year" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Year</label>
+                        <input type="number" id="exp-start-year" min="1900" max="2030" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+                    </div>
+                    
+                    <div>
+                        <label data-i18n="end_year_optional" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Year (Optional)</label>
+                        <input type="number" id="exp-end-year" min="1900" max="2030" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label data-i18n="company_logo_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Logo URL (Optional)</label>
+                        <input type="url" id="profile-image-url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                    <button type="submit" class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                        <i class="fas fa-save mr-2"></i><span id="submit-btn-text" data-i18n="save_experience">Save Experience</span>
+                    </button>
+                    <button type="button" onclick="closeModal('experience-form-container')" data-i18n="cancel" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Social Media Management Modal -->
+    <div id="socials-form-container" class="fixed inset-0 flex items-center justify-center z-40 hidden">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+            <h4 id="socials-form-title" data-i18n="manage_socials" class="text-2xl font-semibold text-[#C69AE6] mb-6">Manage Social Media</h4>
+            
+            <!-- Add Social Media Form -->
+            <div class="mb-6 p-4 bg-lilac-50 dark:bg-gray-800 rounded-lg">
+                <h4 data-i18n="add_social_media" class="text-xl font-semibold text-[#C69AE6] mb-4">Add Social Media</h4>
+                <form id="social-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label data-i18n="platform" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Platform</label>
+                            <select id="social-platform" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" required>
+                                <option value="">Select Platform</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="twitter">Twitter</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="github">GitHub</option>
+                                <option value="youtube">YouTube</option>
+                                <option value="tiktok">TikTok</option>
+                                <option value="website">Website</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label data-i18n="url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">URL</label>
+                            <input type="url" id="social-url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="https://..." required>
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                            <i class="fas fa-plus mr-2"></i><span data-i18n="add">Add</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Current Social Media List -->
+            <div class="mb-6">
+                <h4 data-i18n="current_socials" class="text-xl font-semibold text-[#C69AE6] mb-4">Current Social Media</h4>
+                <div id="modal-socials-list" class="space-y-2">
+                    <!-- Current social media will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="flex justify-center">
+                <button onclick="closeModal('socials-form-container')" data-i18n="close" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Management Modal -->
+    <div id="portfolio-form-container" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-3xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+            <h4 id="portfolio-form-title" data-i18n="manage_portfolio" class="text-2xl font-semibold text-[#C69AE6] mb-6">Manage Portfolio</h4>
+            
+            <!-- Add Portfolio Form -->
+            <div class="mb-6 p-4 bg-lilac-50 dark:bg-gray-800 rounded-lg">
+                <h4 data-i18n="add_portfolio_item" class="text-xl font-semibold text-[#C69AE6] mb-4">Add Portfolio Item</h4>
+                <form id="portfolio-form" class="space-y-4">
+                    <input type="hidden" id="portfolio-id" value="">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label data-i18n="project_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Title</label>
+                            <input type="text" id="portfolio-title" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="e.g. E-commerce Website" required>
+                        </div>
+                        <div>
+                            <label data-i18n="project_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Type</label>
+                            <select id="portfolio-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                                <option value="">Select Type</option>
+                                <option value="web">Web Development</option>
+                                <option value="mobile">Mobile App</option>
+                                <option value="design">Design</option>
+                                <option value="github">GitHub Repository</option>
+                                <option value="behance">Behance Portfolio</option>
+                                <option value="dribbble">Dribbble</option>
+                                <option value="figma">Figma Design</option>
+                                <option value="website">Personal Website</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label data-i18n="project_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                        <textarea id="portfolio-description" rows="3" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="Brief description of the project..."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label data-i18n="project_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project URL</label>
+                        <input type="url" id="portfolio-url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="https://..." required>
+                    </div>
+                    
+                    <!-- Enhanced Image Upload Section -->
+                    <div>
+                        <label data-i18n="project_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Image</label>
+                        
+                        <!-- Image Upload Area -->
+                        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer mb-3" 
+                             id="portfolio-upload-area" 
+                             onclick="document.getElementById('portfolio-image-input').click()">
+                            <div id="portfolio-upload-content">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5" class="mx-auto mb-4">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17,8 12,3 7,8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <p class="text-gray-700 dark:text-gray-300 mb-2">
+                                    <strong>Click to upload</strong> or drag and drop
+                                </p>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">PNG, JPG or GIF (max 5MB)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Preview area -->
+                        <div id="portfolio-image-preview" class="mb-3"></div>
+                        
+                        <input type="file" id="portfolio-image-input" class="hidden" accept="image/*">
+                        
+                        <!-- Image action buttons -->
+                        <div id="portfolio-image-actions" class="flex gap-2 mb-3 hidden">
+                            <button type="button" id="portfolio-upload-btn" disabled class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-3 py-2 rounded-lg transition-colors duration-300 text-sm">
+                                Upload Image
+                            </button>
+                            <button type="button" id="portfolio-delete-image-btn" class="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-3 py-2 rounded-lg transition-colors duration-300 text-sm">
+                                Delete Image
+                            </button>
+                        </div>
+                        
+                        <!-- OR Manual URL Input -->
+                        <div class="text-center text-gray-500 dark:text-gray-400 text-sm mb-2">or</div>
+                        <input type="url" id="portfolio-image-url" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent text-sm" placeholder="Enter image URL manually">
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                            <i class="fas fa-plus mr-2"></i><span id="portfolio-submit-text" data-i18n="add">Add</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Current Portfolio List -->
+            <div class="mb-6">
+                <h4 data-i18n="current_portfolio" class="text-xl font-semibold text-[#C69AE6] mb-4">Current Portfolio</h4>
+                <div id="modal-portfolio-list" class="space-y-3">
+                    <!-- Current portfolio items will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="flex justify-center">
+                <button onclick="closeModal('portfolio-form-container')" data-i18n="close" class="text-white px-6 py-2 rounded bg-[#7F4CA5] hover:bg-[#4B1C71] transition-colors duration-300">Close</button>
+            </div>
+        </div>
+    </div>
+    <script src="logout.js"></script>
+    <script src="js/navbar-profile.js"></script>
+    <script src="profile.js"></script>
+    <script src="js/profile-image.js"></script>
+    <script src="js/education.js"></script>
+    <script src="js/experience.js"></script>
+    <script src="js/hobby.js"></script>
+    <script src="js/skill.js"></script>
+    <script src="js/social.js"></script>
+    <script src="js/portfolio.js"></script>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // User menu toggle
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        
+        userMenuButton.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+        
+        // Close menus when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+            
+            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // JavaScript for navbar open when website loaded
+            window.addEventListener('DOMContentLoaded', () => {
+            const navbarEmployees = document.getElementById('navbar-employees');
+
+            if (navbarEmployees) {
+            navbarEmployees.classList.remove('opacity-0', 'h-0');
+            navbarEmployees.classList.add('opacity-100', 'h-16');
+            }
+            });
+
+        // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
+        const loading_circle = document.createElement('div');
+        loading_circle.id = 'load_bro';
+        loading_circle.innerHTML = `
+            <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80 z-50">
+            <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+            </div>
+        `;
+        document.body.appendChild(loading_circle);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('load_bro');
+            if (l) {
+            l.remove();
+            }
+        });
+
+        // JavaScript for opening and closing le popup boxes (education and skills)
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) {
+                console.error('Modal not found:', id);
+                return;
+            }
+            
+            const content = modal.querySelector('div');
+            const main = document.getElementById('main-container');
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                if (content) {
+                    content.classList.remove('scale-0', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }
+                if (main) main.classList.add('opacity-50');
+            }, 10);
+
+            // Close modal if clicked outside the box
+            modal.onclick = (e) => {
+                if (e.target === modal) closeModal(id);
+            };
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            
+            const content = modal.querySelector('div');
+            const main = document.getElementById('main-container');
+
+            // Reset forms when closing modals
+            if (id === 'education-form-container') {
+                window.educationManager.isEditing = false;
+                window.educationManager.currentEducationId = null;
+                document.getElementById('education-form').reset();
+                document.getElementById('education-id').value = '';
+                document.getElementById('education-form-title').textContent = 'Add Education';
+                document.getElementById('submit-btn-text').textContent = 'Save Education';
+            } else if (id === 'experience-form-container') {
+                window.experienceManager.isEditing = false;
+                window.experienceManager.currentExperienceId = null;
+                document.getElementById('experience-form').reset();
+                document.getElementById('experience-id').value = '';
+                document.getElementById('experience-form-title').textContent = 'Add Experience';
+                document.getElementById('submit-btn-text').textContent = 'Save Experience';
+            } else if (id === 'socials-form-container') {
+                document.getElementById('social-form').reset();
+            } else if (id === 'portfolio-form-container') {
+                // Reset portfolio form
+                if (window.portfolioManager) {
+                    window.portfolioManager.resetForm();
+                }
+            }
+
+            setTimeout(() => {
+                if (content) {
+                    content.classList.remove('scale-100');
+                    content.classList.add('scale-0');
+                }
+                if (main) main.classList.remove('opacity-50');
+            }, 10);
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Education specific functions for compatibility with education.js
+        function showAddEducationForm() {
+            openModal('education-form-container');
+        }
+
+        function hideEducationForm() {
+            closeModal('education-form-container');
+        }
+
+                // Province-city mapping for profile settings
+        const profileProvinceCityMap = {
+            "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
+            "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padang Sidempuan", "Pematangsiantar", "Sibolga", "Tanjungbalai", "Tebing Tinggi"],
+            "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
+            "riau": ["Pekanbaru", "Dumai"],
+            "jambi": ["Jambi", "Sungai Penuh"],
+            "sumatra-selatan": ["Palembang", "Pagar Alam", "Prabumulih", "Lubuklinggau"],
+            "bengkulu": ["Bengkulu"],
+            "lampung": ["Bandar Lampung", "Metro"],
+            "kepulauan-bangka-belitung": ["Pangkal Pinang"],
+            "kepulauan-riau": ["Batam", "Tanjung Pinang"],
+            "dki-jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+            "jawa-barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya"],
+            "jawa-tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal"],
+            "di-yogyakarta": ["Yogyakarta"],
+            "jawa-timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya"],
+            "banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan"],
+            "bali": ["Denpasar"],
+            "nusa-tenggara-barat": ["Bima", "Mataram"],
+            "nusa-tenggara-timur": ["Kupang"],
+            "kalimantan-barat": ["Pontianak", "Singkawang"],
+            "kalimantan-tengah": ["Palangka Raya"],
+            "kalimantan-selatan": ["Banjarbaru", "Banjarmasin"],
+            "kalimantan-timur": ["Balikpapan", "Bontang", "Samarinda"],
+            "kalimantan-utara": ["Tarakan"],
+            "sulawesi-utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon"],
+            "sulawesi-tengah": ["Palu"],
+            "sulawesi-selatan": ["Makassar", "Palopo", "Parepare"],
+            "sulawesi-tenggara": ["Bau-Bau", "Kendari"],
+            "gorontalo": ["Gorontalo"],
+            "sulawesi-barat": ["Mamuju"],
+            "maluku": ["Ambon", "Tual"],
+            "maluku-utara": ["Ternate", "Tidore Kepulauan"],
+            "papua-barat": ["Manokwari", "Sorong"],
+            "papua-barat-daya": ["Sorong"],
+            "papua": ["Jayapura"],
+            "papua-selatan": ["Merauke"],
+            "papua-tengah": ["Mimika"],
+            "papua-pegunungan": ["Jayawijaya"]
+        };
+
+        // Initialize province-city handling for settings form
+        document.addEventListener('DOMContentLoaded', function() {
+            const settingsProvinceSelect = document.getElementById("settings-province");
+            const settingsCitySelect = document.getElementById("settings-city");
+
+            if (settingsProvinceSelect && settingsCitySelect) {
+                settingsProvinceSelect.addEventListener("change", () => {
+                    const selectedProvince = settingsProvinceSelect.value;
+                    const cities = profileProvinceCityMap[selectedProvince] || [];
+                    
+                    // Clear previous options
+                    settingsCitySelect.innerHTML = '<option value="">Select City</option>';
+                    
+                    if (selectedProvince) {
+                        // Enable city select
+                        settingsCitySelect.disabled = false;
+                        
+                        // Add cities for selected province
+                        cities.forEach(city => {
+                            const option = document.createElement("option");
+                            option.value = city;
+                            option.textContent = city;
+                            settingsCitySelect.appendChild(option);
+                        });
+                    } else {
+                        // Disable city select if no province selected
+                        settingsCitySelect.disabled = true;
+                    }
+                });
+            }
+        });
+
+        // Helper function to format province name for display
+        function formatProvinceName(province) {
+            if (!province) return '';
+            return province
+                .split('-')
+                .map(word => {
+                    if (word === 'dki') return 'DKI';
+                    if (word === 'di') return 'DI';
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                })
+                .join(' ');
+        }
+
+        // Helper function to format location for display
+        function formatLocation(city, province) {
+            const formattedProvince = formatProvinceName(province);
+            if (city && formattedProvince) {
+                return `${formattedProvince}, ${city}`;
+            } else if (city) {
+                return city;
+            } else if (formattedProvince) {
+                return formattedProvince;
+            }
+            return 'Not specified';
+        }
+    </script>
+</body>
+</html>

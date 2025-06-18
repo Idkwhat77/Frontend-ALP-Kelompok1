@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - RuangKerja Professional Network</title>
     
-    <script src="logout.js"></script>
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -136,7 +138,7 @@
 
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
                         <!-- Dropdown Menu -->
@@ -169,7 +171,7 @@
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                             <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -213,10 +215,10 @@
                 <div class="md:w-1/2">
                     <h2 data-i18n="about.story_title" class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Our Story</h2>
                     <p data-i18n="about.story_content" class="text-gray-600 dark:text-gray-300 mb-4">
-                        Founded in 2025, RuangKerja began as a small team of Informatics Student 
+                        Founded in 2025, Ruang Kerja began as an initiative by a group of Informatics students who were deeply concerned about one of Indonesia’s biggest challenges — unemployment. We saw the gap between job seekers and opportunities, especially for fresh graduates and informal workers, and wanted to create a solution that could empower them through accessible technology.
                     </p>
                     <p data-i18n="about.story_mission" class="text-gray-600 dark:text-gray-300">
-                        Our mission is to create meaningful connections between professionals and companies, making the hiring process more efficient, transparent, and human-centered.
+                        Driven by this mission, we developed Ruang Kerja, a digital platform that helps connect job seekers with companies and institutions efficiently. By combining interactive design, user-friendly features, and an integrated approach, we aim to make job searching more informative, and impactful for everyone.
                     </p>
                 </div>
             </div>
@@ -270,17 +272,17 @@
                 <!-- Team Member 1 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300">
                     <div class="h-48 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center">
-                        <img class="h-full w-full object-cover" src="#" alt="Aristo">
+                        <img class="h-full w-full object-cover" src="img/Aristo No BG.png" alt="Aristo">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 dark:text-white">Aristo Bennedict Iskandar</h3>
                         <p data-i18n="about.team1_position" class="text-gray-500 dark:text-gray-300 mb-2">Backend</p>
                         <div class="flex space-x-2">
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
-                                <i href="#"class="fab fa-linkedin-in"></i>
+                            <a href="https://id.linkedin.com/in/aristo-iskandar-b72633340" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                                <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
-                                <i href="#" class="fab fa-instagram"></i>
+                            <a href="https://www.instagram.com/aristoiskandar/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                                <i class="fab fa-instagram"></i>
                             </a>
                         </div>
                     </div>
@@ -289,16 +291,16 @@
                 <!-- Team Member 2 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300">
                     <div class="h-48 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center">
-                        <img class="h-full w-full object-cover" src="#" alt="Exsel">
+                        <img class="h-full w-full object-cover" src="img/Exsel No BG.png" alt="Exsel">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 dark:text-white">Exsel Octavian Gosal</h3>
                         <p data-i18n="about.team2_position" class="text-gray-500 dark:text-gray-300 mb-2">Frontend</p>
                         <div class="flex space-x-2">
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.linkedin.com/in/exsel-octaviand-gosal-a2143033b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.instagram.com/exckscelusername/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
@@ -308,16 +310,16 @@
                 <!-- Team Member 3 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300">
                     <div class="h-48 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center">
-                        <img class="h-full w-full object-cover" src="#" alt="Rifki">
+                        <img class="h-full w-full object-cover" src="img/Rifki No BG.png" alt="Rifki">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 dark:text-white">M. Rifki Paranrengi</h3>
                         <p data-i18n="about.team3_position" class="text-gray-500 dark:text-gray-300 mb-2">Team Lead</p>
                         <div class="flex space-x-2">
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="http://linkedin.com/in/rifkyps" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.instagram.com/rifkp7/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
@@ -327,16 +329,16 @@
                 <!-- Team Member 4 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300">
                     <div class="h-48 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center">
-                        <img class="h-full w-full object-cover" src="#" alt="Stella J.Chandra">
+                        <img class="h-full w-full object-cover" src="img/Stella No BG.png" alt="Stella J.Chandra">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 dark:text-white">Stella J. Chandra</h3>
                         <p data-i18n="about.team4_position" class="text-gray-500 dark:text-gray-300 mb-2">Frontend</p>
                         <div class="flex space-x-2">
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.linkedin.com/in/stella-j-chandra-162303340/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.instagram.com/stel.jchan/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
@@ -465,6 +467,7 @@
     </footer>
 
     <!-- JavaScript Files -->
+    <script src="js/navbar-profile.js"></script>
     <script>
         // Check for saved dark mode preference or system preference
         if (localStorage.getItem('darkMode') === 'dark' || 
@@ -568,7 +571,5 @@
             });
         });
     </script>
-    <script src="language.js"></script>
-    <script src="darkmode.js"></script>
 </body>
 </html>

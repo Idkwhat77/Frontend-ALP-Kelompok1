@@ -182,41 +182,77 @@
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
       </div>
 
-      <!-- 4. City -->
+      <!-- 4. Province -->
       <div class="form-field-container">
-        <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
-        <select id="employee-city" name="city" id="city" required
+        <i class="fas fa-map absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+        <select id="employee-province" name="province" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
-          <option data-i18n="role.employee.city" value="" disabled selected>City</option>
-          <option>Jakarta</option>
-          <option>Bandung</option>
-          <option>Surabaya</option>
-          <option>Yogyakarta</option>
-          <option>Medan</option>
-          <option>Bali</option>
-          <option>Makassar</option>
-          <option>Semarang</option>
-          <option>Palembang</option>
-          <option>Malang</option>
-          <option>Remote</option>
+          <option data-i18n="role.employee.province" value="" disabled selected>Province</option>
+          <option value="aceh">Aceh</option>
+          <option value="sumatra-utara">Sumatra Utara</option>
+          <option value="sumatra-barat">Sumatra Barat</option>
+          <option value="riau">Riau</option>
+          <option value="jambi">Jambi</option>
+          <option value="sumatra-selatan">Sumatra Selatan</option>
+          <option value="bengkulu">Bengkulu</option>
+          <option value="lampung">Lampung</option>
+          <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+          <option value="kepulauan-riau">Kepulauan Riau</option>
+          <option value="dki-jakarta">DKI Jakarta</option>
+          <option value="jawa-barat">Jawa Barat</option>
+          <option value="jawa-tengah">Jawa Tengah</option>
+          <option value="di-yogyakarta">DI Yogyakarta</option>
+          <option value="jawa-timur">Jawa Timur</option>
+          <option value="banten">Banten</option>
+          <option value="bali">Bali</option>
+          <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+          <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+          <option value="kalimantan-barat">Kalimantan Barat</option>
+          <option value="kalimantan-tengah">Kalimantan Tengah</option>
+          <option value="kalimantan-selatan">Kalimantan Selatan</option>
+          <option value="kalimantan-timur">Kalimantan Timur</option>
+          <option value="kalimantan-utara">Kalimantan Utara</option>
+          <option value="sulawesi-utara">Sulawesi Utara</option>
+          <option value="sulawesi-tengah">Sulawesi Tengah</option>
+          <option value="sulawesi-selatan">Sulawesi Selatan</option>
+          <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+          <option value="gorontalo">Gorontalo</option>
+          <option value="sulawesi-barat">Sulawesi Barat</option>
+          <option value="maluku">Maluku</option>
+          <option value="maluku-utara">Maluku Utara</option>
+          <option value="papua-barat">Papua Barat</option>
+          <option value="papua-barat-daya">Papua Barat Daya</option>
+          <option value="papua">Papua</option>
+          <option value="papua-selatan">Papua Selatan</option>
+          <option value="papua-tengah">Papua Tengah</option>
+          <option value="papua-pegunungan">Papua Pegunungan</option>
         </select>
       </div>
 
-      <!-- 5. Job Type -->
+      <!-- 5. City -->
+      <div class="form-field-container">
+        <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+        <select id="employee-city" name="city" disabled required
+          class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+          <option data-i18n="role.employee.city" value="" disabled selected>City</option>
+        </select>
+      </div>
+
+      <!-- 6. Job Type -->
       <div class="form-field-container">
         <i class="fas fa-briefcase absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-job-type" name="job_type" required
           class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
           <option data-i18n="role.employee.job_type" value="" disabled selected>Job Type</option>
-          <option>Full‑time</option>
-          <option>Part‑time</option>
-          <option>Internship</option>
-          <option>Contract</option>
-          <option>Freelance</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Internship">Internship</option>
+          <option value="Contract">Contract</option>
+          <option value="Freelance">Freelance</option>
         </select>
       </div>
 
-      <!-- 6. Industry -->
+      <!-- 7. Industry -->
       <div class="form-field-container">
         <i class="fas fa-building absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-industry" name="industry" required
@@ -234,7 +270,7 @@
         </select>
       </div>
 
-      <!-- 7. Employment Status -->
+      <!-- 8. Employment Status -->
       <div class="form-field-container">
         <i class="fas fa-user-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
         <select id="employee-employment-status" name="employment_status" required
@@ -254,6 +290,167 @@
       </div>
     </form>
     </div>
+
+    <!-- Company Role -->
+    <div id="company-role-part-1" class="fixed bg-white dark:bg-gray-800 p-8 w-[30vw] h-auto rounded-lg shadow-lg text-center hidden">
+      <div class="absolute top-0 right-0 p-4 flex items-center justify-between w-full">
+        <select id="language-selector-company" class="bg-lilac-100 dark:bg-gray-800 text-gray-700 dark:text-white rounded">
+          <option value="en">EN</option>
+          <option value="id">ID</option>
+        </select>
+      </div>
+
+      <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="w-auto h-24 mx-auto mb-4">
+      <h1 data-i18n="role.company.registration" class="text-2xl font-bold text-lilac-400 mb-6">Company Registration</h1>
+
+      <!-- Updated Company Form: database‑ready field structure -->
+      <form id="company-form" class="flex flex-col gap-4 text-left text-sm">
+        <!-- Company Name -->
+        <div class="form-field-container relative">
+          <i class="fas fa-building absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-name" name="companyName" type="text" required
+            placeholder="Company Name"
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- Business Email -->
+        <div class="form-field-container relative">
+          <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-email" name="email" type="email" required
+            placeholder="Business Email"
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- Foundation Date -->
+        <div class="form-field-container relative">
+          <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-foundation-date" name="foundationDate" type="date" required
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- HQ Location -->
+        <div class="form-field-container relative">
+          <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-hq" name="hq" type="text" required
+            placeholder="HQ Location"
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- Province -->
+        <div class="form-field-container relative">
+          <i class="fas fa-map absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <select id="company-province" name="province" 
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+            <option value="">Select Province (Optional)</option>
+            <option value="aceh">Aceh</option>
+            <option value="sumatra-utara">Sumatra Utara</option>
+            <option value="sumatra-barat">Sumatra Barat</option>
+            <option value="riau">Riau</option>
+            <option value="jambi">Jambi</option>
+            <option value="sumatra-selatan">Sumatra Selatan</option>
+            <option value="bengkulu">Bengkulu</option>
+            <option value="lampung">Lampung</option>
+            <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+            <option value="kepulauan-riau">Kepulauan Riau</option>
+            <option value="dki-jakarta">DKI Jakarta</option>
+            <option value="jawa-barat">Jawa Barat</option>
+            <option value="jawa-tengah">Jawa Tengah</option>
+            <option value="di-yogyakarta">DI Yogyakarta</option>
+            <option value="jawa-timur">Jawa Timur</option>
+            <option value="banten">Banten</option>
+            <option value="bali">Bali</option>
+            <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+            <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+            <option value="kalimantan-barat">Kalimantan Barat</option>
+            <option value="kalimantan-tengah">Kalimantan Tengah</option>
+            <option value="kalimantan-selatan">Kalimantan Selatan</option>
+            <option value="kalimantan-timur">Kalimantan Timur</option>
+            <option value="kalimantan-utara">Kalimantan Utara</option>
+            <option value="sulawesi-utara">Sulawesi Utara</option>
+            <option value="sulawesi-tengah">Sulawesi Tengah</option>
+            <option value="sulawesi-selatan">Sulawesi Selatan</option>
+            <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+            <option value="gorontalo">Gorontalo</option>
+            <option value="sulawesi-barat">Sulawesi Barat</option>
+            <option value="maluku">Maluku</option>
+            <option value="maluku-utara">Maluku Utara</option>
+            <option value="papua-barat">Papua Barat</option>
+            <option value="papua-barat-daya">Papua Barat Daya</option>
+            <option value="papua">Papua</option>
+            <option value="papua-selatan">Papua Selatan</option>
+            <option value="papua-tengah">Papua Tengah</option>
+            <option value="papua-pegunungan">Papua Pegunungan</option>
+          </select>
+        </div>
+
+        <!-- City -->
+        <div class="form-field-container relative">
+          <i class="fas fa-city absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <select id="company-city" name="city" disabled
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+            <option value="">Select City (Optional)</option>
+          </select>
+        </div>
+
+        <!-- Industry -->
+        <div class="form-field-container relative">
+          <i class="fas fa-industry absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <select id="company-industry" name="industry" required
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-lilac-400 focus:border-lilac-400">
+            <option value="">Select Industry</option>
+            <option value="Technology">Technology</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Finance">Finance</option>
+            <option value="Education">Education</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Retail">Retail</option>
+            <option value="Hospitality">Hospitality</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Government">Government</option>
+            <option value="Construction">Construction</option>
+            <option value="Real Estate">Real Estate</option>
+            <option value="Legal Services">Legal Services</option>
+            <option value="Consulting">Consulting</option>
+            <option value="Non-Profit">Non-Profit</option>
+          </select>
+        </div>
+
+        <!-- Company Size -->
+        <div class="form-field-container relative">
+          <i class="fas fa-users absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-size" name="companySize" type="number" min="1" required
+            placeholder="Company Size (number of employees)"
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- Website URL (Optional) -->
+        <div class="form-field-container relative">
+          <i class="fas fa-globe absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-website" name="websiteUrl" type="url"
+            placeholder="Website URL (Optional)"
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- Phone Number (Optional) -->
+        <div class="form-field-container relative">
+          <i class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 z-10"></i>
+          <input id="company-phone" name="phoneNumber" type="tel"
+            placeholder="Phone Number (Optional)"
+            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400" />
+        </div>
+
+        <!-- Description (Optional) -->
+        <div class="form-field-container relative">
+          <textarea id="company-description" name="description" rows="3"
+            placeholder="Company Description (Optional)"
+            class="block w-full pl-3 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-lilac-400 focus:border-lilac-400"></textarea>
+        </div>
+
+        <button type="submit" class="bg-lilac-400 hover:bg-lilac-500 text-white font-bold py-2 px-4 rounded">
+          Register Company
+        </button>
+      </form>
+      </div>
 
   <!-- Theme Toggle -->
   <div class="fixed bottom-6 right-6 z-10">

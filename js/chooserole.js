@@ -1,14 +1,20 @@
 // Check if user is authenticated when page loads
 window.addEventListener("DOMContentLoaded", () => {
-  // Check user authentication
-  const currentUser = apiClient.getCurrentUser();
+    const currentUser = apiClient.getCurrentUser();
+    const userType = apiClient.getUserType();
+    
   if (!currentUser) {
-    console.warn('No authenticated user found. Redirecting to login...');
-    window.location.href = 'login.html';
-    return;
+      console.warn('No authenticated user found. Redirecting to login...');
+      window.location.href = 'login.html';
+      return;
   }
   
-  console.log('Authenticated user:', currentUser);
+  // If user already has a type, redirect to homepage
+  if (userType) {
+      console.log('User already has profile type:', userType);
+      window.location.href = 'homepage.html';
+      return;
+  }
 
   // Show body with fade-in on load
   document.body.classList.remove("hidden");
@@ -17,35 +23,110 @@ window.addEventListener("DOMContentLoaded", () => {
   const loadingElement = document.getElementById("load_bro");
   if (loadingElement) loadingElement.remove();
 
-  // Province and City selection
-  const provinceCityMap = {
-    "DKI Jakarta": ["Jakarta"],
-    "Jawa Barat": ["Bandung", "Bekasi", "Depok", "Bogor"],
-    "Jawa Tengah": ["Semarang", "Surakarta", "Magelang"],
-    "Jawa Timur": ["Surabaya", "Malang", "Kediri"],
-    "Bali": ["Denpasar", "Ubud"]
-  };
+    // Use the same comprehensive province-city mapping for both employee and company forms
+    const provinceCityMap = {
+        "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
+        "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padang Sidempuan", "Pematangsiantar", "Sibolga", "Tanjungbalai", "Tebing Tinggi"],
+        "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
+        "riau": ["Pekanbaru", "Dumai"],
+        "jambi": ["Jambi", "Sungai Penuh"],
+        "sumatra-selatan": ["Palembang", "Pagar Alam", "Prabumulih", "Lubuklinggau"],
+        "bengkulu": ["Bengkulu"],
+        "lampung": ["Bandar Lampung", "Metro"],
+        "kepulauan-bangka-belitung": ["Pangkal Pinang"],
+        "kepulauan-riau": ["Batam", "Tanjung Pinang"],
+        "dki-jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+        "jawa-barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya"],
+        "jawa-tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal"],
+        "di-yogyakarta": ["Yogyakarta"],
+        "jawa-timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya"],
+        "banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan"],
+        "bali": ["Denpasar"],
+        "nusa-tenggara-barat": ["Bima", "Mataram"],
+        "nusa-tenggara-timur": ["Kupang"],
+        "kalimantan-barat": ["Pontianak", "Singkawang"],
+        "kalimantan-tengah": ["Palangka Raya"],
+        "kalimantan-selatan": ["Banjarbaru", "Banjarmasin"],
+        "kalimantan-timur": ["Balikpapan", "Bontang", "Samarinda"],
+        "kalimantan-utara": ["Tarakan"],
+        "sulawesi-utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon"],
+        "sulawesi-tengah": ["Palu"],
+        "sulawesi-selatan": ["Makassar", "Palopo", "Parepare"],
+        "sulawesi-tenggara": ["Bau-Bau", "Kendari"],
+        "gorontalo": ["Gorontalo"],
+        "sulawesi-barat": ["Mamuju"],
+        "maluku": ["Ambon", "Tual"],
+        "maluku-utara": ["Ternate", "Tidore Kepulauan"],
+        "papua-barat": ["Manokwari", "Sorong"],
+        "papua-barat-daya": ["Sorong"],
+        "papua": ["Jayapura"],
+        "papua-selatan": ["Merauke"],
+        "papua-tengah": ["Mimika"],
+        "papua-pegunungan": ["Jayawijaya"]
+    };
 
-  const provinceSelect = document.getElementById("province");
-  const citySelect = document.getElementById("city");
+    // Extended province-city mapping for companies (use same as employee)
+    const companyProvinceCityMap = provinceCityMap;
 
-  if (provinceSelect && citySelect) {
-    provinceSelect.addEventListener("change", () => {
-      const cities = provinceCityMap[provinceSelect.value] || [];
-      citySelect.innerHTML = cities.length
-        ? `<option value="" disabled selected>Select City</option>`
-        : `<option value="" disabled selected>No cities available</option>`;
+    // Employee Province-City handling (existing code)
+    const provinceSelect = document.getElementById("employee-province");
+    const citySelect = document.getElementById("employee-city");
 
-      cities.forEach(city => {
-        const opt = document.createElement("option");
-        opt.textContent = city;
-        opt.value = city;
-        citySelect.appendChild(opt);
-      });
+    if (provinceSelect && citySelect) {
+        provinceSelect.addEventListener("change", () => {
+            const selectedProvince = provinceSelect.value;
+            const cities = provinceCityMap[selectedProvince] || [];
+            
+            // Clear previous options
+            citySelect.innerHTML = '<option value="" disabled selected data-i18n="role.employee.city">City</option>';
+            
+            if (selectedProvince) {
+                // Enable city select
+                citySelect.disabled = false;
+                
+                // Add cities for selected province
+                cities.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            } else {
+                // Disable city select if no province selected
+                citySelect.disabled = true;
+            }
+        });
+    }
 
-      citySelect.disabled = !cities.length;
-    });
-  }
+    // Company Province-City handling (NEW CODE)
+    const companyProvinceSelect = document.getElementById("company-province");
+    const companyCitySelect = document.getElementById("company-city");
+
+    if (companyProvinceSelect && companyCitySelect) {
+        companyProvinceSelect.addEventListener("change", () => {
+            const selectedProvince = companyProvinceSelect.value;
+            const cities = companyProvinceCityMap[selectedProvince] || [];
+            
+            // Clear previous options
+            companyCitySelect.innerHTML = '<option value="">Select City (Optional)</option>';
+            
+            if (selectedProvince) {
+                // Enable city select
+                companyCitySelect.disabled = false;
+                
+                // Add cities for selected province
+                cities.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.textContent = city;
+                    companyCitySelect.appendChild(option);
+                });
+            } else {
+                // Disable city select if no province selected
+                companyCitySelect.disabled = true;
+            }
+        });
+    }
 
   // Role Selection Transitions
   let currentScreen = "first-role-selection";
@@ -105,22 +186,41 @@ class FormErrorHandler {
   }
 
   initializeElements() {
-    // The form itself
+    // Company form fields
+    this.companyForm = document.getElementById("company-form");
+    this.companyName = document.getElementById("company-name");
+    this.companyEmail = document.getElementById("company-email");
+    this.companyFoundationDate = document.getElementById("company-foundation-date");
+    this.companyHq = document.getElementById("company-hq");
+    this.companyIndustry = document.getElementById("company-industry");
+    this.companySize = document.getElementById("company-size");
+    this.companyDescription = document.getElementById("company-description");
+    // Employee form fields
     this.employeeForm = document.getElementById("employee-form");
     this.employeeFullName = document.getElementById("employee-full-name");
     this.employeeEmail = document.getElementById("employee-email"); 
     this.employeeBirthDate = document.getElementById("employee-birth-date");
+    this.employeeProvince = document.getElementById("employee-province");
     this.employeeCity = document.getElementById("employee-city");
     this.employeeIndustry = document.getElementById("employee-industry");
     this.employeeJobType = document.getElementById("employee-job-type");
     this.employeeStatus = document.getElementById("employee-employment-status");
   }
-
+  
   attachEventListeners() {
+    // Employee form submit
     if (this.employeeForm) {
       this.employeeForm.addEventListener("submit", (event) => {
         event.preventDefault();
         this.handleEmployeeRegistration(event);
+      });
+    }
+
+    // Company form submit
+    if (this.companyForm) {
+      this.companyForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        this.handleCompanyRegistration(event);
       });
     }
 
@@ -191,6 +291,12 @@ class FormErrorHandler {
     if (this.employeeBirthDate) {
       this.employeeBirthDate.addEventListener('blur', () => this.validateBirthDate(this.employeeBirthDate));
       this.employeeBirthDate.addEventListener('input', () => this.clearFieldError(this.employeeBirthDate));
+    }
+
+    // Province validation
+    if (this.employeeProvince) {
+      this.employeeProvince.addEventListener('blur', () => this.validateSelect(this.employeeProvince, "Please select your province."));
+      this.employeeProvince.addEventListener('change', () => this.clearFieldError(this.employeeProvince));
     }
 
     // City validation
@@ -370,6 +476,7 @@ class FormErrorHandler {
     if (!this.validateName(this.employeeFullName)) isValid = false;
     if (!this.validateEmail(this.employeeEmail)) isValid = false;
     if (!this.validateBirthDate(this.employeeBirthDate)) isValid = false;
+    if (!this.validateSelect(this.employeeProvince, "Please select your province.")) isValid = false;
     if (!this.validateSelect(this.employeeCity, "Please select your city.")) isValid = false;
     if (!this.validateSelect(this.employeeIndustry, "Please select your industry.")) isValid = false;
     if (!this.validateSelect(this.employeeJobType, "Please select your job type.")) isValid = false;
@@ -384,13 +491,17 @@ class FormErrorHandler {
     const submitBtn = this.employeeForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Creating profile...';
-    submitBtn.disabled = true;    // Get form data
+    submitBtn.disabled = true;
+
+    // Get form data
     const fullName = this.employeeFullName.value.trim();
     const email = this.employeeEmail.value.trim();
     const birthDate = this.employeeBirthDate.value;
+    const province = this.employeeProvince.value;
     const city = this.employeeCity.value;
     const industry = this.employeeIndustry.value;
     const jobType = this.employeeJobType.value;
+    console.log('Selected job type:', jobType, 'Character codes:', [...jobType].map(c => c.charCodeAt(0)));
     const employmentStatus = this.employeeStatus.value;
 
     // Prepare employee data
@@ -398,6 +509,7 @@ class FormErrorHandler {
       fullName,
       email,
       birthDate,
+      province,
       city,
       industry,
       jobType,
@@ -411,6 +523,10 @@ class FormErrorHandler {
       const response = await apiClient.createEmployee(employeeData);
 
       if (response.success) {
+
+        // Store user type in localStorage
+        localStorage.setItem('user_type', 'employee');
+
         this.showNotification('Employee profile created successfully!', 'success');
           setTimeout(() => {
             window.location.href = 'homepage.html';
@@ -427,4 +543,76 @@ class FormErrorHandler {
         submitBtn.disabled = false;
       }
     }
+
+    // Update the company registration form handling
+    async handleCompanyRegistration(event) {
+      event.preventDefault();
+      
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      
+      // Disable submit button
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating Company...';
+
+      try {
+          const formData = new FormData(event.target);
+          
+          const companyData = {
+              companyName: formData.get('companyName').trim(),
+              email: formData.get('email').trim(),
+              foundationDate: formData.get('foundationDate'),
+              hq: formData.get('hq').trim(),
+              province: formData.get('province') || null,  // Use the selected province value
+              city: formData.get('city') || null,          // Use the selected city value  
+              industry: formData.get('industry'),
+              companySize: parseInt(formData.get('companySize')),
+              description: formData.get('description')?.trim() || null,
+              websiteUrl: formData.get('websiteUrl')?.trim() || null,
+              phoneNumber: formData.get('phoneNumber')?.trim() || null
+          };
+
+          // Validation
+          const requiredFields = ['companyName', 'email', 'foundationDate', 'hq', 'industry', 'companySize'];
+          for (const field of requiredFields) {
+              if (!companyData[field]) {
+                  throw new Error(`${field.replace(/([A-Z])/g, ' $1').toLowerCase()} is required`);
+              }
+          }
+
+          // Email validation
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(companyData.email)) {
+              throw new Error('Please enter a valid email address');
+          }
+
+          // Company size validation
+          if (companyData.companySize < 1) {
+              throw new Error('Company size must be at least 1');
+          }
+
+          console.log('Creating company with data:', companyData);
+          const response = await apiClient.createCompany(companyData);
+
+          if (response && response.success) {
+              localStorage.setItem('user_type', 'company');
+              this.showNotification('Company registered successfully!', 'success');
+              setTimeout(() => {
+                  window.location.href = 'homepage.html';
+              }, 1500);
+          } else {
+              throw new Error(response?.message || 'Failed to register company');
+          }
+      } catch (error) {
+          console.error('Company registration error:', error);
+          this.showNotification(error.message, 'error');
+      } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+      }
+    }
   }
+
+// Make the province-city map available globally for company profile
+window.companyProvinceCityMap = companyProvinceCityMap;
+
