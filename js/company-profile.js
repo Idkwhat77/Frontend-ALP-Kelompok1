@@ -4,6 +4,7 @@ class CompanyProfileManager {
     constructor() {
         this.currentCompany = null;
         this.isOwnProfile = false;
+        this.employeesManager = null;
         this.init();
     }
 
@@ -11,53 +12,96 @@ class CompanyProfileManager {
         try {
             await this.loadCompanyProfile();
             this.setupEventListeners();
+            this.initializeProvinceCityHandling();
+            
+            // Initialize employees manager AFTER company data is loaded
+            if (this.currentCompany) {
+                this.initializeEmployeesManager();
+            }
         } catch (error) {
             console.error('Failed to initialize company profile:', error);
             this.showError('Failed to load company profile');
         }
     }
 
-    async loadCompanyProfile() {
-        const user = window.apiClient?.getCurrentUser();
-        if (!user) {
-            window.location.href = 'login.html';
-            return;
+    initializeEmployeesManager() {
+        // Make sure company data is available globally
+        window.currentCompanyData = this.currentCompany;
+        
+        // Initialize employees manager with company data
+        if (typeof CompanyEmployeesManager !== 'undefined') {
+            this.employeesManager = new CompanyEmployeesManager(this.currentCompany.id);
+            this.employeesManager.isOwnProfile = this.isOwnProfile;
+            console.log('Employees manager initialized with company data');
         }
+    }
 
+    async loadCompanyProfile() {
         try {
-            // Check if we're viewing a specific company (from URL params)
             const urlParams = new URLSearchParams(window.location.search);
             const companyId = urlParams.get('id');
+            const currentUser = window.apiClient.getCurrentUser();
 
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
             let response;
+            // If there's an ID in the URL, fetch by company ID. Otherwise, fetch by the current user's ID.
             if (companyId) {
-                // Viewing specific company profile
                 response = await window.apiClient.getCompanyById(companyId);
-                this.isOwnProfile = false;
             } else {
-                // Load current user's company profile
-                response = await window.apiClient.getCompanyByUserId(user.id);
-                this.isOwnProfile = true;
+                response = await window.apiClient.getCompanyByUserId(currentUser.id);
             }
 
             if (response && response.success && response.company) {
                 this.currentCompany = response.company;
-                this.displayCompanyProfile(response.company);
+                window.currentCompanyData = this.currentCompany; // Set globally
                 
-                // Set context for image upload
-                if (typeof setCompanyContext === 'function') {
-                    setCompanyContext(response.company.id, this.isOwnProfile);
-                }
+                // Correctly determine if the profile being viewed is the user's own.
+                this.isOwnProfile = this.currentCompany.user?.id === currentUser.id;
+                
+                this.displayCompanyProfile(this.currentCompany);
+                this.toggleEditControls();
             } else {
-                throw new Error('Company profile not found');
+                throw new Error('Company not found');
             }
         } catch (error) {
             console.error('Error loading company profile:', error);
-            this.showError('Company profile not found. Please create a company profile first.');
+            this.showError('Failed to load company profile');
         }
     }
 
     displayCompanyProfile(company) {
+        this.currentCompany = company;
+        
+        // Format province name helper
+        const formatProvinceName = (province) => {
+            if (!province) return '';
+            return province
+                .split('-')
+                .map(word => {
+                    if (word === 'dki') return 'DKI';
+                    if (word === 'di') return 'DI';
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                })
+                .join(' ');
+        };
+
+        // Format location for display
+        const formatLocation = (city, province) => {
+            const formattedProvince = formatProvinceName(province);
+            if (city && formattedProvince) {
+                return `${city}, ${formattedProvince}`;
+            } else if (city) {
+                return city;
+            } else if (formattedProvince) {
+                return formattedProvince;
+            }
+            return 'Not specified';
+        };
+
         // Update company name and basic info
         this.updateElement('company-name', company.companyName);
         this.updateElement('company-name-header', company.companyName);
@@ -66,6 +110,9 @@ class CompanyProfileManager {
         this.updateElement('company-foundation-date', this.formatDate(company.foundationDate));
         this.updateElement('company-hq', company.hq);
         this.updateElement('company-email', company.email);
+        
+        // Add formatted location display
+        this.updateElement('company-location', formatLocation(company.city, company.province));
         
         // Update company description
         const descriptionElement = document.getElementById('company-description');
@@ -85,8 +132,21 @@ class CompanyProfileManager {
         // Update company profile image
         this.updateCompanyImage(company);
 
+        // Set company context for image upload
+        if (typeof setCompanyContext === 'function') {
+            setCompanyContext(company.id, this.isOwnProfile);
+        }
+
         // Update page title
         document.title = `${company.companyName} - RuangKerja`;
+
+        // Initialize employees manager after company data is loaded
+        if (typeof CompanyEmployeesManager !== 'undefined') {
+            this.employeesManager = new CompanyEmployeesManager(company.id);
+        }
+
+        // Show/hide edit controls based on ownership
+        this.toggleEditControls();
     }
 
     updateCompanyImage(company) {
@@ -168,6 +228,27 @@ class CompanyProfileManager {
         document.getElementById('settings-company-hq').value = this.currentCompany.hq || '';
         document.getElementById('settings-foundation-date').value = this.formatDateForInput(this.currentCompany.foundationDate);
         document.getElementById('settings-company-description').value = this.currentCompany.description || '';
+        document.getElementById('settings-company-website').value = this.currentCompany.websiteUrl || '';
+        document.getElementById('settings-company-phone').value = this.currentCompany.phoneNumber || '';
+
+        // Handle province and city
+        const provinceSelect = document.getElementById('settings-company-province');
+        const citySelect = document.getElementById('settings-company-city');
+        
+        if (provinceSelect && this.currentCompany.province) {
+            provinceSelect.value = this.currentCompany.province;
+            
+            // Trigger change event to populate cities
+            const event = new Event('change');
+            provinceSelect.dispatchEvent(event);
+            
+            // Set city after a brief delay to ensure cities are loaded
+            setTimeout(() => {
+                if (citySelect && this.currentCompany.city) {
+                    citySelect.value = this.currentCompany.city;
+                }
+            }, 100);
+        }
     }
 
     async handleSettingsSubmit(event) {
@@ -193,8 +274,12 @@ class CompanyProfileManager {
                 industry: document.getElementById('settings-company-industry').value,
                 companySize: document.getElementById('settings-company-size').value,
                 hq: document.getElementById('settings-company-hq').value.trim(),
+                province: document.getElementById('settings-company-province').value || null,
+                city: document.getElementById('settings-company-city').value || null,
                 foundationDate: document.getElementById('settings-foundation-date').value,
-                description: document.getElementById('settings-company-description').value.trim()
+                description: document.getElementById('settings-company-description').value.trim(),
+                websiteUrl: document.getElementById('settings-company-website').value.trim() || null,
+                phoneNumber: document.getElementById('settings-company-phone').value.trim() || null
             };
 
             // Validate required fields
@@ -243,6 +328,101 @@ class CompanyProfileManager {
             // Re-enable submit button
             submitButton.disabled = false;
             submitButton.innerHTML = originalText;
+        }
+    }
+
+    // Add province-city handling in company profile settings
+    initializeProvinceCityHandling() {
+        // Define the same province-city mapping locally
+        const companyProvinceCityMap = {
+            "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
+            "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padang Sidempuan", "Pematangsiantar", "Sibolga", "Tanjungbalai", "Tebing Tinggi"],
+            "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
+            "riau": ["Pekanbaru", "Dumai"],
+            "jambi": ["Jambi", "Sungai Penuh"],
+            "sumatra-selatan": ["Palembang", "Pagar Alam", "Prabumulih", "Lubuklinggau"],
+            "bengkulu": ["Bengkulu"],
+            "lampung": ["Bandar Lampung", "Metro"],
+            "kepulauan-bangka-belitung": ["Pangkal Pinang"],
+            "kepulauan-riau": ["Batam", "Tanjung Pinang"],
+            "dki-jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+            "jawa-barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya"],
+            "jawa-tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal"],
+            "di-yogyakarta": ["Yogyakarta"],
+            "jawa-timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya"],
+            "banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan"],
+            "bali": ["Denpasar"],
+            "nusa-tenggara-barat": ["Bima", "Mataram"],
+            "nusa-tenggara-timur": ["Kupang"],
+            "kalimantan-barat": ["Pontianak", "Singkawang"],
+            "kalimantan-tengah": ["Palangka Raya"],
+            "kalimantan-selatan": ["Banjarbaru", "Banjarmasin"],
+            "kalimantan-timur": ["Balikpapan", "Bontang", "Samarinda"],
+            "kalimantan-utara": ["Tarakan"],
+            "sulawesi-utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon"],
+            "sulawesi-tengah": ["Palu"],
+            "sulawesi-selatan": ["Makassar", "Palopo", "Parepare"],
+            "sulawesi-tenggara": ["Bau-Bau", "Kendari"],
+            "gorontalo": ["Gorontalo"],
+            "sulawesi-barat": ["Mamuju"],
+            "maluku": ["Ambon", "Tual"],
+            "maluku-utara": ["Ternate", "Tidore Kepulauan"],
+            "papua-barat": ["Manokwari", "Sorong"],
+            "papua-barat-daya": ["Sorong"],
+            "papua": ["Jayapura"],
+            "papua-selatan": ["Merauke"],
+            "papua-tengah": ["Mimika"],
+            "papua-pegunungan": ["Jayawijaya"]
+        };
+
+        const settingsProvinceSelect = document.getElementById("settings-company-province");
+        const settingsCitySelect = document.getElementById("settings-company-city");
+
+        if (settingsProvinceSelect && settingsCitySelect) {
+            settingsProvinceSelect.addEventListener("change", () => {
+                const selectedProvince = settingsProvinceSelect.value;
+                const cities = companyProvinceCityMap[selectedProvince] || [];
+                
+                // Clear previous options
+                settingsCitySelect.innerHTML = '<option value="">Select City</option>';
+                
+                if (selectedProvince) {
+                    // Enable city select
+                    settingsCitySelect.disabled = false;
+                    
+                    // Add cities for selected province
+                    cities.forEach(city => {
+                        const option = document.createElement("option");
+                        option.value = city;
+                        option.textContent = city;
+                        settingsCitySelect.appendChild(option);
+                    });
+                } else {
+                    // Disable city select if no province selected
+                    settingsCitySelect.disabled = true;
+                }
+            });
+        }
+    }
+
+    toggleEditControls() {
+        const editControls = document.querySelectorAll('.edit-control');
+        editControls.forEach(control => {
+            if (this.isOwnProfile) {
+                control.style.display = 'inline-block';
+            } else {
+                control.style.display = 'none';
+            }
+        });
+
+        // Also setup the "add first employee" button
+        const addFirstEmployeeBtn = document.getElementById('add-first-employee-btn');
+        if (addFirstEmployeeBtn && this.isOwnProfile) {
+            addFirstEmployeeBtn.addEventListener('click', () => {
+                if (this.employeesManager) {
+                    this.employeesManager.showAddEmployeeModal();
+                }
+            });
         }
     }
 
@@ -306,4 +486,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize company profile manager
     window.companyProfileManager = new CompanyProfileManager();
+    
+    // Make employees manager globally accessible after it's created
+    const originalDisplayMethod = window.companyProfileManager.displayCompanyProfile;
+    window.companyProfileManager.displayCompanyProfile = function(company) {
+        originalDisplayMethod.call(this, company);
+        if (this.employeesManager) {
+            window.companyEmployeesManager = this.employeesManager;
+        }
+    };
 });

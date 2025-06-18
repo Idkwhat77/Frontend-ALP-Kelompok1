@@ -101,6 +101,7 @@
     <!-- Navbar -->
     <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -109,7 +110,7 @@
                         </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Beranda
                         </a>
                         <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
@@ -132,6 +133,15 @@
                         <option value="id">ID</option>
                         </select>
                     </div>
+
+                    <!-- Notification Bell -->
+                    <div class="relative">
+                        <button type="button" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative" id="notification-button" aria-expanded="false" aria-haspopup="true">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                    </div>
+
                     <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
                         <i class="fas fa-moon dark:hidden"></i>
                         <i class="fas fa-sun hidden dark:inline"></i>
@@ -162,7 +172,7 @@
             <!-- Mobile Menu Content -->
             <div class="hidden sm:hidden" id="mobile-menu">
                 <div class="pt-2 pb-3 space-y-1">
-                    <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
                     <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
                     <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
                     <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
@@ -236,39 +246,7 @@
                 <div class="w-full md:w-48">
                     <select id="provinceFilter" class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500">
                         <option value="">All Provinces</option>
-                        <option value="aceh">Aceh</option>
-                        <option value="bali">Bali</option>
-                        <option value="banten">Banten</option>
-                        <option value="bengkulu">Bengkulu</option>
-                        <option value="yogyakarta">DI Yogyakarta</option>
-                        <option value="jakarta">DKI Jakarta</option>
-                        <option value="gorontalo">Gorontalo</option>
-                        <option value="jambi">Jambi</option>
-                        <option value="jabar">Jawa Barat</option>
-                        <option value="jateng">Jawa Tengah</option>
-                        <option value="jatim">Jawa Timur</option>
-                        <option value="kalbar">Kalimantan Barat</option>
-                        <option value="kalsel">Kalimantan Selatan</option>
-                        <option value="kalteng">Kalimantan Tengah</option>
-                        <option value="kaltim">Kalimantan Timur</option>
-                        <option value="kaltara">Kalimantan Utara</option>
-                        <option value="bangka">Kepulauan Bangka Belitung</option>
-                        <option value="riau">Kepulauan Riau</option>
-                        <option value="lampung">Lampung</option>
-                        <option value="maluku">Maluku</option>
-                        <option value="malut">Maluku Utara</option>
-                        <option value="ntb">Nusa Tenggara Barat</option>
-                        <option value="ntt">Nusa Tenggara Timur</option>
-                        <option value="papua">Papua</option>
-                        <option value="pabar">Papua Barat</option>
-                        <option value="sulbar">Sulawesi Barat</option>
-                        <option value="sulsel">Sulawesi Selatan</option>
-                        <option value="sulteng">Sulawesi Tengah</option>
-                        <option value="sultra">Sulawesi Tenggara</option>
-                        <option value="sulut">Sulawesi Utara</option>
-                        <option value="sumbar">Sumatera Barat</option>
-                        <option value="sumsel">Sumatera Selatan</option>
-                        <option value="sumut">Sumatera Utara</option>
+                        <!-- Options will be populated by JavaScript from citiesByProvince -->
                     </select>
                 </div>
                 
@@ -559,7 +537,7 @@
             <!-- Copyright and Bottom Links -->
             <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                 <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
-                    © 2025 RuangKerja. All rights reserved.
+                   
                 </p>
                 <div class="flex space-x-6">
                     <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
@@ -576,115 +554,466 @@
         </div>
     </footer>
 
+    <script src="js/navbar-profile.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        // Toggle advanced filters
-        const toggleFilters = document.getElementById('toggleFilters');
-        const advancedFilters = document.getElementById('advancedFilters');
-        
-        if (toggleFilters && advancedFilters) {
-            toggleFilters.addEventListener('click', function() {
-                advancedFilters.classList.toggle('hidden');
-                const icon = this.querySelector('i');
-                if (icon) {
-                    icon.classList.toggle('fa-chevron-down');
-                    icon.classList.toggle('fa-chevron-up');
-                }
-            });
-        }
-
-        // Location filters - only declare provinceFilter once
-        const provinceFilter = document.getElementById('provinceFilter');
-        const cityFilter = document.getElementById('cityFilter');
-        
-        // Sample city data
+        // Province and city mapping (same as in posting_oprec.js)
         const citiesByProvince = {
-            "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam", "Aceh Barat", "Aceh Barat Daya", "Aceh Besar", "Aceh Jaya", "Aceh Selatan", "Aceh Singkil", "Aceh Tamiang", "Aceh Tengah", "Aceh Tenggara", "Aceh Timur", "Aceh Utara", "Bener Meriah", "Bireuen", "Gayo Lues", "Nagan Raya", "Pidie", "Pidie Jaya", "Simeulue"],
-            "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padangsidempuan", "Pematangsiantar", "Sibolga", "Tanjung Balai", "Tebing Tinggi", "Asahan", "Batu Bara", "Dairi", "Deli Serdang", "Humbang Hasundutan", "Karo", "Labuhanbatu", "Labuhanbatu Selatan", "Labuhanbatu Utara", "Langkat", "Mandailing Natal", "Nias", "Nias Barat", "Nias Selatan", "Nias Utara", "Padang Lawas", "Padang Lawas Utara", "Pakpak Bharat", "Samosir", "Serdang Bedagai", "Simalungun", "Tapanuli Selatan", "Tapanuli Tengah", "Tapanuli Utara", "Toba"],
-            "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok", "Agam", "Dharmasraya", "Kepulauan Mentawai", "Lima Puluh Kota", "Padang Pariaman", "Pasaman", "Pasaman Barat", "Pesisir Selatan", "Sijunjung", "Solok", "Solok Selatan", "Tanah Datar"],
-            "riau": ["Pekanbaru", "Dumai", "Bengkalis", "Indragiri Hilir", "Indragiri Hulu", "Kampar", "Kepulauan Meranti", "Kuantan Singingi", "Pelalawan", "Rokan Hilir", "Rokan Hulu", "Siak"],
-            "jambi": ["Jambi", "Sungai Penuh", "Batanghari", "Bungo", "Kerinci", "Merangin", "Muaro Jambi", "Sarolangun", "Tanjung Jabung Barat", "Tanjung Jabung Timur", "Tebo"],
-            "sumatra-selatan": ["Lubuklinggau", "Pagar Alam", "Palembang", "Prabumulih", "Banyuasin", "Empat Lawang", "Lahat", "Muara Enim", "Musi Banyuasin", "Musi Rawas", "Musi Rawas Utara", "Ogan Ilir", "Ogan Komering Ilir", "Ogan Komering Ulu", "Ogan Komering Ulu Selatan", "Ogan Komering Ulu Timur", "Penukal Abab Lematang Ilir"],
-            "bengkulu": ["Bengkulu", "Bengkulu Selatan", "Bengkulu Tengah", "Bengkulu Utara", "Kaur", "Kepahiang", "Lebong", "Mukomuko", "Rejang Lebong", "Seluma"],
-            "lampung": ["Bandar Lampung", "Metro", "Lampung Barat", "Lampung Selatan", "Lampung Tengah", "Lampung Timur", "Lampung Utara", "Mesuji", "Pesawaran", "Pesisir Barat", "Pringsewu", "Tulang Bawang", "Tulang Bawang Barat", "Tanggamus", "Way Kanan"],
-            "kepulauan-bangka-belitung": ["Pangkal Pinang", "Bangka", "Bangka Barat", "Bangka Selatan", "Bangka Tengah", "Belitung", "Belitung Timur"],
-            "kepulauan-riau": ["Batam", "Tanjung Pinang", "Bintan", "Karimun", "Kepulauan Anambas", "Lingga", "Natuna"],
-            "dki-jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
-            "jawa-barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya", "Bandung", "Bandung Barat", "Bekasi", "Bogor", "Ciamis", "Cianjur", "Cirebon", "Garut", "Indramayu", "Karawang", "Kuningan", "Majalengka", "Pangandaran", "Purwakarta", "Subang", "Sukabumi", "Sumedang", "Tasikmalaya"],
-            "jawa-tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal", "Banjarnegara", "Banyumas", "Batang", "Blora", "Boyolali", "Brebes", "Cilacap", "Demak", "Grobogan", "Jepara", "Karanganyar", "Kebumen", "Kendal", "Klaten", "Kudus", "Magelang", "Pati", "Pekalongan", "Pemalang", "Purbalingga", "Purworejo", "Rembang", "Semarang", "Sragen", "Sukoharjo", "Tegal", "Temanggung", "Wonogiri", "Wonosobo"],
-            "di-yogyakarta": ["Yogyakarta", "Bantul", "Gunungkidul", "Kulon Progo", "Sleman"],
-            "jawa-timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya", "Bangkalan", "Banyuwangi", "Blitar", "Bojonegoro", "Bondowoso", "Gresik", "Jember", "Jombang", "Kediri", "Lamongan", "Lumajang", "Madiun", "Magetan", "Malang", "Mojokerto", "Nganjuk", "Ngawi", "Pacitan", "Pamekasan", "Pasuruan", "Ponorogo", "Probolinggo", "Sampang", "Sidoarjo", "Situbondo", "Sumenep", "Trenggalek", "Tuban", "Tulungagung"],
-            "banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan", "Lebak", "Pandeglang", "Serang", "Tangerang"],
-            "bali": ["Denpasar", "Badung", "Bangli", "Buleleng", "Gianyar", "Jembrana", "Karangasem", "Klungkung", "Tabanan"],
-            "nusa-tenggara-barat": ["Bima", "Mataram", "Bima", "Dompu", "Lombok Barat", "Lombok Tengah", "Lombok Timur", "Lombok Utara", "Sumbawa", "Sumbawa Barat"],
-            "nusa-tenggara-timur": ["Kupang", "Alor", "Belu", "Ende", "Flores Timur", "Kupang", "Lembata", "Malaka", "Manggarai", "Manggarai Barat", "Manggarai Timur", "Ngada", "Nagekeo", "Rote Ndao", "Sabu Raijua", "Sikka", "Sumba Barat", "Sumba Barat Daya", "Sumba Tengah", "Sumba Timur", "Timor Tengah Selatan", "Timor Tengah Utara"],
-            "kalimantan-barat": ["Pontianak", "Singkawang", "Bengkayang", "Kapuas Hulu", "Kayong Utara", "Ketapang", "Kubu Raya", "Landak", "Melawi", "Mempawah", "Sambas", "Sanggau", "Sekadau", "Sintang"],
-            "kalimantan-tengah": ["Palangka Raya", "Barito Selatan", "Barito Timur", "Barito Utara", "Gunung Mas", "Kapuas", "Katingan", "Kotawaringin Barat", "Kotawaringin Timur", "Lamandau", "Murung Raya", "Pulang Pisau", "Sukamara", "Seruyan"],
-            "kalimantan-selatan": ["Banjarbaru", "Banjarmasin", "Balangan", "Banjar", "Barito Kuala", "Hulu Sungai Selatan", "Hulu Sungai Tengah", "Hulu Sungai Utara", "Kotabaru", "Tabalong", "Tanah Bumbu", "Tanah Laut", "Tapin"],
-            "kalimantan-timur": ["Balikpapan", "Bontang", "Samarinda", "Berau", "Kutai Barat", "Kutai Kartanegara", "Kutai Timur", "Mahakam Ulu", "Paser", "Penajam Paser Utara"],
-            "kalimantan-utara": ["Tarakan", "Bulungan", "Malinau", "Nunukan", "Tana Tidung"],
-            "sulawesi-utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon", "Bolaang Mongondow", "Bolaang Mongondow Selatan", "Bolaang Mongondow Timur", "Bolaang Mongondow Utara", "Kepulauan Sangihe", "Kepulauan Siau Tagulandang Biaro", "Kepulauan Talaud", "Minahasa", "Minahasa Selatan", "Minahasa Tenggara", "Minahasa Utara"],
-            "sulawesi-tengah": ["Palu", "Banggai", "Banggai Kepulauan", "Banggai Laut", "Buol", "Donggala", "Morowali", "Morowali Utara", "Parigi Moutong", "Poso", "Sigi", "Tojo Una-Una", "Toli-Toli"],
-            "sulawesi-selatan": ["Makassar", "Palopo", "Parepare", "Bantaeng", "Barru", "Bone", "Bulukumba", "Enrekang", "Gowa", "Jeneponto", "Kepulauan Selayar", "Luwu", "Luwu Timur", "Luwu Utara", "Maros", "Pangkajene dan Kepulauan", "Pinrang", "Sidenreng Rappang", "Sinjai", "Soppeng", "Takalar", "Tana Toraja", "Toraja Utara", "Wajo"],
-            "sulawesi-tenggara": ["Bau-Bau", "Kendari", "Bombana", "Buton", "Buton Selatan", "Buton Tengah", "Buton Utara", "Kolaka", "Kolaka Timur", "Kolaka Utara", "Konawe", "Konawe Kepulauan", "Konawe Selatan", "Konawe Utara", "Muna", "Muna Barat", "Wakatobi"],
-            "gorontalo": ["Gorontalo", "Boalemo", "Bone Bolango", "Gorontalo", "Gorontalo Utara", "Pohuwato"],
-            "sulawesi-barat": ["Mamuju", "Majene", "Mamasa", "Mamuju", "Mamuju Tengah", "Mamuju Utara", "Polewali Mandar"],
-            "maluku": ["Ambon", "Tual", "Buru", "Buru Selatan", "Kepulauan Aru", "Maluku Barat Daya", "Maluku Tengah", "Maluku Tenggara", "Maluku Tenggara Barat", "Seram Bagian Barat", "Seram Bagian Timur"],
-            "maluku-utara": ["Ternate", "Tidore Kepulauan", "Halmahera Barat", "Halmahera Tengah", "Halmahera Utara", "Halmahera Selatan", "Kepulauan Sula", "Halmahera Timur", "Pulau Morotai", "Pulau Taliabu"],
-            "papua-barat": ["Fakfak", "Kaimana", "Manokwari", "Manokwari Selatan", "Pegunungan Arfak", "Teluk Bintuni", "Teluk Wondama"],
-            "papua-barat-daya": ["Sorong", "Raja Ampat", "Sorong", "Sorong Selatan", "Maybrat", "Tambrauw"],
-            "papua": ["Jayapura", "Biak Numfor", "Jayapura", "Keerom", "Kepulauan Yapen", "Mamberamo Raya", "Sarmi", "Supiori", "Waropen"],
-            "papua-selatan": ["Merauke", "Asmat", "Boven Digoel", "Mappi"],
-            "papua-tengah": ["Mimika", "Deiyai", "Dogiyai", "Intan Jaya", "Nabire", "Paniai", "Puncak", "Puncak Jaya"],
-            "papua-pegunungan": ["Jayawijaya", "Lanny Jaya", "Mamberamo Tengah", "Nduga", "Pegunungan Bintang", "Tolikara", "Yahukimo", "Yalimo"]
+            "Aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
+            "Sumatera Utara": ["Binjai", "Gunungsitoli", "Medan", "Padangsidempuan", "Pematangsiantar", "Sibolga", "Tanjung Balai", "Tebing Tinggi"],
+            "Sumatera Barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
+            "Riau": ["Pekanbaru", "Dumai"],
+            "Jambi": ["Jambi", "Sungai Penuh"],
+            "Sumatera Selatan": ["Lubuklinggau", "Pagar Alam", "Palembang", "Prabumulih"],
+            "Bengkulu": ["Bengkulu"],
+            "Lampung": ["Bandar Lampung", "Metro"],
+            "Kepulauan Bangka Belitung": ["Pangkal Pinang"],
+            "Kepulauan Riau": ["Batam", "Tanjung Pinang"],
+            "DKI Jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+            "Jawa Barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya"],
+            "Jawa Tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal"],
+            "DI Yogyakarta": ["Yogyakarta"],
+            "Jawa Timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya"],
+            "Banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan"],
+            "Bali": ["Denpasar"],
+            "Nusa Tenggara Barat": ["Bima", "Mataram"],
+            "Nusa Tenggara Timur": ["Kupang"],
+            "Kalimantan Barat": ["Pontianak", "Singkawang"],
+            "Kalimantan Tengah": ["Palangka Raya"],
+            "Kalimantan Selatan": ["Banjarbaru", "Banjarmasin"],
+            "Kalimantan Timur": ["Balikpapan", "Bontang", "Samarinda"],
+            "Kalimantan Utara": ["Tarakan"],
+            "Sulawesi Utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon"],
+            "Sulawesi Tengah": ["Palu"],
+            "Sulawesi Selatan": ["Makassar", "Palopo", "Parepare"],
+            "Sulawesi Tenggara": ["Bau-Bau", "Kendari"],
+            "Gorontalo": ["Gorontalo"],
+            "Sulawesi Barat": ["Mamuju"],
+            "Maluku": ["Ambon", "Tual"],
+            "Maluku Utara": ["Ternate", "Tidore Kepulauan"],
+            "Papua Barat": ["Manokwari", "Sorong"],
+            "Papua": ["Jayapura"],
+            "Papua Selatan": ["Merauke"],
+            "Papua Tengah": ["Nabire"],
+            "Papua Pegunungan": ["Jayawijaya"]
         };
-        
-        if (provinceFilter && cityFilter) {
-            provinceFilter.addEventListener('change', function() {
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProvinceDropdown();
+            loadJobs();
+            initializeFilters();
+        });
+
+        function initializeProvinceDropdown() {
+            const provinceSelect = document.getElementById('provinceFilter');
+            const citySelect = document.getElementById('cityFilter');
+            
+            // Clear existing options except the first one
+            provinceSelect.innerHTML = '<option value="">All Provinces</option>';
+            
+            // Populate provinces
+            Object.keys(citiesByProvince).forEach(province => {
+                const option = document.createElement('option');
+                option.value = province;
+                option.textContent = province;
+                provinceSelect.appendChild(option);
+            });
+
+            // Handle province change
+            provinceSelect.addEventListener('change', function() {
                 const selectedProvince = this.value;
-                cityFilter.innerHTML = '<option value="">All Cities/Regencies</option>';
-                cityFilter.disabled = !selectedProvince;
+                citySelect.innerHTML = '<option value="">All Cities</option>';
                 
                 if (selectedProvince && citiesByProvince[selectedProvince]) {
+                    citySelect.disabled = false;
                     citiesByProvince[selectedProvince].forEach(city => {
                         const option = document.createElement('option');
-                        option.value = city.toLowerCase().replace(/\s+/g, '_');
+                        option.value = city;
                         option.textContent = city;
-                        cityFilter.appendChild(option);
+                        citySelect.appendChild(option);
                     });
+                } else {
+                    citySelect.disabled = true;
+                    citySelect.innerHTML = '<option value="">Select Province First</option>';
                 }
+                
+                // Apply filters when province changes
+                applyFilters();
+            });
+
+            // Handle city change
+            citySelect.addEventListener('change', function() {
+                applyFilters();
+            });
+
+            // Handle job type change
+            document.getElementById('jobTypeFilter')?.addEventListener('change', function() {
+                applyFilters();
             });
         }
 
-        // Job search functionality
-        const searchButton = document.getElementById('searchButton');
-        const jobSearch = document.getElementById('jobSearch');
-        const jobTypeFilter = document.getElementById('jobTypeFilter');
-        
-        if (searchButton) {
-            searchButton.addEventListener('click', function() {
-                const searchParams = {
-                    query: jobSearch?.value || '',
-                    type: jobTypeFilter?.value || '',
-                    province: provinceFilter?.value || '',
-                    city: cityFilter?.value || ''
-                };
-                console.log('Searching for:', searchParams);
-
-            });
-        }
-
-        // Update job count
-        function updateJobCount(count) {
-            const jobCountElement = document.getElementById('jobCount');
-            if (jobCountElement) {
-                jobCountElement.textContent = count;
+        async function loadJobs(filters = {}) {
+            try {
+                // Build query parameters
+                const params = new URLSearchParams();
+                
+                if (filters.search?.trim()) {
+                    params.append('search', filters.search.trim());
+                }
+                if (filters.type) {
+                    params.append('type', filters.type);
+                }
+                if (filters.province) {
+                    params.append('province', filters.province);
+                }
+                if (filters.city) {
+                    params.append('city', filters.city);
+                }
+                
+                const url = 'http://localhost:8080/api/jobs' + (params.toString() ? '?' + params.toString() : '');
+                console.log('Fetching jobs from:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.success && data.jobs) {
+                    displayJobs(data.jobs);
+                    updateJobCount(data.totalElements || data.jobs.length);
+                    showFilterMessage(filters);
+                } else {
+                    console.error('Failed to load jobs:', data.message);
+                    displayNoJobs();
+                }
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+                displayNoJobs();
             }
         }
 
-        // Initialize with default count
-        updateJobCount(24);
-        });
+        function displayJobs(jobs) {
+            const jobContainer = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-3');
+            
+            if (!jobs || jobs.length === 0) {
+                displayNoJobs();
+                return;
+            }
+            
+            jobContainer.innerHTML = jobs.map(job => {
+                // Format location properly
+                const location = formatJobLocation(job.city, job.province);
+                
+                // Format salary properly
+                const salary = formatSalary(job.salaryMin, job.salaryMax);
+                
+                // Format posted date properly
+                const postedDate = formatRealDate(job.createdAt);
+                
+                // Get company logo URL
+                const companyLogo = job.company?.profileImageUrl 
+                    ? `http://localhost:8080${job.company.profileImageUrl}` 
+                    : 'img/default-company.png';
+                
+                // Get company name
+                const companyName = job.company?.name || job.company?.companyName || 'Company';
+                
+                // Format skills array
+                const skillsArray = Array.isArray(job.skills) ? job.skills : 
+                    (typeof job.skills === 'string' ? job.skills.split(',').map(s => s.trim()) : []);
+                
+                // Format job type display
+                const jobTypeDisplay = formatJobType(job.type);
+                
+                return `
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
+                        <div class="p-6">
+                            <div class="flex items-start mb-4">
+                                <img class="h-12 w-12 rounded-lg object-cover mr-4" 
+                                     src="${companyLogo}" 
+                                     alt="${companyName} Logo"
+                                     onerror="this.src='img/default-company.png'">
+                                <div>
+                                    <h3 class="font-semibold text-lg text-gray-900 dark:text-white">${job.title || 'Job Title'}</h3>
+                                    <p class="text-lilac-500 text-sm">${companyName}</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${jobTypeDisplay}</span>
+                                ${skillsArray.slice(0, 2).map(skill => 
+                                    `<span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${skill}</span>`
+                                ).join('')}
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                                ${job.description ? stripHtmlAndTruncate(job.description, 100) : 'No description available'}
+                            </p>
+                            <div class="flex justify-between items-center text-sm">
+                                <div class="flex items-center text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
+                                    <span>${location}</span>
+                                </div>
+                                <span class="text-gray-500 dark:text-gray-400">${postedDate}</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium text-gray-900 dark:text-white">${salary}</span>
+                                <a href="job-detail.html?id=${job.id}" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 font-medium text-sm flex items-center">
+                                    View Details <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatJobType(type) {
+            const typeMap = {
+                'fulltime': 'Full-time',
+                'parttime': 'Part-time',
+                'contract': 'Contract',
+                'internship': 'Internship',
+                'freelance': 'Freelance',
+                'remote': 'Remote',
+                'hybrid': 'Hybrid',
+                'temporary': 'Temporary'
+            };
+            return typeMap[type] || type || 'Full-time';
+        }
+
+        function formatJobLocation(city, province) {
+            if (city && province) {
+                return `${city}, ${province}`;
+            } else if (city) {
+                return city;
+            } else if (province) {
+                return province;
+            }
+            return 'Location not specified';
+        }
+
+        function formatSalary(salaryMin, salaryMax) {
+            if (salaryMin && salaryMax) {
+                const minInMillions = (salaryMin / 1000000).toFixed(0);
+                const maxInMillions = (salaryMax / 1000000).toFixed(0);
+                return `IDR ${minInMillions}M-${maxInMillions}M`;
+            } else if (salaryMin) {
+                const minInMillions = (salaryMin / 1000000).toFixed(0);
+                return `IDR ${minInMillions}M+`;
+            } else if (salaryMax) {
+                const maxInMillions = (salaryMax / 1000000).toFixed(0);
+                return `Up to IDR ${maxInMillions}M`;
+            }
+            return 'Competitive Salary';
+        }
+
+        function formatRealDate(dateString) {
+            if (!dateString) return 'Recently posted';
+            
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                const diffMinutes = Math.floor(diffTime / (1000 * 60));
+                
+                if (diffMinutes < 60) {
+                    return diffMinutes <= 1 ? 'Just posted' : `${diffMinutes} minutes ago`;
+                } else if (diffHours < 24) {
+                    return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+                } else if (diffDays === 1) {
+                    return '1 day ago';
+                } else if (diffDays <= 7) {
+                    return `${diffDays} days ago`;
+                } else if (diffDays <= 30) {
+                    const weeks = Math.ceil(diffDays / 7);
+                    return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+                } else {
+                    const months = Math.ceil(diffDays / 30);
+                    return months === 1 ? '1 month ago' : `${months} months ago`;
+                }
+            } catch (error) {
+                console.error('Error formatting date:', error);
+                return 'Recently posted';
+            }
+        }
+
+        function stripHtmlAndTruncate(html, maxLength) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            const text = div.textContent || div.innerText || '';
+            
+            if (text.length <= maxLength) {
+                return text;
+            }
+            
+            return text.substring(0, maxLength) + '...';
+        }
+
+        function showFilterMessage(filters) {
+            // Remove existing message
+            const existingMessage = document.querySelector('.search-results-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            // Add search results message if there's an active filter
+            if (filters.search || filters.type || filters.province || filters.city) {
+                const jobSection = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-3').parentElement;
+                const message = document.createElement('div');
+                message.className = 'search-results-message bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4';
+                
+                let messageText = '';
+                if (filters.search) {
+                    messageText += `Search: "${filters.search}"`;
+                }
+                if (filters.type) {
+                    messageText += messageText ? ` | Type: ${formatJobType(filters.type)}` : `Type: ${formatJobType(filters.type)}`;
+                }
+                if (filters.province) {
+                    messageText += messageText ? ` | Province: ${filters.province}` : `Province: ${filters.province}`;
+                }
+                if (filters.city) {
+                    messageText += messageText ? ` | City: ${filters.city}` : `City: ${filters.city}`;
+                }
+                
+                message.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-800 dark:text-blue-200 text-sm">
+                            <i class="fas fa-filter mr-2"></i>Active filters: ${messageText}
+                        </span>
+                        <button onclick="clearAllFilters()" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 text-sm">
+                            <i class="fas fa-times mr-1"></i>Clear all
+                        </button>
+                    </div>
+                `;
+                
+                jobSection.insertBefore(message, jobSection.firstChild);
+            }
+        }
+
+        function clearAllFilters() {
+            // Clear search input
+            const searchInput = document.getElementById('jobSearch');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            // Reset dropdowns
+            const provinceSelect = document.getElementById('provinceFilter');
+            const citySelect = document.getElementById('cityFilter');
+            const jobTypeSelect = document.getElementById('jobTypeFilter');
+            
+            if (provinceSelect) provinceSelect.value = '';
+            if (citySelect) {
+                citySelect.value = '';
+                citySelect.disabled = true;
+                citySelect.innerHTML = '<option value="">Select Province First</option>';
+            }
+            if (jobTypeSelect) jobTypeSelect.value = '';
+            
+            // Remove filter message
+            const messageContainer = document.querySelector('.search-results-message');
+            if (messageContainer) {
+                messageContainer.remove();
+            }
+            
+            // Reload all jobs
+            loadJobs();
+        }
+
+        function displayNoJobs() {
+            const jobContainer = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-3');
+            jobContainer.innerHTML = `
+                <div class="col-span-3 text-center py-12">
+                    <div class="text-gray-400 mb-4">
+                        <i class="fas fa-briefcase text-6xl"></i>
+                    </div>
+                    <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">No Jobs Found</h3>
+                    <p class="text-gray-500 dark:text-gray-400">Try adjusting your search criteria or check back later for new postings.</p>
+                    <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg">
+                        Clear Filters
+                    </button>
+                </div>
+            `;
+            updateJobCount(0);
+        }
+
+        function updateJobCount(count) {
+            const jobCountElement = document.getElementById('jobCount');
+            if (jobCountElement) {
+                jobCountElement.textContent = count || 0;
+            }
+        }
+
+        function initializeFilters() {
+            // Search functionality
+            const searchButton = document.getElementById('searchButton');
+            const applyFiltersButton = document.getElementById('applyFilters');
+            
+            if (searchButton) {
+                searchButton.addEventListener('click', function() {
+                    applyFilters();
+                });
+            }
+            
+            if (applyFiltersButton) {
+                applyFiltersButton.addEventListener('click', function() {
+                    applyFilters();
+                });
+            }
+
+            // Handle search on Enter key
+            const searchInput = document.getElementById('jobSearch');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        applyFilters();
+                    }
+                });
+                
+                // Real-time search with debounce
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        applyFilters();
+                    }, 500);
+                });
+            }
+
+            // Advanced filters toggle
+            const toggleFiltersButton = document.getElementById('toggleFilters');
+            const advancedFilters = document.getElementById('advancedFilters');
+            
+            if (toggleFiltersButton && advancedFilters) {
+                toggleFiltersButton.addEventListener('click', function() {
+                    const isHidden = advancedFilters.classList.contains('hidden');
+                    advancedFilters.classList.toggle('hidden');
+                    
+                    const icon = this.querySelector('i');
+                    if (isHidden) {
+                        icon.className = 'fas fa-chevron-up ml-2 text-xs';
+                    } else {
+                        icon.className = 'fas fa-chevron-down ml-2 text-xs';
+                    }
+                });
+            }
+        }
+
+        function applyFilters() {
+            const filters = {
+                search: document.getElementById('jobSearch')?.value || '',
+                type: document.getElementById('jobTypeFilter')?.value || '',
+                province: document.getElementById('provinceFilter')?.value || '',
+                city: document.getElementById('cityFilter')?.value || ''
+            };
+            
+            console.log('Applying filters:', filters);
+            loadJobs(filters);
+        }
+
+        // Make function available globally for the clear button
+        window.clearAllFilters = clearAllFilters;
     </script>
 </body>
 </html>

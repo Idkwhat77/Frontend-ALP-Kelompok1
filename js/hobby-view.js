@@ -32,10 +32,12 @@ class EmployeeHobbyViewer {
         if (!hobbiesList) return;
 
         if (hobbies.length === 0) {
+            const noHobbiesText = window.currentLanguage === 'id' ? 'Tidak ada hobi tersedia.' : 'No hobbies available.';
+            
             hobbiesList.innerHTML = `
                 <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                    <i class="fas fa-heart text-4xl mb-4"></i>
-                    <p>No hobbies available.</p>
+                    <i class="fas fa-heart text-4xl mb-4" aria-label="hobbies"></i>
+                    <p data-i18n="hobbies.no_hobbies">${noHobbiesText}</p>
                 </div>
             `;
             return;

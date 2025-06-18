@@ -1,54 +1,62 @@
-window.addEventListener('DOMContentLoaded', async () => {
-  const storedUser = JSON.parse(localStorage.getItem('current_user'));
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize profile manager
+    initializeProfile();
+    setupSettingsForm();
+});
 
-  if (!storedUser || !storedUser.id) return;
+async function initializeProfile() {
+    try {
+        const user = window.apiClient?.getCurrentUser();
+        if (!user || !user.id) {
+            console.error('No user found');
+            return;
+        }
 
-  const userId = storedUser.id;
-
-  try {
-    const response = await apiClient.getCandidateByUserId(userId);
-
-    // Check if the response is not ok
-    if (!response || !response.candidate) {
-      console.error('No candidate data found for user ID:', userId);
-      return;
+        const response = await window.apiClient.getCandidateByUserId(user.id);
+        if (response && response.candidate) {
+            displayCandidateProfile(response.candidate);
+        }
+    } catch (error) {
+        console.error('Error loading profile:', error);
     }
+}
 
-    const candidate = response.candidate;
-
-    // Helper function to format date
-    const formatBirthDate = (dateString) => {
-      if (!dateString) return '';
-      
-      try {
-        const date = new Date(dateString);
-        
-        // Check if date is valid
-        if (isNaN(date.getTime())) return dateString;
-        
-        // Format as "Month Day, Year" (e.g., "June 14, 1990")
-        const options = { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
-        };
-        
-        return date.toLocaleDateString('en-US', options);
-      } catch (error) {
-        console.error('Error formatting date:', error);
-        return dateString;
-      }
+function displayCandidateProfile(candidate) {
+    // Helper function to format province name
+    const formatProvinceName = (province) => {
+        if (!province) return '';
+        return province
+            .split('-')
+            .map(word => {
+                if (word === 'dki') return 'DKI';
+                if (word === 'di') return 'DI';
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            })
+            .join(' ');
     };
-    
-    // Update profile information with candidate data
-    document.getElementById('user-name').textContent = candidate.fullName || '';
-    document.getElementById('user-name2').textContent = candidate.fullName || '';
-    document.getElementById('user-email').textContent = candidate.email || '';
-    document.getElementById('user-birthdate').textContent = formatBirthDate(candidate.birthDate);
-    document.getElementById('user-location').textContent = candidate.city || '';
-    document.getElementById('user-industry').textContent = candidate.industry || '';
-    document.getElementById('user-employment-status').textContent = candidate.employmentStatus || '';
 
+    // Helper function to format location
+    const formatLocation = (city, province) => {
+        const formattedProvince = formatProvinceName(province);
+        if (city && formattedProvince) {
+            return `${formattedProvince}, ${city}`;
+        } else if (city) {
+            return city;
+        } else if (formattedProvince) {
+            return formattedProvince;
+        }
+        return 'Not specified';
+    };
+
+    // Update profile information
+    document.getElementById('user-name').textContent = candidate.fullName || 'Loading...';
+    document.getElementById('user-industry').textContent = candidate.industry || 'Loading...';
+    document.getElementById('user-location').textContent = formatLocation(candidate.city, candidate.province);
+    document.getElementById('user-birthdate').textContent = formatBirthDate(candidate.birthDate);
+    document.getElementById('user-email').textContent = candidate.email || 'Loading...';
+    document.getElementById('user-employment-status').textContent = candidate.employmentStatus || 'Loading...';
+
+    // Update biodata
     const biodataElement = document.getElementById('user-biodata');
     if (biodataElement) {
         if (candidate.biodata && candidate.biodata.trim()) {
@@ -63,72 +71,52 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Fix: Use profileImageUrl instead of profileImage
+    // Update profile image
     const profileImageElement = document.getElementById('profile-image');
-    const profileImageElementNav = document.getElementById('profile-image-nav');
-    const profileImageElementMobile = document.getElementById('profile-image-mobile');
-
-    if (profileImageElementMobile) {
-      if (candidate.profileImageUrl) {
-        // Construct full URL - assuming your backend runs on localhost:8080
-        const imageUrl = `http://localhost:8080${candidate.profileImageUrl}`;
-        // Set background image instead of src
-        profileImageElementMobile.style.backgroundImage = `url('${imageUrl}')`;
-      } else {
-        profileImageElementMobile.style.backgroundImage = `url('img/default-profile.png')`;
-      }
-    }
-
-    if (profileImageElementNav) {
-      if (candidate.profileImageUrl) {
-        // Construct full URL - assuming your backend runs on localhost:8080
-        const imageUrl = `http://localhost:8080${candidate.profileImageUrl}`;
-        // Set background image instead of src
-        profileImageElementNav.style.backgroundImage = `url('${imageUrl}')`;
-      } else {
-        profileImageElementNav.style.backgroundImage = `url('img/default-profile.png')`;
-      }
-    }
-
-    if (profileImageElement) {
-      if (candidate.profileImageUrl) {
-        // Construct full URL - assuming your backend runs on localhost:8080
+    if (profileImageElement && candidate.profileImageUrl) {
         const imageUrl = `http://localhost:8080${candidate.profileImageUrl}`;
         profileImageElement.style.backgroundImage = `url('${imageUrl}')`;
-      } else {
-        profileImageElement.style.backgroundImage = `url('img/default-profile.png')`;
-      }
     }
-  } catch (err) {
-    console.error('Error loading profile:', err);
-  }
-});
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const settingsForm = document.getElementById('settings-form');
+function formatBirthDate(dateString) {
+    if (!dateString) return 'Not provided';
     
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return dateString;
+        
+        const options = { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        };
+        
+        return date.toLocaleDateString('en-US', options);
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return dateString;
+    }
+}
+
+function setupSettingsForm() {
+    const settingsForm = document.getElementById('settings-form');
     if (settingsForm) {
         settingsForm.addEventListener('submit', handleSettingsSubmit);
         
-        // Load current profile data when settings modal opens
+        // Load current data when settings modal is opened
         const settingsModal = document.getElementById('modal-settings');
         if (settingsModal) {
-            // Listen for when the modal is opened
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                        if (!settingsModal.classList.contains('hidden')) {
-                            loadCurrentProfileData();
-                        }
-                    }
-                });
+            const observer = new MutationObserver(() => {
+                if (!settingsModal.classList.contains('hidden')) {
+                    loadCurrentProfileData();
+                }
             });
             observer.observe(settingsModal, { attributes: true });
         }
     }
-});
+}
 
-// Load current profile data into the settings form
 async function loadCurrentProfileData() {
     try {
         const user = window.apiClient?.getCurrentUser();
@@ -144,11 +132,61 @@ async function loadCurrentProfileData() {
             // Populate form fields
             document.getElementById('settings-fullname').value = candidate.fullName || '';
             document.getElementById('settings-email').value = candidate.email || '';
-            document.getElementById('settings-city').value = candidate.city || '';
-            document.getElementById('settings-industry').value = candidate.industry || '';
+            
+            // Handle industry with case-insensitive matching
+            const industrySelect = document.getElementById('settings-industry');
+            if (industrySelect && candidate.industry) {
+                // First try exact match
+                let optionFound = false;
+                for (let option of industrySelect.options) {
+                    if (option.value === candidate.industry) {
+                        industrySelect.value = candidate.industry;
+                        optionFound = true;
+                        break;
+                    }
+                }
+                
+                // If no exact match, try case-insensitive match
+                if (!optionFound) {
+                    const candidateIndustryLower = candidate.industry.toLowerCase();
+                    for (let option of industrySelect.options) {
+                        if (option.value.toLowerCase() === candidateIndustryLower) {
+                            industrySelect.value = option.value;
+                            optionFound = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // If still no match, log for debugging
+                if (!optionFound) {
+                    console.warn('Industry not found in options:', candidate.industry);
+                    console.log('Available options:', Array.from(industrySelect.options).map(opt => opt.value));
+                }
+            }
+            
             document.getElementById('settings-employment-status').value = candidate.employmentStatus || '';
             document.getElementById('settings-job-type').value = candidate.jobType || '';
             document.getElementById('settings-biodata').value = candidate.biodata || '';
+            
+            // Handle province and city
+            const provinceSelect = document.getElementById('settings-province');
+            const citySelect = document.getElementById('settings-city');
+            
+            if (provinceSelect && candidate.province) {
+                provinceSelect.value = candidate.province;
+                
+                // Trigger change event to populate cities
+                const event = new Event('change');
+                provinceSelect.dispatchEvent(event);
+                
+                // Set city after a brief delay to ensure cities are loaded
+                setTimeout(() => {
+                    if (citySelect && candidate.city) {
+                        citySelect.value = candidate.city;
+                    }
+                }, 100);
+            }
             
             // Handle birth date formatting
             if (candidate.birthDate) {
@@ -159,11 +197,10 @@ async function loadCurrentProfileData() {
         }
     } catch (error) {
         console.error('Error loading profile data:', error);
-        alert('❌ Error loading profile data');
+        showNotification('Error loading profile data', 'error');
     }
 }
 
-// Handle settings form submission
 async function handleSettingsSubmit(event) {
     event.preventDefault();
     
@@ -180,11 +217,20 @@ async function handleSettingsSubmit(event) {
             throw new Error('User not authenticated');
         }
 
+        // Get candidate data first to get the candidate ID
+        const candidateResponse = await window.apiClient.getCandidateByUserId(user.id);
+        if (!candidateResponse || !candidateResponse.candidate) {
+            throw new Error('No candidate data found for user');
+        }
+        
+        const candidateId = candidateResponse.candidate.id;
+        
         // Collect form data
         const formData = {
             fullName: document.getElementById('settings-fullname').value.trim(),
             email: document.getElementById('settings-email').value.trim(),
             birthDate: document.getElementById('settings-birthdate').value,
+            province: document.getElementById('settings-province').value,
             city: document.getElementById('settings-city').value,
             industry: document.getElementById('settings-industry').value,
             employmentStatus: document.getElementById('settings-employment-status').value,
@@ -205,13 +251,12 @@ async function handleSettingsSubmit(event) {
 
         // Update profile via API
         if (window.apiClient && window.apiClient.updateCandidate) {
-            const response = await window.apiClient.updateCandidate(user.id, formData);
+            const response = await window.apiClient.updateCandidate(candidateId, formData);
             
             if (response && response.success) {
-                alert('✅ Profile updated successfully!');
-                
+                showNotification('Profile updated successfully!');
                 // Update the profile display
-                updateProfileDisplay(formData);
+                displayCandidateProfile({...candidateResponse.candidate, ...formData});
                 
                 // Close the modal
                 closeModal('modal-settings');
@@ -221,15 +266,15 @@ async function handleSettingsSubmit(event) {
         } else {
             // Fallback: simulate update for demo
             setTimeout(() => {
-                alert('✅ Profile updated successfully! (Demo mode)');
-                updateProfileDisplay(formData);
+                showNotification('Profile updated successfully! (Demo mode)');
+                displayCandidateProfile({...candidateResponse.candidate, ...formData});
                 closeModal('modal-settings');
             }, 1000);
         }
         
     } catch (error) {
         console.error('Settings update error:', error);
-        alert(`❌ Error updating profile: ${error.message}`);
+        showNotification(`Error updating profile: ${error.message}`, 'error');
     } finally {
         // Re-enable submit button
         submitButton.disabled = false;
@@ -237,50 +282,31 @@ async function handleSettingsSubmit(event) {
     }
 }
 
-// Update the profile display with new data
-function updateProfileDisplay(data) {
-    // Helper function to format date
-    const formatBirthDate = (dateString) => {
-        if (!dateString) return '';
-        
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) return dateString;
-            
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            
-            return date.toLocaleDateString('en-US', options);
-        } catch (error) {
-            console.error('Error formatting date:', error);
-            return dateString;
-        }
-    };
-
-    // Update profile information elements
-    const elements = {
-        'user-name': data.fullName,
-        'user-name2': data.fullName,
-        'user-email': data.email,
-        'user-birthdate': formatBirthDate(data.birthDate),
-        'user-location': data.city,
-        'user-industry': data.industry,
-        'user-employment-status': data.employmentStatus,
-        'user-biodata': data.biodata
-    };
-
-    Object.entries(elements).forEach(([elementId, value]) => {
-        const element = document.getElementById(elementId);
-        if (element && value) {
-            element.textContent = value;
-        }
-    });
-
-    // Refresh navbar profile image when profile is updated
-    if (window.navbarProfileManager) {
-        window.navbarProfileManager.refreshNavbar();
-    }
+function showNotification(message, type = 'success') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full ${
+        type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
 }
