@@ -329,6 +329,191 @@ function displayCompanyErrorState() {
     `;
 }
 
+async function loadHomepageJobs() {
+    try {
+        // Show loading state
+        const oprecContainer = document.querySelector('#oprec-container');
+        oprecContainer.innerHTML = `
+            <div class="col-span-full flex justify-center py-8">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400"></div>
+            </div>
+        `;
+
+        // Fetch jobs from API
+        const response = await fetch('http://localhost:8080/api/jobs?limit=3');
+        const data = await response.json();
+        
+        if (response.ok && data.success && data.jobs) {
+            // Limit to first 3 jobs for homepage
+            const jobs = data.jobs.slice(0, 3);
+            displayJobCards(jobs);
+        } else {
+            throw new Error('No jobs data received');
+        }
+    } catch (error) {
+        console.error('Error loading jobs:', error);
+        displayJobErrorState();
+    }
+}
+
+function displayJobCards(jobs) {
+    const oprecContainer = document.querySelector('#oprec-container');
+    
+    if (!jobs || jobs.length === 0) {
+        oprecContainer.innerHTML = `
+            <div class="col-span-full text-center py-8">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-briefcase text-4xl"></i>
+                </div>
+                <p class="text-gray-500 dark:text-gray-400">No job openings available at the moment.</p>
+            </div>
+        `;
+        return;
+    }
+
+    oprecContainer.innerHTML = jobs.map(job => {
+        // Format location
+        const location = formatJobLocation(job.city, job.province);
+        
+        // Format posted date
+        const postedDate = formatRealDate(job.createdAt);
+        
+        // Get company logo
+        const companyLogo = job.company?.profileImageUrl 
+            ? `http://localhost:8080${job.company.profileImageUrl}` 
+            : 'img/default-company.png';
+        
+        // Get company name
+        const companyName = job.company?.name || job.company?.companyName || 'Company';
+        
+        // Format skills array
+        const skillsArray = Array.isArray(job.skills) ? job.skills : 
+            (typeof job.skills === 'string' ? job.skills.split(',').map(s => s.trim()) : []);
+        
+        // Format job type
+        const jobTypeDisplay = formatJobType(job.type);
+
+        return `
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div class="p-5">
+                    <div class="flex items-start mb-4">
+                        <img class="h-12 w-12 rounded-full object-cover mr-4" 
+                             src="${companyLogo}" 
+                             alt="${companyName} Logo"
+                             onerror="this.src='img/default-company.png'">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 dark:text-white">${job.title || 'Job Title'}</h3>
+                            <p class="text-lilac-500 text-sm">${companyName}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${jobTypeDisplay}</span>
+                        ${location ? `<span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${location}</span>` : ''}
+                        ${skillsArray.slice(0, 1).map(skill => 
+                            `<span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${skill}</span>`
+                        ).join('')}
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                        ${job.description ? stripHtmlAndTruncate(job.description, 120) : 'No description available'}
+                    </p>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500 dark:text-gray-400">${postedDate}</span>
+                        <a href="job-detail.html?id=${job.id}" class="text-lilac-500 hover:text-lilac-600 font-medium">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function displayJobErrorState() {
+    const oprecContainer = document.querySelector('#oprec-container');
+    oprecContainer.innerHTML = `
+        <div class="col-span-full text-center py-8">
+            <div class="text-gray-400 mb-4">
+                <i class="fas fa-exclamation-triangle text-4xl"></i>
+            </div>
+            <p class="text-gray-500 dark:text-gray-400">Unable to load job openings. Please try again later.</p>
+        </div>
+    `;
+}
+
+// Helper functions (add these if they don't exist)
+function formatJobLocation(city, province) {
+    if (city && province) {
+        return `${city}, ${province}`;
+    } else if (city) {
+        return city;
+    } else if (province) {
+        return province;
+    }
+    return 'Location TBD';
+}
+
+function formatJobType(type) {
+    const typeMap = {
+        'fulltime': 'Full-time',
+        'parttime': 'Part-time',
+        'contract': 'Contract',
+        'internship': 'Internship',
+        'freelance': 'Freelance',
+        'remote': 'Remote',
+        'hybrid': 'Hybrid',
+        'temporary': 'Temporary'
+    };
+    return typeMap[type] || type || 'Full-time';
+}
+
+function formatRealDate(dateString) {
+    if (!dateString) return 'Recently posted';
+    
+    try {
+        const date = new Date(dateString);
+        
+        // Check if date is valid
+        if (isNaN(date.getTime())) {
+            return 'Recently posted';
+        }
+        
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+        const diffMinutes = Math.floor(diffTime / (1000 * 60));
+        
+        if (diffMinutes < 60) {
+            return diffMinutes <= 1 ? 'Just posted' : `${diffMinutes} minutes ago`;
+        } else if (diffHours < 24) {
+            return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+        } else if (diffDays === 1) {
+            return '1 day ago';
+        } else if (diffDays <= 7) {
+            return `${diffDays} days ago`;
+        } else if (diffDays <= 30) {
+            const weeks = Math.ceil(diffDays / 7);
+            return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+        } else {
+            const months = Math.ceil(diffDays / 30);
+            return months === 1 ? '1 month ago' : `${months} months ago`;
+        }
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return 'Recently posted';
+    }
+}
+
+function stripHtmlAndTruncate(html, maxLength) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const text = div.textContent || div.innerText || '';
+    
+    if (text.length <= maxLength) {
+        return text;
+    }
+    
+    return text.substring(0, maxLength) + '...';
+}
+
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', () => {
     // Load API client first
@@ -347,4 +532,8 @@ document.addEventListener('DOMContentLoaded', () => {
         loadHomepageCompanies();
     }, 100);
 
+    setTimeout(() => {
+        console.log('Loading homepage jobs...');
+        loadHomepageJobs();
+    }, 200);
 });

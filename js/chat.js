@@ -9,6 +9,28 @@ class ChatManager {
         this.init();
     }
 
+    _parseDate(dateInput) {
+        if (!dateInput) return null;
+        if (dateInput instanceof Date) return dateInput;
+
+        let date = null;
+        if (Array.isArray(dateInput) && dateInput.length >= 6) {
+            // Handle Jackson array format [YYYY, MM, DD, HH, MM, SS]
+            // JS Date constructor month is 0-indexed
+            date = new Date(dateInput[0], dateInput[1] - 1, dateInput[2], dateInput[3], dateInput[4], dateInput[5]);
+        } else if (typeof dateInput === 'string') {
+            // Handle ISO string format
+            date = new Date(dateInput);
+        }
+
+        if (date && !isNaN(date.getTime())) {
+            return date;
+        }
+        
+        console.warn('Could not parse date:', dateInput);
+        return null;
+    }
+
     async init() {
         this.currentUser = window.apiClient.getCurrentUser();
         if (!this.currentUser) {
@@ -433,7 +455,8 @@ class ChatManager {
             const imageUrl = otherUser.profileImageUrl 
                 ? `http://localhost:8080${otherUser.profileImageUrl}` 
                 : 'img/default-profile.png';
-
+            
+            // Format the time display properly
             const timeDisplay = lastMessage 
                 ? this.formatTimeAgo(lastMessage.createdAt)
                 : '';
@@ -443,13 +466,13 @@ class ChatManager {
 
             return `
                 <div class="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer ${isActive ? 'bg-gray-100 dark:bg-gray-800 active-chat' : ''}" 
-                     data-conversation-id="${conversation.id}" 
-                     data-other-user-id="${otherUser.userId}">
+                    data-conversation-id="${conversation.id}" 
+                    data-other-user-id="${otherUser.userId}">
                     <div class="flex items-center">
                         <img class="h-10 w-10 rounded-full object-cover mr-3" 
-                             src="${imageUrl}" 
-                             alt="${otherUser.fullName}"
-                             onerror="this.src='img/default-profile.png'">
+                            src="${imageUrl}" 
+                            alt="${otherUser.fullName}"
+                            onerror="this.src='img/default-profile.png'">
                         <div class="flex-1 min-w-0">
                             <div class="flex justify-between items-center">
                                 <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
@@ -608,10 +631,13 @@ class ChatManager {
         const textColor = isOwnMessage ? '' : 'text-gray-800 dark:text-gray-200';
         const timeColor = isOwnMessage ? 'text-lilac-200' : 'text-gray-500 dark:text-gray-400';
         
+        // Format the timestamp
+        const timeDisplay = this.formatTime(message.createdAt);
+        
         messageContent.innerHTML = `
             <p class="${textColor}">${this.escapeHtml(message.content)}</p>
             <p class="text-xs ${timeColor} mt-1 text-right">
-                ${this.formatTime(message.createdAt)}
+                ${timeDisplay}
             </p>
         `;
         
@@ -748,43 +774,88 @@ class ChatManager {
     }
 
     formatDate(dateString) {
-        const date = new Date(dateString);
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
+        if (!dateString) return '';
         
-        if (date.toDateString() === today.toDateString()) {
-            return 'Today';
-        } else if (date.toDateString() === yesterday.toDateString()) {
-            return 'Yesterday';
-        } else {
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        try {
+            const date = this._parseDate(dateString);
+            
+            // Check if date is valid
+            if (!date || isNaN(date.getTime())) {
+                return '';
+            }
+            
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            if (date.toDateString() === today.toDateString()) {
+                return 'Today';
+            } else if (date.toDateString() === yesterday.toDateString()) {
+                return 'Yesterday';
+            } else {
+                return date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined
+                });
+            }
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return '';
         }
     }
 
     formatTime(dateString) {
-        return new Date(dateString).toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
+        if (!dateString) return '';
+        
+        try {
+            const date = this._parseDate(dateString);
+            
+            // Check if date is valid
+            if (!date || isNaN(date.getTime())) {
+                return '';
+            }
+            
+            return date.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false
+            });
+        } catch (error) {
+            console.error('Error formatting time:', error);
+            return '';
+        }
     }
 
     formatTimeAgo(dateString) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diff = now - date;
+        if (!dateString) return '';
         
-        const minutes = Math.floor(diff / 60000);
-        const hours = Math.floor(diff / 3600000);
-        const days = Math.floor(diff / 86400000);
-        
-        if (minutes < 1) return 'now';
-        if (minutes < 60) return `${minutes}m`;
-        if (hours < 24) return `${hours}h`;
-        if (days === 1) return 'yesterday';
-        if (days < 7) return `${days}d`;
-        
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        try {
+            const date = this._parseDate(dateString);
+            
+            // Check if date is valid
+            if (!date || isNaN(date.getTime())) {
+                return '';
+            }
+            
+            const now = new Date();
+            const diff = now - date;
+            
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'now';
+            if (minutes < 60) return `${minutes}m`;
+            if (hours < 24) return `${hours}h`;
+            if (days === 1) return 'yesterday';
+            if (days < 7) return `${days}d`;
+            
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        } catch (error) {
+            console.error('Error formatting time ago:', error);
+            return '';
+        }
     }
 
     escapeHtml(text) {

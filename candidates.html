@@ -352,7 +352,7 @@
         </div>
 
         <!-- Candidates Grid -->
-        <section class="mb-8 ">
+        <section class="mb-8 mt-2">
             <div class="flex justify-between items-center mb-4">
                 <h2 data-i18n="candidates.available" class="text-xl font-bold text-gray-900 dark:text-white">Available Candidates</h2>
                 <div id="showing-candidates" class="text-sm text-gray-500 dark:text-gray-400">
@@ -401,40 +401,6 @@
                 </button>
             </nav>
         </div>
-
-        <script>
-            let currentPage = 1;
-            
-            function goToPage(page) {
-                currentPage = page;
-                updatePagination();
-                // Add your content loading logic here
-            }
-            
-            function previousPage() {
-                if (currentPage > 1) goToPage(currentPage - 1);
-            }
-            
-            function nextPage() {
-                if (currentPage < 8) goToPage(currentPage + 1);
-            }
-            
-            function updatePagination() {
-                // Update active page styling
-                document.querySelectorAll('[aria-current="page"]').forEach(el => {
-                    el.removeAttribute('aria-current');
-                    el.classList.remove('bg-lilac-500', 'text-white', 'border-lilac-500');
-                    el.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
-                });
-                
-                const activeBtn = document.querySelector(`button[onclick="goToPage(${currentPage})"]`);
-                if (activeBtn) {
-                    activeBtn.setAttribute('aria-current', 'page');
-                    activeBtn.classList.add('bg-lilac-500', 'text-white', 'border-lilac-500');
-                    activeBtn.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
-                }
-            }
-        </script>
 
         <!-- Call to Action -->
         <section class="bg-lilac-50 dark:bg-gray-800 rounded-xl p-8 mb-8 text-center">

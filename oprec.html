@@ -110,7 +110,7 @@
                         </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Beranda
                         </a>
                         <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
@@ -556,6 +556,35 @@
 
     <script src="js/navbar-profile.js"></script>
     <script>
+        // Mobile menu functionality
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    function toggleMobileMenu() {
+        const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !expanded);
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between hamburger and close icon
+        const icon = mobileMenuButton.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    }
+    
+    mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    
+    // User dropdown menu functionality
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    
+    userMenuButton.addEventListener('click', () => {
+        const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+        userMenuButton.setAttribute('aria-expanded', !expanded);
+        userMenu.classList.toggle('hidden');
+    });
+    
+    </script>
+    <script>
         // Province and city mapping (same as in posting_oprec.js)
         const citiesByProvince = {
             "Aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
@@ -809,7 +838,19 @@
             if (!dateString) return 'Recently posted';
             
             try {
-                const date = new Date(dateString);
+                let date;
+                if (Array.isArray(dateString)) {
+                    // Handle Jackson array format [YYYY, MM, DD, HH, MM, SS]
+                    date = new Date(dateString[0], dateString[1] - 1, dateString[2], dateString[3], dateString[4], dateString[5]);
+                } else {
+                    date = new Date(dateString);
+                }
+                
+                // Check if date is valid
+                if (isNaN(date.getTime())) {
+                    return 'Recently posted';
+                }
+                
                 const now = new Date();
                 const diffTime = Math.abs(now - date);
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));

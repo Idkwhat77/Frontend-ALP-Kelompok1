@@ -191,7 +191,7 @@ function showFilterMessage(filters) {
     if (filters.search || filters.province || filters.city || filters.jobType || filters.industry) {
         const candidatesSection = document.querySelector('#candidates-container').parentElement;
         const message = document.createElement('div');
-        message.className = 'search-results-message bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4';
+        message.className = 'search-results-message bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4 mt-4';
         
         let messageText = '';
         if (filters.search) {
@@ -422,7 +422,7 @@ function displayCandidateCards(candidates) {
     };
 
     candidatesContainer.innerHTML = candidates.map(candidate => `
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+        <div class="bg-white dark:bg-gray-700 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
             <div class="p-4">
                 <div class="flex items-start mb-3">
                     <img class="h-14 w-14 rounded-full object-cover mr-3" 
@@ -442,8 +442,8 @@ function displayCandidateCards(candidates) {
                     ${candidate.biodata || 'Professional with experience in their field, ready for new opportunities.'}
                 </p>
                 <div class="flex flex-wrap gap-1 mb-3">
-                    <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">${candidate.industry || 'General'}</span>
-                    <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">${candidate.jobType || 'Professional'}</span>
+                    <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-800 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">${candidate.industry || 'General'}</span>
+                    <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-800 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">${candidate.jobType || 'Professional'}</span>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="text-xs text-gray-500 dark:text-gray-400">${candidate.employmentStatus || 'Available'}</span>
