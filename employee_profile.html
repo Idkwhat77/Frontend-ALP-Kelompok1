@@ -529,10 +529,10 @@
 
                 if (existingConversation) {
                     console.log('Found existing conversation:', existingConversation);
-                    window.location.href = `chat.html?conversation=${existingConversation.id}&user=${candidateUserId}`;
+                    window.location.href = `chat.html?conversation=${existingConversation.id}&user=${candidateUserId}&type=candidate`;
                 } else {
                     console.log('No existing conversation found, redirecting to empty chat...');
-                    window.location.href = `chat.html?user=${candidateUserId}&new=true`;
+                    window.location.href = `chat.html?user=${candidateUserId}&new=true&type=candidate`;
                 }
 
             } catch (error) {

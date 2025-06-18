@@ -285,65 +285,41 @@ class ChatManager {
 
     async fetchUserProfileInfo(userId) {
         try {
-            console.log('Fetching profile info for user ID:', userId);
-            
-            // Try to get candidate first
-            try {
-                let response = await window.apiClient.getCandidateByUserId(userId);
-                if (response && response.candidate) {
-                    const candidate = response.candidate;
-                    console.log('Found candidate profile:', candidate);
-                    return {
-                        userId: userId,
-                        type: 'candidate',
-                        fullName: candidate.fullName,
-                        profileImageUrl: candidate.profileImageUrl,
-                        industry: candidate.industry,
-                        city: candidate.city
-                    };
-                }
-            } catch (candidateError) {
-                console.log('No candidate found, trying company...');
-            }
-            
-            // Try to get company
-            try {
-                let response = await window.apiClient.getCompanyByUserId(userId);
+            const urlParams = new URLSearchParams(window.location.search);
+            const userType = urlParams.get('type');
+            console.log(`Fetching profile for user ID: ${userId}, type: ${userType}`);
+
+            if (userType === 'company') {
+                const response = await window.apiClient.getCompanyByUserId(userId);
                 if (response && response.company) {
                     const company = response.company;
-                    console.log('Found company profile:', company);
                     return {
-                        userId: userId,
-                        type: 'company',
-                        fullName: company.companyName,
-                        profileImageUrl: company.profileImageUrl,
-                        industry: company.industry,
-                        hq: company.hq
+                        userId: userId, type: 'company', fullName: company.companyName,
+                        profileImageUrl: company.profileImageUrl, industry: company.industry, hq: company.hq
                     };
                 }
-            } catch (companyError) {
-                console.log('No company found either');
+            } else if (userType === 'candidate') {
+                const response = await window.apiClient.getCandidateByUserId(userId);
+                if (response && response.candidate) {
+                    const candidate = response.candidate;
+                    return {
+                        userId: userId, type: 'candidate', fullName: candidate.fullName,
+                        profileImageUrl: candidate.profileImageUrl, industry: candidate.industry, city: candidate.city
+                    };
+                }
             }
-            
-            // If both fail, try to get basic user info
+
+            // Fallback for old links without type
             try {
-                let response = await window.apiClient.getUserById(userId);
-                if (response && response.user) {
-                    const user = response.user;
-                    console.log('Found basic user profile:', user);
-                    return {
-                        userId: userId,
-                        type: 'user',
-                        fullName: user.email || 'User',
-                        profileImageUrl: null,
-                        industry: null,
-                        city: null
-                    };
-                }
-            } catch (userError) {
-                console.log('No user found at all');
-            }
-            
+                let response = await window.apiClient.getCandidateByUserId(userId);
+                if (response && response.candidate) return { /* ... candidate data ... */ };
+            } catch (e) { /* ignore */ }
+
+            try {
+                let response = await window.apiClient.getCompanyByUserId(userId);
+                if (response && response.company) return { /* ... company data ... */ };
+            } catch (e) { /* ignore */ }
+
             console.error('No profile found for user ID:', userId);
             return null;
         } catch (error) {

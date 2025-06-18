@@ -252,6 +252,35 @@ class CompanyProfileViewer {
             `;
         }
     }
+
+    initializeEmployeesManager() {
+        // Make sure company data is available globally
+        window.currentCompanyData = this.currentCompany;
+        
+        // Initialize employees manager with company data
+        if (typeof CompanyEmployeesManager !== 'undefined' && this.currentCompany) {
+            this.employeesManager = new CompanyEmployeesManager(this.currentCompany.id);
+            this.employeesManager.isOwnProfile = this.isOwnProfile;
+            console.log('Employees manager initialized with company data');
+        }
+    }
+
+    toggleEditControls() {
+        const editControls = document.querySelectorAll('.edit-control');
+        editControls.forEach(control => {
+            if (this.isOwnProfile) {
+                control.style.display = 'inline-block';
+            } else {
+                control.style.display = 'none';
+            }
+        });
+
+        // Update employees manager ownership
+        if (this.employeesManager) {
+            this.employeesManager.isOwnProfile = this.isOwnProfile;
+            this.employeesManager.displayEmployees(); // Refresh display
+        }
+    }
 }
 
 // Initialize when DOM is loaded
