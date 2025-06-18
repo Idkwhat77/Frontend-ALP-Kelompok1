@@ -1,0 +1,786 @@
+<!DOCTYPE html>  
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile - RuangKerja</title>
+    
+    <!-- Same assets as your companies page -->
+    <script src="api.js"></script>
+    <script src="logout.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf7fd',
+                            100: '#f4ecfb',
+                            200: '#ebddf7',
+                            300: '#dbc2f0',
+                            400: '#c69ae6',
+                            500: '#b87ce0',
+                        },
+                    },
+                    fontFamily: {
+                        elegant: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    },
+                    transitionProperty: {
+                        'scale': 'transform',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+        
+        .fade-on-scroll {
+            opacity: 0;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-on-scroll.visible {
+            opacity: 1;
+        }
+        
+        button:focus, input:focus, select:focus {
+            outline: 2px solid #c69ae6;
+            outline-offset: 2px;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f4ecfb;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #dbc2f0;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+        
+        /* Custom profile header */
+        .profile-header {
+            background: linear-gradient(135deg, #f4ecfb 0%, #dbc2f0 100%);
+        }
+        
+        .dark .profile-header {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+        }
+        
+        /* Stats card hover effect */
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(183, 124, 224, 0.4);
+        }
+        
+        /* Tab active state */
+        .tab-active {
+            border-bottom: 3px solid #b87ce0;
+            color: #b87ce0;
+            font-weight: 500;
+        }
+        
+        .dark .tab-active {
+            border-bottom-color: #c69ae6;
+            color: #c69ae6;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
+    <!-- Navbar (same as companies page) -->
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Beranda
+                        </a>
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                        </button>
+                        
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
+
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+        
+        <!-- Company Header Section -->
+        <section class="relative rounded-xl p-6 md:p-8 mb-8 shadow-sm transition-all duration-300 overflow-hidden">
+            <!-- Background Image (uploaded by company) -->
+            <div class="absolute inset-0 z-0">
+                <img id="company-bg-image" src="https://via.placeholder.com/1200x400" href="#"
+                    alt="Company background" 
+                    class="w-full h-full object-cover object-center">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-gray-900/20 dark:from-gray-900/90 dark:to-gray-900/30"></div>
+            </div>
+            
+            <!-- Content Container -->
+            <div class="relative z-10">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                    <!-- Logo Container -->
+                    <div class="flex-shrink-0">
+                        <div class="h-24 w-24 md:h-32 md:w-32 rounded-full bg-white dark:bg-gray-800 shadow-md overflow-hidden border-4 border-white dark:border-gray-700">
+                            <img href="#" src="https://via.placeholder.com/150" alt="Company Logo" class="h-full w-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <!-- Company Info -->
+                    <div class="flex-1">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <h1 class="text-2xl md:text-3xl font-bold text-white dark:text-gray-100 mb-1">TechNova Solutions</h1>
+                                <p class="text-gray-200 dark:text-gray-300 mb-2">Innovating the future of technology</p>
+                                
+                                <div class="flex flex-wrap items-center gap-2 text-sm">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-white/20 dark:bg-gray-800/80 text-white dark:text-gray-200 backdrop-blur-sm">
+                                        <i class="fas fa-map-marker-alt mr-1.5 text-lilac-300"></i>
+                                        Jakarta, Indonesia
+                                    </span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-white/20 dark:bg-gray-800/80 text-white dark:text-gray-200 backdrop-blur-sm">
+                                        <i class="fas fa-users mr-1.5 text-lilac-300"></i>
+                                        201-500 employees
+                                    </span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-white/20 dark:bg-gray-800/80 text-white dark:text-gray-200 backdrop-blur-sm">
+                                        <i class="fas fa-building mr-1.5 text-lilac-300"></i>
+                                        Technology
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="absolute bottom-4 right-4 z-20">
+                                <button class="px-2 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium flex items-center shadow-lg">
+                                    <i class="fas fa-paper-plane mr-2"></i>
+                                    <span data-i18n="company.contact">Contact</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="stats-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Open Positions</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">24</h3>
+                    </div>
+                    <div class="p-3 rounded-lg bg-lilac-100 dark:bg-gray-700 text-lilac-600 dark:text-lilac-300">
+                        <i class="fas fa-briefcase text-lg"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">+5 from last month</p>
+            </div>
+            
+            <div class="stats-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Employees</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">342</h3>
+                    </div>
+                    <div class="p-3 rounded-lg bg-lilac-100 dark:bg-gray-700 text-lilac-600 dark:text-lilac-300">
+                        <i class="fas fa-users text-lg"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">+12% growth</p>
+            </div>
+            
+            <div class="stats-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Founded</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">2015</h3>
+                    </div>
+                    <div class="p-3 rounded-lg bg-lilac-100 dark:bg-gray-700 text-lilac-600 dark:text-lilac-300">
+                        <i class="fas fa-calendar-alt text-lg"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">8 years in business</p>
+            </div>
+            
+            <div class="stats-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Avg. Rating</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">4.7</h3>
+                    </div>
+                    <div class="p-3 rounded-lg bg-lilac-100 dark:bg-gray-700 text-lilac-600 dark:text-lilac-300">
+                        <i class="fas fa-star text-lg"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Based on 128 reviews</p>
+            </div>
+        </section>
+
+        <!-- Tabs Navigation -->
+        <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
+            <nav class="flex space-x-8">
+                <button class="tab-active py-4 px-1 text-sm font-medium text-center border-b-2 border-transparent whitespace-nowrap" id="about-tab">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span data-i18n="company.about">About</span>
+                </button>
+                <button class="py-4 px-1 text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap" id="jobs-tab">
+                    <i class="fas fa-briefcase mr-2"></i>
+                    <span data-i18n="company.jobs">Jobs (24)</span>
+                </button>
+                <button class="py-4 px-1 text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap" id="reviews-tab">
+                    <i class="fas fa-star mr-2"></i>
+                    <span data-i18n="company.reviews">Reviews</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- About Tab -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="about-content">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Company Overview</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            TechNova Solutions is a leading technology company specializing in innovative software solutions, artificial intelligence, and cloud computing. Founded in 2015, we've grown from a small startup to a team of over 300 talented professionals dedicated to transforming businesses through technology.
+                        </p>
+                        <p class="text-gray-600 dark:text-gray-300">
+                            Our mission is to empower organizations with cutting-edge digital solutions that drive growth, efficiency, and competitive advantage. We pride ourselves on our collaborative culture, commitment to excellence, and passion for solving complex challenges.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">What We Do</h3>
+                        <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-lilac-500 mt-1 mr-2"></i>
+                                <span>Custom software development for enterprises</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-lilac-500 mt-1 mr-2"></i>
+                                <span>AI and machine learning solutions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-lilac-500 mt-1 mr-2"></i>
+                                <span>Cloud migration and optimization</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-lilac-500 mt-1 mr-2"></i>
+                                <span>Data analytics and business intelligence</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-lilac-500 mt-1 mr-2"></i>
+                                <span>Cybersecurity services</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Our Culture</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div class="flex items-start p-3 bg-lilac-50 dark:bg-gray-700 rounded-lg">
+                                <i class="fas fa-lightbulb text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 dark:text-white mb-1">Innovation</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">We encourage creative thinking and experimentation</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start p-3 bg-lilac-50 dark:bg-gray-700 rounded-lg">
+                                <i class="fas fa-hands-helping text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 dark:text-white mb-1">Collaboration</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Teamwork is at the heart of everything we do</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start p-3 bg-lilac-50 dark:bg-gray-700 rounded-lg">
+                                <i class="fas fa-chart-line text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 dark:text-white mb-1">Growth</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Continuous learning and development opportunities</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start p-3 bg-lilac-50 dark:bg-gray-700 rounded-lg">
+                                <i class="fas fa-heart text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 dark:text-white mb-1">Wellbeing</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">We prioritize employee health and happiness</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Company Details</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <i class="fas fa-globe text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Website</p>
+                                    <a href="#" class="text-lilac-600 dark:text-lilac-400 hover:underline">technova-solutions.com</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-building text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Industry</p>
+                                    <p class="text-gray-600 dark:text-gray-300">Technology</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-users text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Company Size</p>
+                                    <p class="text-gray-600 dark:text-gray-300">201-500 employees</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Headquarters</p>
+                                    <p class="text-gray-600 dark:text-gray-300">Jakarta, Indonesia</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-calendar-alt text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Founded</p>
+                                    <p class="text-gray-600 dark:text-gray-300">2015</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Tech Stack</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 rounded-full text-sm">JavaScript</span>
+                            <span class="px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 rounded-full text-sm">Python</span>
+                            <span class="px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 rounded-full text-sm">React</span>
+                            <span class="px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 rounded-full text-sm">Node.js</span>
+                            <span class="px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 rounded-full text-sm">AWS</span>
+                            <span class="px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 rounded-full text-sm">Docker</span>
+                            <span class="px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 rounded-full text-sm">Kubernetes</span>
+                            <span class="px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 rounded-full text-sm">TensorFlow</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Company Benefits</h3>
+                        <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-lilac-500 mt-1 mr-2"></i>
+                                <span>Health insurance</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-lilac-500 mt-1 mr-2"></i>
+                                <span>Flexible work hours</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-lilac-500 mt-1 mr-2"></i>
+                                <span>Remote work options</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-lilac-500 mt-1 mr-2"></i>
+                                <span>Professional development budget</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-lilac-500 mt-1 mr-2"></i>
+                                <span>Generous vacation policy</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-lilac-500 mt-1 mr-2"></i>
+                                <span>Stock options</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jobs Tab (hidden by default) -->
+            <div class="hidden" id="jobs-content">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <!-- Job Listing 1 -->
+                        <div class="p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Senior Frontend Developer</h3>
+                                    <div class="flex flex-wrap items-center gap-2 text-sm mb-2">
+                                        <span class="text-gray-600 dark:text-gray-300 flex items-center">
+                                            <i class="fas fa-map-marker-alt mr-1.5 text-lilac-500"></i>
+                                            Jakarta (Remote Available)
+                                        </span>
+                                        <span class="text-gray-600 dark:text-gray-300 flex items-center">
+                                            <i class="fas fa-money-bill-wave mr-1.5 text-lilac-500"></i>
+                                            IDR 25,000,000 - 35,000,000
+                                        </span>
+                                    </div>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">We're looking for an experienced Frontend Developer to lead our React.js development efforts and help build our next-generation web applications.</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <button class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium transition-colors">
+                                        Apply Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Job Listing 2 -->
+                        <div class="p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Data Scientist</h3>
+                                    <div class="flex flex-wrap items-center gap-2 text-sm mb-2">
+                                        <span class="text-gray-600 dark:text-gray-300 flex items-center">
+                                            <i class="fas fa-map-marker-alt mr-1.5 text-lilac-500"></i>
+                                            Bandung
+                                        </span>
+                                        <span class="text-gray-600 dark:text-gray-300 flex items-center">
+                                            <i class="fas fa-money-bill-wave mr-1.5 text-lilac-500"></i>
+                                            IDR 30,000,000 - 45,000,000
+                                        </span>
+                                    </div>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Join our AI team to develop machine learning models that power our predictive analytics platform.</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <button class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium transition-colors">
+                                        Apply Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- More job listings would go here -->
+                    </div>
+                    
+                    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-center">
+                        <button class="px-4 py-2 bg-white dark:bg-gray-800 border border-lilac-400 text-lilac-600 dark:text-lilac-300 hover:bg-lilac-50 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                            View All 24 Jobs
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reviews Tab (hidden by default) -->
+            <div class="hidden" id="reviews-content">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">4.7 <span class="text-lg text-gray-500 dark:text-gray-400">/ 5</span></h3>
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-sm text-gray-500 dark:text-gray-400 ml-2">128 reviews</span>
+                            </div>
+                        </div>
+                        
+                        <button class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium transition-colors">
+                            Write a Review
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="p-4 bg-lilac-50 dark:bg-gray-700 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="flex text-yellow-400 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm font-medium">5.0</span>
+                            </div>
+                            <h4 class="font-medium text-gray-900 dark:text-white mb-1">Great company culture</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">"TechNova has an amazing work environment with supportive leadership and great opportunities for growth."</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">- Current Employee, Software Engineer</p>
+                        </div>
+                        
+                        <div class="p-4 bg-lilac-50 dark:bg-gray-700 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="flex text-yellow-400 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm font-medium">4.5</span>
+                            </div>
+                            <h4 class="font-medium text-gray-900 dark:text-white mb-1">Innovative projects</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">"I've worked here for 2 years and have been challenged with interesting projects that push my skills forward."</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">- Current Employee, Data Scientist</p>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-lilac-400 text-lilac-600 dark:text-lilac-300 hover:bg-lilac-50 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                        Load More Reviews
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (same as companies page) -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p data-i18n="footer.company_description" class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.socials" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 data-i18n="footer.contact" class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/navbar-profile.js"></script>
+    <script>
+        // Tab functionality
+        const tabs = ['about', 'jobs', 'reviews'];
+        
+        tabs.forEach(tab => {
+            const tabButton = document.getElementById(`${tab}-tab`);
+            const tabContent = document.getElementById(`${tab}-content`);
+            
+            tabButton.addEventListener('click', () => {
+                // Hide all tab contents
+                tabs.forEach(t => {
+                    document.getElementById(`${t}-content`).classList.add('hidden');
+                    document.getElementById(`${t}-tab`).classList.remove('tab-active');
+                    document.getElementById(`${t}-tab`).classList.add('text-gray-500', 'dark:text-gray-400');
+                    document.getElementById(`${t}-tab`).classList.remove('text-gray-900', 'dark:text-white');
+                });
+                
+                // Show selected tab content
+                tabContent.classList.remove('hidden');
+                tabButton.classList.add('tab-active');
+                tabButton.classList.remove('text-gray-500', 'dark:text-gray-400');
+                tabButton.classList.add('text-gray-900', 'dark:text-white');
+            });
+        });
+        
+        // Fade-in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-on-scroll');
+        
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+        
+        // Initial check
+        fadeInOnScroll();
+        
+        // Check on scroll
+        window.addEventListener('scroll', fadeInOnScroll);
+        
+        // Loading spinner
+        const loading_circle = document.createElement('div');
+        loading_circle.id = 'load_bro';
+        loading_circle.innerHTML = `
+            <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
+            <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+            </div>
+        `;
+        document.body.appendChild(loading_circle);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('load_bro');
+            if (l) {
+            l.remove();
+            }
+        });
+    </script>
+</body>
+</html>
