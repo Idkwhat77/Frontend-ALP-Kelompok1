@@ -80,6 +80,14 @@
     #profile-image:hover {
         opacity: 0.5 !important;
     }
+    .tab-active {
+        border-bottom: 3px solid #b87ce0 !important;
+        color: #b87ce0 !important;
+    }
+
+    .dark .tab-active {
+        color: #dbc2f0 !important;
+    }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
@@ -95,7 +103,7 @@
                         </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                        <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Beranda
                         </a>
                         <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
@@ -148,7 +156,7 @@
             <!-- Mobile Menu Content -->
             <div class="hidden sm:hidden" id="mobile-menu">
                 <div class="pt-2 pb-3 space-y-1">
-                    <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
                     <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
                     <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
                     <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
@@ -241,7 +249,7 @@
                 <button onclick="switchTab('jobs')" id="jobs-tab" class="py-4 px-1 text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300">
                     <i class="fas fa-briefcase mr-2"></i> Jobs
                 </button>
-                <button onclick="switchTab('analytics')" id="analytics-tab" class="py-4 px-1 text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300">
+                <button onclick="switchTab('ratings')" id="ratings-tab" class="py-4 px-1 text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300">
                     <i class="fas fa-star mr-2"></i> Ratings
                 </button>
             </nav>
@@ -249,6 +257,72 @@
 
         <!-- Tab Content -->
         <div>
+            <!-- Ratings Tab Content -->
+            <div id="ratings-content" class="tab-content hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Company Ratings & Reviews</h3>
+                            <p class="text-gray-600 dark:text-gray-300">See what employees and candidates say about your company</p>
+                        </div>
+                    </div>
+
+                    <!-- Rating Summary -->
+                    <div id="rating-summary" class="mb-8 p-6 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div class="flex flex-col md:flex-row md:items-center md:space-x-8">
+                            <div class="text-center md:text-left mb-4 md:mb-0">
+                                <div class="text-4xl font-bold text-gray-900 dark:text-white" id="average-rating">-</div>
+                                <div class="flex justify-center md:justify-start items-center mt-2 mb-2">
+                                    <div id="average-stars" class="flex text-yellow-400">
+                                        <!-- Stars will be populated here -->
+                                    </div>
+                                </div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400" id="total-reviews">0 reviews</div>
+                            </div>
+                            <div class="flex-1">
+                                <div id="rating-breakdown" class="space-y-2">
+                                    <!-- Rating breakdown will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="ratings-loading" class="text-center py-8">
+                        <i class="fas fa-spinner fa-spin text-2xl text-lilac-500"></i>
+                        <p class="mt-2 text-gray-500 dark:text-gray-400">Loading reviews...</p>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div id="reviews-container" class="hidden space-y-4">
+                        <!-- Reviews will be populated here -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="reviews-empty-state" class="hidden text-center py-12">
+                        <div class="text-gray-400 mb-4">
+                            <i class="fas fa-star text-6xl"></i>
+                        </div>
+                        <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">No Reviews Yet</h3>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div id="reviews-pagination" class="mt-6 flex items-center justify-between hidden">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            Showing <span id="reviews-showing-start">0</span> to <span id="reviews-showing-end">0</span> of <span id="reviews-total">0</span> reviews
+                        </div>
+                        <div class="flex space-x-2">
+                            <button id="reviews-prev-btn" class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                Previous
+                            </button>
+                            <button id="reviews-next-btn" class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Overview Tab Content -->
             <div id="overview-content" class="tab-content">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -304,43 +378,44 @@
                         </div>
                     </div>
                     
+                    <!-- Sidebar Content -->
                     <div class="space-y-6">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Company Details</h3>
                         <div class="space-y-3">
                             <div class="flex items-start">
-                                <i class="fas fa-globe text-lilac-500 mt-1 mr-3"></i>
+                                <i class="fas fa-globe text-lilac-500 mt-1 mr-5"></i>
                                 <div>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Website</p>
-                                    <a href="#" class="text-lilac-600 dark:text-lilac-400 hover:underline">technova-solutions.com</a>
+                                    <a id="company-website" href="#" class="text-lilac-600 dark:text-lilac-400 hover:underline">technova-solutions.com</a>
                                 </div>
                             </div>
                             <div class="flex items-start">
-                                <i class="fas fa-building text-lilac-500 mt-1 mr-3"></i>
+                                <i class="fas fa-building text-lilac-500 mt-1 mr-5"></i>
                                 <div>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Industry</p>
-                                    <p class="text-gray-600 dark:text-gray-300">Technology</p>
+                                    <p id="company-industry" class="text-gray-600 dark:text-gray-300">Technology</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
-                                <i class="fas fa-users text-lilac-500 mt-1 mr-3"></i>
+                                <i class="fas fa-user text-lilac-500 mt-1 mr-5"></i>
                                 <div>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Company Size</p>
-                                    <p class="text-gray-600 dark:text-gray-300">201-500 employees</p>
+                                    <p id="company-size2" class="text-gray-600 dark:text-gray-300">201-500 employees</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
-                                <i class="fas fa-map-marker-alt text-lilac-500 mt-1 mr-3"></i>
+                                <i class="fas fa-map-marker-alt text-lilac-500 mt-1 mr-5"></i>
                                 <div>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Headquarters</p>
-                                    <p class="text-gray-600 dark:text-gray-300">Jakarta, Indonesia</p>
+                                    <p id="company-hq" class="text-gray-600 dark:text-gray-300">Jakarta, Indonesia</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
-                                <i class="fas fa-calendar-alt text-lilac-500 mt-1 mr-3"></i>
+                                <i class="fas fa-calendar-alt text-lilac-500 mt-1 mr-5"></i>
                                 <div>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Founded</p>
-                                    <p class="text-gray-600 dark:text-gray-300">2015</p>
+                                    <p id="company-foundation-date" class="text-gray-600 dark:text-gray-300">2015</p>
                                 </div>
                             </div>
                         </div>
@@ -694,6 +769,109 @@
     <script src="js/company-profile-image.js"></script>
     <script src="js/company-profile-jobs.js"></script>
     <script src="js/company-profile-employees.js"></script>
+    <script src="js/company-profile-ratings.js"></script>
+    <script>
+        
+    // Mobile menu functionality
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    function toggleMobileMenu() {
+        const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !expanded);
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between hamburger and close icon
+        const icon = mobileMenuButton.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    }
+    
+    mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    
+    // User dropdown menu functionality
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    
+    userMenuButton.addEventListener('click', () => {
+        const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+        userMenuButton.setAttribute('aria-expanded', !expanded);
+        userMenu.classList.toggle('hidden');
+    });
+    
+    // Close menus when clicking outside
+    document.addEventListener('click', (e) => {
+        // Close user dropdown if clicked outside
+        if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+            userMenuButton.setAttribute('aria-expanded', 'false');
+            userMenu.classList.add('hidden');
+        }
+        
+        // Close mobile menu if clicked outside
+        if (!mobileMenuButton.contains(e.target) && 
+            !mobileMenu.contains(e.target)) {
+            
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+            mobileMenu.classList.add('hidden');
+            
+            // Reset mobile menu icon to hamburger
+            const icon = mobileMenuButton.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    });
 
+    // Tab functionality with jobs loading
+    function switchTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.add('hidden');
+        });
+        
+        // Remove active class from all tabs and reset colors
+        document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+            tab.classList.remove('tab-active');
+            tab.classList.remove('text-lilac-500', 'dark:text-lilac-400');
+            tab.classList.add('text-gray-500', 'dark:text-gray-400');
+            // Remove border styling
+            tab.style.borderBottom = '';
+        });
+        
+        // Show selected tab content
+        const targetContent = document.getElementById(tabName + '-content');
+        if (targetContent) {
+            targetContent.classList.remove('hidden');
+        }
+        
+        // Add active class to selected tab
+        const targetTab = document.getElementById(tabName + '-tab');
+        if (targetTab) {
+            targetTab.classList.add('tab-active');
+            targetTab.classList.remove('text-gray-500', 'dark:text-gray-400');
+            targetTab.classList.add('text-lilac-500', 'dark:text-lilac-400');
+            // Add active border
+            targetTab.style.borderBottom = '3px solid #b87ce0';
+        }
+        
+        // Load jobs when Jobs tab is selected
+        if (tabName === 'jobs' && window.companyJobsManager) {
+            const companyId = window.currentCompany?.id || window.companyProfileManager?.currentCompany?.id;
+            if (companyId) {
+                window.companyJobsManager.setCompanyId(companyId);
+            }
+        }
+
+        // Load ratings when ratings tab is shown
+        if (tabName === 'ratings' && window.companyRatingsManager) {
+            window.companyRatingsManager.loadCompanyRatings();
+        }
+    }
+
+    // Initialize the default tab on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set overview as default active tab
+        switchTab('overview');
+    });
+    </script>
 </body>
 </html>

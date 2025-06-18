@@ -187,16 +187,42 @@ class CompanyJobsManager {
     formatDate(dateString) {
         if (!dateString) return 'Unknown';
         
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffTime = Math.abs(now - date);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        try {
+            const date = new Date(dateString);
+            
+            // Check if date is valid
+            if (isNaN(date.getTime())) {
+                return 'Unknown';
+            }
+            
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+            const diffMinutes = Math.floor(diffTime / (1000 * 60));
 
-        if (diffDays === 1) return 'yesterday';
-        if (diffDays < 7) return `${diffDays} days ago`;
-        if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-        if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
-        return `${Math.floor(diffDays / 365)} years ago`;
+            if (diffMinutes < 60) {
+                return diffMinutes <= 1 ? 'just now' : `${diffMinutes} minutes ago`;
+            } else if (diffHours < 24) {
+                return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+            } else if (diffDays === 1) {
+                return 'yesterday';
+            } else if (diffDays < 7) {
+                return `${diffDays} days ago`;
+            } else if (diffDays < 30) {
+                const weeks = Math.floor(diffDays / 7);
+                return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+            } else if (diffDays < 365) {
+                const months = Math.floor(diffDays / 30);
+                return `${months} month${months > 1 ? 's' : ''} ago`;
+            } else {
+                const years = Math.floor(diffDays / 365);
+                return `${years} year${years > 1 ? 's' : ''} ago`;
+            }
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return 'Unknown';
+        }
     }
 
     getJobStatus(job) {
@@ -294,40 +320,6 @@ async function deleteJob(jobId, jobTitle) {
     } catch (error) {
         console.error('Error deleting job:', error);
         alert('Error deleting job: ' + error.message);
-    }
-}
-
-// Tab functionality with jobs loading
-function switchTab(tabName) {
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.add('hidden');
-    });
-    
-    // Remove active class from all tabs
-    document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-        tab.classList.remove('tab-active');
-        tab.classList.add('text-gray-500', 'dark:text-gray-400');
-        tab.classList.remove('text-lilac-500', 'dark:text-lilac-400');
-    });
-    
-    // Show selected tab content
-    document.getElementById(tabName + '-content').classList.remove('hidden');
-    
-    // Add active class to selected tab
-    document.getElementById(tabName + '-tab').classList.add('tab-active');
-    document.getElementById(tabName + '-tab').classList.remove('text-gray-500', 'dark:text-gray-400');
-    document.getElementById(tabName + '-tab').classList.add('text-lilac-500', 'dark:text-lilac-400');
-    
-    // Load jobs when Jobs tab is selected
-    if (tabName === 'jobs' && window.companyJobsManager) {
-        // Get company ID from current company data or profile manager
-        const companyId = window.currentCompany?.id || window.companyProfileManager?.currentCompany?.id;
-        if (companyId) {
-            window.companyJobsManager.setCompanyId(companyId);
-        } else {
-            console.log('No company ID available for loading jobs');
-        }
     }
 }
 

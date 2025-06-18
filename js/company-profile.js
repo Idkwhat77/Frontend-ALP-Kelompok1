@@ -107,10 +107,12 @@ class CompanyProfileManager {
         this.updateElement('company-name-header', company.companyName);
         this.updateElement('company-industry', company.industry);
         this.updateElement('company-size', `${company.companySize} Employees`);
+        this.updateElement('company-size2', company.companySize || 'Not specified');
         this.updateElement('company-foundation-date', this.formatDate(company.foundationDate));
         this.updateElement('company-hq', company.hq);
         this.updateElement('company-email', company.email);
-        
+        this.updateElement('company-website', company.websiteUrl || 'Not specified');
+
         // Add formatted location display
         this.updateElement('company-location', formatLocation(company.city, company.province));
         
