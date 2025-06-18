@@ -761,6 +761,73 @@ class ApiClient {
             }
         });
     }
+
+    // Job API methods
+    async createJob(jobData) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to create jobs');
+        }
+
+        return this.makeRequest('/jobs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify(jobData)
+        });
+    }
+
+    async getJobById(jobId) {
+        return this.makeRequest(`/jobs/${jobId}`, {
+            method: 'GET'
+        });
+    }
+
+    async updateJob(jobId, jobData) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to update jobs');
+        }
+
+        return this.makeRequest(`/jobs/${jobId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify(jobData)
+        });
+    }
+
+    // Job deletion API method
+    async deleteJob(jobId) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to delete jobs');
+        }
+
+        try {
+            const response = await this.makeRequest(`/jobs/${jobId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-User-Id': user.id
+                }
+            });
+            
+            return {
+                success: response.success || false,
+                message: response.message || 'Job deleted successfully'
+            };
+        } catch (error) {
+            console.error('Error deleting job:', error);
+            return {
+                success: false,
+                message: error.message || 'Failed to delete job'
+            };
+        }
+    }
 }
 
 // Create and export API client instance

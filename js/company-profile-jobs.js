@@ -261,33 +261,39 @@ function editJob(jobId) {
 }
 
 async function deleteJob(jobId, jobTitle) {
-    if (!confirm(`Are you sure you want to delete the job "${jobTitle}"? This action cannot be undone.`)) {
+    if (!confirm(`Are you sure you want to delete "${jobTitle}"? This action cannot be undone.`)) {
         return;
     }
 
     try {
+        const user = window.apiClient?.getCurrentUser();
+        if (!user?.id) {
+            alert('Authentication required. Please log in again.');
+            return;
+        }
+
         const response = await fetch(`http://localhost:8080/api/jobs/${jobId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id.toString()
             }
         });
 
         const data = await response.json();
-        
-        if (data.success) {
-            alert('Job deleted successfully');
+
+        if (response.ok && data.success) {
+            alert('Job deleted successfully!');
             // Reload the jobs list
             if (window.companyJobsManager) {
                 window.companyJobsManager.loadCompanyJobs();
             }
         } else {
-            alert('Failed to delete job: ' + (data.message || 'Unknown error'));
+            throw new Error(data.message || 'Failed to delete job');
         }
     } catch (error) {
         console.error('Error deleting job:', error);
-        alert('Error deleting job. Please try again.');
+        alert('Error deleting job: ' + error.message);
     }
 }
 
