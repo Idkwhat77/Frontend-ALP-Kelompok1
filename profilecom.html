@@ -8,6 +8,11 @@
     <script src="api.js"></script>
     <script src="darkmode.js"></script>
     <script src="language.js"></script>
+    <!-- Add WebSocket and notification scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+    <script src="js/websocket-manager.js"></script>
+    <script src="js/notification.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -88,6 +93,23 @@
     .dark .tab-active {
         color: #dbc2f0 !important;
     }
+    /* Notification badge */
+    .notification-badge {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        background-color: #ef4444;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        display: none;
+    }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
@@ -131,6 +153,14 @@
                         <i class="fas fa-sun hidden dark:inline"></i>
                     </button>
 
+                    <!-- Notification Bell -->
+                    <div class="relative">
+                        <a href="notification.html" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative inline-flex items-center" id="notification-button" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge"></span>
+                        </a>
+                    </div>
+
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
@@ -146,6 +176,13 @@
 
                 <!-- Mobile Menu Button -->
                 <div class="sm:hidden flex items-center">
+                    <!-- Notification Bell for Mobile -->
+                    <div class="relative">
+                        <a href="notification.html" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative inline-flex items-center" id="mobile-notification-button" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge"></span>
+                        </a>
+                    </div>
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
                         <span class="sr-only">Buka Menu Utama</span>
                         <i class="fas fa-bars"></i>
@@ -177,6 +214,9 @@
                             <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
                                 <i class="fas fa-moon dark:hidden"></i>
                                 <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                            <button id="mobile-logout" class="p-2 rounded-full text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 focus:outline-none" aria-label="Logout" title="Logout">
+                                <i class="fas fa-sign-out-alt"></i>
                             </button>
                         </div>
                     </div>

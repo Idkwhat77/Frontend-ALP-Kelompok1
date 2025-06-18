@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifications - RuangKerja</title>
+    <title>Message Notifications - RuangKerja</title>
     
     <!-- Reusing your existing head content -->
     <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+    <!-- Add WebSocket and notification scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+    <script src="js/websocket-manager.js"></script>
+    <script src="js/notification.js"></script>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -102,7 +110,7 @@
             background: #4a5568;
         }
         
-        /* Notification type indicators */
+        /* Message notification type indicators */
         .notification-type {
             display: inline-block;
             padding: 2px 6px;
@@ -114,55 +122,65 @@
             vertical-align: middle;
         }
         
-        .type-application {
-            background-color: #e0f7fa;
-            color: #00acc1;
-        }
-        
-        .dark .type-application {
-            background-color: #004d40;
-            color: #b2fef7;
-        }
-        
-        .type-chat {
+        .type-message {
             background-color: #e8f5e9;
             color: #43a047;
         }
         
-        .dark .type-chat {
+        .dark .type-message {
             background-color: #1b5e20;
             color: #b9f6ca;
         }
         
-        .type-interest {
+        .type-chat {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .dark .type-chat {
+            background-color: #0d47a1;
+            color: #90caf9;
+        }
+        
+        .type-connection {
             background-color: #fff3e0;
             color: #fb8c00;
         }
         
-        .dark .type-interest {
+        .dark .type-connection {
             background-color: #e65100;
             color: #ffd180;
         }
         
-        .type-verification {
-            background-color: #f3e5f5;
-            color: #8e24aa;
-        }
-        
-        .dark .type-verification {
-            background-color: #4a148c;
-            color: #ea80fc;
+        /* Notification badge */
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none;
         }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
-    <!-- Navbar (same as your existing navbar) -->
+    <!-- Navbar -->
     <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
                         <a href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
@@ -196,13 +214,13 @@
                     <div class="relative">
                         <button type="button" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative" id="notification-button" aria-expanded="false" aria-haspopup="true">
                             <i class="fas fa-bell"></i>
-                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                            <span class="notification-badge"></span>
                         </button>
                     </div>
 
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
                         <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
@@ -212,7 +230,15 @@
                     </div>
                 </div>
 
-                <div class="sm:hidden flex items-center">
+                <div class="sm:hidden flex items-center space-x-2">
+                    <!-- Notification Bell for Mobile -->
+                    <div class="relative">
+                        <button type="button" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative" id="mobile-notification-button" aria-expanded="false" aria-haspopup="true">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge"></span>
+                        </button>
+                    </div>
+                    
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
                         <span class="sr-only">Buka Menu Utama</span>
                         <i class="fas fa-bars"></i>
@@ -231,8 +257,8 @@
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
-                            <a href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
                         <div class="flex items-center space-x-2">
                             <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
@@ -253,38 +279,34 @@
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pt-24">
         <div class="flex flex-col md:flex-row gap-6">
-            <!-- Left sidebar - Notification filters -->
+            <!-- Left sidebar - Message filters -->
             <div class="w-full md:w-64 flex-shrink-0">
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 sticky top-24">
-                    <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Filters</h2>
+                    <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Message Filters</h2>
                     
                     <div class="space-y-3">
-                        <button class="w-full text-left px-3 py-2 rounded-lg bg-lilac-100 dark:bg-gray-700 text-lilac-600 dark:text-lilac-300 font-medium">
-                            <i class="fas fa-inbox mr-2"></i> All Notifications
+                        <button data-filter="all" class="w-full text-left px-3 py-2 rounded-lg bg-lilac-100 dark:bg-gray-700 text-lilac-600 dark:text-lilac-300 font-medium">
+                            <i class="fas fa-envelope mr-2"></i> All Messages
                         </button>
                         
-                        <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class="fas fa-user-check mr-2"></i> Connections
+                        <button data-filter="direct" class="w-full text-left px-3 py-2 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class="fas fa-comment mr-2"></i> Direct Messages
                         </button>
                         
-                        <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class="fas fa-briefcase mr-2"></i> Jobs
+                        <button data-filter="connection" class="w-full text-left px-3 py-2 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class="fas fa-user-plus mr-2"></i> Connection Requests
                         </button>
                         
-                        <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class="fas fa-building mr-2"></i> Companies
-                        </button>
-                        
-                        <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class="fas fa-envelope mr-2"></i> Messages
+                        <button data-filter="group" class="w-full text-left px-3 py-2 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class="fas fa-users mr-2"></i> Group Messages
                         </button>
                     </div>
                     
                     <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <h3 class="text-sm font-medium mb-2 text-gray-900 dark:text-white">Notification Settings</h3>
+                        <h3 class="text-sm font-medium mb-2 text-gray-900 dark:text-white">Message Settings</h3>
                         <div class="space-y-2">
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded text-lilac-500 focus:ring-lilac-400 dark:focus:ring-lilac-500">
+                                <input type="checkbox" class="rounded text-lilac-500 focus:ring-lilac-400 dark:focus:ring-lilac-500" checked>
                                 <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Email Notifications</span>
                             </label>
                             <label class="flex items-center">
@@ -300,247 +322,37 @@
                 </div>
             </div>
             
-            <!-- Main notifications content -->
+            <!-- Main message notifications content -->
             <div class="flex-1">
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden">
                     <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Notifications</h2>
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Message Notifications</h2>
                         <button class="text-sm text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400" id="mark-all-read">
                             Mark all as read
                         </button>
                     </div>
                     
-                    <!-- Notification List -->
+                    <!-- Message Notification List -->
                     <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-[600px] overflow-y-auto" id="notification-list">
-                        <!-- Today's Notifications -->
-                        <div class="p-4 bg-gray-50 dark:bg-gray-700/30">
-                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Today</h3>
+                        <!-- Empty State - will be shown when no notifications -->
+                        <div id="empty-state" class="p-12 text-center">
+                            <div class="text-gray-400 mb-4">
+                                <i class="fas fa-bell-slash text-6xl"></i>
+                            </div>
+                            <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">No Messages Yet</h3>
+                            <p class="text-gray-500 dark:text-gray-400 mb-4">You'll see your message notifications here when you receive them.</p>
+                            <button onclick="window.location.href='chat.html'" class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg">
+                                Start a Conversation
+                            </button>
                         </div>
                         
-                        <!-- Employee Notifications (shown only for employee accounts) -->
-                        <div id="employee-notifications">
-                            <!-- Notification: Application Accepted -->
-                            <div class="p-4 notification-unread hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full" src="img/blackswa.png" alt="Company logo">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                                Black Swan LLC <span class="notification-dot ml-1"></span>
-                                                <span class="notification-type type-application">Application</span>
-                                            </p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">10:30 AM</p>
-                                        </div>
-                                        <p class="text-sm text-gray-600 dark:text-gray-300">
-                                            Congratulations! Your application for Frontend Developer has been accepted.
-                                        </p>
-                                        <div class="mt-2 flex space-x-2">
-                                            <button class="text-xs px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 rounded-full">
-                                                View Offer
-                                            </button>
-                                            <button class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-                                                Company Profile
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Notification: Company Interested -->
-                            <div class="p-4 notification-unread hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/120x50?text=TechCorp" alt="Company logo">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                                TechCorp <span class="notification-dot ml-1"></span>
-                                                <span class="notification-type type-interest">Interest</span>
-                                            </p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">9:15 AM</p>
-                                        </div>
-                                        <p class="text-sm text-gray-600 dark:text-gray-300">
-                                            TechCorp is interested in your profile for a Senior Developer position.
-                                        </p>
-                                        <div class="mt-2 flex space-x-2">
-                                            <button class="text-xs px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 rounded-full">
-                                                View Position
-                                            </button>
-                                            <button class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-                                                Decline Interest
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Company Notifications (shown only for company accounts) -->
-                        <div id="company-notifications" class="hidden">
-                            <!-- Notification: Candidate Verified Application -->
-                            <div class="p-4 notification-unread hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                                Michael Chen <span class="notification-dot ml-1"></span>
-                                                <span class="notification-type type-verification">Verification</span>
-                                            </p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">11:45 AM</p>
-                                        </div>
-                                        <p class="text-sm text-gray-600 dark:text-gray-300">
-                                            Michael Chen has verified your job offer for the UX Designer position.
-                                        </p>
-                                        <div class="mt-2 flex space-x-2">
-                                            <button class="text-xs px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 rounded-full">
-                                                View Candidate
-                                            </button>
-                                            <button class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-                                                Schedule Onboarding
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Common Notifications (shown for all users) -->
-                        <!-- Notification: New Message -->
-                        <div class="p-4 notification-unread hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
-                            <div class="flex">
-                                <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/43.jpg" alt="User profile">
-                                </div>
-                                <div class="ml-3 flex-1">
-                                    <div class="flex items-center justify-between">
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                            Sarah Johnson <span class="notification-dot ml-1"></span>
-                                            <span class="notification-type type-chat">Message</span>
-                                        </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">8:20 AM</p>
-                                    </div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-300">
-                                        Sent you a message: "Hi! I'd like to discuss the project details with you..."
-                                    </p>
-                                    <div class="mt-2 flex space-x-2">
-                                        <button class="text-xs px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 rounded-full">
-                                            Reply
-                                        </button>
-                                        <button class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-                                            View Chat
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Yesterday's Notifications -->
-                        <div class="p-4 bg-gray-50 dark:bg-gray-700/30">
-                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Yesterday</h3>
-                        </div>
-                        
-                        <!-- Employee Notification: Interview Scheduled -->
-                        <div id="employee-notifications">
-                            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/120x50?text=DesignHub" alt="Company logo">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                                DesignHub
-                                                <span class="notification-type type-application">Interview</span>
-                                            </p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">5:42 PM</p>
-                                        </div>
-                                        <p class="text-sm text-gray-600 dark:text-gray-300">
-                                            Interview scheduled for UX Designer position on Friday, 10:00 AM.
-                                        </p>
-                                        <div class="mt-2 flex space-x-2">
-                                            <button class="text-xs px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 rounded-full">
-                                                View Details
-                                            </button>
-                                            <button class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-                                                Reschedule
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Company Notification: New Application -->
-                        <div id="company-notifications" class="hidden">
-                            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/28.jpg" alt="User profile">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center justify-between">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                                Lisa Wong
-                                                <span class="notification-type type-application">Application</span>
-                                            </p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">3:20 PM</p>
-                                        </div>
-                                        <p class="text-sm text-gray-600 dark:text-gray-300">
-                                            New application received for Marketing Manager position.
-                                        </p>
-                                        <div class="mt-2 flex space-x-2">
-                                            <button class="text-xs px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 rounded-full">
-                                                Review Application
-                                            </button>
-                                            <button class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-                                                View Profile
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Common Notification: Connection Request -->
-                        <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
-                            <div class="flex">
-                                <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/45.jpg" alt="User profile">
-                                </div>
-                                <div class="ml-3 flex-1">
-                                    <div class="flex items-center justify-between">
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                            David Wilson
-                                            <span class="notification-type type-chat">Connection</span>
-                                        </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">2:45 PM</p>
-                                    </div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-300">
-                                        Sent you a connection request.
-                                    </p>
-                                    <div class="mt-2 flex space-x-2">
-                                        <button class="text-xs px-3 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 rounded-full">
-                                            Accept
-                                        </button>
-                                        <button class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-                                            Decline
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Real-time notifications will be inserted here by JavaScript -->
                     </div>
                     
-                    <!-- View More Button -->
-                    <div class="p-4 border-t border-gray-200 dark:border-gray-700 text-center">
-                        <button class="text-sm text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 font-medium">
-                            Load More Notifications
+                    <!-- Load More Button -->
+                    <div id="load-more-section" class="p-4 border-t border-gray-200 dark:border-gray-700 text-center hidden">
+                        <button id="load-more-btn" class="text-sm text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 font-medium">
+                            Load More Messages
                         </button>
                     </div>
                 </div>
@@ -548,7 +360,7 @@
         </div>
     </main>
 
-    <!-- Footer (same as your existing footer) -->
+    <!-- Footer -->
     <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -626,6 +438,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="js/navbar-profile.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu functionality
@@ -642,26 +455,30 @@
                 icon.classList.toggle('fa-times');
             }
             
-            mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            }
             
             // User dropdown menu functionality
             const userMenuButton = document.getElementById('user-menu-button');
             const userMenu = document.getElementById('user-menu');
             
-            userMenuButton.addEventListener('click', () => {
-                const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-                userMenuButton.setAttribute('aria-expanded', !expanded);
-                userMenu.classList.toggle('hidden');
-            });
+            if (userMenuButton) {
+                userMenuButton.addEventListener('click', () => {
+                    const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+                    userMenuButton.setAttribute('aria-expanded', !expanded);
+                    userMenu.classList.toggle('hidden');
+                });
+            }
             
             // Close menus when clicking outside
             document.addEventListener('click', (e) => {
-                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                if (userMenuButton && userMenu && !userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
                     userMenuButton.setAttribute('aria-expanded', 'false');
                     userMenu.classList.add('hidden');
                 }
                 
-                if (!mobileMenuButton.contains(e.target)) {
+                if (mobileMenuButton && !mobileMenuButton.contains(e.target)) {
                     mobileMenuButton.setAttribute('aria-expanded', 'false');
                     mobileMenu.classList.add('hidden');
                     
@@ -672,85 +489,38 @@
             });
             
             // Mark notification as read when clicked
-            const notifications = document.querySelectorAll('.notification-unread');
-            notifications.forEach(notification => {
-                notification.addEventListener('click', function() {
-                    this.classList.remove('notification-unread');
-                    const dot = this.querySelector('.notification-dot');
-                    if (dot) dot.remove();
-                });
-            });
-            
-            // Mark all as read button
             const markAllReadBtn = document.getElementById('mark-all-read');
             if (markAllReadBtn) {
                 markAllReadBtn.addEventListener('click', function() {
-                    document.querySelectorAll('.notification-unread').forEach(el => {
-                        el.classList.remove('notification-unread');
-                        const dot = el.querySelector('.notification-dot');
-                                            if (dot) dot.remove();
+                    // This will be handled by the notification manager
+                    if (window.notificationManager) {
+                        window.notificationManager.markAllAsRead();
+                    }
+                });
+            }
+            
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('[data-filter]');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active state from all buttons
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('bg-lilac-100', 'dark:bg-gray-700', 'text-lilac-600', 'dark:text-lilac-300', 'font-medium');
+                        btn.classList.add('hover:bg-lilac-50', 'dark:hover:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                    });
+                    
+                    // Add active state to clicked button
+                    button.classList.add('bg-lilac-100', 'dark:bg-gray-700', 'text-lilac-600', 'dark:text-lilac-300', 'font-medium');
+                    button.classList.remove('hover:bg-lilac-50', 'dark:hover:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                    
+                    // Filter notifications
+                    const filter = button.getAttribute('data-filter');
+                    if (window.notificationManager) {
+                        window.notificationManager.filterNotifications(filter);
+                    }
                 });
             });
-        }
-
-        // Dark mode toggle functionality
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
-        
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const isDark = html.classList.contains('dark');
-            
-            if (isDark) {
-                html.classList.remove('dark');
-                localStorage.setItem('darkMode', 'light');
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('darkMode', 'dark');
-            }
-        }
-        
-        darkModeToggle.addEventListener('click', toggleDarkMode);
-        mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
-        
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'dark' || 
-            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        }
-        
-        // Language selector functionality
-        const languageSelectors = document.querySelectorAll('#language-selector, #language-selector-mobile');
-        languageSelectors.forEach(selector => {
-            selector.addEventListener('change', function() {
-                // In a real app, you would change the language here
-                console.log('Language changed to:', this.value);
-            });
         });
-        
-        // Determine if user is an employee or company and show appropriate notifications
-        // In a real app, this would come from your backend/user data
-        const isCompany = false; // Change this based on actual user role
-        
-        if (isCompany) {
-            document.getElementById('employee-notifications').classList.add('hidden');
-            document.getElementById('company-notifications').classList.remove('hidden');
-        } else {
-            document.getElementById('employee-notifications').classList.remove('hidden');
-            document.getElementById('company-notifications').classList.add('hidden');
-        }
-        
-        // Logout functionality
-        const logoutBtn = document.getElementById('logout');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                // In a real app, you would handle logout here
-                console.log('Logging out...');
-                window.location.href = 'index.html';
-            });
-        }
-    });
-</script>
+    </script>
 </body>
 </html>

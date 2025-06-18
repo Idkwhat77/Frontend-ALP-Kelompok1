@@ -843,6 +843,21 @@ class ApiClient {
             }
         });
     }
+
+    async getCompanyJobs(companyId, page = 0, size = 10) {
+        try {
+            const response = await fetch(`${this.baseURL}/jobs/company/${companyId}?page=${page}&size=${size}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching company jobs:', error);
+            throw error;
+        }
+    }
 }
 
 // Create and export API client instance

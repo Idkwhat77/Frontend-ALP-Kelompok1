@@ -56,16 +56,21 @@ class CompanyJobsViewManager {
         this.showLoading();
         
         try {
-            const response = await window.apiClient.getCompanyJobs(this.companyId, this.currentPage, this.pageSize);
-            
-            if (response && response.success) {
-                this.jobs = response.jobs || [];
-                this.totalPages = response.totalPages || 0;
+            // Use direct fetch like the working CompanyJobsManager
+            const response = await fetch(`http://localhost:8080/api/jobs/company/${this.companyId}?page=${this.currentPage}&size=${this.pageSize}`);
+            const data = await response.json();
+
+            console.log('Company Jobs API response:', data);
+
+            if (data.success && data.jobs) {
+                this.jobs = data.jobs;
+                this.totalPages = data.totalPages || Math.ceil(data.jobs.length / this.pageSize);
                 
                 this.displayJobs();
-                this.updatePagination(response.currentPage, response.totalPages, response.totalElements);
+                this.updatePagination(this.currentPage, this.totalPages, data.totalElements || data.jobs.length);
             } else {
-                throw new Error('Failed to load jobs');
+                console.error('Failed to load company jobs:', data.message);
+                this.showEmptyState();
             }
         } catch (error) {
             console.error('Error loading company jobs:', error);
