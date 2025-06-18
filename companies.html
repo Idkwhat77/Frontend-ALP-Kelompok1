@@ -194,157 +194,168 @@
     <!-- Main Content -->
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
         <!-- Hero Section -->
-        <section class="text-center mb-8 animate-fade-in">
-            <h1 data-i18n-html="companies.title" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
-                Explore <span class="text-lilac-400">Top Companies</span>
-            </h1>
-            <p data-i18n="companies.description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl mx-auto text-sm">
-                Discover leading companies hiring through our platform and find your next career opportunity
-            </p>
-            
-            <!-- Search Bar -->
-            <div class="max-w-xl mx-auto mb-6">
-                <div class="flex shadow-sm rounded-lg overflow-hidden text-sm">
-                    <input
-                        type="text"
-                        id="company-search"
-                        class="flex-grow px-4 py-2 focus:outline-none dark:bg-gray-800 dark:text-white"
-                        data-i18n-placeholder="search.company_placeholder"
-                        data-i18n-aria="search.company_label"
-                        placeholder="Search by company name, industry, or location..."
-                        aria-label="Search companies"
-                    />
-                    <button id="search-button" class="bg-lilac-400 hover:bg-lilac-500 text-white px-4 py-2 transition-colors">
-                        <i class="fas fa-search"></i>
-                    </button>
+        <section class="py-12 md:py-16 animate-fade-in bg-gradient-to-b from-white to-lilac-50 dark:from-gray-900 dark:to-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h1 data-i18n-html="companies.title" class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
+                        Discover <span class="text-lilac-500 dark:text-lilac-400">Top Employers</span>
+                    </h1>
+                    <p data-i18n="companies.description" class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                        Connect with Indonesia's leading companies actively hiring through our platform
+                    </p>
+                    
+                    <!-- Enhanced Search Bar -->
+                    <div class="max-w-2xl mx-auto mb-8 relative">
+                        <div class="relative flex items-center shadow-md rounded-lg overflow-hidden">
+                            <input 
+                                type="text" 
+                                id="company-search"
+                                class="flex-grow px-5 py-3 focus:outline-none focus:ring-2 focus:ring-lilac-300 dark:focus:ring-lilac-600 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500" 
+                                data-i18n-placeholder="search.company_placeholder" 
+                                data-i18n-aria="search.company_label"
+                                placeholder="Search by company name, industry, or location..." 
+                                aria-label="Search companies">
+                            <button class="bg-lilac-500 hover:bg-lilac-600 text-white px-6 py-3 transition-all duration-300">
+                                <i class="fas fa-search mr-2"></i>
+                                <span class="hidden sm:inline">Search</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Filters -->
-        <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Filters Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-8 border border-gray-100 dark:border-gray-700">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
                 <!-- Province Filter -->
                 <div>
-                    <label for="province" data-i18n="filter.province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Province</label>
-                    <select id="province" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <option value="" data-i18n="filter.all_provinces">All Provinces</option>
-                        <option value="aceh">Aceh</option>
-                        <option value="sumatra-utara">Sumatra Utara</option>
-                        <option value="sumatra-barat">Sumatra Barat</option>
-                        <option value="riau">Riau</option>
-                        <option value="jambi">Jambi</option>
-                        <option value="sumatra-selatan">Sumatra Selatan</option>
-                        <option value="bengkulu">Bengkulu</option>
-                        <option value="lampung">Lampung</option>
-                        <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
-                        <option value="kepulauan-riau">Kepulauan Riau</option>
-                        <option value="dki-jakarta">DKI Jakarta</option>
-                        <option value="jawa-barat">Jawa Barat</option>
-                        <option value="jawa-tengah">Jawa Tengah</option>
-                        <option value="di-yogyakarta">DI Yogyakarta</option>
-                        <option value="jawa-timur">Jawa Timur</option>
-                        <option value="banten">Banten</option>
-                        <option value="bali">Bali</option>
-                        <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
-                        <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
-                        <option value="kalimantan-barat">Kalimantan Barat</option>
-                        <option value="kalimantan-tengah">Kalimantan Tengah</option>
-                        <option value="kalimantan-selatan">Kalimantan Selatan</option>
-                        <option value="kalimantan-timur">Kalimantan Timur</option>
-                        <option value="kalimantan-utara">Kalimantan Utara</option>
-                        <option value="sulawesi-utara">Sulawesi Utara</option>
-                        <option value="sulawesi-tengah">Sulawesi Tengah</option>
-                        <option value="sulawesi-selatan">Sulawesi Selatan</option>
-                        <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
-                        <option value="gorontalo">Gorontalo</option>
-                        <option value="sulawesi-barat">Sulawesi Barat</option>
-                        <option value="maluku">Maluku</option>
-                        <option value="maluku-utara">Maluku Utara</option>
-                        <option value="papua-barat">Papua Barat</option>
-                        <option value="papua-barat-daya">Papua Barat Daya</option>
-                        <option value="papua">Papua</option>
-                        <option value="papua-selatan">Papua Selatan</option>
-                        <option value="papua-tengah">Papua Tengah</option>
-                        <option value="papua-pegunungan">Papua Pegunungan</option>
-                    </select>
+                    <label for="province" data-i18n="filter.province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Province</label>
+                    <div class="relative">
+                        <select id="province" class="w-full pl-3 pr-8 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-lilac-400 focus:border-lilac-400 dark:bg-gray-700 dark:text-white appearance-none bg-white bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjMgNy43M2EuNzUuNzUgMCAwMTEuMDYgMEwxMiAxMy40NGw1LjctNS43YS43NS43NSAwIDExMS4wNiAxLjA2bC02LjI1IDYuMjVhLjc1Ljc1IDAgMDEtMS4wNiAwTDUuMjMgOC43OWEuNzUuNzUgMCAwMTAtMS4wNnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz48L3N2Zz4=')] bg-no-repeat bg-[right_0.5rem_center]">
+                            <option value="" data-i18n="filter.all_provinces">All Provinces</option>
+                            <option value="aceh">Aceh</option>
+                            <option value="aceh">Aceh</option>
+                            <option value="sumatra-utara">Sumatra Utara</option>
+                            <option value="sumatra-barat">Sumatra Barat</option>
+                            <option value="riau">Riau</option>
+                            <option value="jambi">Jambi</option>
+                            <option value="sumatra-selatan">Sumatra Selatan</option>
+                            <option value="bengkulu">Bengkulu</option>
+                            <option value="lampung">Lampung</option>
+                            <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+                            <option value="kepulauan-riau">Kepulauan Riau</option>
+                            <option value="dki-jakarta">DKI Jakarta</option>
+                            <option value="jawa-barat">Jawa Barat</option>
+                            <option value="jawa-tengah">Jawa Tengah</option>
+                            <option value="di-yogyakarta">DI Yogyakarta</option>
+                            <option value="jawa-timur">Jawa Timur</option>
+                            <option value="banten">Banten</option>
+                            <option value="bali">Bali</option>
+                            <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+                            <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+                            <option value="kalimantan-barat">Kalimantan Barat</option>
+                            <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                            <option value="kalimantan-selatan">Kalimantan Selatan</option>
+                            <option value="kalimantan-timur">Kalimantan Timur</option>
+                            <option value="kalimantan-utara">Kalimantan Utara</option>
+                            <option value="sulawesi-utara">Sulawesi Utara</option>
+                            <option value="sulawesi-tengah">Sulawesi Tengah</option>
+                            <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                            <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+                            <option value="gorontalo">Gorontalo</option>
+                            <option value="sulawesi-barat">Sulawesi Barat</option>
+                            <option value="maluku">Maluku</option>
+                            <option value="maluku-utara">Maluku Utara</option>
+                            <option value="papua-barat">Papua Barat</option>
+                            <option value="papua">Papua</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <!-- City/District Filter -->
                 <div>
-                    <label for="city" data-i18n="filter.city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City/District</label>
-                    <select id="city" disabled class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <option value="" data-i18n="filter.all_cities">All Cities/Districts</option>
-                        <!-- Options will be populated by JavaScript based on province selection -->
-                    </select>
+                    <label for="city" data-i18n="filter.city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City/District</label>
+                    <div class="relative">
+                        <select id="city" disabled class="w-full pl-3 pr-8 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-lilac-400 focus:border-lilac-400 dark:text-white appearance-none bg-gray-100 dark:bg-gray-600 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjMgNy43M2EuNzUuNzUgMCAwMTEuMDYgMEwxMiAxMy40NGw1LjctNS43YS43NS43NSAwIDExMS4wNiAxLjA2bC02LjI1IDYuMjVhLjc1Ljc1IDAgMDEtMS4wNiAwTDUuMjMgOC43OWEuNzUuNzUgMCAwMTAtMS4wNnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz48L3N2Zz4=')] bg-no-repeat bg-[right_0.5rem_center]">
+                            <option value="" data-i18n="filter.all_cities">All Cities/Districts</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <!-- Company Size Filter -->
                 <div>
-                    <label for="company-size" data-i18n="filter.company_size" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
-                    <select id="company-size" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <option value="" data-i18n="filter.all_sizes">All Sizes</option>
-                        <option value="startup" data-i18n="filter.startup">Startup (1-50)</option>
-                        <option value="small" data-i18n="filter.small">Small (51-200)</option>
-                        <option value="medium" data-i18n="filter.medium">Medium (201-1000)</option>
-                        <option value="large" data-i18n="filter.large">Large (1001-5000)</option>
-                        <option value="enterprise" data-i18n="filter.enterprise">Enterprise (5000+)</option>
-                    </select>
+                    <label for="company-size" data-i18n="filter.company_size" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Company Size</label>
+                    <div class="relative">
+                        <select id="company-size" class="w-full pl-3 pr-8 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-lilac-400 focus:border-lilac-400 dark:text-white appearance-none bg-white dark:bg-gray-700 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjMgNy43M2EuNzUuNzUgMCAwMTEuMDYgMEwxMiAxMy40NGw1LjctNS43YS43NS43NSAwIDExMS4wNiAxLjA2bC02LjI1IDYuMjVhLjc1Ljc1IDAgMDEtMS4wNiAwTDUuMjMgOC43OWEuNzUuNzUgMCAwMTAtMS4wNnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz48L3N2Zz4=')] bg-no-repeat bg-[right_0.5rem_center]">
+                            <option value="" data-i18n="filter.all_sizes">All Sizes</option>
+                            <option value="startup" data-i18n="filter.startup">Startup (1-50)</option>
+                            <option value="small" data-i18n="filter.small">Small (51-200)</option>
+                            <option value="medium" data-i18n="filter.medium">Medium (201-1000)</option>
+                            <option value="large" data-i18n="filter.large">Large (1001-5000)</option>
+                            <option value="enterprise" data-i18n="filter.enterprise">Enterprise (5000+)</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <!-- Industry Filter -->
                 <div>
-                    <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
-                    <select id="industry" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <option value="" data-i18n="filter.all_industries">All Industries</option>
-                        <option value="technology">Technology</option>
-                        <option value="finance">Finance</option>
-                        <option value="healthcare">Healthcare</option>
-                        <option value="education">Education</option>
-                        <option value="manufacturing">Manufacturing</option>
-                        <option value="retail">Retail</option>
-                        <option value="hospitality">Hospitality</option>
-                        <option value="construction">Construction</option>
-                        <option value="transportation">Transportation</option>
-                        <option value="energy">Energy</option>
-                        <option value="telecommunications">Telecommunications</option>
-                        <option value="media">Media & Entertainment</option>
-                        <option value="agriculture">Agriculture</option>
-                        <option value="fishing">Fishing</option>
-                        <option value="mining">Mining</option>
-                        <option value="pharmaceutical">Pharmaceutical</option>
-                        <option value="biotechnology">Biotechnology</option>
-                        <option value="aerospace">Aerospace</option>
-                        <option value="defense">Defense</option>
-                        <option value="chemical">Chemical</option>
-                        <option value="food-beverage">Food & Beverage</option>
-                        <option value="tobacco">Tobacco</option>
-                        <option value="textile">Textile</option>
-                        <option value="apparel">Apparel</option>
-                        <option value="luxury">Luxury Goods</option>
-                        <option value="automotive">Automotive</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="furniture">Furniture</option>
-                        <option value="publishing">Publishing</option>
-                        <option value="sports">Sports</option>
-                        <option value="recreation">Recreation</option>
-                        <option value="real-estate">Real Estate</option>
-                        <option value="legal">Legal Services</option>
-                        <option value="consulting">Consulting</option>
-                        <option value="non-profit">Non-Profit</option>
-                        <option value="government">Government</option>
-                    </select>
+                    <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Industry</label>
+                    <div class="relative">
+                        <select id="industry" class="w-full pl-3 pr-8 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-lilac-400 focus:border-lilac-400 dark:text-white appearance-none bg-white dark:bg-gray-700 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjMgNy43M2EuNzUuNzUgMCAwMTEuMDYgMEwxMiAxMy40NGw1LjctNS43YS43NS43NSAwIDExMS4wNiAxLjA2bC02LjI1IDYuMjVhLjc1Ljc1IDAgMDEtMS4wNiAwTDUuMjMgOC43OWEuNzUuNzUgMCAwMTAtMS4wNnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz48L3N2Zz4=')] bg-no-repeat bg-[right_0.5rem_center]">
+                            <option value="" data-i18n="filter.all_industries">All Industries</option>
+                            <option value="technology">Technology</option>
+                            <option value="technology">Technology</option>
+                            <option value="finance">Finance</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="education">Education</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="retail">Retail</option>
+                            <option value="hospitality">Hospitality</option>
+                            <option value="construction">Construction</option>
+                            <option value="transportation">Transportation</option>
+                            <option value="energy">Energy</option>
+                            <option value="telecommunications">Telecommunications</option>
+                            <option value="media">Media & Entertainment</option>
+                            <option value="agriculture">Agriculture</option>
+                            <option value="fishing">Fishing</option>
+                            <option value="mining">Mining</option>
+                            <option value="pharmaceutical">Pharmaceutical</option>
+                            <option value="biotechnology">Biotechnology</option>
+                            <option value="aerospace">Aerospace</option>
+                            <option value="defense">Defense</option>
+                            <option value="chemical">Chemical</option>
+                            <option value="food-beverage">Food & Beverage</option>
+                            <option value="tobacco">Tobacco</option>
+                            <option value="textile">Textile</option>
+                            <option value="apparel">Apparel</option>
+                            <option value="luxury">Luxury Goods</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="furniture">Furniture</option>
+                            <option value="publishing">Publishing</option>
+                            <option value="sports">Sports</option>
+                            <option value="recreation">Recreation</option>
+                            <option value="real-estate">Real Estate</option>
+                            <option value="legal">Legal Services</option>
+                            <option value="consulting">Consulting</option>
+                            <option value="non-profit">Non-Profit</option>
+                            <option value="government">Government</option>
+                        </select>
+                    </div>
                 </div>
-                  <div class="mt-4 flex flex-wrap gap-2">
-                    <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-full transition-colors">
-                        <i class="fas fa-filter mr-1"></i>
-                        <span data-i18n="button.apply_filters">Apply Filters</span>
-                    </button>
-                    <button class="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-full transition-colors">
-                        <i class="fas fa-sync-alt mr-1"></i> 
-                        <span data-i18n="button.reset">Reset</span>
-                    </button>
-                </div>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="mt-6 flex flex-wrap justify-end gap-3">
+                <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm rounded-lg transition-colors flex items-center" data-i18n="button.reset">
+                    <i class="fas fa-sync-alt mr-2 text-xs"></i> 
+                    <span>Reset</span>
+                </button>
+                <button class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white text-sm rounded-lg transition-colors flex items-center shadow-md hover:shadow-lg" data-i18n="button.apply_filters">
+                    <i class="fas fa-filter mr-2 text-xs"></i>
+                    <span>Apply Filters</span>
+                </button>
             </div>
         </div>
 
@@ -362,44 +373,85 @@
             </div>
         </section>
 
-        <!-- Pagination -->
-        <div class="flex justify-center mb-8">
-            <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                <a href="#" class="relative inline-flex items-center px-3 py-3 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+        <!-- Enhanced Pagination -->
+        <div class="flex justify-center mt-8 mb-12">
+            <nav class="inline-flex items-center rounded-md shadow-sm" aria-label="Pagination">
+                <!-- Previous Button -->
+                <button onclick="previousPage()" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                     <span class="sr-only">Previous</span>
                     <i class="fas fa-chevron-left w-4 h-4"></i>
-                </a>
-                <a href="#" aria-current="page" class="bg-lilac-400 border-lilac-400 text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                </button>
+                
+                <!-- Page Numbers -->
+                <button onclick="goToPage(1)" class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                     1
-                </a>
-                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                </button>
+                <button onclick="goToPage(2)" class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                     2
-                </a>
-                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                </button>
+                <button onclick="goToPage(3)" class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                     3
-                </a>
-                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                </button>
+                <span class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400">
                     ...
-                </a>
-                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                </span>
+                <button onclick="goToPage(8)" class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                     8
-                </a>
-                <a href="#" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+                </button>
+                
+                <!-- Next Button -->
+                <button onclick="nextPage()" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                     <span class="sr-only">Next</span>
                     <i class="fas fa-chevron-right w-4 h-4"></i>
-                </a>
+                </button>
             </nav>
         </div>
 
+        <script>
+            let currentPage = 1;
+            
+            function goToPage(page) {
+                currentPage = page;
+                updatePagination();
+                // Add your content loading logic here
+            }
+            
+            function previousPage() {
+                if (currentPage > 1) goToPage(currentPage - 1);
+            }
+            
+            function nextPage() {
+                if (currentPage < 8) goToPage(currentPage + 1);
+            }
+            
+            function updatePagination() {
+                // Update active page styling
+                document.querySelectorAll('[aria-current="page"]').forEach(el => {
+                    el.removeAttribute('aria-current');
+                    el.classList.remove('bg-lilac-500', 'text-white', 'border-lilac-500');
+                    el.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+                });
+                
+                const activeBtn = document.querySelector(`button[onclick="goToPage(${currentPage})"]`);
+                if (activeBtn) {
+                    activeBtn.setAttribute('aria-current', 'page');
+                    activeBtn.classList.add('bg-lilac-500', 'text-white', 'border-lilac-500');
+                    activeBtn.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+                }
+            }
+        </script>
+
         <!-- Call to Action -->
-        <section class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-6 mb-8 text-center fade-on-scroll">
-            <h2 data-i18n="cta.cant_find" class="text-xl font-bold text-gray-900 dark:text-white mb-2">Want Your Company Featured?</h2>
-            <p data-i18n="cta.help_text" class="text-gray-600 dark:text-gray-300 mb-4 max-w-xl mx-auto text-sm">
-                Join thousands of companies attracting top talent through our platform.
-            </p>
-            <button class="px-4 py-2 bg-lilac-400 hover:bg-lilac-500 text-white rounded-md text-sm font-medium transition-colors">
-                <i class="fas fa-headset mr-2"></i> List Your Company
-            </button>
+        <section class="bg-lilac-50 dark:bg-gray-800 rounded-xl p-8 mb-8 text-center">
+            <div class="max-w-md mx-auto">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Need Help Finding Companies?</h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    Let us know your needs and we'll help you find the perfect match.
+                </p>
+                <button class="px-6 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg transition-colors">
+                    Request Help
+                </button>
+            </div>
         </section>
     </main>
 
@@ -468,7 +520,7 @@
             <!-- Copyright and Bottom Links -->
             <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                 <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
-                    © 2026 RuangKerja. All rights reserved.
+                    © 2025 RuangKerja. All rights reserved.
                 </p>
                 <div class="flex space-x-6">
                     <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
