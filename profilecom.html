@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Profile - RuangKerja</title>
     
+    <script src="api.js"></script>
+    <script src="darkmode.js"></script>
+    <script src="language.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -40,117 +43,191 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        .hover-scale:hover {
-            transform: scale(1.03);
-            transition: transform 0.2s ease;
-        }
-        
-        .company-header {
-            background: linear-gradient(135deg, #f4ecfb 0%, #dbc2f0 100%);
-        }
-        
-        .dark .company-header {
-            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-        }
-        
-        .tab-active {
-            border-bottom: 3px solid #b87ce0;
-            color: #b87ce0;
-            font-weight: 500;
-        }
-        
-        .dark .tab-active {
-            border-bottom-color: #c69ae6;
-            color: #c69ae6;
-        }
-        
-        .job-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .chart-container {
-            height: 300px;
-        }
+    /* Font Family */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #FAF7FD;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f4ecfb;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #dbc2f0;
+        border-radius: 4px;
+    }
+
+    .dark ::-webkit-scrollbar-track {
+        background: #1a202c;
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+        background: #4a5568;
+    }
+
+    /* Profile image hover effect */
+    #profile-image {
+        transition: opacity 1s ease-in-out !important;
+    }
+
+    #profile-image:hover {
+        opacity: 0.5 !important;
+    }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
     <!-- Navbar -->
-    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm top-0 w-full z-10">
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
                             Beranda
                         </a>
-                        <a href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Tentang
                         </a>
-                        <a href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Kandidat
                         </a>
-                        <a href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 dark:text-white bg-lilac-50 dark:bg-gray-800">
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Perusahaan
                         </a>
                     </div>
                 </div>
+
+                <!-- Desktop Dark Mode & Profile -->
                 <div class="hidden sm:flex items-center space-x-4">
-                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
                         <i class="fas fa-moon dark:hidden"></i>
                         <i class="fas fa-sun hidden dark:inline"></i>
                     </button>
+
                     <div class="relative">
-                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button">
-                            <div class="h-8 w-8 rounded-full bg-cover bg-center" style="background-image: url('img/default-profile.png');"></div>
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Mobile Menu Button -->
                 <div class="sm:hidden flex items-center">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800" id="mobile-menu-button">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
                         <i class="fas fa-bars"></i>
                     </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
+
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
-        <!-- Company Profile Header -->
-        <section class="company-header rounded-xl p-6 mb-8 shadow-sm hover-scale transition-transform duration-200">
-            <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-                <div class="flex-shrink-0">
-                    <div class="relative h-24 w-24 md:h-32 md:w-32 rounded-full bg-white dark:bg-gray-800 shadow-md overflow-hidden border-4 border-white dark:border-gray-700">
-                        <img src="https://via.placeholder.com/150" alt="Company Logo" class="h-full w-full object-cover">
+    <main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-16 transition duration-300">
+        <!-- Profile Header Section -->
+        <section class="relative mb-8">
+            <!-- Cover Photo -->
+            <div class="h-48 w-full rounded-xl bg-gray-200 dark:bg-gray-800 overflow-hidden mb-4">
+                <div id="cover-photo" class="w-full h-full object-cover" style="background-image: url('img/default-cover.jpg');">
+                </div>
+                <button id="change-cover-btn" class="absolute top-4 right-4 bg-white/80 dark:bg-gray-700/80 hover:bg-white dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1 rounded-full text-sm flex items-center transition-all">
+                    <i class="fas fa-camera mr-2"></i>
+                    <span>Change Cover</span>
+                </button>
+            </div>
+            
+            <!-- Profile Info -->
+            <div class="flex flex-col md:flex-row items-start md:items-end -mt-16 md:-mt-12 ml-4 md:ml-6">
+                <!-- Profile Picture -->
+                <div class="relative group">
+                    <div id="company-profile-image" alt="Profile picture" 
+                         onclick="openModal('modal-upload')"
+                         class="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white dark:border-gray-900 object-cover shadow-lg cursor-pointer hover:opacity-75 transition-opacity bg-cover bg-center bg-no-repeat" 
+                         style="background-image: url('img/default-profile.png');">
                     </div>
                 </div>
                 
-                <div class="flex-1">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div>
-                            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">TechNova Solutions</h1>
-                            <p class="text-gray-600 dark:text-gray-300 mb-2">Innovating the future of technology</p>
-                            
-                            <div class="flex flex-wrap items-center gap-2 text-sm">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200">
-                                    <i class="fas fa-map-marker-alt mr-1.5 text-lilac-500"></i>
-                                    Jakarta, Indonesia
-                                </span>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200">
-                                    <i class="fas fa-users mr-1.5 text-lilac-500"></i>
-                                    201-500 employees
-                                </span>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200">
-                                    <i class="fas fa-building mr-1.5 text-lilac-500"></i>
-                                    Technology
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Name and Basic Info -->
+                <div class="mt-4 md:mt-0 md:ml-6">
+                    <h1 id="company-name" class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Loading...</h1>
+                    
+                    <div class="flex flex-wrap items-center mt-2 gap-x-4 gap-y-2 text-sm">
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt mr-2 text-lilac-400"></i>
+                            <span id="company-location">Loading...</span>
+                        </span>
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-envelope mr-2 text-lilac-400"></i>
+                            <span id="company-email">Loading...</span>
+                        </span>
+                        <span class="flex items-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-users mr-2 text-lilac-400"></i>
+                            <span id="company-size">Loading...</span>
+                        </span>
+                    </div>                      
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex items-center mt-4 md:mt-0 md:ml-auto space-x-3">
+                    <button onclick="openModal('modal-settings')" id="edit-profile-btn" class="border border-lilac-500 text-lilac-500 dark:text-lilac-300 dark:border-lilac-300 hover:bg-lilac-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg flex items-center transition-colors">
+                        <i class="fas fa-pen mr-2"></i>
+                        <span data-i18n="settings">Edit Profile</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -165,10 +242,7 @@
                     <i class="fas fa-briefcase mr-2"></i> Jobs
                 </button>
                 <button onclick="switchTab('analytics')" id="analytics-tab" class="py-4 px-1 text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fas fa-chart-line mr-2"></i> Analytics
-                </button>
-                <button onclick="switchTab('settings')" id="settings-tab" class="py-4 px-1 text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fas fa-cog mr-2"></i> Settings
+                    <i class="fas fa-star mr-2"></i> Ratings
                 </button>
             </nav>
         </div>
@@ -181,24 +255,17 @@
                     <!-- Main Content -->
                     <div class="lg:col-span-2">
                         <!-- About Section -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6 hover-scale">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6 ">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">About Us</h3>
-                                <button class="text-lilac-500 hover:text-lilac-600">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </button>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">
-                                TechNova Solutions is a leading technology company specializing in innovative software solutions, artificial intelligence, and cloud computing. Founded in 2015, we've grown from a small startup to a team of over 300 talented professionals dedicated to transforming businesses through technology.
+                            <p id="company-description" class="text-gray-600 dark:text-gray-300 mb-4">
+                                Loading...
                             </p>
-                            <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                                <i class="fas fa-globe mr-2 text-lilac-500"></i>
-                                <a href="#" class="text-lilac-600 dark:text-lilac-400 hover:underline">technova-solutions.com</a>
-                            </div>
                         </div>
                         
                         <!-- Company Details -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6 hover-scale">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6 ">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">Company Details</h3>
                                 <button class="text-lilac-500 hover:text-lilac-600">
@@ -208,344 +275,126 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Industry</p>
-                                    <p class="text-gray-600 dark:text-gray-300">Technology</p>
+                                    <p id="company-industry" class="text-gray-600 dark:text-gray-300">Loading...</p>
                                 </div>
                                 <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Company Size</p>
-                                    <p class="text-gray-600 dark:text-gray-300">201-500 employees</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">HQ Location</p>
+                                    <p id="company-hq" class="text-gray-600 dark:text-gray-300">201-500 employees</p>
                                 </div>
                                 <div>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Founded</p>
-                                    <p class="text-gray-600 dark:text-gray-300">2015</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Specialties</p>
-                                    <p class="text-gray-600 dark:text-gray-300">Software Development, AI, Cloud Computing</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Phone</p>
-                                    <p class="text-gray-600 dark:text-gray-300">+62 21 1234 5678</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                                    <p class="text-gray-600 dark:text-gray-300">info@technova.com</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Current Job Openings -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover-scale">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Current Job Openings (5)</h3>
-                                <button class="px-3 py-1 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium">
-                                    <i class="fas fa-plus mr-1"></i> New Job
-                                </button>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 job-card transition-all duration-200">
-                                    <h4 class="font-medium text-gray-900 dark:text-white mb-1">Senior Frontend Developer</h4>
-                                    <div class="flex flex-wrap items-center gap-2 text-sm mb-2">
-                                        <span class="text-gray-600 dark:text-gray-300">
-                                            <i class="fas fa-map-marker-alt mr-1 text-lilac-500"></i>
-                                            Jakarta (Remote Available)
-                                        </span>
-                                        <span class="text-gray-600 dark:text-gray-300">
-                                            <i class="fas fa-money-bill-wave mr-1 text-lilac-500"></i>
-                                            IDR 25,000,000 - 35,000,000
-                                        </span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Posted 3 days ago • 12 applicants</span>
-                                        <div class="flex space-x-2">
-                                            <button class="text-gray-500 dark:text-gray-400 hover:text-lilac-500">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button class="text-gray-500 dark:text-gray-400 hover:text-red-500">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-lilac-50 dark:hover:bg-gray-700 job-card transition-all duration-200">
-                                    <h4 class="font-medium text-gray-900 dark:text-white mb-1">Backend Engineer (Node.js)</h4>
-                                    <div class="flex flex-wrap items-center gap-2 text-sm mb-2">
-                                        <span class="text-gray-600 dark:text-gray-300">
-                                            <i class="fas fa-map-marker-alt mr-1 text-lilac-500"></i>
-                                            Bandung
-                                        </span>
-                                        <span class="text-gray-600 dark:text-gray-300">
-                                            <i class="fas fa-money-bill-wave mr-1 text-lilac-500"></i>
-                                            IDR 20,000,000 - 30,000,000
-                                        </span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Posted 1 week ago • 24 applicants</span>
-                                        <div class="flex space-x-2">
-                                            <button class="text-gray-500 dark:text-gray-400 hover:text-lilac-500">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button class="text-gray-500 dark:text-gray-400 hover:text-red-500">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <p id="company-foundation-date" class="text-gray-600 dark:text-gray-300">2015</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Sidebar -->
                     <div class="space-y-6">
-                        <!-- Company Admins -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover-scale">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Company Admins</h3>
-                                <button class="text-lilac-500 hover:text-lilac-600">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-cover bg-center mr-3" style="background-image: url('img/default-profile.png');"></div>
-                                    <div>
-                                        <p class="text-gray-900 dark:text-white">John Doe</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">Owner</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-cover bg-center mr-3" style="background-image: url('img/default-profile.png');"></div>
-                                    <div>
-                                        <p class="text-gray-900 dark:text-white">Jane Smith</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">HR Manager</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-cover bg-center mr-3" style="background-image: url('img/default-profile.png');"></div>
-                                    <div>
-                                        <p class="text-gray-900 dark:text-white">Michael Brown</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">Recruiter</p>
-                                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Company Details</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <i class="fas fa-globe text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Website</p>
+                                    <a href="#" class="text-lilac-600 dark:text-lilac-400 hover:underline">technova-solutions.com</a>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Edit Profile Button -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover-scale">
-                            <button class="w-full px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium transition-colors duration-200">
-                                <i class="fas fa-pencil-alt mr-2"></i> Edit Company Profile
-                            </button>
-                        </div>
-                        
-                        <!-- Company Gallery -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover-scale">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Company Gallery</h3>
-                            <div class="grid grid-cols-3 gap-2">
-                                <div class="aspect-w-1 aspect-h-1">
-                                    <img src="https://via.placeholder.com/300" alt="Office" class="object-cover rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-building text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Industry</p>
+                                    <p class="text-gray-600 dark:text-gray-300">Technology</p>
                                 </div>
-                                <div class="aspect-w-1 aspect-h-1">
-                                    <img src="https://via.placeholder.com/300" alt="Team" class="object-cover rounded-lg">
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-users text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Company Size</p>
+                                    <p class="text-gray-600 dark:text-gray-300">201-500 employees</p>
                                 </div>
-                                <div class="aspect-w-1 aspect-h-1">
-                                    <img src="https://via.placeholder.com/300" alt="Event" class="object-cover rounded-lg">
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Headquarters</p>
+                                    <p class="text-gray-600 dark:text-gray-300">Jakarta, Indonesia</p>
                                 </div>
-                                <div class="aspect-w-1 aspect-h-1">
-                                    <img src="https://via.placeholder.com/300" alt="Workspace" class="object-cover rounded-lg">
-                                </div>
-                                <div class="aspect-w-1 aspect-h-1">
-                                    <img src="https://via.placeholder.com/300" alt="Product" class="object-cover rounded-lg">
-                                </div>
-                                <div class="aspect-w-1 aspect-h-1">
-                                    <button class="h-full w-full bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 hover:text-lilac-500">
-                                        <i class="fas fa-plus text-xl"></i>
-                                    </button>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-calendar-alt text-lilac-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Founded</p>
+                                    <p class="text-gray-600 dark:text-gray-300">2015</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            </div>
             
             <!-- Jobs Tab Content -->
             <div id="jobs-content" class="tab-content hidden">
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6 hover-scale">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6 ">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">Job Listings</h3>
                             <p class="text-gray-600 dark:text-gray-300">Manage your company's job postings</p>
                         </div>
-                        <button class="mt-4 md:mt-0 px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium">
+                        <button onclick="window.location.href='posting_oprec.html'" class="mt-4 md:mt-0 px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium">
                             <i class="fas fa-plus mr-2"></i> Create New Job
                         </button>
                     </div>
                     
-                    <div class="overflow-x-auto">
+                    <!-- Loading State -->
+                    <div id="jobs-loading" class="text-center py-8">
+                        <i class="fas fa-spinner fa-spin text-2xl text-lilac-500"></i>
+                        <p class="mt-2 text-gray-500 dark:text-gray-400">Loading job listings...</p>
+                    </div>
+
+                    <!-- Jobs Table -->
+                    <div id="jobs-table-container" class="overflow-x-auto hidden">
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Position</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Type</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Location</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Salary</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Applicants</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Applications</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="font-medium text-gray-900 dark:text-white">Senior Frontend Developer</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Posted 3 days ago</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
-                                        Jakarta (Remote)
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
-                                        IDR 25-35M
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200">
-                                            12 applicants
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
-                                            Active
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end space-x-2">
-                                            <button class="text-lilac-600 dark:text-lilac-400 hover:text-lilac-900 dark:hover:text-lilac-300">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="font-medium text-gray-900 dark:text-white">Backend Engineer (Node.js)</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Posted 1 week ago</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
-                                        Bandung
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
-                                        IDR 20-30M
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200">
-                                            24 applicants
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
-                                            Active
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end space-x-2">
-                                            <button class="text-lilac-600 dark:text-lilac-400 hover:text-lilac-900 dark:hover:text-lilac-300">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="font-medium text-gray-900 dark:text-white">UX Designer</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Posted 2 weeks ago</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
-                                        Remote
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
-                                        IDR 18-25M
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200">
-                                            8 applicants
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
-                                            Draft
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end space-x-2">
-                                            <button class="text-lilac-600 dark:text-lilac-400 hover:text-lilac-900 dark:hover:text-lilac-300">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="font-medium text-gray-900 dark:text-white">Data Scientist</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Posted 1 month ago</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
-                                        Jakarta
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
-                                        IDR 30-45M
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200">
-                                            42 applicants
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
-                                            Closed
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end space-x-2">
-                                            <button class="text-lilac-600 dark:text-lilac-400 hover:text-lilac-900 dark:hover:text-lilac-300">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody id="jobs-table-body" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Job rows will be inserted here -->
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Empty State -->
+                    <div id="jobs-empty-state" class="hidden text-center py-12">
+                        <div class="text-gray-400 mb-4">
+                            <i class="fas fa-briefcase text-6xl"></i>
+                        </div>
+                        <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">No Job Postings Yet</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">Start attracting talent by posting your first job opening.</p>
+                        <button onclick="window.location.href='posting_oprec.html'" class="px-6 py-3 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg font-medium">
+                            <i class="fas fa-plus mr-2"></i> Post Your First Job
+                        </button>
+                    </div>
                     
-                    <div class="mt-6 flex items-center justify-between">
+                    <!-- Pagination -->
+                    <div id="jobs-pagination" class="mt-6 flex items-center justify-between hidden">
                         <div class="text-sm text-gray-500 dark:text-gray-400">
-                            Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">4</span> jobs
+                            Showing <span id="jobs-showing-start">0</span> to <span id="jobs-showing-end">0</span> of <span id="jobs-total">0</span> jobs
                         </div>
                         <div class="flex space-x-2">
-                            <button class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300 cursor-not-allowed">
+                            <button id="jobs-prev-btn" class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                                 Previous
                             </button>
-                            <button class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600">
+                            <button id="jobs-next-btn" class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                                 Next
                             </button>
                         </div>
@@ -561,194 +410,192 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Settings Tab Content -->
-            <div id="settings-content" class="tab-content hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2">
-                        <!-- Company Information -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6 hover-scale">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Company Information</h3>
-                            <form>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                    <div>
-                                        <label for="company-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Name</label>
-                                        <input type="text" id="company-name" value="TechNova Solutions" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                    <div>
-                                        <label for="company-website" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Website</label>
-                                        <input type="url" id="company-website" value="technova-solutions.com" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                    <div>
-                                        <label for="company-industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
-                                        <select id="company-industry" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                            <option>Technology</option>
-                                            <option>Finance</option>
-                                            <option>Healthcare</option>
-                                            <option>Education</option>
-                                            <option>Retail</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="company-size" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
-                                        <select id="company-size" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                            <option>1-10 employees</option>
-                                            <option>11-50 employees</option>
-                                            <option>51-200 employees</option>
-                                            <option selected>201-500 employees</option>
-                                            <option>501-1000 employees</option>
-                                            <option>1000+ employees</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="company-founded" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Year Founded</label>
-                                        <input type="number" id="company-founded" value="2015" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                    <div>
-                                        <label for="company-phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
-                                        <input type="tel" id="company-phone" value="+62 21 1234 5678" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="company-about" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">About Company</label>
-                                    <textarea id="company-about" rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">TechNova Solutions is a leading technology company specializing in innovative software solutions, artificial intelligence, and cloud computing. Founded in 2015, we've grown from a small startup to a team of over 300 talented professionals dedicated to transforming businesses through technology.</textarea>
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="button" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg mr-3 hover:bg-gray-300 dark:hover:bg-gray-600">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg">
-                                        Save Changes
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <!-- Company Address -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover-scale">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Company Address</h3>
-                            <form>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                    <div>
-                                        <label for="company-country" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Country</label>
-                                        <select id="company-country" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                            <option>Indonesia</option>
-                                            <option>Malaysia</option>
-                                            <option>Singapore</option>
-                                            <option>Thailand</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="company-city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
-                                        <input type="text" id="company-city" value="Jakarta" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label for="company-address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Street Address</label>
-                                        <input type="text" id="company-address" value="Jl. Sudirman No. 123" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                    <div>
-                                        <label for="company-postal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Postal Code</label>
-                                        <input type="text" id="company-postal" value="10220" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="button" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg mr-3 hover:bg-gray-300 dark:hover:bg-gray-600">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg">
-                                        Save Changes
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <!-- Company Logo -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover-scale">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Company Logo</h3>
-                            <div class="flex flex-col items-center">
-                                <div class="relative h-32 w-32 rounded-full bg-white dark:bg-gray-700 shadow-md overflow-hidden border-4 border-white dark:border-gray-600 mb-4">
-                                    <img src="https://via.placeholder.com/150" alt="Company Logo" class="h-full w-full object-cover">
-                                </div>
-                                <button class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg text-sm font-medium mb-2">
-                                    <i class="fas fa-camera mr-2"></i> Upload New Logo
-                                </button>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 text-center">Recommended size: 300x300px, PNG or JPG</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Social Media -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover-scale">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Social Media</h3>
-                            <form class="space-y-4">
-                                <div>
-                                    <label for="linkedin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">LinkedIn</label>
-                                    <div class="flex">
-                                        <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300">
-                                            <i class="fab fa-linkedin"></i>
-                                        </span>
-                                        <input type="url" id="linkedin" placeholder="https://linkedin.com/company/technova" class="w-full px-3 py-2 rounded-r-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="twitter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Twitter</label>
-                                    <div class="flex">
-                                        <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300">
-                                            <i class="fab fa-twitter"></i>
-                                        </span>
-                                        <input type="url" id="twitter" placeholder="https://twitter.com/technova" class="w-full px-3 py-2 rounded-r-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="facebook" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Facebook</label>
-                                    <div class="flex">
-                                        <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300">
-                                            <i class="fab fa-facebook-f"></i>
-                                        </span>
-                                        <input type="url" id="facebook" placeholder="https://facebook.com/technova" class="w-full px-3 py-2 rounded-r-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="instagram" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Instagram</label>
-                                    <div class="flex">
-                                        <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300">
-                                            <i class="fab fa-instagram"></i>
-                                        </span>
-                                        <input type="url" id="instagram" placeholder="https://instagram.com/technova" class="w-full px-3 py-2 rounded-r-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    </div>
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="submit" class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg">
-                                        Save Changes
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <!-- Danger Zone -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-red-200 dark:border-red-900 hover-scale">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Danger Zone</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Deactivate your company profile. This will hide your profile from candidates but preserve all data.</p>
-                                    <button class="px-4 py-2 border border-red-500 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-sm font-medium">
-                                        <i class="fas fa-eye-slash mr-2"></i> Deactivate Profile
-                                    </button>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Permanently delete your company account and all associated data. This action cannot be undone.</p>
-                                    <button class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium">
-                                        <i class="fas fa-trash mr-2"></i> Delete Account
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
+
+    <!-- Company Image Upload Modal - Similar to profile.html -->
+    <div id="modal-upload" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+        <h3 class="text-2xl font-semibold text-[#C69AE6] mb-4">Upload Company Logo</h3>
+        
+        <div class="border-2 border-dashed border-[#C69AE6] rounded-xl p-10 text-center bg-lilac-50 dark:bg-gray-700 hover:bg-lilac-100 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer mb-4" 
+            id="uploadArea" 
+            onclick="document.getElementById('company-image-input').click()">
+            <div>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5" class="mx-auto mb-4">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17,8 12,3 7,8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p class="text-gray-700 dark:text-gray-300 mb-2">
+                <strong>Click to upload</strong> or drag and drop
+            </p>
+            <p class="text-gray-500 dark:text-gray-400 text-sm">PNG, JPG or GIF (max 5MB)</p>
+            </div>
+        </div>
+        
+        <!-- Preview area -->
+        <div id="preview" class="mb-4"></div>
+        
+        <input type="file" id="company-image-input" class="hidden" accept="image/*">
+        
+        <div class="flex gap-3">
+            <button id="uploadCompanyBtn" disabled class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            Upload Logo
+            </button>
+            <button id="deleteCompanyBtn" class="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            Delete Logo
+            </button>
+            <button onclick="closeModal('modal-upload')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            Close
+            </button>
+        </div>
+        </div>
+    </div>
+
+    <!-- Company Settings Modal - Similar to profile.html -->
+    <div id="modal-settings" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
+        <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
+        <h3 class="text-2xl font-semibold text-[#C69AE6] mb-6">Company Settings</h3>
+        
+        <form id="company-settings-form" class="space-y-4">
+            <!-- Basic Company Information -->
+            <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+            <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Basic Information</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Name</label>
+                <input type="text" id="settings-company-name" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Email</label>
+                <input type="email" id="settings-company-email" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
+                <select id="settings-company-industry" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    <option value="">Select Industry</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Education">Education</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Hospitality">Hospitality</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Government">Government</option>
+                    <option value="Construction">Construction</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Legal Services">Legal Services</option>
+                    <option value="Consulting">Consulting</option>
+                    <option value="Non-Profit">Non-Profit</option>
+                </select>
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
+                <input type="number" id="settings-company-size" min="1" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+            </div>
+            </div>
+
+            <!-- Location Information -->
+            <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+            <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Location Information</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">HQ Location</label>
+                <input type="text" id="settings-company-hq" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Province</label>
+                <select id="settings-company-province" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    <option value="">Select Province</option>
+                    <option value="aceh">Aceh</option>
+                    <option value="sumatra-utara">Sumatra Utara</option>
+                    <option value="sumatra-barat">Sumatra Barat</option>
+                    <option value="riau">Riau</option>
+                    <option value="jambi">Jambi</option>
+                    <option value="sumatra-selatan">Sumatra Selatan</option>
+                    <option value="bengkulu">Bengkulu</option>
+                    <option value="lampung">Lampung</option>
+                    <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+                    <option value="kepulauan-riau">Kepulauan Riau</option>
+                    <option value="dki-jakarta">DKI Jakarta</option>
+                    <option value="jawa-barat">Jawa Barat</option>
+                    <option value="jawa-tengah">Jawa Tengah</option>
+                    <option value="di-yogyakarta">DI Yogyakarta</option>
+                    <option value="jawa-timur">Jawa Timur</option>
+                    <option value="banten">Banten</option>
+                    <option value="bali">Bali</option>
+                    <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+                    <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+                    <option value="kalimantan-barat">Kalimantan Barat</option>
+                    <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                    <option value="kalimantan-selatan">Kalimantan Selatan</option>
+                    <option value="kalimantan-timur">Kalimantan Timur</option>
+                    <option value="kalimantan-utara">Kalimantan Utara</option>
+                    <option value="sulawesi-utara">Sulawesi Utara</option>
+                    <option value="sulawesi-tengah">Sulawesi Tengah</option>
+                    <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                    <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+                    <option value="gorontalo">Gorontalo</option>
+                    <option value="sulawesi-barat">Sulawesi Barat</option>
+                    <option value="maluku">Maluku</option>
+                    <option value="maluku-utara">Maluku Utara</option>
+                    <option value="papua-barat">Papua Barat</option>
+                    <option value="papua-barat-daya">Papua Barat Daya</option>
+                    <option value="papua">Papua</option>
+                    <option value="papua-selatan">Papua Selatan</option>
+                    <option value="papua-tengah">Papua Tengah</option>
+                    <option value="papua-pegunungan">Papua Pegunungan</option>
+                </select>
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
+                <select id="settings-company-city" disabled class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                    <option value="">Select City</option>
+                </select>
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Foundation Date</label>
+                <input type="date" id="settings-foundation-date" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+            </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+            <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Contact Information</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Website URL</label>
+                <input type="url" id="settings-company-website" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                <input type="tel" id="settings-company-phone" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                </div>
+            </div>
+            </div>
+
+            <!-- Company Description -->
+            <div class="mb-4">
+            <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Company Description</h4>
+            <textarea id="settings-company-description" rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent resize-none" placeholder="Tell us about your company..."></textarea>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex gap-3 pt-4">
+            <button type="submit" class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                <i class="fas fa-save mr-2"></i>Save Changes
+            </button>
+            <button type="button" onclick="closeModal('modal-settings')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                Cancel
+            </button>
+            </div>
+        </form>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-12">
@@ -827,43 +674,388 @@
         </div>
     </footer>
 
+    <script src="js/navbar-profile.js"></script>
+    <script src="js/company-profile.js"></script>
+    <script src="js/company-profile-image.js"></script>
     <script>
-        // Dark mode toggle
-        document.getElementById('darkModeToggle').addEventListener('click', function() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+// Company Jobs Manager Class
+class CompanyJobsManager {
+    constructor() {
+        this.currentPage = 0;
+        this.pageSize = 10;
+        this.totalPages = 0;
+        this.companyId = null;
+        this.jobs = [];
+    }
+
+    async init() {
+        this.setupEventListeners();
+        
+        // Try to get company ID from current company data
+        if (window.currentCompany?.id) {
+            this.setCompanyId(window.currentCompany.id);
+        }
+    }
+
+    setupEventListeners() {
+        // Pagination event listeners
+        document.getElementById('jobs-prev-btn')?.addEventListener('click', () => {
+            if (this.currentPage > 0) {
+                this.currentPage--;
+                this.loadCompanyJobs();
+            }
         });
 
-        // Initialize dark mode based on user preference
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.documentElement.classList.add('dark');
+        document.getElementById('jobs-next-btn')?.addEventListener('click', () => {
+            if (this.currentPage < this.totalPages - 1) {
+                this.currentPage++;
+                this.loadCompanyJobs();
+            }
+        });
+    }
+
+    async loadCompanyJobs() {
+        if (!this.companyId) {
+            console.log('Company ID not available yet');
+            return;
         }
 
-        // Tab functionality
-        function switchTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-                tab.classList.remove('tab-active');
-                tab.classList.add('text-gray-500', 'dark:text-gray-400');
-                tab.classList.remove('text-lilac-500', 'dark:text-lilac-400');
-            });
-            
-            // Show selected tab content
-            document.getElementById(tabName + '-content').classList.remove('hidden');
-            
-            // Add active class to selected tab
-            document.getElementById(tabName + '-tab').classList.add('tab-active');
-            document.getElementById(tabName + '-tab').classList.remove('text-gray-500', 'dark:text-gray-400');
-            document.getElementById(tabName + '-tab').classList.add('text-lilac-500', 'dark:text-lilac-400');
+        try {
+            this.showLoading();
+
+            const response = await fetch(`http://localhost:8080/api/jobs/company/${this.companyId}?page=${this.currentPage}&size=${this.pageSize}`);
+            const data = await response.json();
+
+            console.log('Jobs API response:', data);
+
+            if (data.success && data.jobs) {
+                this.jobs = data.jobs;
+                this.totalPages = data.totalPages || Math.ceil(data.jobs.length / this.pageSize);
+                this.displayJobs();
+                this.updatePagination(data);
+            } else {
+                this.showEmptyState();
+            }
+        } catch (error) {
+            console.error('Error loading company jobs:', error);
+            this.showEmptyState();
+        }
+    }
+
+    showLoading() {
+        document.getElementById('jobs-loading')?.classList.remove('hidden');
+        document.getElementById('jobs-table-container')?.classList.add('hidden');
+        document.getElementById('jobs-empty-state')?.classList.add('hidden');
+        document.getElementById('jobs-pagination')?.classList.add('hidden');
+    }
+
+    showEmptyState() {
+        document.getElementById('jobs-loading')?.classList.add('hidden');
+        document.getElementById('jobs-table-container')?.classList.add('hidden');
+        document.getElementById('jobs-empty-state')?.classList.remove('hidden');
+        document.getElementById('jobs-pagination')?.classList.add('hidden');
+    }
+
+    displayJobs() {
+        if (!this.jobs || this.jobs.length === 0) {
+            this.showEmptyState();
+            return;
         }
 
-        // Initialize first tab as active
-        switchTab('overview');
-    </script>
+        document.getElementById('jobs-loading')?.classList.add('hidden');
+        document.getElementById('jobs-table-container')?.classList.remove('hidden');
+        document.getElementById('jobs-empty-state')?.classList.add('hidden');
+
+        const tableBody = document.getElementById('jobs-table-body');
+        if (tableBody) {
+            tableBody.innerHTML = this.jobs.map(job => this.createJobRow(job)).join('');
+        }
+    }
+
+    createJobRow(job) {
+        const jobType = this.formatJobType(job.type);
+        const location = this.formatLocation(job.city, job.province);
+        const salary = this.formatSalary(job.salaryMin, job.salaryMax);
+        const postedDate = this.formatDate(job.createdAt);
+        const status = this.getJobStatus(job);
+        const applicationCount = job.applicationCount || 0;
+
+        return `
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="font-medium text-gray-900 dark:text-white">${job.title}</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">Posted ${postedDate}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200">
+                        ${jobType}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
+                    ${location}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-300">
+                    ${salary}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                        ${applicationCount} applicant${applicationCount !== 1 ? 's' : ''}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    ${status}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex justify-end space-x-2">
+                        <button onclick="viewJobDetails(${job.id})" class="text-lilac-600 dark:text-lilac-400 hover:text-lilac-900 dark:hover:text-lilac-300" title="View Details">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="editJob(${job.id})" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300" title="Edit Job">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                        <button onclick="deleteJob(${job.id}, '${job.title}')" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300" title="Delete Job">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+
+    formatJobType(type) {
+        const typeMap = {
+            'fulltime': 'Full-time',
+            'parttime': 'Part-time',
+            'contract': 'Contract',
+            'internship': 'Internship',
+            'freelance': 'Freelance',
+            'remote': 'Remote',
+            'hybrid': 'Hybrid'
+        };
+        return typeMap[type] || type;
+    }
+
+    formatLocation(city, province) {
+        if (city && province) {
+            const formattedProvince = province.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            return `${city}, ${formattedProvince}`;
+        }
+        return city || province || 'Not specified';
+    }
+
+    formatSalary(salaryMin, salaryMax) {
+        if (!salaryMin && !salaryMax) return 'Not specified';
+        
+        const formatAmount = (amount) => {
+            if (amount >= 1000000) {
+                return `${(amount / 1000000).toFixed(0)}M`;
+            } else if (amount >= 1000) {
+                return `${(amount / 1000).toFixed(0)}K`;
+            }
+            return amount.toString();
+        };
+
+        if (salaryMin && salaryMax) {
+            return `IDR ${formatAmount(salaryMin)}-${formatAmount(salaryMax)}`;
+        } else if (salaryMin) {
+            return `IDR ${formatAmount(salaryMin)}+`;
+        } else {
+            return `Up to IDR ${formatAmount(salaryMax)}`;
+        }
+    }
+
+    formatDate(dateString) {
+        if (!dateString) return 'Unknown';
+        
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 1) return 'yesterday';
+        if (diffDays < 7) return `${diffDays} days ago`;
+        if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+        if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+        return `${Math.floor(diffDays / 365)} years ago`;
+    }
+
+    getJobStatus(job) {
+        const status = job.status || 'ACTIVE';
+        
+        const statusConfig = {
+            'ACTIVE': { class: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200', text: 'Active' },
+            'DRAFT': { class: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200', text: 'Draft' },
+            'CLOSED': { class: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200', text: 'Closed' },
+            'PAUSED': { class: 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200', text: 'Paused' }
+        };
+
+        const config = statusConfig[status] || statusConfig['ACTIVE'];
+        return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${config.class}">${config.text}</span>`;
+    }
+
+    updatePagination(data) {
+        const totalItems = data.totalElements || this.jobs.length;
+        const startIndex = this.currentPage * this.pageSize + 1;
+        const endIndex = Math.min((this.currentPage + 1) * this.pageSize, totalItems);
+
+        const showingStart = document.getElementById('jobs-showing-start');
+        const showingEnd = document.getElementById('jobs-showing-end');
+        const totalElement = document.getElementById('jobs-total');
+
+        if (showingStart) showingStart.textContent = startIndex;
+        if (showingEnd) showingEnd.textContent = endIndex;
+        if (totalElement) totalElement.textContent = totalItems;
+
+        // Update pagination buttons
+        const prevBtn = document.getElementById('jobs-prev-btn');
+        const nextBtn = document.getElementById('jobs-next-btn');
+
+        if (prevBtn) {
+            prevBtn.disabled = this.currentPage === 0;
+        }
+
+        if (nextBtn) {
+            nextBtn.disabled = this.currentPage >= this.totalPages - 1;
+        }
+
+        // Show pagination if there are jobs
+        if (this.jobs.length > 0) {
+            document.getElementById('jobs-pagination')?.classList.remove('hidden');
+        }
+    }
+
+    setCompanyId(companyId) {
+        console.log('Setting company ID for jobs:', companyId);
+        this.companyId = companyId;
+        this.loadCompanyJobs();
+    }
+}
+
+// Job action functions
+function viewJobDetails(jobId) {
+    window.location.href = `job-detail.html?id=${jobId}`;
+}
+
+function editJob(jobId) {
+    window.location.href = `posting_oprec.html?edit=${jobId}`;
+}
+
+async function deleteJob(jobId, jobTitle) {
+    if (!confirm(`Are you sure you want to delete the job "${jobTitle}"? This action cannot be undone.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8080/api/jobs/${jobId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('Job deleted successfully');
+            // Reload the jobs list
+            if (window.companyJobsManager) {
+                window.companyJobsManager.loadCompanyJobs();
+            }
+        } else {
+            alert('Failed to delete job: ' + (data.message || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error deleting job:', error);
+        alert('Error deleting job. Please try again.');
+    }
+}
+
+// Tab functionality with jobs loading
+function switchTab(tabName) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    
+    // Remove active class from all tabs
+    document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+        tab.classList.remove('tab-active');
+        tab.classList.add('text-gray-500', 'dark:text-gray-400');
+        tab.classList.remove('text-lilac-500', 'dark:text-lilac-400');
+    });
+    
+    // Show selected tab content
+    document.getElementById(tabName + '-content').classList.remove('hidden');
+    
+    // Add active class to selected tab
+    document.getElementById(tabName + '-tab').classList.add('tab-active');
+    document.getElementById(tabName + '-tab').classList.remove('text-gray-500', 'dark:text-gray-400');
+    document.getElementById(tabName + '-tab').classList.add('text-lilac-500', 'dark:text-lilac-400');
+    
+    // Load jobs when Jobs tab is selected
+    if (tabName === 'jobs' && window.companyJobsManager) {
+        // Get company ID from current company data or profile manager
+        const companyId = window.currentCompany?.id || window.companyProfileManager?.currentCompany?.id;
+        if (companyId) {
+            window.companyJobsManager.setCompanyId(companyId);
+        } else {
+            console.log('No company ID available for loading jobs');
+        }
+    }
+}
+
+// Enhanced initialization
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('=== DOM Content Loaded (Company Profile) ===');
+    
+    // Initialize jobs manager
+    window.companyJobsManager = new CompanyJobsManager();
+    window.companyJobsManager.init();
+    
+    // Wait for API client and company data to be ready
+    const initializeCompanyData = () => {
+        if (typeof window.apiClient === 'undefined') {
+            console.log('Initializing API client...');
+            window.apiClient = new ApiClient();
+        }
+        
+        // Try to get company data from existing scripts
+        if (window.currentCompany?.id) {
+            console.log('Company data already available:', window.currentCompany);
+            window.companyJobsManager.setCompanyId(window.currentCompany.id);
+        } else {
+            // Listen for company data loaded event
+            window.addEventListener('companyDataLoaded', (event) => {
+                console.log('Company data loaded event received:', event.detail);
+                if (event.detail?.company?.id) {
+                    window.companyJobsManager.setCompanyId(event.detail.company.id);
+                }
+            });
+            
+            // Also check periodically for company data
+            const checkCompanyData = setInterval(() => {
+                if (window.currentCompany?.id) {
+                    console.log('Company data found via polling:', window.currentCompany);
+                    window.companyJobsManager.setCompanyId(window.currentCompany.id);
+                    clearInterval(checkCompanyData);
+                }
+            }, 500);
+            
+            // Stop checking after 10 seconds
+            setTimeout(() => {
+                clearInterval(checkCompanyData);
+            }, 10000);
+        }
+    };
+    
+    // Initialize after a short delay to ensure other scripts are loaded
+    setTimeout(initializeCompanyData, 100);
+});
+
+// Initialize first tab as active
+switchTab('overview');
+</script>
+
 </body>
-</html> 
+</html>

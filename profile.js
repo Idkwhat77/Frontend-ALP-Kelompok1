@@ -132,7 +132,39 @@ async function loadCurrentProfileData() {
             // Populate form fields
             document.getElementById('settings-fullname').value = candidate.fullName || '';
             document.getElementById('settings-email').value = candidate.email || '';
-            document.getElementById('settings-industry').value = candidate.industry || '';
+            
+            // Handle industry with case-insensitive matching
+            const industrySelect = document.getElementById('settings-industry');
+            if (industrySelect && candidate.industry) {
+                // First try exact match
+                let optionFound = false;
+                for (let option of industrySelect.options) {
+                    if (option.value === candidate.industry) {
+                        industrySelect.value = candidate.industry;
+                        optionFound = true;
+                        break;
+                    }
+                }
+                
+                // If no exact match, try case-insensitive match
+                if (!optionFound) {
+                    const candidateIndustryLower = candidate.industry.toLowerCase();
+                    for (let option of industrySelect.options) {
+                        if (option.value.toLowerCase() === candidateIndustryLower) {
+                            industrySelect.value = option.value;
+                            optionFound = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // If still no match, log for debugging
+                if (!optionFound) {
+                    console.warn('Industry not found in options:', candidate.industry);
+                    console.log('Available options:', Array.from(industrySelect.options).map(opt => opt.value));
+                }
+            }
+            
             document.getElementById('settings-employment-status').value = candidate.employmentStatus || '';
             document.getElementById('settings-job-type').value = candidate.jobType || '';
             document.getElementById('settings-biodata').value = candidate.biodata || '';
