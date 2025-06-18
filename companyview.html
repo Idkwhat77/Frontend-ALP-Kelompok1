@@ -342,10 +342,6 @@
                     <i class="fas fa-star mr-2"></i>
                     <span data-i18n="company.reviews">Reviews</span>
                 </button>
-                <button class="py-4 px-1 text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap" id="photos-tab">
-                    <i class="fas fa-camera mr-2"></i>
-                    <span data-i18n="company.photos">Photos</span>
-                </button>
             </nav>
         </div>
 
@@ -726,7 +722,7 @@
     <script src="js/navbar-profile.js"></script>
     <script>
         // Tab functionality
-        const tabs = ['about', 'jobs', 'reviews', 'photos'];
+        const tabs = ['about', 'jobs', 'reviews'];
         
         tabs.forEach(tab => {
             const tabButton = document.getElementById(`${tab}-tab`);
