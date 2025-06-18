@@ -87,11 +87,11 @@ class NavbarProfileManager {
 
     updateProfileLinks() {
         // Determine correct profile page based on user type
-        const profileUrl = this.userType === 'company' ? 'company_profile.html' : 'profiledesign.html';
+        const profileUrl = this.userType === 'company' ? 'profilecom.html' : 'profiledesign.html';
         
         // Update all "View Profile" links, but not if we're on employee_profile.html viewing someone else
         const isViewingOtherProfile = window.location.pathname.includes('employee_profile.html') || 
-                                    window.location.pathname.includes('company_profile_view.html');
+                                    window.location.pathname.includes('companyview.html');
         
         if (!isViewingOtherProfile) {
             // Update links that point to profile.html or profiledesign.html

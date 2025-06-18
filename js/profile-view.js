@@ -88,6 +88,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 // Load logged-in user's profile for navbar display
 async function loadLoggedInUserProfile() {
   try {
+    const userType = window.apiClient?.getUserType();
+    // Only attempt to load a candidate profile if the logged-in user is an employee.
+    if (userType !== 'employee') {
+      return;
+    }
+
     const storedUser = JSON.parse(localStorage.getItem('current_user'));
     if (!storedUser || !storedUser.id) return;
 
@@ -96,7 +102,9 @@ async function loadLoggedInUserProfile() {
       updateNavbarProfile(response.candidate);
     }
   } catch (error) {
-    console.error('Error loading logged-in user profile:', error);
+    // This error is expected if an 'employee' user hasn't created their profile yet.
+    // It's not critical, so we can log a warning instead of a disruptive error.
+    console.warn(`Could not load logged-in user's candidate profile for navbar: ${error.message}`);
   }
 }
 

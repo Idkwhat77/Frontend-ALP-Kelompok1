@@ -447,17 +447,22 @@
           return;
       }
 
-      // Handle different company user ID structures
+      // Fix: Look for userId in the company object directly, not in a nested user object
       let companyUserId = null;
-      if (currentViewedCompany.user?.id) {
-          companyUserId = currentViewedCompany.user.id;
-      } else if (currentViewedCompany.userId) {
+      
+      // Try multiple possible locations for the user ID
+      if (currentViewedCompany.userId) {
           companyUserId = currentViewedCompany.userId;
       } else if (currentViewedCompany.user_id) {
           companyUserId = currentViewedCompany.user_id;
+      } else if (currentViewedCompany.user?.id) {
+          companyUserId = currentViewedCompany.user.id;
+      } else if (currentViewedCompany.user?.userId) {
+          companyUserId = currentViewedCompany.user.userId;
       } else {
           console.error('No valid user ID found in company data:', currentViewedCompany);
-          alert('Unable to identify company user. Please try again.');
+          console.log('Available keys in company object:', Object.keys(currentViewedCompany));
+          alert('Unable to identify company user. Company data may be incomplete.');
           return;
       }
 
@@ -494,11 +499,11 @@
           if (existingConversation) {
               console.log('Found existing conversation:', existingConversation);
               // Redirect to chat with existing conversation
-              window.location.href = `chat.html?conversation=${existingConversation.id}&user=${companyUserId}`;
+              window.location.href = `chat.html?conversation=${existingConversation.id}&user=${companyUserId}&type=company`;
           } else {
               console.log('No existing conversation found, redirecting to empty chat...');
               // Direct redirect to chat without sending initial message
-              window.location.href = `chat.html?user=${companyUserId}&new=true`;
+              window.location.href = `chat.html?user=${companyUserId}&new=true&type=company`;
           }
 
       } catch (error) {

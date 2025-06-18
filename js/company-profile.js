@@ -4,6 +4,7 @@ class CompanyProfileManager {
     constructor() {
         this.currentCompany = null;
         this.isOwnProfile = false;
+        this.employeesManager = null;
         this.init();
     }
 
@@ -12,53 +13,69 @@ class CompanyProfileManager {
             await this.loadCompanyProfile();
             this.setupEventListeners();
             this.initializeProvinceCityHandling();
+            
+            // Initialize employees manager AFTER company data is loaded
+            if (this.currentCompany) {
+                this.initializeEmployeesManager();
+            }
         } catch (error) {
             console.error('Failed to initialize company profile:', error);
             this.showError('Failed to load company profile');
         }
     }
 
-    async loadCompanyProfile() {
-        const user = window.apiClient?.getCurrentUser();
-        if (!user) {
-            window.location.href = 'login.html';
-            return;
+    initializeEmployeesManager() {
+        // Make sure company data is available globally
+        window.currentCompanyData = this.currentCompany;
+        
+        // Initialize employees manager with company data
+        if (typeof CompanyEmployeesManager !== 'undefined') {
+            this.employeesManager = new CompanyEmployeesManager(this.currentCompany.id);
+            this.employeesManager.isOwnProfile = this.isOwnProfile;
+            console.log('Employees manager initialized with company data');
         }
+    }
 
+    async loadCompanyProfile() {
         try {
-            // Check if we're viewing a specific company (from URL params)
             const urlParams = new URLSearchParams(window.location.search);
             const companyId = urlParams.get('id');
+            const currentUser = window.apiClient.getCurrentUser();
 
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
             let response;
+            // If there's an ID in the URL, fetch by company ID. Otherwise, fetch by the current user's ID.
             if (companyId) {
-                // Viewing specific company profile
                 response = await window.apiClient.getCompanyById(companyId);
-                this.isOwnProfile = false;
             } else {
-                // Load current user's company profile
-                response = await window.apiClient.getCompanyByUserId(user.id);
-                this.isOwnProfile = true;
+                response = await window.apiClient.getCompanyByUserId(currentUser.id);
             }
 
             if (response && response.success && response.company) {
                 this.currentCompany = response.company;
-                this.displayCompanyProfile(response.company);
+                window.currentCompanyData = this.currentCompany; // Set globally
                 
-                // Set context for image upload
-                if (typeof setCompanyContext === 'function') {
-                    setCompanyContext(response.company.id, this.isOwnProfile);
-                }
+                // Correctly determine if the profile being viewed is the user's own.
+                this.isOwnProfile = this.currentCompany.user?.id === currentUser.id;
+                
+                this.displayCompanyProfile(this.currentCompany);
+                this.toggleEditControls();
             } else {
-                throw new Error('Company profile not found');
+                throw new Error('Company not found');
             }
         } catch (error) {
             console.error('Error loading company profile:', error);
-            this.showError('Company profile not found. Please create a company profile first.');
+            this.showError('Failed to load company profile');
         }
     }
 
     displayCompanyProfile(company) {
+        this.currentCompany = company;
+        
         // Format province name helper
         const formatProvinceName = (province) => {
             if (!province) return '';
@@ -115,8 +132,21 @@ class CompanyProfileManager {
         // Update company profile image
         this.updateCompanyImage(company);
 
+        // Set company context for image upload
+        if (typeof setCompanyContext === 'function') {
+            setCompanyContext(company.id, this.isOwnProfile);
+        }
+
         // Update page title
         document.title = `${company.companyName} - RuangKerja`;
+
+        // Initialize employees manager after company data is loaded
+        if (typeof CompanyEmployeesManager !== 'undefined') {
+            this.employeesManager = new CompanyEmployeesManager(company.id);
+        }
+
+        // Show/hide edit controls based on ownership
+        this.toggleEditControls();
     }
 
     updateCompanyImage(company) {
@@ -375,6 +405,27 @@ class CompanyProfileManager {
         }
     }
 
+    toggleEditControls() {
+        const editControls = document.querySelectorAll('.edit-control');
+        editControls.forEach(control => {
+            if (this.isOwnProfile) {
+                control.style.display = 'inline-block';
+            } else {
+                control.style.display = 'none';
+            }
+        });
+
+        // Also setup the "add first employee" button
+        const addFirstEmployeeBtn = document.getElementById('add-first-employee-btn');
+        if (addFirstEmployeeBtn && this.isOwnProfile) {
+            addFirstEmployeeBtn.addEventListener('click', () => {
+                if (this.employeesManager) {
+                    this.employeesManager.showAddEmployeeModal();
+                }
+            });
+        }
+    }
+
     showError(message) {
         // Simple error notification
         const notification = document.createElement('div');
@@ -435,4 +486,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize company profile manager
     window.companyProfileManager = new CompanyProfileManager();
+    
+    // Make employees manager globally accessible after it's created
+    const originalDisplayMethod = window.companyProfileManager.displayCompanyProfile;
+    window.companyProfileManager.displayCompanyProfile = function(company) {
+        originalDisplayMethod.call(this, company);
+        if (this.employeesManager) {
+            window.companyEmployeesManager = this.employeesManager;
+        }
+    };
 });

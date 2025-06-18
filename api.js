@@ -472,13 +472,6 @@ class ApiClient {
         });
     }
 
-    // Company API methods
-    async getCompanyByUserId(userId) {
-        return this.makeRequest(`/company/user/${userId}`, {
-            method: 'GET'
-        });
-    }
-
     async getCompanyById(companyId) {
         return this.makeRequest(`/company/${companyId}`, {
             method: 'GET'
@@ -700,6 +693,72 @@ class ApiClient {
     async deletePortfolioImage(portfolioId) {
         return this.makeRequest(`/candidates/portfolio/${portfolioId}/delete-image`, {
             method: 'DELETE'
+        });
+    }    // Company employees API methods - UPDATED TO MATCH BACKEND CONTROLLER
+    async getCompanyEmployees(companyId) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to get company employees');
+        }
+
+        try {
+            const response = await this.makeRequest(`/company/${companyId}/employees`, {
+                method: 'GET',
+                headers: {
+                    'X-User-Id': user.id
+                }
+            });
+            
+            // Ensure consistent response structure
+            if (response && response.success) {
+                return {
+                    success: true,
+                    employees: response.employees || []
+                };
+            } else {
+                return {
+                    success: false,
+                    employees: [],
+                    message: response?.message || 'Failed to fetch employees'
+                };
+            }
+        } catch (error) {
+            console.error('Error fetching company employees:', error);
+            return {
+                success: false,
+                employees: [],
+                message: error.message || 'Failed to fetch employees'
+            };
+        }
+    }
+
+    async addEmployeeToCompany(companyId, employeeData) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to add employee');
+        }
+
+        return this.makeRequest(`/company/${companyId}/employees`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': user.id
+            },
+            body: JSON.stringify(employeeData)
+        });
+    }
+
+    async removeEmployeeFromCompany(companyId, candidateId) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to remove employee');
+        }
+
+        return this.makeRequest(`/company/${companyId}/employees/${candidateId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-User-Id': user.id
+            }
         });
     }
 }
