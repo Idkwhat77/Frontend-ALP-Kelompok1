@@ -107,8 +107,8 @@ class NavbarProfileManager {
     }
 
     setupLogoutHandlers() {
-        // Setup logout functionality for all logout buttons/links
-        const logoutElements = document.querySelectorAll('#logout, [data-i18n="profile.logout"]');
+        // Setup logout functionality for all logout buttons/links (desktop and mobile)
+        const logoutElements = document.querySelectorAll('#logout, [data-i18n="profile.logout"], #mobile-logout');
         
         logoutElements.forEach(element => {
             // Remove existing event listeners by cloning the element
@@ -121,10 +121,25 @@ class NavbarProfileManager {
                 this.handleLogout();
             });
         });
+
+        // Also handle any mobile logout buttons that might be added dynamically
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'mobile-logout' || 
+                e.target.closest('#mobile-logout') || 
+                e.target.classList.contains('mobile-logout-btn')) {
+                e.preventDefault();
+                this.handleLogout();
+            }
+        });
     }
 
     handleLogout() {
         try {
+            // Clear user-specific notifications
+            if (window.notificationManager) {
+                window.notificationManager.clearUserNotifications();
+            }
+            
             if (window.apiClient && typeof window.apiClient.logout === 'function') {
                 window.apiClient.logout();
             } else {
