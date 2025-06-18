@@ -242,14 +242,27 @@ async function handleJobSubmission(e) {
         submitBtn.disabled = true;
         
         // Get the HTML content from the rich text editor
-        const jobDescription = document.getElementById('jobDescription').innerHTML;
+        const jobDescriptionElement = document.getElementById('jobDescription');
+        let jobDescription = jobDescriptionElement.textContent || jobDescriptionElement.innerText;
+        
+        // Remove placeholder text if present
+        if (jobDescription === 'Describe the responsibilities and requirements of this position...') {
+            jobDescription = '';
+        }
+        
+        // Validate required fields
+        if (!jobDescription.trim()) {
+            alert('Job description is required.');
+            return;
+        }
         
         // Collect form data
         const formData = new FormData(e.target);
         
         // Get selected skills
         const skills = Array.from(document.querySelectorAll('#skillsContainer .skill-tag'))
-            .map(tag => tag.textContent.replace('×', '').trim());
+            .map(tag => tag.textContent.replace('×', '').trim())
+            .filter(skill => skill.length > 0);
         
         // Get selected benefits
         const benefits = Array.from(document.querySelectorAll('input[name="benefits"]:checked'))
@@ -268,43 +281,54 @@ async function handleJobSubmission(e) {
             return;
         }
         
+        // Validate required fields
+        const title = formData.get('jobTitle')?.trim();
+        const type = formData.get('jobType');
+        const experience = formData.get('experience');
+        const deadline = formData.get('deadline');
+        
+        if (!title) {
+            alert('Job title is required.');
+            return;
+        }
+        
+        if (!type) {
+            alert('Job type is required.');
+            return;
+        }
+        
+        if (!experience) {
+            alert('Experience level is required.');
+            return;
+        }
+        
         // Create job posting object with company information
         const jobData = {
-            title: formData.get('jobTitle'),
-            type: formData.get('jobType'),
-            province: formData.get('province'),
-            city: formData.get('city'),
+            title: title,
+            type: type,
+            province: formData.get('province') || null,
+            city: formData.get('city') || null,
             salaryMin: salaryMin,
             salaryMax: salaryMax,
-            experience: formData.get('experience'),
-            description: jobDescription,
+            experience: experience,
+            description: jobDescription.trim(),
             skills: skills,
             benefits: benefits,
-            deadline: formData.get('deadline'),
-            hiringProcess: formData.get('hiringProcess'),
-            applicationQuestions: formData.get('applicationQuestions')
+            deadline: deadline || null,
+            hiringProcess: formData.get('hiringProcess') || null,
+            applicationQuestions: formData.get('applicationQuestions')?.trim() || null
         };
         
         console.log('Submitting job data:', jobData);
         
-        // Send to backend API
-        const response = await fetch('http://localhost:8080/api/jobs', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-User-Id': currentUser.id.toString(),
-                'X-Company-Id': window.currentCompany.id.toString()
-            },
-            body: JSON.stringify(jobData)
-        });
+        // Use API client for consistency
+        const response = await window.apiClient.createJob(jobData);
         
-        const result = await response.json();
-        
-        if (response.ok && result.success) {
+        if (response && response.success) {
             alert('Job posted successfully!');
             window.location.href = 'oprec.html';
         } else {
-            throw new Error(result.message || 'Failed to post job');
+            throw new Error(response?.message || 'Failed to post job');
         }
         
     } catch (error) {
