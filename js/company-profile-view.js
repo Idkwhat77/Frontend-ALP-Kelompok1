@@ -48,6 +48,32 @@ class CompanyProfileViewer {
     }
 
     displayCompanyProfile(company) {
+        // Format province name helper
+        const formatProvinceName = (province) => {
+            if (!province) return '';
+            return province
+                .split('-')
+                .map(word => {
+                    if (word === 'dki') return 'DKI';
+                    if (word === 'di') return 'DI';
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                })
+                .join(' ');
+        };
+
+        // Format location for display
+        const formatLocation = (city, province) => {
+            const formattedProvince = formatProvinceName(province);
+            if (city && formattedProvince) {
+                return `${city}, ${formattedProvince}`;
+            } else if (city) {
+                return city;
+            } else if (formattedProvince) {
+                return formattedProvince;
+            }
+            return 'Not specified';
+        };
+
         // Update company name and basic info
         this.updateElement('company-name', company.companyName);
         this.updateElement('company-name-header', company.companyName);
@@ -56,6 +82,9 @@ class CompanyProfileViewer {
         this.updateElement('company-foundation-date', this.formatDate(company.foundationDate));
         this.updateElement('company-hq', company.hq || 'Not specified');
         this.updateElement('company-email', company.email);
+        
+        // Add formatted location display
+        this.updateElement('company-location', formatLocation(company.city, company.province));
         
         // Update company description
         const descriptionElement = document.getElementById('company-description');
@@ -221,6 +250,35 @@ class CompanyProfileViewer {
                     ${message}
                 </span>
             `;
+        }
+    }
+
+    initializeEmployeesManager() {
+        // Make sure company data is available globally
+        window.currentCompanyData = this.currentCompany;
+        
+        // Initialize employees manager with company data
+        if (typeof CompanyEmployeesManager !== 'undefined' && this.currentCompany) {
+            this.employeesManager = new CompanyEmployeesManager(this.currentCompany.id);
+            this.employeesManager.isOwnProfile = this.isOwnProfile;
+            console.log('Employees manager initialized with company data');
+        }
+    }
+
+    toggleEditControls() {
+        const editControls = document.querySelectorAll('.edit-control');
+        editControls.forEach(control => {
+            if (this.isOwnProfile) {
+                control.style.display = 'inline-block';
+            } else {
+                control.style.display = 'none';
+            }
+        });
+
+        // Update employees manager ownership
+        if (this.employeesManager) {
+            this.employeesManager.isOwnProfile = this.isOwnProfile;
+            this.employeesManager.displayEmployees(); // Refresh display
         }
     }
 }

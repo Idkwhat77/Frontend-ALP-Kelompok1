@@ -261,6 +261,10 @@
             <p id="company-hq" class="text-[#374151] dark:text-white">Loading...</p>
           </div>
           <div class="mb-4">
+            <h4 data-i18n="company_location" class="font-semibold text-xl text-[#C69AE6]">Location</h4>
+            <p id="company-location" class="text-[#374151] dark:text-white">Loading...</p>
+          </div>
+          <div class="mb-4">
             <h4 data-i18n="company_size" class="font-semibold text-xl text-[#C69AE6]">Company Size</h4>
             <p id="company-size" class="text-[#374151] dark:text-white">Loading...</p>
           </div>
@@ -304,6 +308,15 @@
         <span data-i18n="members_nav" id="nav-members" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Employees</span>
       </button>
     </div>
+  
+    <!-- Chat Button (NEW) -->
+    <div class="flex justify-end">
+      <button id="btn-chat" onclick="startChatWithCompany()" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden" style="display: none;">
+        <i class="fa fa-comment-dots ml-0.5"></i>
+        <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
+      </button>
+    </div>
+
   </div>
 
   <!-- Company Members Modal Box (popup basically) -->
@@ -372,6 +385,250 @@
   <script src="logout.js"></script>
   <script src="js/navbar-profile.js"></script>
   <script src="js/company-profile-view.js"></script>
+  <script>
+  let currentViewedCompany = null;
+
+  // Function to start chat with the company being viewed
+  async function startChatWithCompany() {
+      console.log('=== Starting Chat with Company ===');
+      
+      const currentUser = window.apiClient?.getCurrentUser();
+      console.log('Current user:', currentUser);
+      
+      if (!currentUser) {
+          alert('Please log in to start a conversation');
+          window.location.href = 'login.html';
+          return;
+      }
+
+      // Handle different user data structures
+      let userId = null;
+      if (currentUser.id) {
+          userId = currentUser.id;
+      } else if (currentUser.userId) {
+          userId = currentUser.userId;
+      } else if (currentUser.user_id) {
+          userId = currentUser.user_id;
+      } else {
+          console.error('No valid user ID found in currentUser:', currentUser);
+          alert('Unable to identify current user. Please log in again.');
+          window.location.href = 'login.html';
+          return;
+      }
+
+      // Try to get company data from multiple sources
+      if (!currentViewedCompany) {
+          if (window.currentCompanyData) {
+              currentViewedCompany = window.currentCompanyData;
+              console.log('Got company from window.currentCompanyData');
+          } else {
+              // Try to get from URL and fetch fresh data
+              const urlParams = new URLSearchParams(window.location.search);
+              const companyId = urlParams.get('id');
+              
+              if (companyId) {
+                  console.log('Fetching fresh company data for ID:', companyId);
+                  try {
+                      const response = await window.apiClient.getCompanyById(companyId);
+                      if (response && response.company) {
+                          currentViewedCompany = response.company;
+                          console.log('Fetched fresh company data:', currentViewedCompany);
+                      }
+                  } catch (error) {
+                      console.error('Error fetching company data:', error);
+                  }
+              }
+          }
+      }
+
+      if (!currentViewedCompany) {
+          console.error('No company data available after all attempts');
+          alert('Unable to start conversation. Company data not loaded. Please refresh the page and try again.');
+          return;
+      }
+
+      // Fix: Look for userId in the company object directly, not in a nested user object
+      let companyUserId = null;
+      
+      // Try multiple possible locations for the user ID
+      if (currentViewedCompany.userId) {
+          companyUserId = currentViewedCompany.userId;
+      } else if (currentViewedCompany.user_id) {
+          companyUserId = currentViewedCompany.user_id;
+      } else if (currentViewedCompany.user?.id) {
+          companyUserId = currentViewedCompany.user.id;
+      } else if (currentViewedCompany.user?.userId) {
+          companyUserId = currentViewedCompany.user.userId;
+      } else {
+          console.error('No valid user ID found in company data:', currentViewedCompany);
+          console.log('Available keys in company object:', Object.keys(currentViewedCompany));
+          alert('Unable to identify company user. Company data may be incomplete.');
+          return;
+      }
+
+      console.log('Company user ID:', companyUserId);
+
+      // Check if trying to chat with yourself
+      if (userId === companyUserId) {
+          alert('You cannot start a conversation with yourself.');
+          return;
+      }
+
+      try {
+          // Show loading state
+          const chatBtn = document.getElementById('btn-chat');
+          if (!chatBtn) {
+              console.error('Chat button not found');
+              return;
+          }
+          
+          const originalContent = chatBtn.innerHTML;
+          chatBtn.innerHTML = '<i class="fas fa-spinner fa-spin ml-0.5"></i>';
+          chatBtn.disabled = true;
+
+          console.log('Checking for existing conversations...');
+
+          // Check if conversation already exists
+          const conversations = await window.apiClient.getUserConversations(userId);
+          console.log('User conversations:', conversations);
+          
+          const existingConversation = conversations?.find(conv => 
+              conv.otherUser.userId === companyUserId
+          );
+
+          if (existingConversation) {
+              console.log('Found existing conversation:', existingConversation);
+              // Redirect to chat with existing conversation
+              window.location.href = `chat.html?conversation=${existingConversation.id}&user=${companyUserId}&type=company`;
+          } else {
+              console.log('No existing conversation found, redirecting to empty chat...');
+              // Direct redirect to chat without sending initial message
+              window.location.href = `chat.html?user=${companyUserId}&new=true&type=company`;
+          }
+
+      } catch (error) {
+          console.error('Error starting chat:', error);
+          alert(`Unable to start conversation. Error: ${error.message}`);
+          
+          // Restore button
+          const chatBtn = document.getElementById('btn-chat');
+          if (chatBtn) {
+              chatBtn.innerHTML = '<i class="fa fa-comment-dots ml-0.5"></i>';
+              chatBtn.disabled = false;
+          }
+      }
+  }
+
+  // Enhanced company data loading with multiple listeners
+  window.addEventListener('DOMContentLoaded', () => {
+      console.log('=== DOM Content Loaded (Company Profile View) ===');
+      
+      // Debug current user data structure
+      const currentUser = window.apiClient?.getCurrentUser();
+      console.log('Current user on page load:', currentUser);
+      console.log('User type:', window.apiClient?.getUserType());
+      console.log('LocalStorage current_user:', localStorage.getItem('current_user'));
+      
+      // Get company ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const companyId = urlParams.get('id');
+      
+      console.log('Company ID from URL:', companyId);
+      
+      if (companyId) {
+          // Method 1: Listen for custom event from company-profile-view.js
+          window.addEventListener('companyDataLoaded', (event) => {
+              console.log('Received companyDataLoaded event:', event.detail);
+              currentViewedCompany = event.detail.company;
+              showChatButton();
+          });
+          
+          // Method 2: Polling for company data
+          let attempts = 0;
+          const maxAttempts = 100; // 10 seconds total
+          
+          const checkForCompany = setInterval(() => {
+              attempts++;
+              
+              // Check if profile data is loaded by looking at the name element
+              const nameElement = document.getElementById('company-name-header');
+              const nameText = nameElement?.textContent;
+              
+              console.log(`Attempt ${attempts}: Name element text:`, nameText);
+              
+              if (nameElement && nameText && 
+                  nameText !== 'Loading...' && 
+                  nameText !== 'Error' && 
+                  nameText.trim() !== '') {
+                  
+                  console.log('Company profile appears to be loaded, checking for data...');
+                  
+                  // Try to get company data from window object
+                  if (window.currentCompanyData) {
+                      currentViewedCompany = window.currentCompanyData;
+                      console.log('Found company data via window.currentCompanyData');
+                      showChatButton();
+                      clearInterval(checkForCompany);
+                  } else if (window.companyProfileViewer?.currentCompany) {
+                      currentViewedCompany = window.companyProfileViewer.currentCompany;
+                      console.log('Found company data via companyProfileViewer');
+                      showChatButton();
+                      clearInterval(checkForCompany);
+                  } else {
+                      // Fallback: try direct API call
+                      tryDirectCompanyApiCall(companyId);
+                      clearInterval(checkForCompany);
+                  }
+              }
+              
+              if (attempts >= maxAttempts) {
+                  console.log('Max attempts reached, stopping polling');
+                  clearInterval(checkForCompany);
+                  // Try one last direct API call
+                  tryDirectCompanyApiCall(companyId);
+              }
+          }, 100);
+          
+      } else {
+          console.log('No company ID in URL, hiding chat button');
+          hideChatButton();
+      }
+  });
+
+  // Helper function to show chat button
+  function showChatButton() {
+      const chatBtn = document.getElementById('btn-chat');
+      if (chatBtn) {
+          chatBtn.style.display = 'flex';
+          console.log('Chat button shown');
+      }
+  }
+
+  // Helper function to hide chat button
+  function hideChatButton() {
+      const chatBtn = document.getElementById('btn-chat');
+      if (chatBtn) {
+          chatBtn.style.display = 'none';
+          console.log('Chat button hidden');
+      }
+  }
+
+  // Fallback method to get company data directly
+  async function tryDirectCompanyApiCall(companyId) {
+      console.log('Attempting direct API call for company:', companyId);
+      try {
+          const response = await window.apiClient.getCompanyById(companyId);
+          if (response && response.company) {
+              currentViewedCompany = response.company;
+              window.currentCompanyData = response.company;
+              console.log('Successfully got company data via direct API call:', currentViewedCompany);
+              showChatButton();
+          }
+      } catch (error) {
+          console.error('Direct API call failed:', error);
+      }
+  }
+  </script>
   <script>
         
   // Logout functionality
@@ -488,7 +745,19 @@
   const navSkills = document.getElementById('nav-services')
   const btnMembers = document.getElementById('btn-members');
   const navMembers = document.getElementById('nav-members');
+  const btnChat = document.getElementById('btn-chat');
+  const navChat = document.getElementById('nav-chat');
 
+  btnChat.addEventListener('mouseover', () => {
+    navChat.classList.remove('hidden');
+    btnChat.classList.remove('w-12');
+    btnChat.classList.add('w-36');
+  });
+  btnChat.addEventListener('mouseout', () => {
+    btnChat.classList.remove('w-36');
+    btnChat.classList.add('w-12');
+    navChat.classList.add('hidden');
+  });
   btnSkills.addEventListener('mouseover', () => {
     navSkills.classList.remove('hidden');
     btnSkills.classList.remove('w-12');
@@ -510,5 +779,5 @@
     navMembers.classList.add('hidden');
   });
 
-</script>
+</script> 
 </html>

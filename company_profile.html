@@ -211,9 +211,9 @@
         <p id="company-industry" class="mt-4 text-lg text-white animate-fade-in-from-down">Loading...</p>
       </div>
       <div class="flex justify-center mt-6 animate-fade-in-from-down">
-        <a data-i18n="cv_download" href="cv/Escoffier_Resume.pdf" download
+        <a href="posting_oprec.html" download
           class="bg-[#7F4CA5] text-white px-6 py-3 rounded-full shadow-md transition-all duration-300">
-          <i class="fa-solid fa-file-pdf"></i> Download CV
+          <i class="fa-solid fa-file-pdf"></i> Post a Job!
         </a>
       </div>
       <div class="flex flex-row space-x-4 text-3xl bottom-10 absolute animate-fade-in-from-down">
@@ -251,6 +251,10 @@
           <div class="mb-4">
             <h4 data-i18n="company_hq_location" class="font-semibold text-xl text-[#C69AE6]">HQ Location</h4>
             <p id="company-hq" class="text-[#374151] dark:text-white">Loading...</p>
+          </div>
+          <div class="mb-4">
+            <h4 data-i18n="company_location" class="font-semibold text-xl text-[#C69AE6]">Location</h4>
+            <p id="company-location" class="text-[#374151] dark:text-white">Loading...</p>
           </div>
           <div class="mb-4">
             <h4 data-i18n="company_size" class="font-semibold text-xl text-[#C69AE6]">Company Size</h4>
@@ -330,15 +334,15 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Name</label>
-              <input type="text" id="settings-company-name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+              <input type="text" id="settings-company-name" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Email</label>
-              <input type="email" id="settings-company-email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+              <input type="email" id="settings-company-email" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
-              <select id="settings-company-industry" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+              <select id="settings-company-industry" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
                 <option value="">Select Industry</option>
                 <option value="Technology">Technology</option>
                 <option value="Healthcare">Healthcare</option>
@@ -349,19 +353,96 @@
                 <option value="Hospitality">Hospitality</option>
                 <option value="Marketing">Marketing</option>
                 <option value="Government">Government</option>
+                <option value="Construction">Construction</option>
+                <option value="Real Estate">Real Estate</option>
+                <option value="Legal Services">Legal Services</option>
+                <option value="Consulting">Consulting</option>
+                <option value="Non-Profit">Non-Profit</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
-              <input type="number" id="settings-company-size" min="1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent" placeholder="Number of employees">
+              <input type="number" id="settings-company-size" min="1" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
             </div>
+          </div>
+        </div>
+
+        <!-- Location Information -->
+        <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+          <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Location Information</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">HQ Location</label>
-              <input type="text" id="settings-company-hq" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+              <input type="text" id="settings-company-hq" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Province</label>
+              <select id="settings-company-province" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                <option value="">Select Province</option>
+                <option value="aceh">Aceh</option>
+                <option value="sumatra-utara">Sumatra Utara</option>
+                <option value="sumatra-barat">Sumatra Barat</option>
+                <option value="riau">Riau</option>
+                <option value="jambi">Jambi</option>
+                <option value="sumatra-selatan">Sumatra Selatan</option>
+                <option value="bengkulu">Bengkulu</option>
+                <option value="lampung">Lampung</option>
+                <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+                <option value="kepulauan-riau">Kepulauan Riau</option>
+                <option value="dki-jakarta">DKI Jakarta</option>
+                <option value="jawa-barat">Jawa Barat</option>
+                <option value="jawa-tengah">Jawa Tengah</option>
+                <option value="di-yogyakarta">DI Yogyakarta</option>
+                <option value="jawa-timur">Jawa Timur</option>
+                <option value="banten">Banten</option>
+                <option value="bali">Bali</option>
+                <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+                <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+                <option value="kalimantan-barat">Kalimantan Barat</option>
+                <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                <option value="kalimantan-selatan">Kalimantan Selatan</option>
+                <option value="kalimantan-timur">Kalimantan Timur</option>
+                <option value="kalimantan-utara">Kalimantan Utara</option>
+                <option value="sulawesi-utara">Sulawesi Utara</option>
+                <option value="sulawesi-tengah">Sulawesi Tengah</option>
+                <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+                <option value="gorontalo">Gorontalo</option>
+                <option value="sulawesi-barat">Sulawesi Barat</option>
+                <option value="maluku">Maluku</option>
+                <option value="maluku-utara">Maluku Utara</option>
+                <option value="papua-barat">Papua Barat</option>
+                <option value="papua-barat-daya">Papua Barat Daya</option>
+                <option value="papua">Papua</option>
+                <option value="papua-selatan">Papua Selatan</option>
+                <option value="papua-tengah">Papua Tengah</option>
+                <option value="papua-pegunungan">Papua Pegunungan</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
+              <select id="settings-company-city" disabled class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+                <option value="">Select City</option>
+              </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Foundation Date</label>
-              <input type="date" id="settings-foundation-date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+              <input type="date" id="settings-foundation-date" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
+          <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Contact Information</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Website URL</label>
+              <input type="url" id="settings-company-website" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+              <input type="tel" id="settings-company-phone" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
             </div>
           </div>
         </div>
@@ -378,7 +459,7 @@
             <i class="fas fa-save mr-2"></i>Save Changes
           </button>
           <button type="button" onclick="closeModal('modal-settings')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
-            <i class="fas fa-times mr-2"></i>Cancel
+            Cancel
           </button>
         </div>
       </form>

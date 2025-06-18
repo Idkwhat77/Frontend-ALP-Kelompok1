@@ -19,6 +19,38 @@ class HobbyManagerClass {
         }
     }
 
+    showNotification(message, type = 'success') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        
+        const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+
     async loadUserHobbies() {
         try {
             // Get current user and candidate data
@@ -132,7 +164,7 @@ class HobbyManagerClass {
             const response = await window.apiClient.createHobby(this.currentCandidateId, hobbyData);
 
             if (response && response.success) {
-                alert('✅ Hobby added successfully!');
+                await this.showNotification('Hobby added successfully!');
                 document.getElementById('hobby-form').reset();
                 await this.loadHobbies();
             } else {
@@ -141,12 +173,44 @@ class HobbyManagerClass {
 
         } catch (error) {
             console.error('Error adding hobby:', error);
-            alert(`❌ Error: ${error.message}`);
+            await this.showNotification(`❌ Error: ${error.message}`, 'error');
         }
     }
 
     async removeHobby(hobbyId) {
-        if (!confirm('Are you sure you want to remove this hobby?')) {
+        // Custom confirmation modal instead of alert box
+        const confirmed = await new Promise((resolve) => {
+            // Create modal elements
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50';
+
+            const modalBox = document.createElement('div');
+            modalBox.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-sm w-full';
+
+            modalBox.innerHTML = `
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Delete Hobby</h3>
+            <p class="mb-6 text-gray-600 dark:text-gray-300">Are you sure you want to delete this hobby?</p>
+            <div class="flex justify-end gap-2">
+                <button id="cancel-delete-hobby" class="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
+                <button id="confirm-delete-hobby" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">Delete</button>
+            </div>
+            `;
+
+            modalOverlay.appendChild(modalBox);
+            document.body.appendChild(modalOverlay);
+
+            // Event listeners
+            document.getElementById('cancel-delete-hobby').onclick = () => {
+            document.body.removeChild(modalOverlay);
+            resolve(false);
+            };
+            document.getElementById('confirm-delete-hobby').onclick = () => {
+            document.body.removeChild(modalOverlay);
+            resolve(true);
+            };
+        });
+
+        if (!confirmed) {
             return;
         }
 
@@ -157,14 +221,14 @@ class HobbyManagerClass {
 
             const response = await window.apiClient.deleteHobby(hobbyId, this.currentCandidateId);
             if (response && response.success) {
-                alert('✅ Hobby removed successfully!');
+                await this.showNotification('Hobby removed successfully!');
                 await this.loadHobbies();
             } else {
                 throw new Error(response?.message || 'Failed to remove hobby');
             }
         } catch (error) {
             console.error('Error removing hobby:', error);
-            alert(`❌ Error: ${error.message}`);
+            await this.showNotification(`❌ Error: ${error.message}`, 'error');
         }
     }
 }

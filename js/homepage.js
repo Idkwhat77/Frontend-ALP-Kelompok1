@@ -1,10 +1,12 @@
 async function loadHomepageCandidates() {
     try {
+        const loadingText = window.currentLanguage === 'id' ? 'Memuat...' : 'Loading...';
+        
         // Show loading state
         const candidatesContainer = document.querySelector('#candidates-container');
         candidatesContainer.innerHTML = `
             <div class="col-span-full flex justify-center py-8">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400"></div>
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400" aria-label="${loadingText}" data-i18n-aria="common.loading"></div>
             </div>
         `;
 
@@ -36,6 +38,32 @@ function displayCandidateCards(candidates) {
         return;
     }
 
+    // Helper function to format province name
+    const formatProvinceName = (province) => {
+        if (!province) return '';
+        return province
+            .split('-')
+            .map(word => {
+                if (word === 'dki') return 'DKI';
+                if (word === 'di') return 'DI';
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            })
+            .join(' ');
+    };
+
+    // Helper function to format location
+    const formatLocation = (city, province) => {
+        const formattedProvince = formatProvinceName(province);
+        if (city && formattedProvince) {
+            return `${formattedProvince}, ${city}`;
+        } else if (city) {
+            return city;
+        } else if (formattedProvince) {
+            return formattedProvince;
+        }
+        return 'Location not specified';
+    };
+
     candidatesContainer.innerHTML = candidates.map(candidate => `
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
             <div class="p-3">
@@ -47,7 +75,11 @@ function displayCandidateCards(candidates) {
                 </div>
                 <div class="text-center">
                     <h3 class="font-semibold text-gray-900 dark:text-white">${candidate.fullName || 'Unknown'}</h3>
-                    <p class="text-gray-500 dark:text-gray-300 mb-2">${candidate.jobType || 'Professional'}</p>
+                    <p class="text-gray-500 dark:text-gray-300 mb-1">${candidate.jobType || 'Professional'}</p>
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
+                        <span class="text-gray-500 dark:text-gray-400 text-xs">${formatLocation(candidate.city, candidate.province)}</span>
+                    </div>
                     <div class="flex justify-center space-x-1 mb-2">
                         ${generateSkillTags(candidate.industry)}
                     </div>
@@ -137,31 +169,147 @@ function displayCompanyCards(companies) {
         return;
     }
 
-    companiesContainer.innerHTML = companies.map(company => `
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
-            <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
-                <img class="h-12 object-contain" 
-                     src="${company.profileImageUrl ? `http://localhost:8080${company.profileImageUrl}` : 'img/default-profile.png'}" 
-                     alt="${company.companyName} Logo"
-                     onerror="this.src='img/default-profile.png'">
-            </div>
-            <div class="p-3">
-                <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1">${company.companyName || 'Unknown Company'}</h3>
-                <p class="text-gray-500 dark:text-gray-300 text-center mb-2">${company.industry || 'Various Industries'}</p>
-                <div class="flex justify-center mb-2">
-                    <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">
-                        ${company.companySize ? `${company.companySize} employees` : 'Company'}
-                    </span>
+    companiesContainer.innerHTML = companies.map(company => {
+        // Format province name
+        const formatProvinceName = (province) => {
+            if (!province) return '';
+            return province
+                .split('-')
+                .map(word => {
+                    if (word === 'dki') return 'DKI';
+                    if (word === 'di') return 'DI';
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                })
+                .join(' ');
+        };
+
+        // Format location string
+        let locationText = '';
+        const formattedProvince = formatProvinceName(company.province);
+        
+        if (company.city && formattedProvince) {
+            locationText = `${company.city}, ${formattedProvince}`;
+        } else if (company.city) {
+            locationText = company.city;
+        } else if (formattedProvince) {
+            locationText = formattedProvince;
+        } else if (company.hq) {
+            locationText = company.hq;
+        } else {
+            locationText = 'Location not specified';
+        }
+
+        return `
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300 text-sm">
+                <div class="h-24 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center p-3">
+                    <img class="h-12 object-contain" 
+                         src="${company.profileImageUrl ? `http://localhost:8080${company.profileImageUrl}` : 'img/default-profile.png'}" 
+                         alt="${company.companyName} Logo"
+                         onerror="this.src='img/default-profile.png'">
                 </div>
-                <button onclick="viewCompanyProfile(${company.id})" 
-                        data-i18n-html="view_company" 
-                        class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
-                    View Company
-                </button>
+                <div class="p-3">
+                    <h3 class="font-semibold text-gray-900 dark:text-white text-center mb-1 line-clamp-1">${company.companyName || 'Unknown Company'}</h3>
+                    <p class="text-gray-500 dark:text-gray-300 text-center mb-2 text-xs">${company.industry || 'Various Industries'}</p>
+                    
+                    <!-- Location Information -->
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-map-marker-alt text-xs text-gray-400 dark:text-gray-500 mr-1"></i>
+                        <span class="text-gray-500 dark:text-gray-400 text-xs text-center line-clamp-1" title="${locationText}">${locationText}</span>
+                    </div>
+                    
+                    <div class="flex justify-center mb-2">
+                        <span class="px-2 py-1 bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-200 text-xs rounded-full">
+                            ${company.companySize ? `${company.companySize} employees` : 'Company'}
+                        </span>
+                    </div>
+                    <button onclick="viewCompanyProfile(${company.id})" 
+                            data-i18n-html="view_company" 
+                            class="mt-1 px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-md transition-colors w-full">
+                        View Company
+                    </button>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
+
+function renderGlobalSearchResults(results) {
+    const container = document.getElementById('global-search-results');
+    container.innerHTML = '';
+    if (!results || results.length === 0) {
+        container.innerHTML = '<div class="text-gray-500 text-center py-8">Tidak ada hasil ditemukan.</div>';
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="flex gap-3 overflow-x-auto py-2 px-1">
+            ${results.map(item => {
+                const isCandidate = item.type === 'candidate';
+                const name = isCandidate ? (item.fullName || 'Unknown') : (item.name || 'Unknown');
+                // Ambil kota dari city untuk kandidat, location untuk company
+                const location = isCandidate
+                    ? (item.city || '-') 
+                    : (item.location || item.hq || '-');
+                const icon = isCandidate
+                    ? '<i class="fas fa-user text-lilac-400 text-lg"></i>'
+                    : '<i class="fas fa-building text-lilac-500 text-lg"></i>';
+                const jenis = isCandidate ? 'Kandidat' : 'Perusahaan';
+                const jenisColor = isCandidate
+                    ? 'bg-lilac-100 text-lilac-700'
+                    : 'bg-lilac-50 text-lilac-500';
+                const id = item.id;
+                return `
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow text-xs flex flex-col items-center min-w-[180px] max-w-[200px] p-3 cursor-pointer hover:ring-2 hover:ring-lilac-400 transition"
+                        onclick="${isCandidate
+                            ? `viewCandidateProfile('${id}')`
+                            : `viewCompanyProfile('${id}')`
+                        }">
+                        <div class="mb-2">${icon}</div>
+                        <div class="font-semibold text-gray-900 dark:text-white truncate w-full text-center">${name}</div>
+                        <div class="text-[11px] text-gray-500 dark:text-gray-400 truncate w-full text-center mb-1">
+                            <i class="fas fa-map-marker-alt mr-1"></i>${location}
+                        </div>
+                        <span class="mt-1 px-2 py-1 text-xs rounded-full ${jenisColor}">${jenis}</span>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+function viewCandidateProfile(candidateId) {
+    if (candidateId) window.location.href = `employee_profile.html?id=${candidateId}`;
+}
+function viewCompanyProfile(companyId) {
+    if (companyId) window.location.href = `company_profile_view.html?id=${companyId}`;
+}
+
+async function globalSearch(query) {
+    try {
+        const response = await fetch(`http://localhost:8080/api/search?query=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        renderGlobalSearchResults(data);
+    } catch (err) {
+        renderGlobalSearchResults([]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('global-search-input');
+    const searchBtn = document.getElementById('global-search-btn');
+    if (searchBtn && searchInput) {
+        searchBtn.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (query) globalSearch(query);
+        });
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                if (query) globalSearch(query);
+            }
+        });
+    }
+});
 
 function viewCompanyProfile(companyId) {
     // Navigate to company profile page with company ID
@@ -198,19 +346,5 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Loading homepage companies...');
         loadHomepageCompanies();
     }, 100);
-    
-    const viewProfileLink = document.querySelector('a[href="profile.html"][data-i18n="view_profile"]');
-    if (viewProfileLink) {
-        viewProfileLink.addEventListener('click', function (e) {
-            e.preventDefault();
-            const userType = window.apiClient.getUserType();
-            if (userType === 'employee') {
-                window.location.href = 'profile.html';
-            } else if (userType === 'company') {
-                window.location.href = 'company_profile.html';
-            } else {
-                window.location.href = 'profile.html'; // fallback
-            }
-        });
-    }
+
 });
