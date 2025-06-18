@@ -1,4 +1,5 @@
-class CompanyRatingsManager {
+// Company Ratings View Manager Class - For viewing other companies' ratings
+class CompanyRatingsViewManager {
     constructor() {
         this.currentPage = 0;
         this.pageSize = 10;
@@ -12,19 +13,30 @@ class CompanyRatingsManager {
     }
 
     async init() {
+        console.log('=== Initializing Company Ratings View Manager ===');
         this.currentUser = window.apiClient?.getCurrentUser();
         this.userType = window.apiClient?.getUserType();
         
         this.checkIfOwnProfile();
         this.setupEventListeners();
         
-        if (window.currentCompany?.id) {
-            this.setCompanyId(window.currentCompany.id);
-        }
+        // Wait for company data to be available
+        const initializeData = () => {
+            if (window.currentViewedCompany?.id) {
+                this.setCompanyId(window.currentViewedCompany.id);
+            } else if (window.companyProfileViewer?.currentCompany?.id) {
+                this.setCompanyId(window.companyProfileViewer.currentCompany.id);
+            } else {
+                setTimeout(initializeData, 100);
+            }
+        };
+        
+        initializeData();
     }
 
     checkIfOwnProfile() {
-        this.isOwnProfile = window.location.pathname.includes('profilecom.html');
+        // For company_profile_view.html, this is never the user's own profile
+        this.isOwnProfile = false;
     }
 
     setupEventListeners() {
@@ -51,10 +63,20 @@ class CompanyRatingsManager {
         if (nextBtn) {
             nextBtn.addEventListener('click', () => this.nextPage());
         }
+
+        // Tab switch listener
+        const ratingsTab = document.getElementById('ratings-tab');
+        if (ratingsTab) {
+            ratingsTab.addEventListener('click', () => {
+                if (this.companyId) {
+                    this.loadCompanyRatings();
+                }
+            });
+        }
     }
 
     setCompanyId(companyId) {
-        console.log('Setting company ID for ratings:', companyId);
+        console.log('Setting company ID for ratings view:', companyId);
         this.companyId = companyId;
         this.updateRatingButtonVisibility();
         
@@ -88,26 +110,27 @@ class CompanyRatingsManager {
         this.showLoading();
         
         try {
-            // Fetch ratings and summary
-            const response = await fetch(`http://localhost:8080/api/companies/${this.companyId}/ratings?page=${this.currentPage}&size=${this.pageSize}`);
-            const data = await response.json();
+            // Use the API client to fetch ratings instead of direct fetch
+            const response = await window.apiClient.makeRequest(`/companies/${this.companyId}/ratings?page=${this.currentPage}&size=${this.pageSize}`, {
+                method: 'GET'
+            });
             
-            if (data.success) {
-                this.reviews = data.ratings;
-                this.totalPages = data.totalPages;
+            if (response.success) {
+                this.reviews = response.ratings;
+                this.totalPages = response.totalPages;
                 
                 // Display summary
-                this.displayRatingSummary(data.summary);
+                this.displayRatingSummary(response.summary);
                 
                 // Display reviews
-                this.displayReviews(data.ratings);
+                this.displayReviews(response.ratings);
                 
                 // Update pagination
-                this.updatePagination(data.currentPage, data.totalPages, data.totalElements);
+                this.updatePagination(response.currentPage, response.totalPages, response.totalElements);
                 
                 this.hideLoading();
             } else {
-                throw new Error(data.message || 'Failed to load ratings');
+                throw new Error(response.message || 'Failed to load ratings');
             }
         } catch (error) {
             console.error('Error loading company ratings:', error);
@@ -116,25 +139,28 @@ class CompanyRatingsManager {
     }
 
     displayRatingSummary(summary) {
-        const averageRating = document.getElementById('average-rating');
-        const averageStars = document.getElementById('average-stars');
-        const totalReviews = document.getElementById('total-reviews');
-        const ratingBreakdown = document.getElementById('rating-breakdown');
+        if (!summary) return;
 
-        if (averageRating) {
-            averageRating.textContent = summary.averageRating?.toFixed(1) || '0.0';
+        // Update average rating
+        const averageRatingElement = document.getElementById('average-rating');
+        const averageStarsElement = document.getElementById('average-stars');
+        const totalReviewsElement = document.getElementById('total-reviews');
+
+        if (averageRatingElement) {
+            averageRatingElement.textContent = summary.averageRating ? summary.averageRating.toFixed(1) : '0.0';
         }
 
-        if (averageStars) {
-            averageStars.innerHTML = this.generateStars(summary.averageRating || 0);
+        if (averageStarsElement) {
+            averageStarsElement.innerHTML = this.generateStars(summary.averageRating || 0);
         }
 
-        if (totalReviews) {
+        if (totalReviewsElement) {
             const count = summary.totalReviews || 0;
-            totalReviews.textContent = `${count} review${count !== 1 ? 's' : ''}`;
+            totalReviewsElement.textContent = `${count} review${count !== 1 ? 's' : ''}`;
         }
 
-        if (ratingBreakdown && summary.breakdown) {
+        // Display rating breakdown - fix the property name
+        if (summary.breakdown) {
             this.displayRatingBreakdown(summary.breakdown, summary.totalReviews || 0);
         }
     }
@@ -145,14 +171,14 @@ class CompanyRatingsManager {
 
         container.innerHTML = '';
 
-        for (let i = 5; i >= 1; i--) {
-            const count = breakdown[i] || 0;
+        for (let rating = 5; rating >= 1; rating--) {
+            const count = breakdown[rating] || 0;
             const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
 
             const breakdownItem = document.createElement('div');
             breakdownItem.className = 'flex items-center space-x-2';
             breakdownItem.innerHTML = `
-                <span class="text-sm text-gray-600 dark:text-gray-300">${i}</span>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 w-2">${rating}</span>
                 <i class="fas fa-star text-yellow-400 text-xs"></i>
                 <div class="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                     <div class="bg-yellow-400 h-2 rounded-full" style="width: ${percentage}%"></div>
@@ -168,32 +194,118 @@ class CompanyRatingsManager {
         const emptyState = document.getElementById('reviews-empty-state');
 
         if (!reviews || reviews.length === 0) {
-            container.classList.add('hidden');
-            emptyState.classList.remove('hidden');
+            container?.classList.add('hidden');
+            emptyState?.classList.remove('hidden');
             return;
         }
 
-        emptyState.classList.add('hidden');
-        container.classList.remove('hidden');
-        container.innerHTML = '';
+        emptyState?.classList.add('hidden');
+        container?.classList.remove('hidden');
+        
+        if (container) {
+            container.innerHTML = '';
+            reviews.forEach(review => {
+                const reviewElement = this.createReviewElement(review);
+                container.appendChild(reviewElement);
+            });
+        }
+    }
 
-        reviews.forEach(review => {
-            const reviewElement = this.createReviewElement(review);
-            container.appendChild(reviewElement);
-        });
+    createReviewElement(review) {
+        const reviewDiv = document.createElement('div');
+        reviewDiv.className = 'bg-gray-50 dark:bg-gray-700 rounded-lg p-4';
+        
+        const createdAt = new Date(review.createdAt).toLocaleDateString();
+        
+        // Better reviewer name extraction - handle user ID to candidate mapping
+        let reviewerName = 'Anonymous';
+        let reviewerInitial = 'A';
+        
+        // First check if we have direct reviewer data
+        if (review.reviewer?.fullName) {
+            reviewerName = review.reviewer.fullName;
+            reviewerInitial = reviewerName.charAt(0).toUpperCase();
+        } else if (review.reviewer?.name) {
+            reviewerName = review.reviewer.name;
+            reviewerInitial = reviewerName.charAt(0).toUpperCase();
+        } else if (review.reviewerName) {
+            reviewerName = review.reviewerName;
+            reviewerInitial = reviewerName.charAt(0).toUpperCase();
+        } else if (review.reviewerId) {
+            // If we only have reviewer ID (which is actually user ID), 
+            // we need to fetch candidate data asynchronously
+            this.fetchReviewerName(review.reviewerId, reviewDiv);
+        }
+        
+        // Determine profile image URL
+        let profileImageUrl = 'img/default-profile.png';
+        if (review.reviewer?.profileImageUrl) {
+            profileImageUrl = `http://localhost:8080${review.reviewer.profileImageUrl}`;
+        }
+
+        reviewDiv.innerHTML = `
+            <div class="flex items-start justify-between mb-2">
+            <div class="flex items-center space-x-2">
+                <img src="${profileImageUrl}" alt="Reviewer" class="w-8 h-8 rounded-full object-cover reviewer-profile">
+                <div>
+                <h4 class="font-medium text-gray-900 dark:text-white reviewer-name">${reviewerName}</h4>
+                <div class="flex items-center space-x-2">
+                    <div class="flex text-yellow-400">
+                    ${this.generateStars(review.rating)}
+                    </div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">${createdAt}</span>
+                </div>
+                </div>
+            </div>
+            ${this.createDeleteButton(review)}
+            </div>
+            ${review.review ? `<p class="text-gray-600 dark:text-gray-300 mt-2">${review.review}</p>` : ''}
+        `;
+        
+        return reviewDiv;
+    }
+
+    async fetchReviewerName(userId, reviewElement) {
+        try {
+            // Try to get candidate data for this user ID
+            const response = await window.apiClient.getCandidateByUserId(userId);
+            if (response && response.candidate && response.candidate.fullName) {
+                const fullName = response.candidate.fullName;
+                const initial = fullName.charAt(0).toUpperCase();
+                const profile = response.candidate.profileImageUrl ? `http://localhost:8080${response.candidate.profileImageUrl}` : 'img/default-profile.png';
+                
+                // Update the review element
+                const nameElement = reviewElement.querySelector('.reviewer-name');
+                const initialElement = reviewElement.querySelector('.reviewer-initial');
+                const profileElement = reviewElement.querySelector('.reviewer-profile');
+
+                if (nameElement) {
+                    nameElement.textContent = fullName;
+                }
+                if (initialElement) {
+                    initialElement.textContent = initial;
+                }
+                if (profileElement) {
+                    profileElement.src = profile;
+                }
+            }
+        } catch (error) {
+            console.warn('Could not fetch reviewer name for user ID:', userId, error);
+            // Keep showing "Anonymous" as fallback
+        }
     }
 
     createDeleteButton(review) {
-        // Only show delete button if it's the user's own review or they're an admin
+        // Only show delete button if it's the user's own review
         const currentUser = window.apiClient?.getCurrentUser();
         if (!currentUser) return '';
         
         const isOwnReview = review.reviewer?.id === currentUser.id || 
                            review.reviewerId === currentUser.id;
         
-        if (isOwnReview || this.isOwnProfile) {
+        if (isOwnReview) {
             return `
-                <button onclick="companyRatingsManager.deleteReview(${review.id})" 
+                <button onclick="companyRatingsViewManager.deleteReview(${review.id})" 
                         class="text-red-500 hover:text-red-700 text-sm p-1" 
                         title="Delete Review">
                     <i class="fas fa-trash"></i>
@@ -225,101 +337,24 @@ class CompanyRatingsManager {
         }
     }
 
-    createReviewElement(review) {
-        const reviewDiv = document.createElement('div');
-        reviewDiv.className = 'bg-gray-50 dark:bg-gray-700 rounded-lg p-4';
-        
-        const createdAt = new Date(review.createdAt).toLocaleDateString();
-        
-        // Better reviewer name extraction - handle user ID to candidate mapping
-        let reviewerName = 'Anonymous';
-        let reviewerInitial = 'A';
-        
-        // First check if we have direct reviewer data
-        if (review.reviewer?.fullName) {
-            reviewerName = review.reviewer.fullName;
-            reviewerInitial = reviewerName.charAt(0).toUpperCase();
-        } else if (review.reviewer?.name) {
-            reviewerName = review.reviewer.name;
-            reviewerInitial = reviewerName.charAt(0).toUpperCase();
-        } else if (review.reviewerName) {
-            reviewerName = review.reviewerName;
-            reviewerInitial = reviewerName.charAt(0).toUpperCase();
-        } else if (review.reviewerId) {
-            // If we only have reviewer ID (which is actually user ID), 
-            // we need to fetch candidate data asynchronously
-            this.fetchReviewerName(review.reviewerId, reviewDiv);
-        }
-        
-        reviewDiv.innerHTML = `
-            <div class="flex items-start justify-between mb-2">
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-lilac-400 rounded-full flex items-center justify-center text-white font-bold text-sm reviewer-image" 
-                 style="background-image: url('${review.reviewer?.profileImageUrl ? `http://localhost:8080${review.reviewer.profileImageUrl}` : 'img/default-profile.png'}'); background-size: cover; background-position: center;">
-                <span style="display: ${review.reviewer?.profileImageUrl ? 'none' : 'block'}"></span>
-                </div>
-                <div>
-                <h4 class="font-medium text-gray-900 dark:text-white reviewer-name">${reviewerName}</h4>
-                <div class="flex items-center space-x-2">
-                    <div class="flex text-yellow-400">
-                    ${this.generateStars(review.rating)}
-                    </div>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">${createdAt}</span>
-                </div>
-                </div>
-            </div>
-            ${this.createDeleteButton(review)}
-            </div>
-            ${review.review ? `<p class="text-gray-600 dark:text-gray-300 mt-2">${review.review}</p>` : ''}
-        `;
-        
-        return reviewDiv;
-    }
-
-    async fetchReviewerName(userId, reviewElement) {
-        try {
-            // Try to get candidate data for this user ID
-            const response = await window.apiClient.getCandidateByUserId(userId);
-            if (response && response.candidate && response.candidate.fullName) {
-                const fullName = response.candidate.fullName;
-                const initial = fullName.charAt(0).toUpperCase();
-                const profileImageUrl = response.candidate.profileImageUrl;
-                
-                // Update the review element
-                const nameElement = reviewElement.querySelector('.reviewer-name');
-                const initialElement = reviewElement.querySelector('.reviewer-initial');
-                const imageElement = reviewElement.querySelector('.reviewer-image');
-                if (imageElement) {
-                    imageElement.style.backgroundImage = `url('${profileImageUrl ? `http://localhost:8080${profileImageUrl}` : 'img/default-profile.png'}')`;
-                }
-                if (nameElement) {
-                    nameElement.textContent = fullName;
-                }
-                if (initialElement) {
-                    initialElement.textContent = initial;
-                }
-            }
-        } catch (error) {
-            console.warn('Could not fetch reviewer name for user ID:', userId, error);
-            // Keep showing "Anonymous" as fallback
-        }
-    }
-
     generateStars(rating) {
         const fullStars = Math.floor(rating);
         const hasHalfStar = rating % 1 >= 0.5;
         const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-        
+
         let starsHTML = '';
         
+        // Full stars
         for (let i = 0; i < fullStars; i++) {
             starsHTML += '<i class="fas fa-star"></i>';
         }
         
+        // Half star
         if (hasHalfStar) {
             starsHTML += '<i class="fas fa-star-half-alt"></i>';
         }
         
+        // Empty stars
         for (let i = 0; i < emptyStars; i++) {
             starsHTML += '<i class="far fa-star"></i>';
         }
@@ -336,11 +371,11 @@ class CompanyRatingsManager {
         const totalReviewsSpan = document.getElementById('reviews-total');
 
         if (totalElements === 0) {
-            pagination.classList.add('hidden');
+            pagination?.classList.add('hidden');
             return;
         }
 
-        pagination.classList.remove('hidden');
+        pagination?.classList.remove('hidden');
 
         const start = currentPage * this.pageSize + 1;
         const end = Math.min((currentPage + 1) * this.pageSize, totalElements);
@@ -351,10 +386,12 @@ class CompanyRatingsManager {
 
         if (prevBtn) {
             prevBtn.disabled = currentPage === 0;
+            prevBtn.onclick = () => this.previousPage();
         }
 
         if (nextBtn) {
             nextBtn.disabled = currentPage >= totalPages - 1;
+            nextBtn.onclick = () => this.nextPage();
         }
     }
 
@@ -433,8 +470,12 @@ class CompanyRatingsManager {
         let selectedRating = 0;
 
         starButtons.forEach((button, index) => {
-            button.addEventListener('mouseover', () => {
+            button.addEventListener('mouseenter', () => {
                 this.highlightStars(index + 1);
+            });
+
+            button.addEventListener('mouseleave', () => {
+                this.highlightStars(selectedRating);
             });
 
             button.addEventListener('click', () => {
@@ -443,10 +484,7 @@ class CompanyRatingsManager {
             });
         });
 
-        document.getElementById('star-rating').addEventListener('mouseleave', () => {
-            this.selectStars(selectedRating);
-        });
-
+        // Make selected rating globally accessible
         window.getSelectedRating = () => selectedRating;
     }
 
@@ -481,12 +519,19 @@ class CompanyRatingsManager {
             return;
         }
 
+        if (!this.currentUser) {
+            alert('Please log in to submit a review');
+            return;
+        }
+
         try {
-            const response = await fetch(`http://localhost:8080/api/companies/${this.companyId}/ratings`, {
+            console.log('Submitting rating:', { rating, review, companyId: this.companyId, userId: this.currentUser.id });
+            
+            const response = await window.apiClient.makeRequest(`/companies/${this.companyId}/ratings`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'X-User-Id': this.currentUser.id.toString()
                 },
                 body: JSON.stringify({
                     rating: rating,
@@ -494,9 +539,9 @@ class CompanyRatingsManager {
                 })
             });
 
-            const data = await response.json();
+            console.log('Rating submission response:', response);
 
-            if (data.success) {
+            if (response.success) {
                 // Close modal
                 document.getElementById('rating-modal').remove();
                 
@@ -506,7 +551,7 @@ class CompanyRatingsManager {
                 
                 alert('Review submitted successfully!');
             } else {
-                throw new Error(data.message || 'Failed to submit review');
+                throw new Error(response.message || 'Failed to submit review');
             }
         } catch (error) {
             console.error('Error submitting review:', error);
@@ -515,37 +560,23 @@ class CompanyRatingsManager {
     }
 
     showLoading() {
-        document.getElementById('ratings-loading').classList.remove('hidden');
-        document.getElementById('reviews-container').classList.add('hidden');
-        document.getElementById('reviews-empty-state').classList.add('hidden');
+        document.getElementById('ratings-loading')?.classList.remove('hidden');
+        document.getElementById('reviews-container')?.classList.add('hidden');
+        document.getElementById('reviews-empty-state')?.classList.add('hidden');
     }
 
     hideLoading() {
-        document.getElementById('ratings-loading').classList.add('hidden');
+        document.getElementById('ratings-loading')?.classList.add('hidden');
     }
 
     showError(message) {
         this.hideLoading();
-        // You can implement a proper error display here
         console.error(message);
     }
 }
 
 // Initialize on DOM content loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('=== Initializing Company Ratings Manager ===');
-    
-    window.companyRatingsManager = new CompanyRatingsManager();
-    
-    const initializeRatingsData = () => {
-        if (window.currentCompany?.id) {
-            window.companyRatingsManager.setCompanyId(window.currentCompany.id);
-        } else if (window.companyProfileManager?.currentCompany?.id) {
-            window.companyRatingsManager.setCompanyId(window.companyProfileManager.currentCompany.id);
-        } else {
-            setTimeout(initializeRatingsData, 100);
-        }
-    };
-    
-    initializeRatingsData();
+    console.log('=== Initializing Company Ratings View Manager ===');
+    window.companyRatingsViewManager = new CompanyRatingsViewManager();
 });

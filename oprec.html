@@ -749,48 +749,40 @@
                     (typeof job.skills === 'string' ? job.skills.split(',').map(s => s.trim()) : []);
                 
                 // Format job type display
-                const jobTypeDisplay = formatJobType(job.type);
-                
-                return `
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
-                        <div class="p-6">
+            const jobTypeDisplay = formatJobType(job.type);
+
+            return `
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+                    <div class="p-5 flex flex-col flex-1">
+                        <div>
                             <div class="flex items-start mb-4">
-                                <img class="h-12 w-12 rounded-lg object-cover mr-4" 
-                                     src="${companyLogo}" 
-                                     alt="${companyName} Logo"
-                                     onerror="this.src='img/default-company.png'">
+                                <img class="h-12 w-12 rounded-full object-cover mr-4" 
+                                    src="${companyLogo}" 
+                                    alt="${companyName} Logo"
+                                    onerror="this.src='img/default-company.png'">
                                 <div>
-                                    <h3 class="font-semibold text-lg text-gray-900 dark:text-white">${job.title || 'Job Title'}</h3>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white">${job.title || 'Job Title'}</h3>
                                     <p class="text-lilac-500 text-sm">${companyName}</p>
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-2 mb-4">
                                 <span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${jobTypeDisplay}</span>
-                                ${skillsArray.slice(0, 2).map(skill => 
+                                ${location ? `<span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${location}</span>` : ''}
+                                ${skillsArray.slice(0, 1).map(skill => 
                                     `<span class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-xs">${skill}</span>`
                                 ).join('')}
                             </div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-                                ${job.description ? stripHtmlAndTruncate(job.description, 100) : 'No description available'}
-                            </p>
-                            <div class="flex justify-between items-center text-sm">
-                                <div class="flex items-center text-gray-500 dark:text-gray-400">
-                                    <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
-                                    <span>${location}</span>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400">${postedDate}</span>
-                            </div>
                         </div>
-                        <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
-                            <div class="flex justify-between items-center">
-                                <span class="font-medium text-gray-900 dark:text-white">${salary}</span>
-                                <a href="job-detail.html?id=${job.id}" class="text-lilac-500 hover:text-lilac-600 dark:hover:text-lilac-400 font-medium text-sm flex items-center">
-                                    View Details <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                                </a>
-                            </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2 flex-grow min-h-[60px]">
+                            ${job.description ? stripHtmlAndTruncate(job.description, 120) : 'No description available'}
+                        </p>
+                        <div class="flex justify-between items-center text-sm mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <span class="text-gray-500 dark:text-gray-400">${postedDate}</span>
+                            <a href="job-detail.html?id=${job.id}" class="text-lilac-500 hover:text-lilac-600 font-medium">Apply Now</a>
                         </div>
                     </div>
-                `;
+                </div>
+            `;
             }).join('');
         }
 
