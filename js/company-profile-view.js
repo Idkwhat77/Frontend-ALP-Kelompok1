@@ -4,6 +4,7 @@ class CompanyProfileViewer {
     constructor() {
         this.currentCompany = null;
         this.companyId = null;
+        this.employeesManager = null;
         this.init();
     }
 
@@ -19,6 +20,7 @@ class CompanyProfileViewer {
             }
 
             await this.loadCompanyProfile();
+            this.initializeEmployeesManager();
         } catch (error) {
             console.error('Failed to initialize company profile viewer:', error);
             this.showError('Failed to load company profile');
@@ -37,6 +39,7 @@ class CompanyProfileViewer {
 
             if (response && response.success && response.company) {
                 this.currentCompany = response.company;
+                window.currentViewedCompany = response.company; // Make available globally for chat
                 this.displayCompanyProfile(response.company);
             } else {
                 throw new Error('Company profile not found');
@@ -79,12 +82,27 @@ class CompanyProfileViewer {
         this.updateElement('company-name-header', company.companyName);
         this.updateElement('company-industry', company.industry);
         this.updateElement('company-size', company.companySize ? `${company.companySize} Employees` : 'Not specified');
+        this.updateElement('company-size2', company.companySize ? `${company.companySize} employees` : 'Not specified');
         this.updateElement('company-foundation-date', this.formatDate(company.foundationDate));
         this.updateElement('company-hq', company.hq || 'Not specified');
         this.updateElement('company-email', company.email);
         
         // Add formatted location display
         this.updateElement('company-location', formatLocation(company.city, company.province));
+        
+        // Update website with proper link
+        const websiteElement = document.getElementById('company-website');
+        if (websiteElement) {
+            if (company.websiteUrl) {
+                websiteElement.href = company.websiteUrl.startsWith('http') ? company.websiteUrl : `https://${company.websiteUrl}`;
+                websiteElement.textContent = company.websiteUrl;
+                websiteElement.target = '_blank';
+            } else {
+                websiteElement.href = '#';
+                websiteElement.textContent = 'Not specified';
+                websiteElement.onclick = (e) => e.preventDefault();
+            }
+        }
         
         // Update company description
         const descriptionElement = document.getElementById('company-description');
@@ -106,10 +124,6 @@ class CompanyProfileViewer {
 
         // Update page title
         document.title = `${company.companyName} - RuangKerja`;
-
-        // Load additional data
-        this.loadCompanyServices();
-        this.loadCompanyMembers();
     }
 
     updateCompanyImage(company) {
@@ -145,96 +159,24 @@ class CompanyProfileViewer {
         }
     }
 
-    async loadCompanyServices() {
-        const servicesList = document.getElementById('services-list');
-        if (!servicesList) return;
-
-        try {
-            // Mock data for now - replace with actual API call when available
-            const services = [
-                'Software Development',
-                'Cloud Services',
-                'Digital Transformation',
-                'Technical Consulting',
-                'Support & Maintenance'
-            ];
-
-            if (services.length === 0) {
-                servicesList.innerHTML = `
-                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-briefcase text-4xl mb-4"></i>
-                        <p>No services listed</p>
-                    </div>
-                `;
-                return;
-            }
-
-            servicesList.innerHTML = `
-                <ul class="list-disc list-inside text-black dark:text-white space-y-2">
-                    ${services.map(service => `<li>${service}</li>`).join('')}
-                </ul>
-            `;
-        } catch (error) {
-            console.error('Error loading company services:', error);
-            servicesList.innerHTML = `
-                <div class="text-center py-8 text-red-500 dark:text-red-400">
-                    <p>Failed to load services</p>
-                </div>
-            `;
-        }
-    }
-
-    async loadCompanyMembers() {
-        const membersList = document.getElementById('members-list');
-        if (!membersList) return;
-
-        try {
-            // Mock data for now - replace with actual API call when available
-            const members = [
-                { name: 'Alex Johnson', position: 'Chief Executive Officer', image: 'img/default-profile.png' },
-                { name: 'Sarah Davis', position: 'Chief Technology Officer', image: 'img/default-profile.png' },
-                { name: 'Michael Chen', position: 'Lead Developer', image: 'img/default-profile.png' },
-                { name: 'Emma Wilson', position: 'HR Manager', image: 'img/default-profile.png' }
-            ];
-
-            if (members.length === 0) {
-                membersList.innerHTML = `
-                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-users text-4xl mb-4"></i>
-                        <p>No team members listed</p>
-                    </div>
-                `;
-                return;
-            }
-
-            membersList.innerHTML = members.map(member => `
-                <div class="flex flex-row items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <img class="rounded-full w-16 h-16 object-cover" 
-                         src="${member.image}" 
-                         alt="${member.name}"
-                         onerror="this.src='img/default-profile.png'">
-                    <div class="ml-4">
-                        <h4 class="text-lg font-semibold text-[#C69AE6]">${member.name}</h4>
-                        <p class="text-gray-600 dark:text-gray-300">${member.position}</p>
-                    </div>
-                </div>
-            `).join('');
-        } catch (error) {
-            console.error('Error loading company members:', error);
-            membersList.innerHTML = `
-                <div class="text-center py-8 text-red-500 dark:text-red-400">
-                    <p>Failed to load team members</p>
-                </div>
-            `;
+    initializeEmployeesManager() {
+        // Make sure company data is available globally
+        window.currentCompanyData = this.currentCompany;
+        
+        // Initialize employees manager with company data
+        if (typeof CompanyEmployeesViewManager !== 'undefined' && this.currentCompany) {
+            this.employeesManager = new CompanyEmployeesViewManager(this.currentCompany.id);
+            window.companyEmployeesViewManager = this.employeesManager;
+            console.log('Employees view manager initialized with company data');
         }
     }
 
     showError(message) {
-        document.getElementById('company-name-header').textContent = 'Error';
+        document.getElementById('company-name').textContent = 'Error';
         document.getElementById('company-industry').textContent = message;
         
         // Show error in other elements
-        const elements = ['company-name', 'company-foundation-date', 'company-hq', 'company-size', 'company-email'];
+        const elements = ['company-foundation-date', 'company-hq', 'company-size', 'company-email'];
         elements.forEach(id => {
             const element = document.getElementById(id);
             if (element) {
@@ -250,35 +192,6 @@ class CompanyProfileViewer {
                     ${message}
                 </span>
             `;
-        }
-    }
-
-    initializeEmployeesManager() {
-        // Make sure company data is available globally
-        window.currentCompanyData = this.currentCompany;
-        
-        // Initialize employees manager with company data
-        if (typeof CompanyEmployeesManager !== 'undefined' && this.currentCompany) {
-            this.employeesManager = new CompanyEmployeesManager(this.currentCompany.id);
-            this.employeesManager.isOwnProfile = this.isOwnProfile;
-            console.log('Employees manager initialized with company data');
-        }
-    }
-
-    toggleEditControls() {
-        const editControls = document.querySelectorAll('.edit-control');
-        editControls.forEach(control => {
-            if (this.isOwnProfile) {
-                control.style.display = 'inline-block';
-            } else {
-                control.style.display = 'none';
-            }
-        });
-
-        // Update employees manager ownership
-        if (this.employeesManager) {
-            this.employeesManager.isOwnProfile = this.isOwnProfile;
-            this.employeesManager.displayEmployees(); // Refresh display
         }
     }
 }

@@ -828,6 +828,21 @@ class ApiClient {
             };
         }
     }
+
+    // Company rating deletion
+    async deleteCompanyRating(companyId, ratingId) {
+        const user = this.getCurrentUser();
+        if (!user || !user.id) {
+            throw new Error('User must be logged in to delete reviews');
+        }
+
+        return this.makeRequest(`/companies/${companyId}/ratings/${ratingId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-User-Id': user.id
+            }
+        });
+    }
 }
 
 // Create and export API client instance
