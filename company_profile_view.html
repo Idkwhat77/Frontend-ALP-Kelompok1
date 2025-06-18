@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Black Swan LLC - RuangKerja</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="api.js"></script>
+  <title>Company Profile - RuangKerja</title>
   <script src="language.js"></script>
   <script src="darkmode.js"></script>
+  <script src="api.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
       tailwind.config = {
           darkMode: 'class',
@@ -29,22 +29,27 @@
                   },
                   animation: {
                       'fade-in-from-up': 'fadeInUp 1s ease-in forwards',
-                      'fade-in-from-right' : 'fadeInRight 1s ease-in forwards',
-                      'fade-in-from-down': 'fadeInDown 0.5s ease-in forwards',
-                      'expand-down': 'expandDown 0.6s ease-out forwards',
-                      'expand-left': 'expandLeft 0.6s ease-out forwards',
+                      'fade-in-from-down': 'fadeInDown 1s ease-in forwards',
+                      'fade-in-from-left': 'fadeInLeft 1s ease-in forwards',
+                      'fade-in-from-right': 'fadeInRight 1s ease-in forwards',
+                      'expand-down': 'expandDown 1s ease-in-out forwards',
+                      'expand-left': 'expandLeft 1s ease-in-out forwards',
                   },
                   keyframes: {
                       fadeInUp: {
-                          '0%': { opacity: '0', transform: 'translateY(-100px)' },
+                          '0%': { opacity: '0', transform: 'translateY(50px)' },
                           '100%': { opacity: '1', transform: 'translateY(0)' },
                       },
-                      fadeInRight: {
-                          '0%': { opacity: '0', transform: 'translateX(100px)' },
+                      fadeInDown: {
+                          '0%': { opacity: '0', transform: 'translateY(-50px)' },
+                          '100%': { opacity: '1', transform: 'translateY(0)' },
+                      },
+                      fadeInLeft: {
+                          '0%': { opacity: '0', transform: 'translateX(-50px)' },
                           '100%': { opacity: '1', transform: 'translateX(0)' },
                       },
-                      fadeInDown: {
-                          '0%': { opacity: '0', transform: 'translateY(50px)' },
+                      fadeInRight: {
+                          '0%': { opacity: '0', transform: 'translateX(50px)' },
                           '100%': { opacity: '1', transform: 'translateY(0)' },
                       },
                       expandDown: {
@@ -68,7 +73,7 @@
   <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  integrity="sha512-..."
+  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
   />
@@ -105,8 +110,13 @@
   .dark ::-webkit-scrollbar-thumb {
       background: #4a5568;
   }
+
+  /* Profile image hover effect */
+  #company-profile-image {
+    transition: opacity 1s ease-in-out !important;
+  }
 </style>
-<body class="bg-lilac-100 dark:bg-gray-900" id="body">
+<body class="bg-lilac-50 dark:bg-gray-900" id="body">
   <!-- Navbar -->
   <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -180,7 +190,7 @@
               <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                   <div class="flex items-center justify-between">
                       <div class="flex items-center">
-                          <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                          <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                           <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                       </div>
                       <div class="flex items-center space-x-2">
@@ -200,23 +210,21 @@
   </nav>
 
   <!-- Main Content -->
-  <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-[#FAF7FD] dark:bg-[#111827]" id="main-container">
-    <div class="lg:fixed flex flex-col bg-[#B57EDC] dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative transition duration-300 lg:animate-expand-down animate-expand-left" id="profile-container">
+  <div class="flex lg:flex-row flex-col lg:h-screen items-center transition duration-300 bg-lilac-50 dark:bg-[#111827]" id="main-container">
+    <div class="lg:fixed flex flex-col bg-lilac-500 dark:bg-[#4B1C71] h-screen items-center justify-center lg:w-[29vw] w-full relative transition duration-300 lg:animate-expand-down animate-expand-left" id="profile-container">
       <div class="flex flex-col items-center text-center gap-5">
-        <!-- Dynamic company profile image - clickable like in profile.html -->
-        <div onclick="openModal('modal-upload')" class="rounded-full border-4 w-[256px] h-[256px] hover:opacity-50 transition-opacity duration-300 cursor-pointer bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png');" role="img" aria-label="Company Logo" id="company-profile-image">
-        </div>
-        
+        <div class="rounded-full border-4 w-[256px] h-[256px] bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png');" role="img" aria-label="Company Logo" id="company-profile-image"></div>
         <h1 id="company-name-header" class="text-5xl font-bold text-white animate-fade-in-from-down">Loading...</h1>
         <p id="company-industry" class="mt-4 text-lg text-white animate-fade-in-from-down">Loading...</p>
       </div>
-      <div class="flex justify-center mt-6 animate-fade-in-from-down">
-        <a href="posting_oprec.html" download
-          class="bg-[#7F4CA5] text-white px-6 py-3 rounded-full shadow-md transition-all duration-300">
-          <i class="fa-solid fa-file-pdf"></i> Post a Job!
-        </a>
+      <div class="flex justify-center mt-6">
+        <button onclick="openModal('modal-contact')" 
+          class="bg-[#7F4CA5] text-white px-6 py-3 rounded-full shadow-md transition-all duration-300 animate-fade-in-from-down">
+          <i class="fa-solid fa-envelope"></i>
+          <span data-i18n="contact_company">Contact Company</span>
+        </button>
       </div>
-      <div class="flex flex-row space-x-4 text-3xl bottom-10 absolute animate-fade-in-from-down">
+      <div class="flex flex-row space-x-4 text-3xl bottom-10 absolute transition duration-300 animate-fade-in-from-down">
         <a href="https://facebook.com" target="_blank" class="hover:text-blue-600">
           <i class="fab fa-facebook"></i>
         </a>
@@ -282,199 +290,8 @@
     </div>
   </div>
 
-  <!-- Company Image Upload Modal - Similar to profile.html -->
-  <div id="modal-upload" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-lg transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
-      <h3 class="text-2xl font-semibold text-[#C69AE6] mb-4">Upload Company Logo</h3>
-      
-      <div class="border-2 border-dashed border-[#C69AE6] rounded-xl p-10 text-center bg-lilac-50 dark:bg-gray-700 hover:bg-lilac-100 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer mb-4" 
-          id="uploadArea" 
-          onclick="document.getElementById('company-image-input').click()">
-        <div>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5" class="mx-auto mb-4">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17,8 12,3 7,8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-          </svg>
-          <p class="text-gray-700 dark:text-gray-300 mb-2">
-            <strong>Click to upload</strong> or drag and drop
-          </p>
-          <p class="text-gray-500 dark:text-gray-400 text-sm">PNG, JPG or GIF (max 5MB)</p>
-        </div>
-      </div>
-      
-      <!-- Preview area -->
-      <div id="preview" class="mb-4"></div>
-      
-      <input type="file" id="company-image-input" class="hidden" accept="image/*">
-      
-      <div class="flex gap-3">
-        <button id="uploadCompanyBtn" disabled class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
-          Upload Logo
-        </button>
-        <button id="deleteCompanyBtn" class="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-300">
-          Delete Logo
-        </button>
-        <button onclick="closeModal('modal-upload')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Company Settings Modal - Similar to profile.html -->
-  <div id="modal-settings" class="fixed inset-0 flex items-center justify-center z-40 hidden mt-10">
-    <div class="bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-6 w-[90%] max-w-2xl transition-transform duration-300 transform scale-0 opacity-0 max-h-[80%] overflow-y-auto">
-      <h3 class="text-2xl font-semibold text-[#C69AE6] mb-6">Company Settings</h3>
-      
-      <form id="company-settings-form" class="space-y-4">
-        <!-- Basic Company Information -->
-        <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
-          <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Basic Information</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Name</label>
-              <input type="text" id="settings-company-name" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Email</label>
-              <input type="email" id="settings-company-email" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
-              <select id="settings-company-industry" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-                <option value="">Select Industry</option>
-                <option value="Technology">Technology</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Finance">Finance</option>
-                <option value="Education">Education</option>
-                <option value="Manufacturing">Manufacturing</option>
-                <option value="Retail">Retail</option>
-                <option value="Hospitality">Hospitality</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Government">Government</option>
-                <option value="Construction">Construction</option>
-                <option value="Real Estate">Real Estate</option>
-                <option value="Legal Services">Legal Services</option>
-                <option value="Consulting">Consulting</option>
-                <option value="Non-Profit">Non-Profit</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Size</label>
-              <input type="number" id="settings-company-size" min="1" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-            </div>
-          </div>
-        </div>
-
-        <!-- Location Information -->
-        <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
-          <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Location Information</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">HQ Location</label>
-              <input type="text" id="settings-company-hq" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Province</label>
-              <select id="settings-company-province" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-                <option value="">Select Province</option>
-                <option value="aceh">Aceh</option>
-                <option value="sumatra-utara">Sumatra Utara</option>
-                <option value="sumatra-barat">Sumatra Barat</option>
-                <option value="riau">Riau</option>
-                <option value="jambi">Jambi</option>
-                <option value="sumatra-selatan">Sumatra Selatan</option>
-                <option value="bengkulu">Bengkulu</option>
-                <option value="lampung">Lampung</option>
-                <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
-                <option value="kepulauan-riau">Kepulauan Riau</option>
-                <option value="dki-jakarta">DKI Jakarta</option>
-                <option value="jawa-barat">Jawa Barat</option>
-                <option value="jawa-tengah">Jawa Tengah</option>
-                <option value="di-yogyakarta">DI Yogyakarta</option>
-                <option value="jawa-timur">Jawa Timur</option>
-                <option value="banten">Banten</option>
-                <option value="bali">Bali</option>
-                <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
-                <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
-                <option value="kalimantan-barat">Kalimantan Barat</option>
-                <option value="kalimantan-tengah">Kalimantan Tengah</option>
-                <option value="kalimantan-selatan">Kalimantan Selatan</option>
-                <option value="kalimantan-timur">Kalimantan Timur</option>
-                <option value="kalimantan-utara">Kalimantan Utara</option>
-                <option value="sulawesi-utara">Sulawesi Utara</option>
-                <option value="sulawesi-tengah">Sulawesi Tengah</option>
-                <option value="sulawesi-selatan">Sulawesi Selatan</option>
-                <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
-                <option value="gorontalo">Gorontalo</option>
-                <option value="sulawesi-barat">Sulawesi Barat</option>
-                <option value="maluku">Maluku</option>
-                <option value="maluku-utara">Maluku Utara</option>
-                <option value="papua-barat">Papua Barat</option>
-                <option value="papua-barat-daya">Papua Barat Daya</option>
-                <option value="papua">Papua</option>
-                <option value="papua-selatan">Papua Selatan</option>
-                <option value="papua-tengah">Papua Tengah</option>
-                <option value="papua-pegunungan">Papua Pegunungan</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
-              <select id="settings-company-city" disabled class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-                <option value="">Select City</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Foundation Date</label>
-              <input type="date" id="settings-foundation-date" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-            </div>
-          </div>
-        </div>
-
-        <!-- Contact Information -->
-        <div class="border-b border-gray-200 dark:border-gray-600 pb-4 mb-4">
-          <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Contact Information</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Website URL</label>
-              <input type="url" id="settings-company-website" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
-              <input type="tel" id="settings-company-phone" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent">
-            </div>
-          </div>
-        </div>
-
-        <!-- Company Description -->
-        <div class="mb-4">
-          <h4 class="text-lg font-semibold text-[#C69AE6] mb-3">Company Description</h4>
-          <textarea id="settings-company-description" rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#C69AE6] focus:border-transparent resize-none" placeholder="Tell us about your company..."></textarea>
-        </div>
-
-        <!-- Form Actions -->
-        <div class="flex gap-3 pt-4">
-          <button type="submit" class="flex-1 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-4 py-2 rounded-lg transition-colors duration-300">
-            <i class="fas fa-save mr-2"></i>Save Changes
-          </button>
-          <button type="button" onclick="closeModal('modal-settings')" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <!-- Navigation Buttons for the Modal Boxes -->
   <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 animate-fade-in-from-right">
-    <!-- Settings Button -->
-    <div class="flex justify-end">
-      <button id="btn-settings" onclick="openModal('modal-settings')" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden">
-        <i class="fa fa-cog ml-0.5"></i>
-        <span data-i18n="settings_nav" id="nav-settings" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Settings</span>
-      </button>
-    </div>
     
     <!-- Services Button -->
     <div class="flex justify-end">
@@ -491,6 +308,15 @@
         <span data-i18n="members_nav" id="nav-members" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Employees</span>
       </button>
     </div>
+  
+    <!-- Chat Button (NEW) -->
+    <div class="flex justify-end">
+      <button id="btn-chat" onclick="startChatWithCompany()" class="group w-12 h-12 bg-[#7F4CA5] hover:bg-[#4B1C71] text-white px-3 rounded-full shadow-lg transition-all duration-300 flex items-center overflow-hidden" style="display: none;">
+        <i class="fa fa-comment-dots ml-0.5"></i>
+        <span data-i18n="chat_nav" id="nav-chat" class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat</span> 
+      </button>
+    </div>
+
   </div>
 
   <!-- Company Members Modal Box (popup basically) -->
@@ -554,11 +380,255 @@
     </div>
   </div>
 </body>
-  <!-- Include API client and company profile manager -->
+
+<!-- Scripts -->
   <script src="logout.js"></script>
   <script src="js/navbar-profile.js"></script>
-  <script src="js/company-profile.js"></script>
-  <script src="js/company-profile-image.js"></script>
+  <script src="js/company-profile-view.js"></script>
+  <script>
+  let currentViewedCompany = null;
+
+  // Function to start chat with the company being viewed
+  async function startChatWithCompany() {
+      console.log('=== Starting Chat with Company ===');
+      
+      const currentUser = window.apiClient?.getCurrentUser();
+      console.log('Current user:', currentUser);
+      
+      if (!currentUser) {
+          alert('Please log in to start a conversation');
+          window.location.href = 'login.html';
+          return;
+      }
+
+      // Handle different user data structures
+      let userId = null;
+      if (currentUser.id) {
+          userId = currentUser.id;
+      } else if (currentUser.userId) {
+          userId = currentUser.userId;
+      } else if (currentUser.user_id) {
+          userId = currentUser.user_id;
+      } else {
+          console.error('No valid user ID found in currentUser:', currentUser);
+          alert('Unable to identify current user. Please log in again.');
+          window.location.href = 'login.html';
+          return;
+      }
+
+      // Try to get company data from multiple sources
+      if (!currentViewedCompany) {
+          if (window.currentCompanyData) {
+              currentViewedCompany = window.currentCompanyData;
+              console.log('Got company from window.currentCompanyData');
+          } else {
+              // Try to get from URL and fetch fresh data
+              const urlParams = new URLSearchParams(window.location.search);
+              const companyId = urlParams.get('id');
+              
+              if (companyId) {
+                  console.log('Fetching fresh company data for ID:', companyId);
+                  try {
+                      const response = await window.apiClient.getCompanyById(companyId);
+                      if (response && response.company) {
+                          currentViewedCompany = response.company;
+                          console.log('Fetched fresh company data:', currentViewedCompany);
+                      }
+                  } catch (error) {
+                      console.error('Error fetching company data:', error);
+                  }
+              }
+          }
+      }
+
+      if (!currentViewedCompany) {
+          console.error('No company data available after all attempts');
+          alert('Unable to start conversation. Company data not loaded. Please refresh the page and try again.');
+          return;
+      }
+
+      // Fix: Look for userId in the company object directly, not in a nested user object
+      let companyUserId = null;
+      
+      // Try multiple possible locations for the user ID
+      if (currentViewedCompany.userId) {
+          companyUserId = currentViewedCompany.userId;
+      } else if (currentViewedCompany.user_id) {
+          companyUserId = currentViewedCompany.user_id;
+      } else if (currentViewedCompany.user?.id) {
+          companyUserId = currentViewedCompany.user.id;
+      } else if (currentViewedCompany.user?.userId) {
+          companyUserId = currentViewedCompany.user.userId;
+      } else {
+          console.error('No valid user ID found in company data:', currentViewedCompany);
+          console.log('Available keys in company object:', Object.keys(currentViewedCompany));
+          alert('Unable to identify company user. Company data may be incomplete.');
+          return;
+      }
+
+      console.log('Company user ID:', companyUserId);
+
+      // Check if trying to chat with yourself
+      if (userId === companyUserId) {
+          alert('You cannot start a conversation with yourself.');
+          return;
+      }
+
+      try {
+          // Show loading state
+          const chatBtn = document.getElementById('btn-chat');
+          if (!chatBtn) {
+              console.error('Chat button not found');
+              return;
+          }
+          
+          const originalContent = chatBtn.innerHTML;
+          chatBtn.innerHTML = '<i class="fas fa-spinner fa-spin ml-0.5"></i>';
+          chatBtn.disabled = true;
+
+          console.log('Checking for existing conversations...');
+
+          // Check if conversation already exists
+          const conversations = await window.apiClient.getUserConversations(userId);
+          console.log('User conversations:', conversations);
+          
+          const existingConversation = conversations?.find(conv => 
+              conv.otherUser.userId === companyUserId
+          );
+
+          if (existingConversation) {
+              console.log('Found existing conversation:', existingConversation);
+              // Redirect to chat with existing conversation
+              window.location.href = `chat.html?conversation=${existingConversation.id}&user=${companyUserId}&type=company`;
+          } else {
+              console.log('No existing conversation found, redirecting to empty chat...');
+              // Direct redirect to chat without sending initial message
+              window.location.href = `chat.html?user=${companyUserId}&new=true&type=company`;
+          }
+
+      } catch (error) {
+          console.error('Error starting chat:', error);
+          alert(`Unable to start conversation. Error: ${error.message}`);
+          
+          // Restore button
+          const chatBtn = document.getElementById('btn-chat');
+          if (chatBtn) {
+              chatBtn.innerHTML = '<i class="fa fa-comment-dots ml-0.5"></i>';
+              chatBtn.disabled = false;
+          }
+      }
+  }
+
+  // Enhanced company data loading with multiple listeners
+  window.addEventListener('DOMContentLoaded', () => {
+      console.log('=== DOM Content Loaded (Company Profile View) ===');
+      
+      // Debug current user data structure
+      const currentUser = window.apiClient?.getCurrentUser();
+      console.log('Current user on page load:', currentUser);
+      console.log('User type:', window.apiClient?.getUserType());
+      console.log('LocalStorage current_user:', localStorage.getItem('current_user'));
+      
+      // Get company ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const companyId = urlParams.get('id');
+      
+      console.log('Company ID from URL:', companyId);
+      
+      if (companyId) {
+          // Method 1: Listen for custom event from company-profile-view.js
+          window.addEventListener('companyDataLoaded', (event) => {
+              console.log('Received companyDataLoaded event:', event.detail);
+              currentViewedCompany = event.detail.company;
+              showChatButton();
+          });
+          
+          // Method 2: Polling for company data
+          let attempts = 0;
+          const maxAttempts = 100; // 10 seconds total
+          
+          const checkForCompany = setInterval(() => {
+              attempts++;
+              
+              // Check if profile data is loaded by looking at the name element
+              const nameElement = document.getElementById('company-name-header');
+              const nameText = nameElement?.textContent;
+              
+              console.log(`Attempt ${attempts}: Name element text:`, nameText);
+              
+              if (nameElement && nameText && 
+                  nameText !== 'Loading...' && 
+                  nameText !== 'Error' && 
+                  nameText.trim() !== '') {
+                  
+                  console.log('Company profile appears to be loaded, checking for data...');
+                  
+                  // Try to get company data from window object
+                  if (window.currentCompanyData) {
+                      currentViewedCompany = window.currentCompanyData;
+                      console.log('Found company data via window.currentCompanyData');
+                      showChatButton();
+                      clearInterval(checkForCompany);
+                  } else if (window.companyProfileViewer?.currentCompany) {
+                      currentViewedCompany = window.companyProfileViewer.currentCompany;
+                      console.log('Found company data via companyProfileViewer');
+                      showChatButton();
+                      clearInterval(checkForCompany);
+                  } else {
+                      // Fallback: try direct API call
+                      tryDirectCompanyApiCall(companyId);
+                      clearInterval(checkForCompany);
+                  }
+              }
+              
+              if (attempts >= maxAttempts) {
+                  console.log('Max attempts reached, stopping polling');
+                  clearInterval(checkForCompany);
+                  // Try one last direct API call
+                  tryDirectCompanyApiCall(companyId);
+              }
+          }, 100);
+          
+      } else {
+          console.log('No company ID in URL, hiding chat button');
+          hideChatButton();
+      }
+  });
+
+  // Helper function to show chat button
+  function showChatButton() {
+      const chatBtn = document.getElementById('btn-chat');
+      if (chatBtn) {
+          chatBtn.style.display = 'flex';
+          console.log('Chat button shown');
+      }
+  }
+
+  // Helper function to hide chat button
+  function hideChatButton() {
+      const chatBtn = document.getElementById('btn-chat');
+      if (chatBtn) {
+          chatBtn.style.display = 'none';
+          console.log('Chat button hidden');
+      }
+  }
+
+  // Fallback method to get company data directly
+  async function tryDirectCompanyApiCall(companyId) {
+      console.log('Attempting direct API call for company:', companyId);
+      try {
+          const response = await window.apiClient.getCompanyById(companyId);
+          if (response && response.company) {
+              currentViewedCompany = response.company;
+              window.currentCompanyData = response.company;
+              console.log('Successfully got company data via direct API call:', currentViewedCompany);
+              showChatButton();
+          }
+      } catch (error) {
+          console.error('Direct API call failed:', error);
+      }
+  }
+  </script>
   <script>
         
   // Logout functionality
@@ -675,9 +745,19 @@
   const navSkills = document.getElementById('nav-services')
   const btnMembers = document.getElementById('btn-members');
   const navMembers = document.getElementById('nav-members');
-  const btnSettings = document.getElementById('btn-settings');
-  const navSettings = document.getElementById('nav-settings');
+  const btnChat = document.getElementById('btn-chat');
+  const navChat = document.getElementById('nav-chat');
 
+  btnChat.addEventListener('mouseover', () => {
+    navChat.classList.remove('hidden');
+    btnChat.classList.remove('w-12');
+    btnChat.classList.add('w-36');
+  });
+  btnChat.addEventListener('mouseout', () => {
+    btnChat.classList.remove('w-36');
+    btnChat.classList.add('w-12');
+    navChat.classList.add('hidden');
+  });
   btnSkills.addEventListener('mouseover', () => {
     navSkills.classList.remove('hidden');
     btnSkills.classList.remove('w-12');
@@ -698,16 +778,6 @@
     btnMembers.classList.add('w-12');
     navMembers.classList.add('hidden');
   });
-  btnSettings.addEventListener('mouseover', () => {
-    navSettings.classList.remove('hidden');
-    btnSettings.classList.remove('w-12');
-    btnSettings.classList.add('w-36');
-  });
-  btnSettings.addEventListener('mouseout', () => {
-    btnSettings.classList.remove('w-36');
-    btnSettings.classList.add('w-12');
-    navSettings.classList.add('hidden');
-  });
 
-</script>
+</script> 
 </html>

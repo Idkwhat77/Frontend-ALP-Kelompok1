@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Job - RuangKerja</title>
+    
+    <!-- Reusing your existing head content -->
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf7fd',
+                            100: '#f4ecfb',
+                            200: '#ebddf7',
+                            300: '#dbc2f0',
+                            400: '#c69ae6',
+                            500: '#b87ce0',
+                            600: '#8a6db1',
+                            700: '#5d4d7a',
+                            800: '#3a2e4d',
+                            900: '#1a1520',
+                        },
+                    },
+                    fontFamily: {
+                        elegant: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    },
+                    transitionProperty: {
+                        'scale': 'transform',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+        
+        .job-type-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .job-type-fulltime {
+            background-color: #e0f7fa;
+            color: #00acc1;
+        }
+        
+        .job-type-parttime {
+            background-color: #e8f5e9;
+            color: #43a047;
+        }
+        
+        .job-type-internship {
+            background-color: #fff3e0;
+            color: #fb8c00;
+        }
+        
+        .job-type-remote {
+            background-color: #f3e5f5;
+            color: #8e24aa;
+        }
+        
+        .dark .job-type-fulltime {
+            background-color: #004d40;
+            color: #b2fef7;
+        }
+        
+        .dark .job-type-parttime {
+            background-color: #1b5e20;
+            color: #b9f6ca;
+        }
+        
+        .dark .job-type-internship {
+            background-color: #e65100;
+            color: #ffd180;
+        }
+        
+        .dark .job-type-remote {
+            background-color: #4a148c;
+            color: #ea80fc;
+        }
+        
+        .rich-text-editor {
+            min-height: 200px;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+        }
+        
+        .dark .rich-text-editor {
+            border-color: #4a5568;
+            background-color: #1a202c;
+            color: white;
+        }
+        
+        button:focus, input:focus, textarea:focus, select:focus {
+            outline: 2px solid #c69ae6;
+            outline-offset: 2px;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f4ecfb;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #dbc2f0;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+        
+        .form-title {
+            color: #5d4d7a;
+        }
+        
+        .dark .form-title {
+            color: #b87ce0;
+        }
+        
+        .form-subtitle {
+            color: #3a2e4d;
+        }
+        
+        .dark .form-subtitle {
+            color: #dbc2f0;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
+    <!-- Navbar -->
+    <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Beranda
+                        </a>
+                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Tentang
+                        </a>
+                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Kandidat
+                        </a>
+                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                            Perusahaan
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Dark Mode & Profile -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="ml-4">
+                        <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
+                        <option value="en">EN</option>
+                        <option value="id">ID</option>
+                        </select>
+                    </div>
+
+                    <!-- Notification Bell -->
+                    <div class="relative">
+                        <button type="button" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative" id="notification-button" aria-expanded="false" aria-haspopup="true">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                    </div>
+
+                    <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden flex items-center">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
+                        <span class="sr-only">Buka Menu Utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Content -->
+            <div class="hidden sm:hidden" id="mobile-menu">
+                <div class="pt-2 pb-3 space-y-1">
+                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                </div>
+
+                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
+                            <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <select id="language-selector" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white rounded">
+                                <option value="en">EN</option>
+                                <option value="id">ID</option>
+                            </select>
+                            <button id="mobileDarkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:inline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pt-24">
+        <div class="mb-10 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold form-title text-gray-900 dark:text-white mb-3">
+                Post a <span class="text-lilac-300">New Job Opening</span>
+            </h1>
+            <p class="text-lg text-gray-600  dark:text-gray-400 form-subtitle max-w-2xl mx-auto">
+                Fill out the form below to post your job listing on RuangKerja
+            </p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <form id="jobPostForm" class="p-6 md:p-8">
+                <!-- Form header with progress indicator -->
+                <div class="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                Job Posting Details
+                            </h2>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Posting as: <span id="company-name-display" class="font-medium text-lilac-600 dark:text-lilac-400">Loading...</span>
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Step 1 of 1</div>
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mt-1">
+                                <div class="bg-lilac-400 h-2 rounded-full w-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Basic Information Section -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-medium mb-6 text-gray-900 dark:text-white flex items-center">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 mr-3 text-sm font-semibold">1</span>
+                        Basic Information
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Job Title -->
+                        <div class="space-y-1">
+                            <label for="jobTitle" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Job Title *</label>
+                            <input type="text" id="jobTitle" name="jobTitle" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150"
+                                placeholder="e.g. Frontend Developer">
+                        </div>
+                        
+                        <!-- Job Type -->
+                        <div class="space-y-1">
+                            <label for="jobType" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Job Type *</label>
+                            <select id="jobType" name="jobType" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150">
+                                <option value="">Select job type</option>
+                                <option value="fulltime">Full-time</option>
+                                <option value="parttime">Part-time</option>
+                                <option value="contract">Contract</option>
+                                <option value="internship">Internship</option>
+                                <option value="freelance">Freelance</option>
+                                <option value="remote">Remote</option>
+                                <option value="hybrid">Hybrid</option>
+                                <option value="temporary">Temporary</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Location - Province -->
+                        <div class="space-y-1">
+                            <label for="province" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Province *</label>
+                            <select id="province" name="province" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150">
+                                <option value="">Select province</option>
+                                <option value="Aceh">Aceh</option>
+                                <option value="Sumatra Utara">Sumatra Utara</option>
+                                <option value="Sumatra Barat">Sumatra Barat</option>
+                                <option value="Riau">Riau</option>
+                                <option value="Jambi">Jambi</option>
+                                <option value="Sumatra Selatan">Sumatra Selatan</option>
+                                <option value="Bengkulu">Bengkulu</option>
+                                <option value="Lampung">Lampung</option>
+                                <option value="Kepulauan Bangka Belitung">Kepulauan Bangka Belitung</option>
+                                <option value="Kepulauan Riau">Kepulauan Riau</option>
+                                <option value="DKI Jakarta">DKI Jakarta</option>
+                                <option value="Jawa Barat">Jawa Barat</option>
+                                <option value="Jawa Tengah">Jawa Tengah</option>
+                                <option value="DI Yogyakarta">DI Yogyakarta</option>
+                                <option value="Jawa Timur">Jawa Timur</option>
+                                <option value="Banten">Banten</option>
+                                <option value="Bali">Bali</option>
+                                <option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
+                                <option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
+                                <option value="Kalimantan Barat">Kalimantan Barat</option>
+                                <option value="Kalimantan Tengah">Kalimantan Tengah</option>
+                                <option value="Kalimantan Selatan">Kalimantan Selatan</option>
+                                <option value="Kalimantan Timur">Kalimantan Timur</option>
+                                <option value="Kalimantan Utara">Kalimantan Utara</option>
+                                <option value="Sulawesi Utara">Sulawesi Utara</option>
+                                <option value="Sulawesi Tengah">Sulawesi Tengah</option>
+                                <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+                                <option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+                                <option value="Gorontalo">Gorontalo</option>
+                                <option value="Sulawesi Barat">Sulawesi Barat</option>
+                                <option value="Maluku">Maluku</option>
+                                <option value="Maluku Utara">Maluku Utara</option>
+                                <option value="Papua Barat">Papua Barat</option>
+                                <option value="Papua Barat Daya">Papua Barat Daya</option>
+                                <option value="Papua">Papua</option>
+                                <option value="Papua Selatan">Papua Selatan</option>
+                                <option value="Papua Tengah">Papua Tengah</option>
+                                <option value="Papua Pegunungan">Papua Pegunungan</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Location - City -->
+                        <div class="space-y-1">
+                            <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300">City/Regency *</label>
+                            <select id="city" name="city" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150">
+                                <option value="">Select city/regency</option>
+                                <!-- Cities will be populated based on province selection -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Job Details Section -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-medium mb-6 text-gray-900 dark:text-white flex items-center">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 mr-3 text-sm font-semibold">2</span>
+                        Job Details
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <!-- Salary Range -->
+                        <div class="space-y-1">
+                            <label for="salaryMin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Salary Range (IDR)</label>
+                            <div class="flex space-x-4">
+                                <div class="flex-1">
+                                    <input type="number" id="salaryMin" name="salaryMin"
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150"
+                                        placeholder="Minimum">
+                                </div>
+                                <div class="flex-1">
+                                    <input type="number" id="salaryMax" name="salaryMax"
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150"
+                                        placeholder="Maximum">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Experience Level -->
+                        <div class="space-y-1">
+                            <label for="experience" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Experience Level *</label>
+                            <select id="experience" name="experience" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150">
+                                <option value="">Select required experience</option>
+                                <option value="no_experience">No experience required</option>
+                                <option value="intern">Internship/Fresh Graduate</option>
+                                <option value="junior">Junior (1-2 years)</option>
+                                <option value="mid">Mid-Level (2-5 years)</option>
+                                <option value="senior">Senior (5-8 years)</option>
+                                <option value="expert">Expert (8-12 years)</option>
+                                <option value="lead">Lead/Manager (12+ years)</option>
+                                <option value="executive">Executive/Director (15+ years)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Job Description -->
+                    <div class="mb-8 space-y-1">
+                        <label for="jobDescription" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Job Description *</label>
+                        <textarea 
+                            id="jobDescription" 
+                            name="jobDescription"
+                            rows="8"
+                            required
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150"
+                            placeholder="Describe the responsibilities and requirements of this position..."></textarea>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Describe the responsibilities and requirements of this position</p>
+                    </div>
+                    
+                    <!-- Skills Required -->
+                    <div class="mb-8 space-y-1">
+                        <label for="skills" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Skills Required *</label>
+                        <div class="flex flex-wrap gap-2 mb-3" id="skillsContainer">
+                            <!-- Skills will be added here dynamically -->
+                        </div>
+                        <div class="flex">
+                            <input type="text" id="skillInput"
+                                class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-l-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150"
+                                placeholder="Add a skill (e.g. JavaScript)">
+                            <button type="button" id="addSkillBtn" 
+                                class="px-5 bg-lilac-500 text-white rounded-r-lg hover:bg-lilac-600 focus:outline-none focus:ring-2 focus:ring-lilac-500 focus:ring-offset-2 transition duration-150">
+                                Add
+                            </button>
+                        </div>
+                        <input type="hidden" id="skills" name="skills">
+                    </div>
+                    
+                    <!-- Benefits -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Benefits</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <label class="inline-flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="benefits" value="health" 
+                                    class="h-4 w-4 rounded border-gray-300 text-lilac-500 focus:ring-lilac-500 dark:border-gray-600 dark:bg-gray-700">
+                                <span class="text-gray-700 dark:text-gray-300 text-sm">Health Insurance</span>
+                            </label>
+                            <!-- Other benefit checkboxes remain the same but with similar styling -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Application Process Section -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-medium mb-6 text-gray-900 dark:text-white flex items-center">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-lilac-100 dark:bg-gray-700 text-lilac-700 dark:text-lilac-300 mr-3 text-sm font-semibold">3</span>
+                        Application Process
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <!-- Application Deadline -->
+                        <div class="space-y-1">
+                            <label for="deadline" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Application Deadline *</label>
+                            <input type="date" id="deadline" name="deadline" required
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150">
+                        </div>
+                        
+                        <!-- Hiring Process -->
+                        <div class="space-y-1">
+                            <label for="hiringProcess" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hiring Process</label>
+                            <select id="hiringProcess" name="hiringProcess"
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150">
+                                <option value="interview">Document Only</option>
+                                <option value="interview">Interview Only</option>
+                                <option value="test_interview">Test + Interview</option>
+                                <option value="multistage">Multi-stage Interview</option>
+                                <option value="assessment">Assessment Center</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Application Questions -->
+                    <div class="space-y-1">
+                        <label for="applicationQuestions" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Application Questions</label>
+                        <textarea id="applicationQuestions" name="applicationQuestions" rows="3"
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-lilac-500 focus:border-lilac-500 dark:bg-gray-700 dark:text-white transition duration-150"
+                            placeholder="Add any specific questions you want applicants to answer (one per line)"></textarea>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">These questions will be shown to applicants when they apply</p>
+                    </div>
+                </div>
+                
+                <!-- Form Actions -->
+                <div class="flex flex-col-reverse sm:flex-row justify-between items-center pt-8 mt-10 border-t border-gray-200 dark:border-gray-700 space-y-4 sm:space-y-0 space-x-0 sm:space-x-4">
+                    <button type="button" 
+                        class="w-full sm:w-auto px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-500 transition duration-150">
+                        Save Draft
+                    </button>
+                    <button type="submit" 
+                        class="w-full sm:w-auto px-6 py-3 bg-lilac-500 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white hover:bg-lilac-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lilac-500 transition duration-150">
+                        Post Job
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer (same as your existing footer) -->
+    <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center">
+                        <h2 class="text-2xl font-bold font-elegant text-gray-900 dark:text-white">
+                            <span class="text-[#8a6db1]">Ruang</span>Kerja
+                        </h2>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-md leading-relaxed">
+                        RuangKerja connects top talent with leading companies across Indonesia. Our platform makes hiring simple, efficient, and effective.
+                    </p>
+                </div>
+
+                <div class="md:col-span-2 flex flex-col md:flex-row justify-end space-y-8 md:space-y-0 md:space-x-12 gap-10">
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Our Socials</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fab fa-facebook-f mr-2 text-lilac-400"></i>
+                                <a href="https://facebook.com/ruangkerja" target="_blank" class="hover:underline">Facebook</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-twitter mr-2 text-lilac-400"></i>
+                                <a href="https://twitter.com/ruangkerja" target="_blank" class="hover:underline">Twitter</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-instagram mr-2 text-lilac-400"></i>
+                                <a href="https://instagram.com/ruangkerja" target="_blank" class="hover:underline">Instagram</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-linkedin-in mr-2 text-lilac-400"></i>
+                                <a href="https://linkedin.com/company/ruangkerja" target="_blank" class="hover:underline">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h4>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>Makassar</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-2 text-lilac-400"></i>
+                                <span>+62 823 1955 6278</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-2 text-lilac-400"></i>
+                                <span>hello@ruangkerja.id</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2026 RuangKerja. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Terms of Service
+                    </a>
+                    <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
+                        Cookie Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<!-- Scripts -->
+<script src="js/navbar-profile.js"></script>
+<script src="js/post_oprec.js"></script>
+
+</html>

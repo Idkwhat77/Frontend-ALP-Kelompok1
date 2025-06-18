@@ -23,32 +23,35 @@ function displayEmployeeExperience(experiences) {
     if (!experienceList) return;
 
     if (experiences.length === 0) {
+        const noExperienceText = window.currentLanguage === 'id' ? 'Tidak ada catatan pengalaman ditemukan.' : 'No experience records found.';
+        
         experienceList.innerHTML = `
             <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                <i class="fas fa-briefcase text-4xl mb-4"></i>
-                <p>No experience records found.</p>
+                <i class="fas fa-briefcase text-4xl mb-4" aria-label="experience"></i>
+                <p data-i18n="experience.no_records">${noExperienceText}</p>
             </div>
         `;
         return;
     }
 
     experienceList.innerHTML = experiences.map(experience => `
-        <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
-            <div class="flex items-center gap-4">
-                ${experience.profileImageUrl ? 
-                    `<img src="${experience.profileImageUrl}" alt="${experience.experienceName}" class="w-16 h-16 rounded-lg object-cover">` :
-                    `<div class="w-16 h-16 rounded-lg bg-[#C69AE6] flex items-center justify-center">
-                        <i class="fas fa-briefcase text-white text-xl"></i>
-                     </div>`
-                }
+            <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-3">
+                <div class="mr-4">
+                    <div class="h-12 w-12 rounded-lg bg-lilac-100 dark:bg-gray-600 flex items-center justify-center">
+                        ${experience.profileImageUrl ? 
+                            `<img src="${experience.profileImageUrl}" alt="${experience.experienceName}" class="h-12 w-12 rounded-lg object-cover">` :
+                            `<i class="fas fa-briefcase text-lilac-500 text-xl"></i>`
+                        }
+                    </div>
+                </div>
                 <div class="flex-1">
-                    <h4 class="text-lg font-semibold text-[#C69AE6]">${experience.experienceName}</h4>
-                    <p class="text-gray-600 dark:text-gray-300">
+                    <h3 class="font-semibold text-gray-900 dark:text-white">${experience.experienceName}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
                         ${experience.startYear}${experience.endYear ? ` - ${experience.endYear}` : ' - Present'}
                     </p>
+                    ${experience.degree ? `<p class="text-sm text-gray-500 dark:text-gray-400">${experience.degree}</p>` : ''}
                 </div>
             </div>
-        </div>
     `).join('');
 }
 

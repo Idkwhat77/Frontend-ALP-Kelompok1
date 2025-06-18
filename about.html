@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - RuangKerja Professional Network</title>
     
-    <script src="logout.js"></script>
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -99,29 +101,29 @@
     <!-- Navbar -->
     <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Beranda
                         </a>
-                        <a data-i18n="nav.about" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                        <a href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Tentang
                         </a>
-                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Kandidat
                         </a>
-                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Perusahaan
                         </a>
                     </div>
                 </div>
 
-                <!-- Desktop Dark Mode & Profile -->
                 <div class="hidden sm:flex items-center space-x-4">
                     <div class="ml-4">
                         <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
@@ -134,21 +136,35 @@
                         <i class="fas fa-sun hidden dark:inline"></i>
                     </button>
 
+                    <!-- Notification Bell -->
+                    <div class="relative">
+                        <a href="notification.html" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative inline-flex items-center" id="notification-button" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </a>
+                    </div>
+
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
-                        <!-- Dropdown Menu -->
                         <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
-                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mobile Menu Button -->
-                <div class="sm:hidden flex items-center">
+                <div class="sm:hidden flex items-center space-x-2">
+                    <!-- Notification Bell for Mobile -->
+                    <div class="relative">
+                        <a href="notification.html" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative inline-flex items-center" id="mobile-notification-button" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </a>
+                    </div>
+                    
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
                         <span class="sr-only">Buka Menu Utama</span>
                         <i class="fas fa-bars"></i>
@@ -156,20 +172,18 @@
                 </div>
             </div>
 
-            <!-- Mobile Menu Content -->
             <div class="hidden sm:hidden" id="mobile-menu">
                 <div class="pt-2 pb-3 space-y-1">
-                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
-                    <a data-i18n="nav.about" href="about.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
-                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
-                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                    <a href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
                 </div>
 
-                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                             <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -191,33 +205,54 @@
     <!-- Main Content -->
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Hero Section -->
-        <section class="text-center mb-8 animate-fade-in">
-            <h1 data-i18n-html="hero.title" class="text-4xl md:text-5xl font-bold lg:mb-6 font-elegant text-gray-900 dark:text-white opacity-0">
-
-            </h1>
-            <h1 data-i18n-html="hero.about" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
-                About <span class="text-lilac-400">Ruang Kerja</span>
-            </h1>
-            <p data-i18n="hero.about_description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-xl mx-auto text-sm">
-                Connecting professionals with Oppurtunities
-            </p>
+        <section class="pt-24 pb-16 md:pt-28 md:pb-20 bg-gradient-to-b from-lilac-50 to-white dark:from-gray-800 dark:to-gray-900 animate-fade-in">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+                        About <span class="text-lilac-500 dark:text-lilac-400">Ruang Kerja</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                        Bridging talent with opportunity through innovative technology
+                    </p>
+                    <div class="w-20 h-1 bg-lilac-400 mx-auto"></div>
+                </div>
+            </div>
+        </section>
 
         <!-- Our Story Section -->
-        <section class="mb-16 fade-on-scroll">
-            <div class="flex flex-col md:flex-row gap-8 items-center">
-                <div class="md:w-1/2">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
-                         alt="Our team working together" 
-                         class="rounded-lg shadow-lg w-full h-auto object-cover">
-                </div>
-                <div class="md:w-1/2">
-                    <h2 data-i18n="about.story_title" class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Our Story</h2>
-                    <p data-i18n="about.story_content" class="text-gray-600 dark:text-gray-300 mb-4">
-                        Founded in 2025, RuangKerja began as a small team of Informatics Student 
-                    </p>
-                    <p data-i18n="about.story_mission" class="text-gray-600 dark:text-gray-300">
-                        Our mission is to create meaningful connections between professionals and companies, making the hiring process more efficient, transparent, and human-centered.
-                    </p>
+        <section class="py-12 md:py-16 bg-white dark:bg-gray-900 fade-on-scroll">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row gap-10 items-center">
+                    <div class="lg:w-1/2 relative">
+                        <div class="relative overflow-hidden rounded-xl shadow-xl">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
+                                alt="Our team working together" 
+                                class="w-full h-auto object-cover transform hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        </div>
+                        <div class="absolute -bottom-4 -right-4 bg-lilac-500 text-white px-5 py-2 rounded-lg shadow-md">
+                            <span class="font-bold text-sm">Since 2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2">
+                        <div class="max-w-lg mx-auto lg:mx-0">
+                            <span class="text-lilac-500 dark:text-lilac-400 font-semibold text-sm">OUR JOURNEY</span>
+                            <h2 class="text-3xl md:text-4xl font-bold mb-5 text-gray-900 dark:text-white">Building Bridges in Indonesia's Job Market</h2>
+                            
+                            <div class="space-y-3 text-gray-600 dark:text-gray-300">
+                                <p class="leading-relaxed">
+                                    Founded by a passionate group of Informatics students, Ruang Kerja emerged from a shared concern about Indonesia's unemployment challenge.
+                                </p>
+                                <p class="leading-relaxed">
+                                    Our platform was born from a simple yet powerful idea: leverage technology to create equal access to employment opportunities across Indonesia's diverse archipelago.
+                                </p>
+                                <p class="leading-relaxed font-medium text-gray-800 dark:text-gray-200">
+                                    Today, we're proud to be transforming job searching into an empowering experience through our innovative digital solutions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -270,17 +305,17 @@
                 <!-- Team Member 1 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300">
                     <div class="h-48 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center">
-                        <img class="h-full w-full object-cover" src="#" alt="Aristo">
+                        <img class="h-full w-full object-cover" src="img/Aristo No BG.png" alt="Aristo">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 dark:text-white">Aristo Bennedict Iskandar</h3>
                         <p data-i18n="about.team1_position" class="text-gray-500 dark:text-gray-300 mb-2">Backend</p>
                         <div class="flex space-x-2">
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
-                                <i href="#"class="fab fa-linkedin-in"></i>
+                            <a href="https://id.linkedin.com/in/aristo-iskandar-b72633340" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                                <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
-                                <i href="#" class="fab fa-instagram"></i>
+                            <a href="https://www.instagram.com/aristoiskandar/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                                <i class="fab fa-instagram"></i>
                             </a>
                         </div>
                     </div>
@@ -289,16 +324,16 @@
                 <!-- Team Member 2 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300">
                     <div class="h-48 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center">
-                        <img class="h-full w-full object-cover" src="#" alt="Exsel">
+                        <img class="h-full w-full object-cover" src="img/Exsel No BG.png" alt="Exsel">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 dark:text-white">Exsel Octavian Gosal</h3>
                         <p data-i18n="about.team2_position" class="text-gray-500 dark:text-gray-300 mb-2">Frontend</p>
                         <div class="flex space-x-2">
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.linkedin.com/in/exsel-octaviand-gosal-a2143033b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.instagram.com/exckscelusername/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
@@ -308,16 +343,16 @@
                 <!-- Team Member 3 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300">
                     <div class="h-48 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center">
-                        <img class="h-full w-full object-cover" src="#" alt="Rifki">
+                        <img class="h-full w-full object-cover" src="img/Rifki No BG.png" alt="Rifki">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 dark:text-white">M. Rifki Paranrengi</h3>
                         <p data-i18n="about.team3_position" class="text-gray-500 dark:text-gray-300 mb-2">Team Lead</p>
                         <div class="flex space-x-2">
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="http://linkedin.com/in/rifkyps" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.instagram.com/rifkp7/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
@@ -327,16 +362,16 @@
                 <!-- Team Member 4 -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover-scale transition-transform duration-300">
                     <div class="h-48 bg-lilac-50 dark:bg-gray-700 flex items-center justify-center">
-                        <img class="h-full w-full object-cover" src="#" alt="Stella J.Chandra">
+                        <img class="h-full w-full object-cover" src="img/Stella No BG.png" alt="Stella J.Chandra">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 dark:text-white">Stella J. Chandra</h3>
                         <p data-i18n="about.team4_position" class="text-gray-500 dark:text-gray-300 mb-2">Frontend</p>
                         <div class="flex space-x-2">
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.linkedin.com/in/stella-j-chandra-162303340/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
+                            <a href="https://www.instagram.com/stel.jchan/" class="text-gray-400 hover:text-lilac-400 dark:hover:text-lilac-300">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
@@ -465,6 +500,7 @@
     </footer>
 
     <!-- JavaScript Files -->
+    <script src="js/navbar-profile.js"></script>
     <script>
         // Check for saved dark mode preference or system preference
         if (localStorage.getItem('darkMode') === 'dark' || 
@@ -568,7 +604,5 @@
             });
         });
     </script>
-    <script src="language.js"></script>
-    <script src="darkmode.js"></script>
 </body>
 </html>

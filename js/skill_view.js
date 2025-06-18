@@ -28,25 +28,30 @@ class EmployeeSkillsViewer {
     }
 
     displaySkills(skills) {
-        const skillsList = document.getElementById('skills-list');
+        const skillsList = document.getElementById('current-skills-list');
         if (!skillsList) return;
 
         if (skills.length === 0) {
+            const noSkillsText = window.currentLanguage === 'id' ? 'Tidak ada keterampilan tersedia.' : 'No skills available.';
+            
             skillsList.innerHTML = `
                 <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                    <i class="fas fa-code text-4xl mb-4"></i>
-                    <p>No skills available.</p>
+                    <i class="fas fa-code text-4xl mb-4" aria-label="skills"></i>
+                    <p data-i18n="skills.no_skills">${noSkillsText}</p>
                 </div>
             `;
             return;
         }
 
-        skillsList.innerHTML = skills.map(skill => `
-            <div class="flex items-center p-3 bg-lilac-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 mb-2">
-                <i class="fas fa-code text-[#C69AE6] mr-3"></i>
-                <span class="text-gray-900 dark:text-white font-medium">${skill.name}</span>
+        skillsList.innerHTML = `
+            <div class="flex flex-wrap gap-2">
+                ${skills.map(skill => `
+                    <div class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-3 py-1 rounded-full text-sm flex items-center">
+                        <span>${skill.name}</span>
+                    </div>
+                `).join('')}
             </div>
-        `).join('');
+        `;
     }
 }
 

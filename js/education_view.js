@@ -42,22 +42,23 @@ class EmployeeEducationViewer {
         }
 
         educationList.innerHTML = educations.map(education => `
-            <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-                <div class="flex items-center gap-4">
+        <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-3">
+            <div class="mr-4">
+                <div class="h-12 w-12 rounded-lg bg-lilac-100 dark:bg-gray-600 flex items-center justify-center">
                     ${education.profileImageUrl ? 
-                        `<img src="${education.profileImageUrl}" alt="${education.institutionName}" class="w-20 h-20 rounded-lg object-cover">` :
-                        `<div class="w-20 h-20 rounded-lg bg-[#C69AE6] flex items-center justify-center">
-                            <i class="fas fa-graduation-cap text-white text-2xl"></i>
-                         </div>`
+                        `<img src="${education.profileImageUrl}" alt="${education.institutionName}" class="h-12 w-12 rounded-lg object-cover">` :
+                        `<i class="fas fa-graduation-cap text-lilac-500 text-xl"></i>`
                     }
-                    <div class="flex-1">
-                        <h4 class="text-xl font-semibold text-[#C69AE6] mb-2">${education.institutionName}</h4>
-                        <p class="text-gray-600 dark:text-gray-300 text-lg">
-                            ${education.startYear}${education.endYear ? ` - ${education.endYear}` : ' - Present'}
-                        </p>
-                    </div>
                 </div>
             </div>
+            <div class="flex-1">
+                <h3 class="font-semibold text-gray-900 dark:text-white">${education.institutionName}</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">
+                    ${education.startYear}${education.endYear ? ` - ${education.endYear}` : ' - Present'}
+                </p>
+                ${education.degree ? `<p class="text-sm text-gray-500 dark:text-gray-400">${education.degree}</p>` : ''}
+            </div>
+        </div>
         `).join('');
     }
 }

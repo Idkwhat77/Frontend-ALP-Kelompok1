@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RuangKerja Assistant - Professional Network</title>
     
+    <script src="api.js"></script>
+    <script src="language.js"></script>
+    <script src="darkmode.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -170,7 +173,7 @@
                         <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Beranda
                         </a>
                         <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
@@ -200,7 +203,7 @@
 
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
                         <!-- Dropdown Menu -->
@@ -233,7 +236,7 @@
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                             <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -253,7 +256,7 @@
     </nav>
 
     <!-- Main Chatbot Content -->
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-20">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
             <div class="p-6">
                 <div class="flex items-center mb-6">
@@ -431,284 +434,63 @@
     </footer>
 
     <!-- Chatbot JavaScript -->
+    <script src="js/chatbot.js"></script>
+    <script src="js/navbar-profile.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const chatMessages = document.getElementById('chat-messages');
-            const chatInput = document.getElementById('chat-input');
-            const sendMessage = document.getElementById('send-message');
-            const suggestionButtons = document.querySelectorAll('.suggestion-btn');
-            const helpTopics = document.querySelectorAll('.help-topic');
-            
-            // Dark mode toggle functionality
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const userMenuButton = document.getElementById('user-menu-button');
-            const userMenu = document.getElementById('user-menu');
-            
-            // Check for saved dark mode preference or system preference
-            if (localStorage.getItem('darkMode') === 'dark' || 
-                (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // User menu toggle
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        
+        userMenuButton.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+        
+        // Close menus when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
             }
             
-            // Toggle dark mode
-            function toggleDarkMode() {
-                const isDark = document.documentElement.classList.toggle('dark');
-                localStorage.setItem('darkMode', isDark ? 'dark' : 'light');
+            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
             }
-            
-            darkModeToggle.addEventListener('click', toggleDarkMode);
-            mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
-            
-            // Mobile menu functionality
-            mobileMenuButton.addEventListener('click', () => {
-                const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-                mobileMenuButton.setAttribute('aria-expanded', !expanded);
-                mobileMenu.classList.toggle('hidden');
-                
-                // Toggle between hamburger and close icon
-                const icon = mobileMenuButton.querySelector('i');
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
+        });
+
+        // JavaScript for navbar open when website loaded
+            window.addEventListener('DOMContentLoaded', () => {
+            const navbarEmployees = document.getElementById('navbar-employees');
+
+            if (navbarEmployees) {
+            navbarEmployees.classList.remove('opacity-0', 'h-0');
+            navbarEmployees.classList.add('opacity-100', 'h-16');
+            }
             });
-            
-            // User dropdown menu functionality
-            userMenuButton.addEventListener('click', () => {
-                const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-                userMenuButton.setAttribute('aria-expanded', !expanded);
-                userMenu.classList.toggle('hidden');
-            });
-            
-            // Close menus when clicking outside
-            document.addEventListener('click', (e) => {
-                // Close user dropdown if clicked outside
-                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
-                    userMenuButton.setAttribute('aria-expanded', 'false');
-                    userMenu.classList.add('hidden');
-                }
-                
-                // Close mobile menu if clicked outside
-                if (!mobileMenuButton.contains(e.target) && 
-                    !mobileMenu.contains(e.target)) {
-                    
-                    mobileMenuButton.setAttribute('aria-expanded', 'false');
-                    mobileMenu.classList.add('hidden');
-                    
-                    // Reset mobile menu icon to hamburger
-                    const icon = mobileMenuButton.querySelector('i');
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-            
-            // Chat functionality
-            function sendUserMessage() {
-                const message = chatInput.value.trim();
-                if (message === '') return;
-                
-                // Add user message to chat
-                addMessage(message, 'user');
-                chatInput.value = '';
-                
-                // Show typing indicator
-                showTypingIndicator();
-                
-                // Simulate bot response after a delay
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    const response = getBotResponse(message);
-                    addMessage(response, 'bot');
-                }, 1000 + Math.random() * 2000); // Random delay between 1-3 seconds
-            }
-            
-            // Send message on Enter key
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendUserMessage();
-                }
-            });
-            
-            // Send message on button click
-            sendMessage.addEventListener('click', sendUserMessage);
-            
-            // Handle suggestion buttons
-            suggestionButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const question = e.target.textContent.trim();
-                    chatInput.value = question;
-                    sendUserMessage();
-                });
-            });
-            
-            // Handle help topics
-            helpTopics.forEach(topic => {
-                topic.addEventListener('click', (e) => {
-                    const question = e.target.textContent.trim();
-                    chatInput.value = question;
-                    sendUserMessage();
-                });
-            });
-            
-            function addMessage(text, sender) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `flex justify-${sender === 'user' ? 'end' : 'start'}`;
-                
-                const messageContent = document.createElement('div');
-                messageContent.className = `max-w-[80%] rounded-lg px-3 py-2 ${
-                    sender === 'user' 
-                        ? 'bg-lilac-500 text-white' 
-                        : 'bg-lilac-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
-                }`;
-                
-                messageContent.innerHTML = `
-                    <p>${text}</p>
-                    <p class="text-xs ${sender === 'user' ? 'text-lilac-200' : 'text-gray-500 dark:text-gray-400'} mt-1">
-                        ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                    </p>
-                `;
-                
-                messageDiv.appendChild(messageContent);
-                messageDiv.classList.add(sender === 'user' ? 'message-out' : 'message-in');
-                
-                chatMessages.appendChild(messageDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-            
-            function showTypingIndicator() {
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'flex justify-start';
-                typingDiv.id = 'typing-indicator';
-                
-                const typingContent = document.createElement('div');
-                typingContent.className = 'bg-lilac-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2';
-                
-                typingContent.innerHTML = `
-                    <div class="typing-indicator">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                `;
-                
-                typingDiv.appendChild(typingContent);
-                chatMessages.appendChild(typingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-            
-            function removeTypingIndicator() {
-                const typingIndicator = document.getElementById('typing-indicator');
-                if (typingIndicator) {
-                    typingIndicator.remove();
-                }
-            }
 
+        // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
+        const loading_circle = document.createElement('div');
+        loading_circle.id = 'load_bro';
+        loading_circle.innerHTML = `
+            <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-80 z-50">
+            <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+            </div>
+        `;
+        document.body.appendChild(loading_circle);
 
-            // Simple string similarity function
-            function similarity(str1, str2) {
-                const longer = str1.length > str2.length ? str1 : str2;
-                const shorter = str1.length > str2.length ? str2 : str1;
-                const longerLength = longer.length;
-
-                if (longerLength === 0) return 1.0;
-
-                return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
-            }
-
-            function editDistance(s1, s2) {
-                s1 = s1.toLowerCase();
-                s2 = s2.toLowerCase();
-
-                const costs = [];
-
-                for (let i = 0; i <= s1.length; i++) {
-                    let lastValue = i;
-                    for (let j = 0; j <= s2.length; j++) {
-                        if (i === 0)
-                            costs[j] = j;
-                        else if (j > 0) {
-                            let newValue = costs[j - 1];
-                            if (s1.charAt(i - 1) !== s2.charAt(j - 1))
-                                newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-                            costs[j - 1] = lastValue;
-                            lastValue = newValue;
-                        }
-                    }
-                    if (i > 0)
-                        costs[s2.length] = lastValue;
-                }
-                return costs[s2.length];
-            }
-
-            const keywords = [
-                "apply", "job", "find job", "looking for job", "application", "submit resume",
-                "company", "hiring", "employer", "open position", "available jobs",
-                "profile", "update profile", "edit profile", "change info",
-                "resume", "cv", "curriculum vitae", "document",
-                "remote", "work from home", "remote job", "telecommute",
-                "salary", "pay", "income", "wage", "compensation", "expected salary",
-                "hello", "hi", "hey", "good morning", "good evening",
-                "thank", "thanks", "thank you",
-                "interview", "interview tips", "interview question",
-                "skills", "experience", "qualifications",
-                "help", "support", "need help", "assistance",
-                "account", "sign up", "register", "log in", "create account"
-            ];
-
-
-            // Simple response logic - in a real app, you'd connect to an AI service
-            function getBotResponse(userMessage) {
-                const lowerMessage = userMessage.toLowerCase();
-                if (lowerMessage.includes("apply") || lowerMessage.includes("application")) {
-                    return "To apply for a job on RuangKerja:\n1. Browse available job listings\n2. Click 'Apply Now' on a job that interests you\n3. Ensure your profile is complete with your resume\n4. Submit any required documents\n5. Wait for the company to contact you.";
-                } else if (lowerMessage.includes("find job") || lowerMessage.includes("looking for job")) {
-                    return "To find jobs on RuangKerja:\n- Use the search bar to enter keywords or job titles\n- Filter by location, industry, or work type\n- Save jobs you’re interested in\n- Apply when ready!";
-                } else if (lowerMessage.includes("company") || lowerMessage.includes("employer")) {
-                    return "Visit the 'Companies' section to explore over 500 companies actively hiring on RuangKerja. You can view job listings, company profiles, and employee reviews.";
-                } else if (lowerMessage.includes("profile") || lowerMessage.includes("edit profile")) {
-                    return "To update your profile:\n1. Click on your profile icon (top right corner)\n2. Choose 'My Profile'\n3. Click 'Edit Profile'\n4. Update any section you want (bio, experience, skills)\n5. Click 'Save'.";
-                } else if (lowerMessage.includes("resume") || lowerMessage.includes("cv")) {
-                    return "Resume tips:\n- Keep it 1–2 pages long\n- Use action verbs like 'built', 'led', 'organized'\n- Highlight achievements, not just tasks\n- Tailor it to the job you're applying for\n- Proofread for any typos.";
-                } else if (lowerMessage.includes("remote") || lowerMessage.includes("work from home")) {
-                    return "Yes! RuangKerja has many remote opportunities. Just search for jobs and apply a 'Remote' filter. Common remote jobs include software development, digital marketing, writing, and virtual assistance.";
-                } else if (lowerMessage.includes("salary") || lowerMessage.includes("pay")) {
-                    return "Salary varies depending on role, experience, and location. To get an idea:\n- Look at similar job postings\n- Use industry benchmarks\n- Consider your experience\n- Be ready to negotiate if needed.";
-                } else if (lowerMessage.includes("interview")) {
-                    return "Interview Tips:\n- Research the company beforehand\n- Practice common questions\n- Dress appropriately\n- Be confident and authentic\n- Ask questions at the end to show interest.";
-                } else if (lowerMessage.includes("skills") || lowerMessage.includes("experience")) {
-                    return "Highlighting your skills is key! Top in-demand skills include:\n- Communication\n- Project Management\n- Coding (Python, JS, etc.)\n- UI/UX Design\n- Digital Marketing.";
-                } else if (lowerMessage.includes("account") || lowerMessage.includes("sign up") || lowerMessage.includes("register")) {
-                    return "To create an account on RuangKerja:\n1. Click 'Sign Up' on the homepage\n2. Enter your email and password\n3. Verify your email\n4. Complete your profile and start exploring jobs!";
-                } else if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
-                    return "Hi there! 👋 I’m your RuangKerja assistant. I can help you with job applications, resumes, interviews, and more. Just ask!";
-                } else if (lowerMessage.includes("thank") || lowerMessage.includes("thanks")) {
-                    return "You're welcome! 😊 Let me know if there's anything else you need help with.";
-                } else if (lowerMessage.includes("help") || lowerMessage.includes("support")) {
-                    return "I’m here to help! Ask me about:\n- Applying for jobs\n- Updating your profile\n- Resume tips\n- Interview prep\n- Company info";
-                } else {
-                    return "I'm here to assist with your job search and career questions. Try asking me something like:\n- 'How do I apply for a job?'\n- 'Tips for remote work?'\n- 'How to update my profile?'\nOr choose a help topic from the menu above.";
-                }
-                let bestMatch = "";
-                let bestScore = 0;
-
-                for (const keyword in responses) {
-                    const score = similarity(lowerMessage, keyword);
-                    if (score > bestScore) {
-                        bestScore = score;
-                        bestMatch = keyword;
-                    }
-                }
-
-                if (bestScore > 0.4) {
-                    return responses[bestMatch];
-                } else {
-                    return "I'm here to assist with your job search and career questions. Try asking me something like:\n- 'How do I apply for a job?'\n- 'Tips for remote work?'\n- 'How to update my profile?'\nOr choose a help topic from the menu above.";
-                }
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('load_bro');
+            if (l) {
+            l.remove();
             }
         });
     </script>
-    <script scr="languange.js"></script>
 </body>
 </html>

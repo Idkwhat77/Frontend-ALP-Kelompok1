@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidates - RuangKerja</title>
     
+    <!-- Language and Dark Mode Scripts -->
+    <script src="darkmode.js"></script>
+    <script src="language.js"></script>
+    <script src="api.js"></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -98,29 +103,29 @@
     <!-- Navbar -->
     <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        <a href="homepage.html">
+                            <img src="img/Logo Ruang Kerja.png" alt="RuangKerja Logo" class="h-10 w-auto" />
+                        </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a data-i18n="nav.home" href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Beranda
                         </a>
-                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Tentang
                         </a>
-                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium border-b-2 border-lilac-400 text-gray-900 dark:text-white">
+                        <a href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Kandidat
                         </a>
-                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Perusahaan
                         </a>
                     </div>
                 </div>
 
-                <!-- Desktop Dark Mode & Profile -->
                 <div class="hidden sm:flex items-center space-x-4">
                     <div class="ml-4">
                         <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
@@ -133,21 +138,35 @@
                         <i class="fas fa-sun hidden dark:inline"></i>
                     </button>
 
+                    <!-- Notification Bell -->
+                    <div class="relative">
+                        <a href="notification.html" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative inline-flex items-center" id="notification-button" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </a>
+                    </div>
+
                     <div class="relative">
                         <button type="button" class="flex text-sm rounded-full focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
-                        <!-- Dropdown Menu -->
                         <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
-                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">Logout</a>
+                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mobile Menu Button -->
-                <div class="sm:hidden flex items-center">
+                <div class="sm:hidden flex items-center space-x-2">
+                    <!-- Notification Bell for Mobile -->
+                    <div class="relative">
+                        <a href="notification.html" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative inline-flex items-center" id="mobile-notification-button" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </a>
+                    </div>
+                    
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
                         <span class="sr-only">Buka Menu Utama</span>
                         <i class="fas fa-bars"></i>
@@ -155,20 +174,18 @@
                 </div>
             </div>
 
-            <!-- Mobile Menu Content -->
             <div class="hidden sm:hidden" id="mobile-menu">
                 <div class="pt-2 pb-3 space-y-1">
-                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
-                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
-                    <a data-i18n="nav.candidates" href="candidates.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
-                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                    <a href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
                 </div>
 
-                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <img class="h-8 w-8 rounded-full" src="img/escoffier.png" alt="Profile">
+                            <div id="profile-image-mobile" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                             <a data-i18n="view_profile" href="profile.html" class="ml-3 text-sm font-medium text-gray-800 dark:text-white">Profil Saya</a>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -188,150 +205,214 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">        
-        <!-- Search and Filter Section -->
-        <section class="mb-8 animate-fade-in">
-            <h1 data-i18n-html="hero.title" class="text-4xl md:text-5xl font-bold lg:mb-6 font-elegant text-gray-900 dark:text-white opacity-0">
-
-            </h1>
-            <h1 data-i18n-html="candidates.find_talented" class="text-3xl md:text-4xl font-bold mb-4 font-elegant text-gray-900 dark:text-white">
-                Find <span class="text-lilac-400">Talented Candidates</span>
-            </h1>
-            <p data-i18n="candidates.browse_description" class="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl text-sm">
-                Browse through our network of skilled professionals ready for their next opportunity
-            </p>
-              <!-- Search Bar -->
-            <div class="mb-6">
-                <div class="flex shadow-sm rounded-lg overflow-hidden text-sm">
-                    <input 
-                        type="text" 
-                        id="candidate-search"
-                        class="flex-grow px-4 py-3 focus:outline-none dark:bg-gray-800 dark:text-white" 
-                        data-i18n-placeholder="search.candidate_placeholder" 
-                        data-i18n-aria="search.aria_label"
-                        placeholder="Search by name, skills, or job title..." 
-                        aria-label="Search candidates">
-                    <button class="bg-lilac-400 hover:bg-lilac-500 text-white px-6 py-3 transition-colors">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Filters -->
-            <div class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">                    <!-- Location Filter -->
-                    <div>
-                        <label for="location" data-i18n="filter.location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
-                        <select id="location" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_locations">All Indonesia</option>
-                            <option value="jakarta">Jakarta</option>
-                            <option value="surabaya">Surabaya</option>
-                            <option value="bandung">Bandung</option>
-                            <option value="medan">Medan</option>
-                            <option value="makassar">Makassar</option>
-                            <option value="bali">Bali</option>
-                            <option value="yogyakarta">Yogyakarta</option>
-                            <option value="semarang">Semarang</option>
-                            <option value="palembang">Palembang</option>
-                            <option value="remote">Remote</option>
-                        </select>
-                    </div>
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+        <!-- Hero Section -->
+        <section class="py-12 md:py-16 animate-fade-in bg-gradient-to-b from-white to-lilac-50 dark:from-gray-900 dark:to-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h1 data-i18n-html="candidates.find_talented" class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
+                        Discover <span class="text-lilac-500 dark:text-lilac-400">Exceptional Talent</span>
+                    </h1>
+                    <p data-i18n="candidates.browse_description" class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                        Connect with our curated network of skilled professionals ready for their next opportunity
+                    </p>
                     
-                    <!-- Job Type Filter -->
-                    <div>
-                        <label for="job-type" data-i18n="filter.job_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Job Type</label>
-                        <select id="job-type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_job_types">All Job Types</option>
-                            <option value="full-time">Full-time</option>
-                            <option value="part-time">Part-time</option>
-                            <option value="contract">Contract</option>
-                            <option value="freelance">Freelance</option>
-                            <option value="internship">Internship</option>
-                        </select>
+                    <!-- Enhanced Search Bar -->
+                    <div class="max-w-2xl mx-auto mb-8">
+                        <div class="relative flex items-center shadow-md rounded-lg overflow-hidden">
+                            <input 
+                                type="text" 
+                                id="candidate-search"
+                                class="flex-grow px-5 py-3 focus:outline-none focus:ring-2 focus:ring-lilac-300 dark:focus:ring-lilac-600 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500" 
+                                data-i18n-placeholder="search.candidate_placeholder" 
+                                data-i18n-aria="search.aria_label"
+                                placeholder="Search by name, skills, or job title..." 
+                                aria-label="Search candidates">
+                            <button class="bg-lilac-500 hover:bg-lilac-600 text-white px-6 py-3 transition-all duration-300">
+                                <i class="fas fa-search"></i>
+                                <span class="sr-only">Search</span>
+                            </button>
+                        </div>
                     </div>
-                    
-                    <!-- Industry Filter -->
-                    <div>
-                        <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Industry</label>
-                        <select id="industry" class="w-full rounded-md border-gray-300 shadow-sm focus:border-lilac-400 focus:ring-lilac-400 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="" data-i18n="filter.all_industries">All Industries</option>
-                            <option value="technology" data-i18n="filter.technology">Technology</option>
-                            <option value="finance" data-i18n="filter.finance">Finance</option>
-                            <option value="healthcare" data-i18n="filter.healthcare">Healthcare</option>
-                            <option value="education" data-i18n="filter.education">Education</option>
-                            <option value="marketing" data-i18n="filter.marketing">Marketing</option>
-                            <option value="manufacturing" data-i18n="filter.manufacturing">Manufacturing</option>
-                            <option value="retail" data-i18n="filter.retail">Retail</option>
-                            <option value="hospitality" data-i18n="filter.hospitality">Hospitality</option>
-                            <option value="government" data-i18n="filter.government">Government</option>
-                        </select>
-                    </div>
-                </div>
-                  <div class="mt-4 flex flex-wrap gap-2">
-                    <button class="px-3 py-1 bg-lilac-400 hover:bg-lilac-500 text-white text-xs rounded-full transition-colors">
-                        <i class="fas fa-filter mr-1"></i>
-                        <span data-i18n="button.apply_filters">Apply Filters</span>
-                    </button>
-                    <button class="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-full transition-colors">
-                        <i class="fas fa-sync-alt mr-1"></i> 
-                        <span data-i18n="button.reset">Reset</span>
-                    </button>
                 </div>
             </div>
         </section>
 
+        <!-- Filters Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-8 border border-gray-100 dark:border-gray-700 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+                <!-- Province Filter -->
+                <div>
+                    <label for="province" data-i18n="filter.province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Province</label>
+                    <div class="relative">
+                        <select id="province" class="w-full pl-3 pr-8 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-lilac-400 focus:border-lilac-400 dark:text-white appearance-none bg-white dark:bg-gray-700 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjMgNy43M2EuNzUuNzUgMCAwMTEuMDYgMEwxMiAxMy40NGw1LjctNS43YS43NS43NSAwIDExMS4wNiAxLjA2bC02LjI1IDYuMjVhLjc1Ljc1IDAgMDEtMS4wNiAwTDUuMjMgOC43OWEuNzUuNzUgMCAwMTAtMS4wNnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz48L3N2Zz4=')] bg-no-repeat bg-[right_0.5rem_center]">
+                            <option value="" data-i18n="filter.all_provinces">All Provinces</option>
+                            <option value="aceh">Aceh</option>
+                            <option value="sumatra-utara">Sumatra Utara</option>
+                            <option value="sumatra-barat">Sumatra Barat</option>
+                            <option value="riau">Riau</option>
+                            <option value="jambi">Jambi</option>
+                            <option value="sumatra-selatan">Sumatra Selatan</option>
+                            <option value="bengkulu">Bengkulu</option>
+                            <option value="lampung">Lampung</option>
+                            <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
+                            <option value="kepulauan-riau">Kepulauan Riau</option>
+                            <option value="dki-jakarta">DKI Jakarta</option>
+                            <option value="jawa-barat">Jawa Barat</option>
+                            <option value="jawa-tengah">Jawa Tengah</option>
+                            <option value="di-yogyakarta">DI Yogyakarta</option>
+                            <option value="jawa-timur">Jawa Timur</option>
+                            <option value="banten">Banten</option>
+                            <option value="bali">Bali</option>
+                            <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
+                            <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
+                            <option value="kalimantan-barat">Kalimantan Barat</option>
+                            <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                            <option value="kalimantan-selatan">Kalimantan Selatan</option>
+                            <option value="kalimantan-timur">Kalimantan Timur</option>
+                            <option value="kalimantan-utara">Kalimantan Utara</option>
+                            <option value="sulawesi-utara">Sulawesi Utara</option>
+                            <option value="sulawesi-tengah">Sulawesi Tengah</option>
+                            <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                            <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
+                            <option value="gorontalo">Gorontalo</option>
+                            <option value="sulawesi-barat">Sulawesi Barat</option>
+                            <option value="maluku">Maluku</option>
+                            <option value="maluku-utara">Maluku Utara</option>
+                            <option value="papua-barat">Papua Barat</option>
+                            <option value="papua-barat-daya">Papua Barat Daya</option>
+                            <option value="papua">Papua</option>
+                            <option value="papua-selatan">Papua Selatan</option>
+                            <option value="papua-tengah">Papua Tengah</option>
+                            <option value="papua-pegunungan">Papua Pegunungan</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- City Filter -->
+                <div>
+                    <label for="city" data-i18n="filter.city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City/District</label>
+                    <div class="relative">
+                        <select id="city" disabled class="w-full pl-3 pr-8 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-lilac-400 focus:border-lilac-400 dark:text-white appearance-none bg-gray-100 dark:bg-gray-600 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjMgNy43M2EuNzUuNzUgMCAwMTEuMDYgMEwxMiAxMy40NGw1LjctNS43YS43NS43NSAwIDExMS4wNiAxLjA2bC02LjI1IDYuMjVhLjc1Ljc1IDAgMDEtMS4wNiAwTDUuMjMgOC43OWEuNzUuNzUgMCAwMTAtMS4wNnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz48L3N2Zz4=')] bg-no-repeat bg-[right_0.5rem_center]">
+                            <option value="" data-i18n="filter.all_cities">All Cities/Districts</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Job Type Filter -->
+                <div>
+                    <label for="job-type" data-i18n="filter.job_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Job Type</label>
+                    <div class="relative">
+                        <select id="job-type" class="w-full pl-3 pr-8 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-lilac-400 focus:border-lilac-400 dark:text-white appearance-none bg-white dark:bg-gray-700 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjMgNy43M2EuNzUuNzUgMCAwMTEuMDYgMEwxMiAxMy40NGw1LjctNS43YS43NS43NSAwIDExMS4wNiAxLjA2bC02LjI1IDYuMjVhLjc1Ljc1IDAgMDEtMS4wNiAwTDUuMjMgOC43OWEuNzUuNzUgMCAwMTAtMS4wNnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz48L3N2Zz4=')] bg-no-repeat bg-[right_0.5rem_center]">
+                            <option value="" data-i18n="filter.all_job_types">All Job Types</option>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Internship">Internship</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Freelance">Freelance</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Industry Filter -->
+                <div>
+                    <label for="industry" data-i18n="filter.industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Industry</label>
+                    <div class="relative">
+                        <select id="industry" class="w-full pl-3 pr-8 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-lilac-400 focus:border-lilac-400  dark:text-white appearance-none bg-white dark:bg-gray-700 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjMgNy43M2EuNzUuNzUgMCAwMTEuMDYgMEwxMiAxMy40NGw1LjctNS43YS43NS43NSAwIDExMS4wNiAxLjA2bC02LjI1IDYuMjVhLjc1Ljc1IDAgMDEtMS4wNiAwTDUuMjMgOC43OWEuNzUuNzUgMCAwMTAtMS4wNnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz48L3N2Zz4=')] bg-no-repeat bg-[right_0.5rem_center]">
+                        <option value="" data-i18n="filter.all_industries">All Industries</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Education">Education</option>
+                            <option value="Manufacturing">Manufacturing</option>
+                            <option value="Retail">Retail</option>
+                            <option value="Hospitality">Hospitality</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Government">Government</option>
+                            <option value="Construction">Construction</option>
+                            <option value="Real Estate">Real Estate</option>
+                            <option value="Legal Services">Legal Services</option>
+                            <option value="Consulting">Consulting</option>
+                            <option value="Non-Profit">Non-Profit</option>
+                    </select>
+                </div>
+
+            <!-- Filter Buttons -->
+                <div class="mt-6 flex flex-wrap justify-end gap-3">
+                    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm rounded-lg transition-colors flex items-center" data-i18n="button.reset">
+                        <i class="fas fa-sync-alt mr-2 text-xs"></i> 
+                        <span>Reset</span>
+                    </button>
+                    <button class="px-4 py-2 bg-lilac-500 hover:bg-lilac-600 text-white text-sm rounded-lg transition-colors flex items-center shadow-md hover:shadow-lg" data-i18n="button.apply_filters">
+                        <i class="fas fa-filter mr-2 text-xs"></i>
+                        <span>Apply Filters</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Candidates Grid -->
-        <section class="mb-8">            
+        <section class="mb-8 mt-2">
             <div class="flex justify-between items-center mb-4">
                 <h2 data-i18n="candidates.available" class="text-xl font-bold text-gray-900 dark:text-white">Available Candidates</h2>
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                    <span data-i18n="candidates.showing">Showing</span> <span class="font-medium text-lilac-500 dark:text-lilac-400">24</span> <span data-i18n="candidates.of">of</span> <span class="font-medium">128</span> <span data-i18n="candidates.found">candidates</span>
+                <div id="showing-candidates" class="text-sm text-gray-500 dark:text-gray-400">
+                    <span data-i18n="candidates.showing">Showing</span> <span class="font-medium text-lilac-500 dark:text-lilac-400">0</span> <span data-i18n="candidates.of">of</span> <span class="font-medium">0</span> <span data-i18n="candidates.found">candidates</span>
                 </div>
             </div>
             
-            <div id="candidates-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div id="candidates-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Dynamic candidate cards will be inserted here -->
+                <div class="col-span-full flex justify-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-lilac-400"></div>
+                </div>
             </div>
         </section>
 
         <!-- Pagination -->
-        <div class="mt-8 flex justify-center">
-            <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <span data-i18n="candidates.pagination.previous" class="sr-only">Previous</span>
-                    <i class="fas fa-chevron-left"></i>
-                </a>
-                <a href="#" aria-current="page" class="z-10 bg-lilac-400 border-lilac-400 text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+        <div class="flex justify-center mt-8 mb-12">
+            <nav class="inline-flex items-center rounded-md shadow-sm" aria-label="Pagination">
+                <!-- Previous Button -->
+                <button onclick="previousPage()" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                    <span class="sr-only">Previous</span>
+                    <i class="fas fa-chevron-left w-4 h-4"></i>
+                </button>
+                
+                <!-- Page Numbers -->
+                <button onclick="goToPage(1)" class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                     1
-                </a>
-                    <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        2
-                    </a>
-                    <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        3
-                    </a>
-                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-400">
-                        ...
-                    </span>
-                                        <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                        8
-                    </a>
-                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span data-i18n="candidates.pagination.next" class="sr-only">Next</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                </nav>
+                </button>
+                <button onclick="goToPage(2)" class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                    2
+                </button>
+                <button onclick="goToPage(3)" class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                    3
+                </button>
+                <span class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400">
+                    ...
+                </span>
+                <button onclick="goToPage(8)" class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                    8
+                </button>
+                
+                <!-- Next Button -->
+                <button onclick="nextPage()" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                    <span class="sr-only">Next</span>
+                    <i class="fas fa-chevron-right w-4 h-4"></i>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Call to Action -->
+        <section class="bg-lilac-50 dark:bg-gray-800 rounded-xl p-8 mb-8 text-center">
+            <div class="max-w-md mx-auto">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Need Help Finding Candidates?</h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    Let us know your requirements and we'll help you find the perfect match.
+                </p>
+                <button class="px-6 py-2 bg-lilac-500 hover:bg-lilac-600 text-white rounded-lg transition-colors">
+                    Request Help
+                </button>
             </div>
-        </section>
-          <!-- Call to Action -->
-        <section class="bg-lilac-50 dark:bg-gray-800 rounded-lg p-8 mb-8 text-center fade-on-scroll">
-            <h2 data-i18n="cta.cant_find" class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Can't Find What You're Looking For?</h2>
-            <p data-i18n="cta.help_text" class="text-gray-600 dark:text-gray-300 mb-4 max-w-2xl mx-auto">
-                Let us help you find the perfect candidate. Our recruitment specialists can source and screen candidates tailored to your specific needs.
-            </p>
-            <button data-i18n="cta.request_search" class="px-6 py-3 bg-lilac-400 hover:bg-lilac-500 text-white rounded-md font-medium transition-colors">
-                <i class="fas fa-headset mr-2"></i> Request Talent Search
-            </button>
         </section>
     </main>
 
@@ -400,7 +481,7 @@
             <!-- Copyright and Bottom Links -->
             <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                 <p data-i18n="footer.copyright" class="text-gray-500 dark:text-gray-400 text-sm">
-                    © 2026 RuangKerja. All rights reserved.
+                    © 2025 RuangKerja. All rights reserved.
                 </p>
                 <div class="flex space-x-6">
                     <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-[#7a5d9e] dark:hover:text-[#9d7dc9] text-sm transition-colors">
@@ -416,74 +497,152 @@
             </div>
         </div>
     </footer>
-</body>
+    <!-- Scripts -->
+
 <script src="api.js"></script>
+<script src="js/navbar-profile.js"></script>
 <script src="js/filter_candidates.js"></script>
-<script src="js/filter_candidates2.js"></script>
-<script src="language.js"></script>
-<script src="darkmode.js"></script>
-<!-- Scripts -->
+
 <script>
-    
+
     // Mobile menu toggle
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
-
+    
     mobileMenuButton.addEventListener('click', () => {
+        const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !expanded);
         mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between hamburger and close icon
+        const icon = mobileMenuButton.querySelector('i');
+        if (expanded) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        } else {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        }
     });
-
-    // User menu toggle
+    
+    // User menu dropdown
     const userMenuButton = document.getElementById('user-menu-button');
     const userMenu = document.getElementById('user-menu');
-
+    
     userMenuButton.addEventListener('click', () => {
+        const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+        userMenuButton.setAttribute('aria-expanded', !expanded);
         userMenu.classList.toggle('hidden');
     });
-
-    // Close menus when clicking outside
+    
+    // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+            userMenuButton.setAttribute('aria-expanded', 'false');
             userMenu.classList.add('hidden');
         }
-        
-        if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
-            mobileMenu.classList.add('hidden');
-        }
     });
+    
+// Create loading circle
+const loading_circle = document.createElement('div');
+loading_circle.id = 'load_bro';
+loading_circle.innerHTML = `
+    <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
+    <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
+    </div>
+`;
+document.body.appendChild(loading_circle);        
 
-    // Fade-in animation on scroll
-    const fadeElements = document.querySelectorAll('.fade-on-scroll');
-
-    const fadeInOnScroll = () => {
-        fadeElements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-            
-            if (elementTop < windowHeight - 100) {
-                element.classList.add('visible');
-            }
-        });
-    };
-
-    window.addEventListener('load', fadeInOnScroll);
-    window.addEventListener('scroll', fadeInOnScroll);
-
-    // JavaScript for loading funny circle (cut to only its head left) spinning that appears when page contents are being loaded in
-    const loading_circle = document.createElement('div');
-    loading_circle.id = 'load_bro';
-    loading_circle.innerHTML = `
-        <div class="fixed flex-col gap-5 inset-0 flex items-center justify-center bg-white dark:bg-[#111827] bg-opacity-80 z-50">
-        <div class="rounded-full animate-spin h-20 w-20 border-t-4 border-[#B57EDC] border-solid"></div>
-        </div>
-    `;
-    document.body.appendChild(loading_circle);        window.addEventListener('DOMContentLoaded', () => {
-        const l = document.getElementById('load_bro');
-        if (l) {
-        l.remove();
-        }
-    });
+window.addEventListener('DOMContentLoaded', () => {
+    const l = document.getElementById('load_bro');
+    if (l) {
+    l.remove();
+    }
+});
 </script>
-<script src="language.js"></script>
-<script src="darkmode.js"></script>
+
+<script>
+// Add the same province-city mapping as in companies.html
+const candidateProvinceCityMap = {
+    "aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam", "Aceh Barat", "Aceh Barat Daya", "Aceh Besar", "Aceh Jaya", "Aceh Selatan", "Aceh Singkil", "Aceh Tamiang", "Aceh Tengah", "Aceh Tenggara", "Aceh Timur", "Aceh Utara", "Bener Meriah", "Bireuen", "Gayo Lues", "Nagan Raya", "Pidie", "Pidie Jaya", "Simeulue"],
+        "sumatra-utara": ["Binjai", "Gunungsitoli", "Medan", "Padangsidempuan", "Pematangsiantar", "Sibolga", "Tanjung Balai", "Tebing Tinggi", "Asahan", "Batu Bara", "Dairi", "Deli Serdang", "Humbang Hasundutan", "Karo", "Labuhanbatu", "Labuhanbatu Selatan", "Labuhanbatu Utara", "Langkat", "Mandailing Natal", "Nias", "Nias Barat", "Nias Selatan", "Nias Utara", "Padang Lawas", "Padang Lawas Utara", "Pakpak Bharat", "Samosir", "Serdang Bedagai", "Simalungun", "Tapanuli Selatan", "Tapanuli Tengah", "Tapanuli Utara", "Toba"],
+        "sumatra-barat": ["Bukittinggi", "Padang", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok", "Agam", "Dharmasraya", "Kepulauan Mentawai", "Lima Puluh Kota", "Padang Pariaman", "Pasaman", "Pasaman Barat", "Pesisir Selatan", "Sijunjung", "Solok", "Solok Selatan", "Tanah Datar"],
+        "riau": ["Pekanbaru", "Dumai", "Bengkalis", "Indragiri Hilir", "Indragiri Hulu", "Kampar", "Kepulauan Meranti", "Kuantan Singingi", "Pelalawan", "Rokan Hilir", "Rokan Hulu", "Siak"],
+        "jambi": ["Jambi", "Sungai Penuh", "Batanghari", "Bungo", "Kerinci", "Merangin", "Muaro Jambi", "Sarolangun", "Tanjung Jabung Barat", "Tanjung Jabung Timur", "Tebo"],
+        "sumatra-selatan": ["Lubuklinggau", "Pagar Alam", "Palembang", "Prabumulih", "Banyuasin", "Empat Lawang", "Lahat", "Muara Enim", "Musi Banyuasin", "Musi Rawas", "Musi Rawas Utara", "Ogan Ilir", "Ogan Komering Ilir", "Ogan Komering Ulu", "Ogan Komering Ulu Selatan", "Ogan Komering Ulu Timur", "Penukal Abab Lematang Ilir"],
+        "bengkulu": ["Bengkulu", "Bengkulu Selatan", "Bengkulu Tengah", "Bengkulu Utara", "Kaur", "Kepahiang", "Lebong", "Mukomuko", "Rejang Lebong", "Seluma"],
+        "lampung": ["Bandar Lampung", "Metro", "Lampung Barat", "Lampung Selatan", "Lampung Tengah", "Lampung Timur", "Lampung Utara", "Mesuji", "Pesawaran", "Pesisir Barat", "Pringsewu", "Tulang Bawang", "Tulang Bawang Barat", "Tanggamus", "Way Kanan"],
+        "kepulauan-bangka-belitung": ["Pangkal Pinang", "Bangka", "Bangka Barat", "Bangka Selatan", "Bangka Tengah", "Belitung", "Belitung Timur"],
+        "kepulauan-riau": ["Batam", "Tanjung Pinang", "Bintan", "Karimun", "Kepulauan Anambas", "Lingga", "Natuna"],
+        "dki-jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
+        "jawa-barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya", "Bandung", "Bandung Barat", "Bekasi", "Bogor", "Ciamis", "Cianjur", "Cirebon", "Garut", "Indramayu", "Karawang", "Kuningan", "Majalengka", "Pangandaran", "Purwakarta", "Subang", "Sukabumi", "Sumedang", "Tasikmalaya"],
+        "jawa-tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal", "Banjarnegara", "Banyumas", "Batang", "Blora", "Boyolali", "Brebes", "Cilacap", "Demak", "Grobogan", "Jepara", "Karanganyar", "Kebumen", "Kendal", "Klaten", "Kudus", "Magelang", "Pati", "Pekalongan", "Pemalang", "Purbalingga", "Purworejo", "Rembang", "Semarang", "Sragen", "Sukoharjo", "Tegal", "Temanggung", "Wonogiri", "Wonosobo"],
+        "di-yogyakarta": ["Yogyakarta", "Bantul", "Gunungkidul", "Kulon Progo", "Sleman"],
+        "jawa-timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya", "Bangkalan", "Banyuwangi", "Blitar", "Bojonegoro", "Bondowoso", "Gresik", "Jember", "Jombang", "Kediri", "Lamongan", "Lumajang", "Madiun", "Magetan", "Malang", "Mojokerto", "Nganjuk", "Ngawi", "Pacitan", "Pamekasan", "Pasuruan", "Ponorogo", "Probolinggo", "Sampang", "Sidoarjo", "Situbondo", "Sumenep", "Trenggalek", "Tuban", "Tulungagung"],
+        "banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan", "Lebak", "Pandeglang", "Serang", "Tangerang"],
+        "bali": ["Denpasar", "Badung", "Bangli", "Buleleng", "Gianyar", "Jembrana", "Karangasem", "Klungkung", "Tabanan"],
+        "nusa-tenggara-barat": ["Bima", "Mataram", "Bima", "Dompu", "Lombok Barat", "Lombok Tengah", "Lombok Timur", "Lombok Utara", "Sumbawa", "Sumbawa Barat"],
+        "nusa-tenggara-timur": ["Kupang", "Alor", "Belu", "Ende", "Flores Timur", "Kupang", "Lembata", "Malaka", "Manggarai", "Manggarai Barat", "Manggarai Timur", "Ngada", "Nagekeo", "Rote Ndao", "Sabu Raijua", "Sikka", "Sumba Barat", "Sumba Barat Daya", "Sumba Tengah", "Sumba Timur", "Timor Tengah Selatan", "Timor Tengah Utara"],
+        "kalimantan-barat": ["Pontianak", "Singkawang", "Bengkayang", "Kapuas Hulu", "Kayong Utara", "Ketapang", "Kubu Raya", "Landak", "Melawi", "Mempawah", "Sambas", "Sanggau", "Sekadau", "Sintang"],
+        "kalimantan-tengah": ["Palangka Raya", "Barito Selatan", "Barito Timur", "Barito Utara", "Gunung Mas", "Kapuas", "Katingan", "Kotawaringin Barat", "Kotawaringin Timur", "Lamandau", "Murung Raya", "Pulang Pisau", "Sukamara", "Seruyan"],
+        "kalimantan-selatan": ["Banjarbaru", "Banjarmasin", "Balangan", "Banjar", "Barito Kuala", "Hulu Sungai Selatan", "Hulu Sungai Tengah", "Hulu Sungai Utara", "Kotabaru", "Tabalong", "Tanah Bumbu", "Tanah Laut", "Tapin"],
+        "kalimantan-timur": ["Balikpapan", "Bontang", "Samarinda", "Berau", "Kutai Barat", "Kutai Kartanegara", "Kutai Timur", "Mahakam Ulu", "Paser", "Penajam Paser Utara"],
+        "kalimantan-utara": ["Tarakan", "Bulungan", "Malinau", "Nunukan", "Tana Tidung"],
+        "sulawesi-utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon", "Bolaang Mongondow", "Bolaang Mongondow Selatan", "Bolaang Mongondow Timur", "Bolaang Mongondow Utara", "Kepulauan Sangihe", "Kepulauan Siau Tagulandang Biaro", "Kepulauan Talaud", "Minahasa", "Minahasa Selatan", "Minahasa Tenggara", "Minahasa Utara"],
+        "sulawesi-tengah": ["Palu", "Banggai", "Banggai Kepulauan", "Banggai Laut", "Buol", "Donggala", "Morowali", "Morowali Utara", "Parigi Moutong", "Poso", "Sigi", "Tojo Una-Una", "Toli-Toli"],
+        "sulawesi-selatan": ["Makassar", "Palopo", "Parepare", "Bantaeng", "Barru", "Bone", "Bulukumba", "Enrekang", "Gowa", "Jeneponto", "Kepulauan Selayar", "Luwu", "Luwu Timur", "Luwu Utara", "Maros", "Pangkajene dan Kepulauan", "Pinrang", "Sidenreng Rappang", "Sinjai", "Soppeng", "Takalar", "Tana Toraja", "Toraja Utara", "Wajo"],
+        "sulawesi-tenggara": ["Bau-Bau", "Kendari", "Bombana", "Buton", "Buton Selatan", "Buton Tengah", "Buton Utara", "Kolaka", "Kolaka Timur", "Kolaka Utara", "Konawe", "Konawe Kepulauan", "Konawe Selatan", "Konawe Utara", "Muna", "Muna Barat", "Wakatobi"],
+        "gorontalo": ["Gorontalo", "Boalemo", "Bone Bolango", "Gorontalo", "Gorontalo Utara", "Pohuwato"],
+        "sulawesi-barat": ["Mamuju", "Majene", "Mamasa", "Mamuju", "Mamuju Tengah", "Mamuju Utara", "Polewali Mandar"],
+        "maluku": ["Ambon", "Tual", "Buru", "Buru Selatan", "Kepulauan Aru", "Maluku Barat Daya", "Maluku Tengah", "Maluku Tenggara", "Maluku Tenggara Barat", "Seram Bagian Barat", "Seram Bagian Timur"],
+        "maluku-utara": ["Ternate", "Tidore Kepulauan", "Halmahera Barat", "Halmahera Tengah", "Halmahera Utara", "Halmahera Selatan", "Kepulauan Sula", "Halmahera Timur", "Pulau Morotai", "Pulau Taliabu"],
+        "papua-barat": ["Fakfak", "Kaimana", "Manokwari", "Manokwari Selatan", "Pegunungan Arfak", "Teluk Bintuni", "Teluk Wondama"],
+        "papua-barat-daya": ["Sorong", "Raja Ampat", "Sorong", "Sorong Selatan", "Maybrat", "Tambrauw"],
+        "papua": ["Jayapura", "Biak Numfor", "Jayapura", "Keerom", "Kepulauan Yapen", "Mamberamo Raya", "Sarmi", "Supiori", "Waropen"],
+        "papua-selatan": ["Merauke", "Asmat", "Boven Digoel", "Mappi"],
+        "papua-tengah": ["Mimika", "Deiyai", "Dogiyai", "Intan Jaya", "Nabire", "Paniai", "Puncak", "Puncak Jaya"],
+        "papua-pegunungan": ["Jayawijaya", "Lanny Jaya", "Mamberamo Tengah", "Nduga", "Pegunungan Bintang", "Tolikara", "Yahukimo", "Yalimo"]
+        };
+
+// JavaScript to handle province-city relationship for candidates
+document.getElementById('province').addEventListener('change', function() {
+    const citySelect = document.getElementById('city');
+    const selectedProvince = this.value;
+    
+    // Clear previous options
+    citySelect.innerHTML = '<option value="" data-i18n="filter.all_cities">All Cities/Districts</option>';
+    
+    if (selectedProvince && candidateProvinceCityMap[selectedProvince]) {
+        // Enable city select
+        citySelect.disabled = false;
+        
+        // Add cities for selected province
+        candidateProvinceCityMap[selectedProvince].forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    } else {
+        // Disable city select if no province selected
+        citySelect.disabled = true;
+    }
+});
+
+// Add this to the script section at the bottom of candidates.html
+console.log('API Client available:', typeof window.apiClient);
+console.log('API Client instance:', window.apiClient);
+
+// Test API call directly
+if (window.apiClient) {
+    window.apiClient.getAllCandidates()
+        .then(response => {
+            console.log('Direct API test response:', response);
+        })
+        .catch(error => {
+            console.error('Direct API test error:', error);
+        });
+}
+</script>
+</body>
 </html>
