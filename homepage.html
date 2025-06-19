@@ -119,6 +119,66 @@
             justify-content: center;
             display: none;
         }
+
+        /* ===== Tutorial System Styles ===== */
+    .tutorial-step {
+    animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    }
+
+    @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Spotlight Effect */
+    .tutorial-spotlight {
+    position: absolute;
+    border-radius: 6px;
+    box-shadow: 
+        0 0 0 9999px rgba(0, 0, 0, 0.65),
+        0 0 0 2px rgba(255, 255, 255, 0.8),
+        0 0 20px 4px rgba(99, 102, 241, 0.5);
+    z-index: 9998;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    /* Dual-layer Pulse Animation */
+    .tutorial-highlight {
+    position: relative !important;
+    z-index: 10500 !important;
+    animation: 
+        tutorial-pulse-outer 2s infinite,
+        tutorial-pulse-inner 1.5s infinite 0.3s;
+    box-shadow: 0 0 0 4px #b87ce0, 0 0 16px 4px #b87ce0, 0 8px 32px 0 rgba(80, 80, 120, 0.15);
+    background: rgba(255,255,255,0.85) !important;
+    transition: background 0.3s, box-shadow 0.3s;
+    }
+    .dark .tutorial-highlight {
+      background: rgba(30,32,40,0.85) !important;
+    }
+
+    /* Fix: Prevent tutorial highlight from breaking chatbot button and next button */
+        #chatbot-button.tutorial-highlight {
+            background: #b87ce0 !important;
+            color: #fff !important;
+        }
+        #chatbot-button.tutorial-highlight i,
+        #chatbot-button.tutorial-highlight span {
+            color: #fff !important;
+        }
+        /* Fix: Make sure tutorial next button is always visible */
+        #tutorial-card #next-step {
+            color: #fff !important;
+            background: #b87ce0 !important;
+        }
+        #tutorial-card #next-step:disabled {
+            opacity: 0.5;
+        }
+        /* Optionally, ensure the finish button is styled the same */
+        #tutorial-card #finish-tutorial {
+            color: #fff !important;
+            background: #b87ce0 !important;
+        }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-300 font-poppins">
@@ -325,6 +385,18 @@
             </div>
         </section>
 
+        <!-- Tutorial Button -->
+        <div class="fixed bottom-32 right-8 z-50">
+            <button id="start-tutorial-btn" class="group relative bg-lilac-500 text-white rounded-full p-4 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110">
+                <i class="fas fa-question text-xl"></i>
+                <div class="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-700 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    Start Tutorial
+                    <div class="absolute top-1/2 left-full transform -translate-y-1/2 border-4 border-transparent border-l-gray-900 dark:border-l-gray-700"></div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Chatbot Button -->
         <div class="fixed bottom-8 right-8 z-50">
             <button onclick="window.location.href='chatbot.html'" id="chatbot-button" class="group relative bg-lilac-500 text-white rounded-full p-4 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110">
                 <!-- Chat icon -->
@@ -425,21 +497,45 @@
             </div>
         </div>
     </footer>
-</body>
-<style>
-    .bg-slide {
-        position: absolute;
-        inset: 0;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-    }
-    .bg-slide.active {
-        opacity: 1;
-    }
-</style>
 
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay" class="fixed inset-0 bg-black/50 z-50 hidden">
+        <!-- Spotlight effect for highlighted element -->
+        <div id="tutorial-spotlight" class="absolute border-2 border-white/50 rounded-lg shadow-[0_0_0_100vmax_rgba(0,0,0,0.7)] transition-all duration-300"></div>
+        
+        <!-- Tutorial Card - now positioned near the highlighted element -->
+        <div id="tutorial-card" class="absolute z-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl w-80 transition-all duration-300 opacity-0">
+            <div class="relative p-4">
+                <button id="close-tutorial" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+                
+                <div id="tutorial-content" class="pt-1">
+                    <div id="tutorial-steps" class="text-sm text-gray-700 dark:text-gray-300">
+                        <!-- Steps will be inserted here dynamically -->
+                    </div>
+                    
+                    <div class="flex justify-between mt-4">
+                        <button id="prev-step" class="px-3 py-1.5 text-sm rounded-md text-lilac-600 dark:text-lilac-400 hover:bg-lilac-50 dark:hover:bg-gray-700 disabled:opacity-40 transition-colors" disabled>
+                            <i class="fas fa-arrow-left mr-1"></i> Back
+                        </button>
+                        <div>
+                            <button id="next-step" class="px-3 py-1.5 text-sm bg-lilac-600 text-white rounded-md hover:bg-lilac-700 transition-colors">
+                                Next <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                            <button id="finish-tutorial" class="px-3 py-1.5 text-sm bg-lilac-600 text-white rounded-md hover:bg-lilac-700 transition-colors hidden">
+                                Finish <i class="fas fa-check ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Arrow pointer -->
+            <div id="tutorial-arrow" class="absolute w-4 h-4 bg-white dark:bg-gray-800 rotate-45 -z-10"></div>
+        </div>
+    </div>
+</body>
 <script src="js/navbar-profile.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -584,5 +680,324 @@
             spinner.remove();
         }
     });
+</script>
+
+<script>
+/**
+ * Homepage Guided Tutorial (2024)
+ * - Robust positioning, scroll/resize aware, easy to extend.
+ */
+document.addEventListener('DOMContentLoaded', function () {
+    // Tutorial steps definition
+    const tutorialSteps = [
+        {
+            title: "Welcome to RuangKerja!",
+            content: "Let's take a quick tour to help you get started with our professional networking platform.",
+            highlight: null,
+            position: "center"
+        },
+        {
+            title: "Search for Jobs",
+            content: "Use this search bar to find your dream job by position, keywords, or company name.",
+            highlight: "#global-search-input",
+            position: "bottom"
+        },
+        {
+            title: "Open Recruitment",
+            content: "Browse current job openings from top companies here. Click any card to view details.",
+            highlight: "#oprec-container",
+            position: "right"
+        },
+        {
+            title: "Find Candidates",
+            content: "If you're hiring, explore talented professionals in our candidate recommendations.",
+            highlight: "#candidates-container",
+            position: "bottom"
+        },
+        {
+            title: "Discover Companies",
+            content: "Learn about companies that are hiring and find your perfect workplace match.",
+            highlight: "#companies-container",
+            position: "bottom"
+        },
+        {
+            title: "Your Profile",
+            content: "Access your profile, settings, and logout options from here.",
+            highlight: "#user-menu-button",
+            position: "left"
+        },
+        {
+            title: "Need Help?",
+            content: "Our AI assistant is always available to answer your questions. Click the chat icon anytime!",
+            highlight: "#chatbot-button",
+            position: "left"
+        },
+        {
+            title: "You're All Set!",
+            content: "Now you're ready to explore RuangKerja. Happy networking and job hunting!",
+            highlight: null,
+            position: "center"
+        }
+    ];
+
+    // DOM elements
+    const overlay = document.getElementById('tutorial-overlay');
+    const card = document.getElementById('tutorial-card');
+    const arrow = document.getElementById('tutorial-arrow');
+    const spotlight = document.getElementById('tutorial-spotlight');
+    const stepsContainer = document.getElementById('tutorial-steps');
+    const prevBtn = document.getElementById('prev-step');
+    const nextBtn = document.getElementById('next-step');
+    const finishBtn = document.getElementById('finish-tutorial');
+    const closeBtn = document.getElementById('close-tutorial');
+    const startBtn = document.getElementById('start-tutorial-btn');
+
+    let currentStep = 0;
+    let highlighted = null;
+
+    // Render steps content
+    function renderSteps() {
+        stepsContainer.innerHTML = '';
+        tutorialSteps.forEach((step, i) => {
+            const div = document.createElement('div');
+            div.className = 'tutorial-step' + (i === 0 ? '' : ' hidden');
+            div.dataset.step = i;
+            div.innerHTML = `
+                <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">${step.title}</h4>
+                <p class="text-gray-600 dark:text-gray-300">${step.content}</p>
+            `;
+            stepsContainer.appendChild(div);
+        });
+    }
+
+    // Show a tutorial step
+    function showStep(idx) {
+        // Hide all steps
+        stepsContainer.querySelectorAll('.tutorial-step').forEach((el, i) => {
+            el.classList.toggle('hidden', i !== idx);
+        });
+
+        // Remove previous highlight
+        if (highlighted) {
+            highlighted.classList.remove('tutorial-highlight');
+            highlighted = null;
+        }
+
+        const step = tutorialSteps[idx];
+
+        // Centered step (no highlight)
+        if (!step.highlight) {
+            spotlight.classList.add('hidden');
+            card.style.transform = 'translate(-50%, -50%)';
+            card.style.left = '50%';
+            card.style.top = '50%';
+            arrow.style.display = 'none';
+            card.style.opacity = '1';
+            updateNav(idx);
+            return;
+        }
+
+        // Highlighted step
+        const el = document.querySelector(step.highlight);
+        if (!el) {
+            spotlight.classList.add('hidden');
+            card.style.left = '50%';
+            card.style.top = '50%';
+            card.style.transform = 'translate(-50%, -50%)';
+            arrow.style.display = 'none';
+            card.style.opacity = '1';
+            updateNav(idx);
+            return;
+        }
+
+        // Highlight element
+        el.classList.add('tutorial-highlight');
+        highlighted = el;
+
+        // Scroll into view if needed
+        el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+
+        // After scroll, position everything
+        setTimeout(() => {
+            positionSpotlight(el);
+            positionCard(el, step.position);
+            updateNav(idx);
+        }, 400);
+    }
+
+    // Position spotlight
+    function positionSpotlight(el) {
+        const rect = el.getBoundingClientRect();
+        const padding = 8;
+        spotlight.style.width = `${rect.width + padding * 2}px`;
+        spotlight.style.height = `${rect.height + padding * 2}px`;
+        spotlight.style.left = `${rect.left - padding}px`;
+        spotlight.style.top = `${rect.top - padding}px`;
+        spotlight.classList.remove('hidden');
+    }
+
+    // Position card and arrow
+    function positionCard(el, pos) {
+        card.style.opacity = '0';
+        card.style.display = 'block';
+        card.style.transform = '';
+        arrow.style.display = 'block';
+
+        setTimeout(() => {
+            const rect = el.getBoundingClientRect();
+            const cardRect = card.getBoundingClientRect();
+            const margin = 16;
+            const arrowSize = 16;
+            const vp = 20;
+            let left = 0, top = 0, arrowLeft = 0, arrowTop = 0;
+            let position = pos;
+
+            function fitsRight() {
+                return (rect.right + margin + cardRect.width) < (window.innerWidth - vp);
+            }
+            function fitsLeft() {
+                return (rect.left - margin - cardRect.width) > vp;
+            }
+            function fitsTop() {
+                return (rect.top - margin - cardRect.height) > vp;
+            }
+            function fitsBottom() {
+                return (rect.bottom + margin + cardRect.height) < (window.innerHeight - vp);
+            }
+
+            // Position right by default for the oprec container
+            if (el.id === 'oprec-container') {
+                position = 'right';
+                if (!fitsRight()) {
+                    if (fitsLeft()) position = 'left';
+                    else if (fitsBottom()) position = 'bottom';
+                    else position = 'top';
+                }
+            }
+
+            switch (position) {
+                case 'right':
+                    left = rect.right + margin;
+                    top = rect.top + (rect.height / 2) - (cardRect.height / 2);
+                    // Clamp top so card never overflows below viewport
+                    const maxTopRight = window.innerHeight - cardRect.height - vp;
+                    if (top > maxTopRight) top = rect.top;
+                    if (top < vp) top = vp;
+                    arrowLeft = -arrowSize / 2;
+                    arrowTop = cardRect.height / 2 - arrowSize / 2;
+                    arrow.style.top = `${arrowTop}px`;
+                    arrow.style.left = `${arrowLeft}px`;
+                    arrow.style.transform = 'rotate(315deg)';
+                    break;
+                case 'top':
+                    left = rect.left + rect.width / 2 - cardRect.width / 2;
+                    top = rect.top - cardRect.height - margin;
+                    arrowLeft = cardRect.width / 2 - arrowSize / 2;
+                    arrowTop = cardRect.height - 2;
+                    arrow.style.top = `${arrowTop}px`;
+                    arrow.style.left = `${arrowLeft}px`;
+                    arrow.style.transform = 'rotate(45deg)';
+                    break;
+                case 'bottom':
+                    left = rect.left + rect.width / 2 - cardRect.width / 2;
+                    top = rect.bottom + margin;
+                    arrowLeft = cardRect.width / 2 - arrowSize / 2;
+                    arrowTop = -arrowSize / 2;
+                    arrow.style.top = `${arrowTop}px`;
+                    arrow.style.left = `${arrowLeft}px`;
+                    arrow.style.transform = 'rotate(225deg)';
+                    break;
+                case 'left':
+                    left = rect.left - cardRect.width - margin;
+                    top = rect.top + rect.height / 2 - cardRect.height / 2;
+                    // Clamp top for left as well
+                    const maxTopLeft = window.innerHeight - cardRect.height - vp;
+                    if (top > maxTopLeft) top = rect.top;
+                    if (top < vp) top = vp;
+                    arrowLeft = cardRect.width - 2;
+                    arrowTop = cardRect.height / 2 - arrowSize / 2;
+                    arrow.style.top = `${arrowTop}px`;
+                    arrow.style.left = `${arrowLeft}px`;
+                    arrow.style.transform = 'rotate(135deg)';
+                    break;
+                default:
+                    left = window.innerWidth / 2 - cardRect.width / 2;
+                    top = window.innerHeight / 2 - cardRect.height / 2;
+                    arrow.style.display = 'none';
+            }
+
+            // Improved viewport clamping
+            const maxLeft = window.innerWidth - cardRect.width - vp;
+            const maxTop = window.innerHeight - cardRect.height - vp;
+            left = Math.max(vp, Math.min(left, maxLeft));
+            top = Math.max(vp, Math.min(top, maxTop));
+
+            card.style.left = `${left}px`;
+            card.style.top = `${top}px`;
+            card.style.opacity = '1';
+        }, 10);
+    }
+
+    // Navigation button state
+    function updateNav(idx) {
+        prevBtn.disabled = idx === 0;
+        nextBtn.classList.toggle('hidden', idx === tutorialSteps.length - 1);
+        finishBtn.classList.toggle('hidden', idx !== tutorialSteps.length - 1);
+    }
+
+    // Start/end tutorial
+    function startTutorial() {
+        currentStep = 0;
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        showStep(currentStep);
+        window.addEventListener('scroll', onScrollOrResize, true);
+        window.addEventListener('resize', onScrollOrResize, true);
+    }
+    function endTutorial() {
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+        spotlight.classList.add('hidden');
+        if (highlighted) highlighted.classList.remove('tutorial-highlight');
+        localStorage.setItem('ruangkerja-tutorial-completed', 'true');
+        window.removeEventListener('scroll', onScrollOrResize, true);
+        window.removeEventListener('resize', onScrollOrResize, true);
+    }
+
+    // Reposition on scroll/resize
+    function onScrollOrResize() {
+        const step = tutorialSteps[currentStep];
+        if (step && step.highlight) {
+            const el = document.querySelector(step.highlight);
+            if (el) {
+                positionSpotlight(el);
+                positionCard(el, step.position);
+            }
+        }
+    }
+
+    // Button events
+    startBtn?.addEventListener('click', startTutorial);
+    closeBtn?.addEventListener('click', endTutorial);
+    prevBtn?.addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    });
+    nextBtn?.addEventListener('click', () => {
+        if (currentStep < tutorialSteps.length - 1) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+    finishBtn?.addEventListener('click', endTutorial);
+
+    // Render steps and auto-start if not completed
+    renderSteps();
+    if (!localStorage.getItem('ruangkerja-tutorial-completed')) {
+        setTimeout(startTutorial, 2000);
+    }
+});
 </script>
 </html>
