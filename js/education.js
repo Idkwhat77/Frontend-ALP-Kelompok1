@@ -139,7 +139,6 @@ class EducationManager {
                 institutionName: document.getElementById('institution-name').value.trim(),
                 startYear: parseInt(document.getElementById('start-year').value),
                 endYear: document.getElementById('end-year').value ? parseInt(document.getElementById('end-year').value) : null,
-                profileImageUrl: document.getElementById('profile-image-url').value.trim() || null,
                 profileImagePath: null,
                 imageUploadDate: null
             };
