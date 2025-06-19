@@ -1,3 +1,89 @@
+// Add this improved date formatting function at the top of the file
+function formatRealDate(dateInput) {
+    if (!dateInput) return 'recently';
+    
+    try {
+        let date;
+        
+        // Handle different date formats from backend
+        if (Array.isArray(dateInput) && dateInput.length >= 6) {
+            // Handle Jackson array format [YYYY, MM, DD, HH, MM, SS]
+            // Note: JavaScript Date constructor expects month to be 0-indexed
+            date = new Date(dateInput[0], dateInput[1] - 1, dateInput[2], dateInput[3] || 0, dateInput[4] || 0, dateInput[5] || 0);
+        } else if (typeof dateInput === 'string') {
+            // Handle ISO string format
+            date = new Date(dateInput);
+        } else if (dateInput instanceof Date) {
+            date = dateInput;
+        } else {
+            console.warn('Unknown date format:', dateInput);
+            return 'recently';
+        }
+        
+        // Validate the parsed date
+        if (!date || isNaN(date.getTime())) {
+            console.warn('Invalid date parsed from:', dateInput);
+            return 'recently';
+        }
+        
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        const diffMinutes = Math.floor(diffTime / (1000 * 60));
+        const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        // Format relative time
+        if (diffMinutes < 1) {
+            return 'just now';
+        } else if (diffMinutes < 60) {
+            return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+        } else if (diffHours < 24) {
+            return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        } else if (diffDays === 1) {
+            return 'yesterday';
+        } else if (diffDays < 7) {
+            return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+        } else if (diffDays < 30) {
+            const weeks = Math.ceil(diffDays / 7);
+            return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+        } else if (diffDays < 365) {
+            const months = Math.ceil(diffDays / 30);
+            return `${months} month${months > 1 ? 's' : ''} ago`;
+        } else {
+            const years = Math.ceil(diffDays / 365);
+            return `${years} year${years > 1 ? 's' : ''} ago`;
+        }
+    } catch (error) {
+        console.error('Error formatting date:', error, 'Input:', dateInput);
+        return 'recently';
+    }
+}
+
+// Add a universal date parser utility
+function parseUniversalDate(dateInput) {
+    if (!dateInput) return null;
+    
+    try {
+        let date;
+        
+        if (Array.isArray(dateInput) && dateInput.length >= 6) {
+            // Jackson array format [YYYY, MM, DD, HH, MM, SS]
+            date = new Date(dateInput[0], dateInput[1] - 1, dateInput[2], dateInput[3] || 0, dateInput[4] || 0, dateInput[5] || 0);
+        } else if (typeof dateInput === 'string') {
+            date = new Date(dateInput);
+        } else if (dateInput instanceof Date) {
+            date = dateInput;
+        } else {
+            return null;
+        }
+        
+        return (date && !isNaN(date.getTime())) ? date : null;
+    } catch (error) {
+        console.error('Error parsing date:', error);
+        return null;
+    }
+}
+
 // Province and city data
 const citiesByProvince = {
     "Aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
@@ -8,14 +94,14 @@ const citiesByProvince = {
     "Sumatera Selatan": ["Lubuklinggau", "Pagar Alam", "Palembang", "Prabumulih"],
     "Bengkulu": ["Bengkulu"],
     "Lampung": ["Bandar Lampung", "Metro"],
-    "Kepulauan Bangka Belitung": ["Pangkal Pinang"],
+    "Kepulauan Bangka Belitung": ["Pangkalpinang"],
     "Kepulauan Riau": ["Batam", "Tanjung Pinang"],
-    "DKI Jakarta": ["Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Kepulauan Seribu"],
-    "Jawa Barat": ["Bandung", "Banjar", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya"],
-    "Jawa Tengah": ["Magelang", "Pekalongan", "Salatiga", "Semarang", "Surakarta", "Tegal"],
+    "DKI Jakarta": ["Jakarta Pusat", "Jakarta Utara", "Jakarta Barat", "Jakarta Selatan", "Jakarta Timur"],
+    "Jawa Barat": ["Bandung", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya", "Banjar"],
+    "Jawa Tengah": ["Magelang", "Pekalongan", "Purwokerto", "Salatiga", "Semarang", "Surakarta", "Tegal"],
     "DI Yogyakarta": ["Yogyakarta"],
     "Jawa Timur": ["Batu", "Blitar", "Kediri", "Madiun", "Malang", "Mojokerto", "Pasuruan", "Probolinggo", "Surabaya"],
-    "Banten": ["Cilegon", "Serang", "Tangerang", "Tangerang Selatan"],
+    "Banten": ["Cilegon", "Serang", "Tangerang Selatan", "Tangerang"],
     "Bali": ["Denpasar"],
     "Nusa Tenggara Barat": ["Bima", "Mataram"],
     "Nusa Tenggara Timur": ["Kupang"],
@@ -27,16 +113,13 @@ const citiesByProvince = {
     "Sulawesi Utara": ["Bitung", "Kotamobagu", "Manado", "Tomohon"],
     "Sulawesi Tengah": ["Palu"],
     "Sulawesi Selatan": ["Makassar", "Palopo", "Parepare"],
-    "Sulawesi Tenggara": ["Bau-Bau", "Kendari"],
+    "Sulawesi Tenggara": ["Baubau", "Kendari"],
     "Gorontalo": ["Gorontalo"],
     "Sulawesi Barat": ["Mamuju"],
     "Maluku": ["Ambon", "Tual"],
     "Maluku Utara": ["Ternate", "Tidore Kepulauan"],
-    "Papua Barat": ["Manokwari", "Sorong"],
-    "Papua": ["Jayapura"],
-    "Papua Selatan": ["Merauke"],
-    "Papua Tengah": ["Nabire"],
-    "Papua Pegunungan": ["Jayawijaya"]
+    "Papua Barat": ["Sorong"],
+    "Papua": ["Jayapura"]
 };
 
 // Notification system - consistent with other classes in the codebase
@@ -262,6 +345,10 @@ function removeSkill(button) {
 async function handleJobSubmission(e) {
     e.preventDefault();
     
+    // Get submit button reference first
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.textContent : 'Post Job';
+    
     try {
         // Verify company is still authenticated
         const currentUser = window.apiClient.getCurrentUser();
@@ -282,13 +369,13 @@ async function handleJobSubmission(e) {
         }
         
         // Show loading state
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Posting Job...';
-        submitBtn.disabled = true;
+        if (submitBtn) {
+            submitBtn.textContent = 'Posting Job...';
+            submitBtn.disabled = true;
+        }
         
         // Get the HTML content from the rich text editor
-        const jobDescription = document.getElementById('jobDescription').innerHTML;
+        const jobDescription = document.getElementById('jobDescription').value;
         
         // Collect form data
         const formData = new FormData(e.target);
@@ -311,6 +398,47 @@ async function handleJobSubmission(e) {
         // Validate salary range
         if (salaryMin && salaryMax && salaryMin > salaryMax) {
             showNotification('Minimum salary cannot be greater than maximum salary.', 'error');
+            return;
+        }
+        
+        // Validate required fields
+        if (!formData.get('jobTitle')) {
+            showNotification('Job title is required.', 'error');
+            return;
+        }
+        
+        if (!formData.get('jobType')) {
+            showNotification('Job type is required.', 'error');
+            return;
+        }
+        
+        if (!formData.get('province')) {
+            showNotification('Province is required.', 'error');
+            return;
+        }
+        
+        if (!formData.get('city')) {
+            showNotification('City is required.', 'error');
+            return;
+        }
+        
+        if (!formData.get('experience')) {
+            showNotification('Experience level is required.', 'error');
+            return;
+        }
+        
+        if (!jobDescription || jobDescription.trim() === '') {
+            showNotification('Job description is required.', 'error');
+            return;
+        }
+        
+        if (!formData.get('deadline')) {
+            showNotification('Application deadline is required.', 'error');
+            return;
+        }
+        
+        if (skills.length === 0) {
+            showNotification('At least one skill is required.', 'error');
             return;
         }
         
@@ -344,9 +472,14 @@ async function handleJobSubmission(e) {
             body: JSON.stringify(jobData)
         });
         
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Network error occurred' }));
+            throw new Error(errorData.message || `Server error: ${response.status}`);
+        }
+        
         const result = await response.json();
         
-        if (response.ok && result.success) {
+        if (result.success) {
             showNotification('Job posted successfully!', 'success');
             setTimeout(() => {
                 window.location.href = 'oprec.html';
@@ -357,13 +490,32 @@ async function handleJobSubmission(e) {
         
     } catch (error) {
         console.error('Error posting job:', error);
-        showNotification('Error posting job: ' + error.message, 'error');
+        
+        // Show user-friendly error messages
+        let errorMessage = 'Error posting job: ';
+        
+        if (error.message.includes('Network error') || error.message.includes('Failed to fetch')) {
+            errorMessage += 'Unable to connect to server. Please check your internet connection and try again.';
+        } else if (error.message.includes('Authentication') || error.message.includes('unauthorized')) {
+            errorMessage += 'Authentication failed. Please log in again.';
+        } else if (error.message.includes('Company')) {
+            errorMessage += 'Company profile error. Please refresh the page and try again.';
+        } else {
+            errorMessage += error.message || 'An unexpected error occurred. Please try again.';
+        }
+        
+        showNotification(errorMessage, 'error');
     } finally {
-        // Reset submit button
-        const submitBtn = e.target.querySelector('button[type="submit"]');
+        // Always reset submit button state
         if (submitBtn) {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
         }
     }
+}
+
+// Export the date formatting function for use in other files
+if (typeof window !== 'undefined') {
+    window.formatRealDate = formatRealDate;
+    window.parseUniversalDate = parseUniversalDate;
 }

@@ -464,13 +464,25 @@ function formatJobType(type) {
     return typeMap[type] || type || 'Full-time';
 }
 
-function formatRealDate(dateString) {
-    if (!dateString) return 'Recently posted';
+// Update the formatRealDate function
+function formatRealDate(dateInput) {
+    // Use the universal date formatter
+    if (window.formatRealDate) {
+        return window.formatRealDate(dateInput);
+    }
+    
+    // Fallback if the universal formatter isn't loaded
+    if (!dateInput) return 'Recently posted';
     
     try {
-        const date = new Date(dateString);
+        let date;
         
-        // Check if date is valid
+        if (Array.isArray(dateInput) && dateInput.length >= 6) {
+            date = new Date(dateInput[0], dateInput[1] - 1, dateInput[2], dateInput[3] || 0, dateInput[4] || 0, dateInput[5] || 0);
+        } else {
+            date = new Date(dateInput);
+        }
+        
         if (isNaN(date.getTime())) {
             return 'Recently posted';
         }

@@ -54,6 +54,48 @@
             justify-content: center;
             display: none;
         }
+        
+        /* Custom scrollbar for better UX */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed;
+        }
+
+        /* Gradient backgrounds */
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .job-card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Animated elements */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-slow {
+            animation: pulse 3s infinite;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -61,7 +103,6 @@
     <!-- Navbar -->
     <nav class="fixed bg-lilac-100 dark:bg-gray-900 shadow-sm transition-colors duration-300 top-0 w-full z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Top Row - Logo, Menu, Profile & Dark Mode -->
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -70,22 +111,21 @@
                         </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-                        <a data-i18n="nav.home" href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="homepage.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Beranda
                         </a>
-                        <a data-i18n="nav.about" href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Tentang
                         </a>
-                        <a data-i18n="nav.candidates" href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="candidates.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Kandidat
                         </a>
-                        <a data-i18n="nav.companies" href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
+                        <a href="companies.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800">
                             Perusahaan
                         </a>
                     </div>
                 </div>
 
-                <!-- Desktop Dark Mode & Profile -->
                 <div class="hidden sm:flex items-center space-x-4">
                     <div class="ml-4">
                         <select id="language-selector-mobile" class="bg-lilac-100 dark:bg-gray-900 text-gray-700 dark:text-white p-2 rounded">
@@ -93,7 +133,6 @@
                         <option value="id">ID</option>
                         </select>
                     </div>
-
                     <button id="darkModeToggle" class="p-2 rounded-full text-gray-400 dark:text-lilac-200 hover:text-gray-500 dark:hover:text-lilac-100 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" aria-label="Toggle dark mode">
                         <i class="fas fa-moon dark:hidden"></i>
                         <i class="fas fa-sun hidden dark:inline"></i>
@@ -112,16 +151,22 @@
                             <div id="profile-image-nav" class="h-8 w-8 rounded-full bg-cover bg-center bg-no-repeat" style="background-image: url('img/default-profile.png'); background-size: cover;" role="img" aria-label="Profile"></div>
                         </button>
                         
-                        <!-- Dropdown Menu -->
                         <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                            <a data-i18n="view_profile" href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
-                            <a data-i18n="profile.logout" href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
+                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1">View Profile</a>
+                            <a href="index.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" tabindex="-1" id="logout">Logout</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mobile Menu Button -->
-                <div class="sm:hidden flex items-center">
+                <div class="sm:hidden flex items-center space-x-2">
+                    <!-- Notification Bell for Mobile -->
+                    <div class="relative">
+                        <a href="notification.html" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative inline-flex items-center" id="mobile-notification-button" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge"></span>
+                        </a>
+                    </div>
+                    
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none" id="mobile-menu-button" aria-expanded="false" aria-label="Toggle menu">
                         <span class="sr-only">Buka Menu Utama</span>
                         <i class="fas fa-bars"></i>
@@ -129,23 +174,14 @@
                 </div>
             </div>
 
-            <!-- Mobile Menu Content -->
             <div class="hidden sm:hidden" id="mobile-menu">
-                <!-- Notification Bell for Mobile -->
-                <div class="relative">
-                    <a href="notification.html" class="p-2 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-lilac-50 dark:hover:bg-gray-800 focus:outline-none relative inline-flex items-center" id="mobile-notification-button" aria-label="Notifications">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge"></span>
-                    </a>
-                </div>
                 <div class="pt-2 pb-3 space-y-1">
-                    <a data-i18n="nav.home" href="homepage.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
-                    <a data-i18n="nav.about" href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
-                    <a data-i18n="nav.candidates" href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
-                    <a data-i18n="nav.companies" href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
+                    <a href="homepage.html" class="bg-lilac-50 dark:bg-gray-800 text-lilac-600 dark:text-lilac-300 block pl-3 pr-4 py-2 text-base font-medium">Beranda</a>
+                    <a href="about.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Tentang</a>
+                    <a href="candidates.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Kandidat</a>
+                    <a href="companies.html" class="text-gray-500 dark:text-gray-300 hover:bg-lilac-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white block pl-3 pr-4 py-2 text-base font-medium">Perusahaan</a>
                 </div>
 
-                <!-- Mobile Profile & Dark Mode in one row BELOW Nav -->
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-3 pb-4 px-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
@@ -171,107 +207,178 @@
         </div>
     </nav>
 
+
     <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="pt-20 pb-16">
         <!-- Loading State -->
-        <div id="loading" class="text-center py-12">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-lilac-500 mx-auto"></div>
-            <p class="mt-4 text-gray-600 dark:text-gray-400">Loading job details...</p>
+        <div id="loading" class="min-h-screen flex items-center justify-center">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-4 border-lilac-200 border-t-lilac-600 mx-auto mb-4"></div>
+                <p class="text-lg text-gray-600 dark:text-gray-400">Loading job details...</p>
+            </div>
         </div>
 
         <!-- Job Details Container -->
-        <div id="job-details" class="hidden">
-            <!-- Job Header -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-6">
-                <div class="flex items-start justify-between mb-6">
-                    <div class="flex items-start">
-                        <img id="company-logo" class="h-16 w-16 rounded-lg object-cover mr-6" 
-                                src="" alt="Company Logo">
-                        <div>
-                            <h1 id="job-title" class="text-3xl font-bold text-gray-900 dark:text-white mb-2"></h1>
-                            <p id="company-name" class="text-xl text-lilac-500 mb-2"></p>
-                            <div class="flex items-center text-gray-600 dark:text-gray-400">
-                                <i class="fas fa-map-marker-alt mr-2"></i>
-                                <span id="job-location"></span>
+        <div id="job-details" class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumb -->
+            <nav class="flex mb-6 fade-in" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="homepage.html" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-lilac-600 transition-colors">
+                            <i class="fas fa-home mr-2"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+                            <a href="oprec.html" class="text-sm font-medium text-gray-500 hover:text-lilac-600 transition-colors">Jobs</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Job Details</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Job Header Card -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl job-card-shadow p-8 mb-8 fade-in border border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                    <!-- Left side - Job Info -->
+                    <div class="flex-1">
+                        <div class="flex items-start gap-6 mb-6">
+                            <div class="flex-shrink-0">
+                                <img id="company-logo" class="h-20 w-20 rounded-xl object-cover shadow-md border border-gray-200 dark:border-gray-600" 
+                                     src="" alt="Company Logo">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h1 id="job-title" class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 leading-tight"></h1>
+                                <p id="company-name" class="text-xl text-lilac-600 dark:text-lilac-400 font-semibold mb-3"></p>
+                                <div class="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-map-marker-alt mr-2 text-lilac-500"></i>
+                                        <span id="job-location" class="font-medium"></span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock mr-2 text-lilac-500"></i>
+                                        <span id="job-posted" class="font-medium"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Job Meta Tags -->
+                        <div class="flex flex-wrap gap-3 mb-6">
+                            <span id="job-type" class="bg-gradient-to-r from-lilac-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md"></span>
+                            <span id="job-experience" class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-2 rounded-full text-sm font-semibold"></span>
+                            <div id="job-skills" class="flex flex-wrap gap-2"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right side - Salary & Apply -->
+                    <div class="flex-shrink-0 lg:text-right">
+                        <div class="bg-gradient-to-br from-lilac-50 to-purple-50 dark:from-gray-700 dark:to-gray-600 rounded-xl p-6 mb-4 border border-lilac-200 dark:border-gray-600">
+                            <div id="job-salary" class="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2"></div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">per month</p>
+                        </div>
+                        <button id="apply-btn" class="w-full lg:w-auto bg-gradient-to-r from-lilac-600 to-purple-600 hover:from-lilac-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                            <i class="fas fa-paper-plane mr-2"></i>Apply for this Position
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Left Column - Job Details -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Job Description -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl job-card-shadow p-8 fade-in border border-gray-200 dark:border-gray-700">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                            <i class="fas fa-file-alt mr-3 text-lilac-500"></i>
+                            Job Description
+                        </h2>
+                        <div id="job-description" class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed custom-scrollbar max-h-96 overflow-y-auto"></div>
+                    </div>
+
+                    <!-- Benefits -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl job-card-shadow p-8 fade-in border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                            <i class="fas fa-gift mr-3 text-green-500"></i>
+                            Benefits & Perks
+                        </h3>
+                        <ul id="job-benefits" class="space-y-3"></ul>
+                    </div>
+
+                    <!-- Additional Job Info -->
+                    <div id="additional-info" class="space-y-8"></div>
+                </div>
+
+                <!-- Right Column - Company & Apply -->
+                <div class="space-y-8">
+                    <!-- Company Info -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl job-card-shadow p-8 fade-in border border-gray-200 dark:border-gray-700 top-24">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                            <i class="fas fa-building mr-3 text-lilac-500"></i>
+                            About Company
+                        </h3>
+                        <div id="company-info">
+                            <div class="animate-pulse space-y-3">
+                                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <div id="job-salary" class="text-2xl font-bold text-gray-900 dark:text-white mb-2"></div>
-                        <div id="job-posted" class="text-sm text-gray-500 dark:text-gray-400"></div>
-                    </div>
-                </div>
 
-                <!-- Job Meta -->
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <span id="job-type" class="bg-lilac-100 dark:bg-gray-700 text-lilac-800 dark:text-lilac-300 px-4 py-2 rounded-full text-sm font-medium"></span>
-                    <span id="job-experience" class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 px-4 py-2 rounded-full text-sm"></span>
-                    <div id="job-skills" class="flex flex-wrap gap-2"></div>
-                </div>
-
-                <!-- Apply Button -->
-                <button id="apply-btn" class="w-full sm:w-auto bg-lilac-500 hover:bg-lilac-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-200">
-                    <i class="fas fa-paper-plane mr-2"></i>Apply for this Position
-                </button>
-            </div>
-
-            <!-- Job Description -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Job Description</h2>
-                <div id="job-description" class="prose dark:prose-invert max-w-none"></div>
-            </div>
-
-            <!-- Additional Info -->
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Benefits -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Benefits</h3>
-                    <ul id="job-benefits" class="space-y-2"></ul>
-                </div>
-
-                <!-- Update the Company Info section in the HTML -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">About Company</h3>
-                    <div id="company-info">
-                        <div class="animate-pulse">
-                            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-                            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
-                            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
-                        </div>
+                    <!-- Quick Apply Card -->
+                    <div class="bg-gradient-to-br from-lilac-500 to-purple-600 rounded-2xl p-8 text-white fade-in">
+                        <h3 class="text-xl font-bold mb-4">Ready to Apply?</h3>
+                        <p class="text-lilac-100 mb-6">Join our team and be part of something amazing!</p>
+                        <button onclick="document.getElementById('apply-btn').click()" class="w-full bg-white text-lilac-600 font-bold py-3 px-6 rounded-xl hover:bg-gray-100 transition-colors">
+                            Apply Now
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Deadline Info -->
-            <div id="deadline-info" class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-6 mt-6">
+            <!-- Deadline Warning -->
+            <div id="deadline-info" class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800 rounded-2xl p-6 mt-8 fade-in">
                 <div class="flex items-center">
-                    <i class="fas fa-clock text-yellow-600 dark:text-yellow-400 mr-3"></i>
+                    <i class="fas fa-clock text-yellow-600 dark:text-yellow-400 mr-4 text-xl"></i>
                     <div>
-                        <h4 class="font-semibold text-yellow-800 dark:text-yellow-200">Application Deadline</h4>
-                        <p id="job-deadline" class="text-yellow-700 dark:text-yellow-300"></p>
+                        <h4 class="font-bold text-yellow-800 dark:text-yellow-200 text-lg">Application Deadline</h4>
+                        <p id="job-deadline" class="text-yellow-700 dark:text-yellow-300 font-medium"></p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Update the error section to be more helpful -->
-        <div id="error" class="hidden text-center py-12">
-            <div class="text-red-400 mb-4">
-                <i class="fas fa-exclamation-triangle text-6xl"></i>
-            </div>
-            <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">Job Not Found</h3>
-            <p class="text-gray-500 dark:text-gray-400 mb-4">The job you're looking for doesn't exist, has been removed, or the link may be incorrect.</p>
-            <div class="space-x-4">
-                <a href="oprec.html" class="inline-block bg-lilac-500 hover:bg-lilac-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                    Browse Other Jobs
-                </a>
-                <button onclick="window.history.back()" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                    Go Back
-                </button>
+        <!-- Error State -->
+        <div id="error" class="hidden min-h-screen flex items-center justify-center">
+            <div class="text-center max-w-md mx-auto px-4">
+                <div class="text-red-400 mb-6">
+                    <i class="fas fa-exclamation-triangle text-8xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Job Not Found</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">The job you're looking for doesn't exist, has been removed, or the link may be incorrect.</p>
+                <div class="space-y-4">
+                    <a href="oprec.html" class="inline-block w-full bg-gradient-to-r from-lilac-600 to-purple-600 hover:from-lilac-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                        Browse Other Jobs
+                    </a>
+                    <button onclick="window.history.back()" class="inline-block w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-colors">
+                        Go Back
+                    </button>
+                </div>
             </div>
         </div>
     </main>
-<!-- Footer -->
+
+    
+    <!-- Footer -->
     <footer class="bg-[#f5f0fa] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -352,9 +459,9 @@
             </div>
         </div>
     </footer>
+
     <script src="js/navbar-profile.js"></script>
     <script>
-        
         // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -427,7 +534,7 @@
             document.getElementById('job-salary').textContent = formatSalary(job.salaryMin, job.salaryMax);
             document.getElementById('job-posted').textContent = `Posted ${formatRealDate(job.createdAt)}`;
             document.getElementById('job-type').textContent = formatJobType(job.type);
-            document.getElementById('job-experience').textContent = job.experience || 'Any Level';
+            document.getElementById('job-experience').textContent = `${job.experience || 'Any Level'} Experience`;
 
             // Company logo
             const logo = job.company?.profileImageUrl 
@@ -448,10 +555,10 @@
             
             if (skills.length > 0) {
                 skillsContainer.innerHTML = skills.map(skill => 
-                    `<span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full text-sm">${skill}</span>`
+                    `<span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-full text-sm font-medium border">${skill}</span>`
                 ).join('');
             } else {
-                skillsContainer.innerHTML = '<span class="text-gray-500 dark:text-gray-400 text-sm">No specific skills listed</span>';
+                skillsContainer.innerHTML = '<span class="text-gray-500 dark:text-gray-400 text-sm italic">No specific skills listed</span>';
             }
 
             // Description
@@ -459,7 +566,7 @@
             if (job.description && job.description.trim()) {
                 descriptionElement.innerHTML = job.description;
             } else {
-                descriptionElement.innerHTML = '<p class="text-gray-500 dark:text-gray-400">No detailed description available for this position.</p>';
+                descriptionElement.innerHTML = '<p class="text-gray-500 dark:text-gray-400 italic">No detailed description available for this position.</p>';
             }
 
             // Benefits - Handle both array and string formats
@@ -474,59 +581,17 @@
             
             if (benefits.length > 0) {
                 benefitsContainer.innerHTML = benefits.map(benefit => 
-                    `<li class="flex items-center text-gray-700 dark:text-gray-300">
-                        <i class="fas fa-check text-green-500 mr-2"></i>${benefit}
+                    `<li class="flex items-start text-gray-700 dark:text-gray-300 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                        <i class="fas fa-check-circle text-green-500 mr-3 mt-0.5 flex-shrink-0"></i>
+                        <span>${benefit}</span>
                     </li>`
                 ).join('');
             } else {
-                benefitsContainer.innerHTML = '<li class="text-gray-500 dark:text-gray-400">No specific benefits listed</li>';
+                benefitsContainer.innerHTML = '<li class="text-gray-500 dark:text-gray-400 italic p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">No specific benefits listed</li>';
             }
 
             // Company info
-            const companyInfo = document.getElementById('company-info');
-            const company = job.company;
-            
-            let companyLocation = 'Not specified';
-            if (company?.city && company?.province) {
-                companyLocation = formatLocation(company.city, company.province);
-            } else if (company?.hq) {
-                companyLocation = company.hq;
-            }
-            
-            companyInfo.innerHTML = `
-                <div class="space-y-3">
-                    <p class="text-gray-700 dark:text-gray-300">
-                        <strong class="text-gray-900 dark:text-white">Industry:</strong> 
-                        ${company?.industry || 'Not specified'}
-                    </p>
-                    <p class="text-gray-700 dark:text-gray-300">
-                        <strong class="text-gray-900 dark:text-white">Company Size:</strong> 
-                        ${company?.companySize ? `${company.companySize} employees` : 'Not specified'}
-                    </p>
-                    <p class="text-gray-700 dark:text-gray-300">
-                        <strong class="text-gray-900 dark:text-white">Location:</strong> 
-                        ${companyLocation}
-                    </p>
-                    <p class="text-gray-700 dark:text-gray-300">
-                        <strong class="text-gray-900 dark:text-white">Founded:</strong> 
-                        ${company?.foundationDate ? formatDate(company.foundationDate) : 'Not specified'}
-                    </p>
-                    ${company?.websiteUrl ? `
-                        <p class="text-gray-700 dark:text-gray-300">
-                            <strong class="text-gray-900 dark:text-white">Website:</strong> 
-                            <a href="${company.websiteUrl}" target="_blank" class="text-lilac-500 hover:text-lilac-600">
-                                ${company.websiteUrl}
-                            </a>
-                        </p>
-                    ` : ''}
-                    ${company?.description ? `
-                        <div class="mt-4">
-                            <strong class="text-gray-900 dark:text-white">About the Company:</strong>
-                            <p class="text-gray-700 dark:text-gray-300 mt-2">${company.description}</p>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
+            displayCompanyInfo(job.company);
 
             // Deadline
             const deadlineInfo = document.getElementById('deadline-info');
@@ -545,13 +610,13 @@
                     const deadlineDate = new Date(job.deadline);
                     const today = new Date();
                     if (deadlineDate < today) {
-                        alert('Sorry, the application deadline for this job has passed.');
+                        showNotification('Sorry, the application deadline for this job has passed.', 'error');
                         return;
                     }
                 }
                 
                 // For now, show alert - later implement actual application process
-                alert(`Application feature will be implemented soon!\n\nJob: ${job.title}\nCompany: ${job.company?.name || 'Company'}`);
+                showNotification(`Application feature will be implemented soon!\n\nJob: ${job.title}\nCompany: ${job.company?.name || 'Company'}`, 'info');
             };
 
             // Update page title
@@ -561,28 +626,93 @@
             displayAdditionalJobInfo(job);
         }
 
+        function displayCompanyInfo(company) {
+            const companyInfo = document.getElementById('company-info');
+            
+            if (!company) {
+                companyInfo.innerHTML = '<p class="text-gray-500 dark:text-gray-400 italic">Company information not available</p>';
+                return;
+            }
+
+            let companyLocation = 'Not specified';
+            if (company.city && company.province) {
+                companyLocation = formatLocation(company.city, company.province);
+            } else if (company.hq) {
+                companyLocation = company.hq;
+            }
+            
+            companyInfo.innerHTML = `
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Industry</h4>
+                        <p class="text-gray-700 dark:text-gray-300">${company.industry || 'Not specified'}</p>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Company Size</h4>
+                        <p class="text-gray-700 dark:text-gray-300">${company.companySize ? `${company.companySize} employees` : 'Not specified'}</p>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Location</h4>
+                        <p class="text-gray-700 dark:text-gray-300">${companyLocation}</p>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Founded</h4>
+                        <p class="text-gray-700 dark:text-gray-300">${company.foundationDate ? formatYear(company.foundationDate) : 'Not specified'}</p>
+                    </div>
+                    
+                    ${company.websiteUrl ? `
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Website</h4>
+                            <a href="${company.websiteUrl}" target="_blank" class="text-lilac-600 hover:text-lilac-700 dark:text-lilac-400 dark:hover:text-lilac-300 font-medium break-all">
+                                ${company.websiteUrl}
+                            </a>
+                        </div>
+                    ` : ''}
+                    
+                    ${company.description ? `
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">About the Company</h4>
+                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${company.description}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
         function displayAdditionalJobInfo(job) {
+            const additionalInfo = document.getElementById('additional-info');
+            let additionalHTML = '';
+
             // Add hiring process info if available
-            if (job.hiringProcess) {
-                const additionalInfo = document.createElement('div');
-                additionalInfo.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6';
-                additionalInfo.innerHTML = `
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Hiring Process</h3>
-                    <div class="text-gray-700 dark:text-gray-300">${job.hiringProcess}</div>
+            if (job.hiringProcess && job.hiringProcess.trim()) {
+                additionalHTML += `
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl job-card-shadow p-8 fade-in border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                            <i class="fas fa-route mr-3 text-blue-500"></i>
+                            Hiring Process
+                        </h3>
+                        <div class="text-gray-700 dark:text-gray-300 leading-relaxed">${job.hiringProcess}</div>
+                    </div>
                 `;
-                document.querySelector('#job-details').appendChild(additionalInfo);
             }
 
             // Add application questions if available
-            if (job.applicationQuestions) {
-                const questionsInfo = document.createElement('div');
-                questionsInfo.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6';
-                questionsInfo.innerHTML = `
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Application Questions</h3>
-                    <div class="text-gray-700 dark:text-gray-300">${job.applicationQuestions}</div>
+            if (job.applicationQuestions && job.applicationQuestions.trim()) {
+                additionalHTML += `
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl job-card-shadow p-8 fade-in border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                            <i class="fas fa-question-circle mr-3 text-orange-500"></i>
+                            Application Questions
+                        </h3>
+                        <div class="text-gray-700 dark:text-gray-300 leading-relaxed">${job.applicationQuestions}</div>
+                    </div>
                 `;
-                document.querySelector('#job-details').appendChild(questionsInfo);
             }
+
+            additionalInfo.innerHTML = additionalHTML;
         }
 
         function formatJobType(type) {
@@ -646,35 +776,67 @@
             return 'Competitive Salary';
         }
 
-        function formatRealDate(dateString) {
-            if (!dateString) return 'recently';
+        function formatRealDate(dateInput) {
+            if (!dateInput) return 'recently';
             
             try {
-                const date = new Date(dateString);
+                let date;
+                
+                // Handle different date formats from backend
+                if (Array.isArray(dateInput) && dateInput.length >= 6) {
+                    // Handle Jackson array format [YYYY, MM, DD, HH, MM, SS]
+                    // Note: JavaScript Date constructor expects month to be 0-indexed
+                    date = new Date(dateInput[0], dateInput[1] - 1, dateInput[2], dateInput[3] || 0, dateInput[4] || 0, dateInput[5] || 0);
+                } else if (typeof dateInput === 'string') {
+                    // Handle ISO string format
+                    date = new Date(dateInput);
+                } else if (dateInput instanceof Date) {
+                    date = dateInput;
+                } else {
+                    console.warn('Unknown date format:', dateInput);
+                    return 'recently';
+                }
+                
+                // Validate the parsed date
+                if (!date || isNaN(date.getTime())) {
+                    console.warn('Invalid date parsed from:', dateInput);
+                    return 'recently';
+                }
+                
                 const now = new Date();
                 const diffTime = Math.abs(now - date);
-                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const diffMinutes = Math.floor(diffTime / (1000 * 60));
                 const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 
-                if (diffHours < 24) {
-                    return diffHours <= 1 ? 'today' : `${diffHours} hours ago`;
+                // Format relative time
+                if (diffMinutes < 1) {
+                    return 'just now';
+                } else if (diffMinutes < 60) {
+                    return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+                } else if (diffHours < 24) {
+                    return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
                 } else if (diffDays === 1) {
                     return 'yesterday';
-                } else if (diffDays <= 7) {
-                    return `${diffDays} days ago`;
-                } else if (diffDays <= 30) {
+                } else if (diffDays < 7) {
+                    return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+                } else if (diffDays < 30) {
                     const weeks = Math.ceil(diffDays / 7);
-                    return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
-                } else {
+                    return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+                } else if (diffDays < 365) {
                     const months = Math.ceil(diffDays / 30);
-                    return months === 1 ? '1 month ago' : `${months} months ago`;
+                    return `${months} month${months > 1 ? 's' : ''} ago`;
+                } else {
+                    const years = Math.ceil(diffDays / 365);
+                    return `${years} year${years > 1 ? 's' : ''} ago`;
                 }
             } catch (error) {
+                console.error('Error formatting date:', error, 'Input:', dateInput);
                 return 'recently';
             }
         }
 
-        function formatDate(dateString) {
+        function formatYear(dateString) {
             if (!dateString) return '';
             
             try {
@@ -698,9 +860,43 @@
             }
         }
 
-        function showError() {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('error').classList.remove('hidden');
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-5 right-5 z-50 max-w-sm w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 transition-transform transform ${type === 'error' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-green-50 dark:bg-green-900/20'}`;
+            notification.role = 'alert';
+
+            // Add icon
+            const icon = document.createElement('div');
+            icon.className = `w-10 h-10 rounded-full flex items-center justify-center mr-4 ${type === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`;
+            icon.innerHTML = type === 'error' ? '<i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-check-circle"></i>';
+            notification.appendChild(icon);
+
+            // Add message
+            const messageText = document.createElement('div');
+            messageText.className = `text-sm font-medium ${type === 'error' ? 'text-red-800 dark:text-red-200' : 'text-green-800 dark:text-green-200'}`;
+            messageText.textContent = message;
+            notification.appendChild(messageText);
+
+            // Add close button
+            const closeButton = document.createElement('button');
+            closeButton.className = `absolute top-2 right-2 p-1 rounded-full focus:outline-none transition-colors ${type === 'error' ? 'text-red-500 hover:bg-red-100' : 'text-green-500 hover:bg-green-100'}`;
+            closeButton.innerHTML = '<i class="fas fa-times"></i>';
+            closeButton.onclick = () => {
+                notification.remove();
+            };
+            notification.appendChild(closeButton);
+
+            // Append to body
+            document.body.appendChild(notification);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.add('opacity-0');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 5000);
         }
     </script>
 </body>
