@@ -466,21 +466,20 @@ function formatJobType(type) {
 
 // Update the formatRealDate function
 function formatRealDate(dateInput) {
-    // Use the universal date formatter
-    if (window.formatRealDate) {
-        return window.formatRealDate(dateInput);
-    }
-    
-    // Fallback if the universal formatter isn't loaded
     if (!dateInput) return 'Recently posted';
     
     try {
         let date;
         
+        // Handle Jackson array format [YYYY, MM, DD, HH, MM, SS]
         if (Array.isArray(dateInput) && dateInput.length >= 6) {
             date = new Date(dateInput[0], dateInput[1] - 1, dateInput[2], dateInput[3] || 0, dateInput[4] || 0, dateInput[5] || 0);
-        } else {
+        } else if (typeof dateInput === 'string') {
             date = new Date(dateInput);
+        } else if (dateInput instanceof Date) {
+            date = dateInput;
+        } else {
+            return 'Recently posted';
         }
         
         if (isNaN(date.getTime())) {
