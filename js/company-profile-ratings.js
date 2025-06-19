@@ -23,6 +23,40 @@ class CompanyRatingsManager {
         }
     }
 
+    // Notification system - consistent with other classes in the codebase
+    showNotification(message, type = 'success') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
     checkIfOwnProfile() {
         this.isOwnProfile = window.location.pathname.includes('profilecom.html');
     }
@@ -215,13 +249,13 @@ class CompanyRatingsManager {
                 // Reload ratings
                 this.currentPage = 0;
                 await this.loadCompanyRatings();
-                alert('Review deleted successfully!');
+                showNotification('Review deleted successfully!', 'success');
             } else {
                 throw new Error(response.message || 'Failed to delete review');
             }
         } catch (error) {
             console.error('Error deleting review:', error);
-            alert('Failed to delete review: ' + error.message);
+            showNotification('Failed to delete review: ' + error.message, 'error');
         }
     }
 
@@ -477,7 +511,7 @@ class CompanyRatingsManager {
         const review = document.getElementById('review-text').value.trim();
 
         if (rating === 0) {
-            alert('Please select a rating');
+            showNotification('Please select a rating', 'error');
             return;
         }
 
@@ -503,14 +537,14 @@ class CompanyRatingsManager {
                 // Reload ratings
                 this.currentPage = 0;
                 await this.loadCompanyRatings();
-                
-                alert('Review submitted successfully!');
+
+                showNotification('Review submitted successfully!', 'success');
             } else {
                 throw new Error(data.message || 'Failed to submit review');
             }
         } catch (error) {
             console.error('Error submitting review:', error);
-            alert('Failed to submit review: ' + error.message);
+            showNotification('Failed to submit review: ' + error.message, 'error');
         }
     }
 

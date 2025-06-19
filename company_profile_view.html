@@ -221,14 +221,9 @@
     </nav>
     
     <!-- Main Content -->
-    <main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-16 transition duration-300">
+    <main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-28 transition duration-300">
         <!-- Profile Header Section -->
         <section class="relative mb-8">
-            <!-- Cover Photo -->
-            <div class="h-48 w-full rounded-xl bg-gray-200 dark:bg-gray-800 overflow-hidden mb-4">
-                <div id="cover-photo" class="w-full h-full object-cover" style="background-image: url('img/default-cover.jpg');">
-                </div>
-            </div>
             
             <!-- Profile Info -->
             <div class="flex flex-col md:flex-row items-start md:items-end -mt-16 md:-mt-12 ml-4 md:ml-6">
@@ -607,6 +602,40 @@
     <script>
         let currentViewedCompany = null;
 
+        // Notification system - consistent with other classes in the codebase
+        function showNotification(message, type = 'success') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+
+            // Animate out and remove
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
         // Function to start chat with the company being viewed
         async function startChatWithCompany() {
             console.log('=== Starting Chat with Company ===');
@@ -615,8 +644,10 @@
             console.log('Current user:', currentUser);
             
             if (!currentUser) {
-                alert('Please log in to start a conversation');
-                window.location.href = 'login.html';
+                showNotification('Please log in to start a conversation', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
                 return;
             }
 
@@ -630,8 +661,10 @@
                 userId = currentUser.user_id;
             } else {
                 console.error('No valid user ID found in currentUser:', currentUser);
-                alert('Unable to identify current user. Please log in again.');
-                window.location.href = 'login.html';
+                showNotification('Unable to identify current user. Please log in again.', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
                 return;
             }
 
@@ -662,7 +695,7 @@
 
             if (!currentViewedCompany) {
                 console.error('No company data available after all attempts');
-                alert('Unable to start conversation. Company data not loaded. Please refresh the page and try again.');
+                showNotification('Unable to start conversation. Company data not loaded. Please refresh the page and try again.', 'error');
                 return;
             }
 
@@ -681,7 +714,7 @@
             } else {
                 console.error('No valid user ID found in company data:', currentViewedCompany);
                 console.log('Available keys in company object:', Object.keys(currentViewedCompany));
-                alert('Unable to identify company user. Company data may be incomplete.');
+                showNotification('Unable to identify company user. Company data may be incomplete.', 'error');
                 return;
             }
 
@@ -689,7 +722,7 @@
 
             // Check if trying to chat with yourself
             if (userId === companyUserId) {
-                alert('You cannot start a conversation with yourself.');
+                showNotification('You cannot start a conversation with yourself.', 'error');
                 return;
             }
 
@@ -727,7 +760,7 @@
 
             } catch (error) {
                 console.error('Error starting chat:', error);
-                alert(`Unable to start conversation. Error: ${error.message}`);
+                showNotification(`Unable to start conversation. Error: ${error.message}`, 'error');
                 
                 // Restore button
                 const chatBtn = document.getElementById('btn-chat');

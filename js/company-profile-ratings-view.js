@@ -34,6 +34,40 @@ class CompanyRatingsViewManager {
         initializeData();
     }
 
+    // Notification system - consistent with other classes in the codebase
+    showNotification(message, type = 'success') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
     checkIfOwnProfile() {
         // For company_profile_view.html, this is never the user's own profile
         this.isOwnProfile = false;
@@ -316,10 +350,63 @@ class CompanyRatingsViewManager {
     }
 
     async deleteReview(reviewId) {
-        if (!confirm('Are you sure you want to delete this review?')) {
-            return;
-        }
+        // Show confirmation modal instead of browser confirm
+        this.showDeleteConfirmationModal(reviewId);
+    }
 
+    // Add this new function to show the confirmation modal
+    showDeleteConfirmationModal(reviewId) {
+        // Create modal HTML
+        const modalHTML = `
+            <div id="delete-review-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md mx-4 shadow-xl">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-2xl mr-3"></i>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Confirm Delete</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        Are you sure you want to delete this review? This action cannot be undone.
+                    </p>
+                    <div class="flex justify-end space-x-3">
+                        <button id="cancel-delete-review" class="px-4 py-2 text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                            Cancel
+                        </button>
+                        <button id="confirm-delete-review" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                            Delete Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add modal to DOM
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        const modal = document.getElementById('delete-review-confirmation-modal');
+        const cancelBtn = document.getElementById('cancel-delete-review');
+        const confirmBtn = document.getElementById('confirm-delete-review');
+        
+        // Handle cancel
+        cancelBtn.addEventListener('click', () => {
+            modal.remove();
+        });
+        
+        // Handle confirm
+        confirmBtn.addEventListener('click', () => {
+            modal.remove();
+            this.proceedWithDeleteReview(reviewId);
+        });
+        
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
+    // Separate the actual delete logic
+    async proceedWithDeleteReview(reviewId) {
         try {
             const response = await window.apiClient.deleteCompanyRating(this.companyId, reviewId);
 
@@ -327,13 +414,13 @@ class CompanyRatingsViewManager {
                 // Reload ratings
                 this.currentPage = 0;
                 await this.loadCompanyRatings();
-                alert('Review deleted successfully!');
+                this.showNotification('Review deleted successfully!', 'success');
             } else {
                 throw new Error(response.message || 'Failed to delete review');
             }
         } catch (error) {
             console.error('Error deleting review:', error);
-            alert('Failed to delete review: ' + error.message);
+            this.showNotification('Failed to delete review: ' + error.message, 'error');
         }
     }
 
@@ -515,12 +602,12 @@ class CompanyRatingsViewManager {
         const review = document.getElementById('review-text').value.trim();
 
         if (rating === 0) {
-            alert('Please select a rating');
+            this.showNotification('Please select a rating', 'error');
             return;
         }
 
         if (!this.currentUser) {
-            alert('Please log in to submit a review');
+            this.showNotification('Please log in to submit a review', 'error');
             return;
         }
 
@@ -549,13 +636,13 @@ class CompanyRatingsViewManager {
                 this.currentPage = 0;
                 await this.loadCompanyRatings();
                 
-                alert('Review submitted successfully!');
+                this.showNotification('Review submitted successfully!', 'success');
             } else {
                 throw new Error(response.message || 'Failed to submit review');
             }
         } catch (error) {
             console.error('Error submitting review:', error);
-            alert('Failed to submit review: ' + error.message);
+            this.showNotification('Failed to submit review: ' + error.message, 'error');
         }
     }
 
@@ -571,7 +658,7 @@ class CompanyRatingsViewManager {
 
     showError(message) {
         this.hideLoading();
-        console.error(message);
+        this.showNotification(message, 'error');
     }
 }
 

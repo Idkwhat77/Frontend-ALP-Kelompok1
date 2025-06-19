@@ -20,8 +20,42 @@ class CompanyProfileManager {
             }
         } catch (error) {
             console.error('Failed to initialize company profile:', error);
-            this.showError('Failed to load company profile');
+            this.showNotification('Failed to load company profile', 'error');
         }
+    }
+
+    // Notification system - consistent with other classes in the codebase
+    showNotification(message, type = 'success') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
     }
 
     initializeEmployeesManager() {
@@ -69,7 +103,7 @@ class CompanyProfileManager {
             }
         } catch (error) {
             console.error('Error loading company profile:', error);
-            this.showError('Failed to load company profile');
+            this.showNotification('Failed to load company profile', 'error');
         }
     }
 
@@ -257,7 +291,7 @@ class CompanyProfileManager {
         event.preventDefault();
 
         if (!this.currentCompany || !this.isOwnProfile) {
-            alert('You can only edit your own company profile');
+            this.showNotification('You can only edit your own company profile', 'error');
             return;
         }
 
@@ -300,7 +334,7 @@ class CompanyProfileManager {
                 const response = await window.apiClient.updateCompany(this.currentCompany.id, formData);
                 
                 if (response && response.success) {
-                    alert('✅ Company profile updated successfully!');
+                    this.showNotification('Company profile updated successfully!', 'success');
                     
                     // Update the current company data
                     this.currentCompany = { ...this.currentCompany, ...formData };
@@ -316,7 +350,7 @@ class CompanyProfileManager {
             } else {
                 // Fallback: simulate update for demo
                 setTimeout(() => {
-                    alert('✅ Company profile updated successfully! (Demo mode)');
+                    this.showNotification('Company profile updated successfully! (Demo mode)', 'success');
                     this.currentCompany = { ...this.currentCompany, ...formData };
                     this.displayCompanyProfile(this.currentCompany);
                     closeModal('modal-settings');
@@ -325,7 +359,7 @@ class CompanyProfileManager {
             
         } catch (error) {
             console.error('Settings update error:', error);
-            alert(`❌ Error updating company profile: ${error.message}`);
+            this.showNotification(`Error updating company profile: ${error.message}`, 'error');
         } finally {
             // Re-enable submit button
             submitButton.disabled = false;
@@ -429,18 +463,8 @@ class CompanyProfileManager {
     }
 
     showError(message) {
-        // Simple error notification
-        const notification = document.createElement('div');
-        notification.className = 'fixed top-4 right-4 z-50 p-4 rounded-md text-white bg-red-500';
-        notification.textContent = message;
-
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            if (notification.parentNode) {
-                document.body.removeChild(notification);
-            }
-        }, 3000);
+        // Use the new notification system
+        this.showNotification(message, 'error');
     }
 }
 

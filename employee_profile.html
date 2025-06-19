@@ -242,14 +242,10 @@
     </nav>
 
     <!-- Main Content -->
-    <main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-16 transition duration-300">
+    <main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-28 transition duration-300">
         <!-- Profile Header Section -->
         <section class="relative mb-8">
-            <!-- Cover Photo -->
-            <div class="h-48 w-full rounded-xl bg-gray-200 dark:bg-gray-800 overflow-hidden mb-4">
-                <img id="cover-photo" src="img/default-cover.jpg" alt="Cover photo" class="w-full h-full object-cover">
-            </div>
-            
+
             <!-- Profile Info -->
             <div class="flex flex-col md:flex-row items-start md:items-end -mt-16 md:-mt-12 ml-4 md:ml-6">
                 <!-- Profile Picture -->
@@ -474,7 +470,41 @@
     <script src="js/experience_view.js"></script>
     <script src="js/hobby-view.js"></script>
     <script src="js/skill_view.js"></script>
+    <script>
+        // Notification system - consistent with other classes in the codebase
+        function showNotification(message, type = 'success') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
 
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+
+            // Animate out and remove
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
     <script>
         let currentViewedCandidate = null;
 
@@ -486,7 +516,7 @@
             console.log('Current user:', currentUser);
             
             if (!currentUser) {
-                alert('Please log in to start a conversation');
+                showNotification('Please log in to start a conversation', 'error');
                 window.location.href = 'login.html';
                 return;
             }
@@ -501,7 +531,7 @@
                 userId = currentUser.user_id;
             } else {
                 console.error('No valid user ID found in currentUser:', currentUser);
-                alert('Unable to identify current user. Please log in again.');
+                showNotification('Unable to identify current user. Please log in again.', 'error');
                 window.location.href = 'login.html';
                 return;
             }
@@ -533,7 +563,7 @@
 
             if (!currentViewedCandidate) {
                 console.error('No candidate data available after all attempts');
-                alert('Unable to start conversation. Profile data not loaded. Please refresh the page and try again.');
+                showNotification('Unable to start conversation. Profile data not loaded. Please refresh the page and try again.', 'error');
                 return;
             }
 
@@ -547,7 +577,7 @@
                 candidateUserId = currentViewedCandidate.user_id;
             } else {
                 console.error('No valid user ID found in candidate data:', currentViewedCandidate);
-                alert('Unable to identify candidate user. Please try again.');
+                showNotification('Unable to identify candidate user. Please try again.', 'error');
                 return;
             }
 
@@ -555,7 +585,7 @@
 
             // Check if trying to chat with yourself
             if (userId === candidateUserId) {
-                alert('You cannot start a conversation with yourself.');
+                showNotification('You cannot start a conversation with yourself.', 'error');
                 return;
             }
 
@@ -580,7 +610,7 @@
 
             } catch (error) {
                 console.error('Error starting chat:', error);
-                alert(`Unable to start conversation. Error: ${error.message}`);
+                showNotification(`Unable to start conversation. Error: ${error.message}`, 'error');
             }
         }
 
