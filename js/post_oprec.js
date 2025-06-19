@@ -39,6 +39,40 @@ const citiesByProvince = {
     "Papua Pegunungan": ["Jayawijaya"]
 };
 
+// Notification system - consistent with other classes in the codebase
+function showNotification(message, type = 'success') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+        type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+    
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+
+    // Animate out and remove
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
 // Initialize province and city dropdowns
 document.addEventListener('DOMContentLoaded', function() {
     const provinceSelect = document.getElementById('province');
@@ -86,15 +120,19 @@ async function checkCompanyAuthentication() {
         
         // Redirect to login if not authenticated
         if (!currentUser) {
-            alert('Please log in to post a job');
-            window.location.href = 'login.html';
+            showNotification('Please log in to post a job', 'error');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
             return;
         }
         
         // Check if user is a company
         if (userType !== 'company') {
-            alert('Only companies can post job openings. Please log in with a company account.');
-            window.location.href = 'login.html';
+            showNotification('Only companies can post job openings. Please log in with a company account.', 'error');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 3000);
             return;
         }
         
@@ -106,8 +144,10 @@ async function checkCompanyAuthentication() {
         
     } catch (error) {
         console.error('Authentication check failed:', error);
-        alert('Failed to verify authentication. Please try logging in again.');
-        window.location.href = 'login.html';
+        showNotification('Failed to verify authentication. Please try logging in again.', 'error');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 3000);
     }
 }
 
@@ -117,8 +157,10 @@ async function loadCompanyProfile() {
         const response = await window.apiClient.getCompanyByUserId(currentUser.id);
         
         if (!response || !response.success || !response.company) {
-            alert('Company profile not found. Please complete your company profile first.');
-            window.location.href = 'company_profile.html';
+            showNotification('Company profile not found. Please complete your company profile first.', 'error');
+            setTimeout(() => {
+                window.location.href = 'company_profile.html';
+            }, 3000);
             return;
         }
         
@@ -134,8 +176,10 @@ async function loadCompanyProfile() {
         
     } catch (error) {
         console.error('Error loading company profile:', error);
-        alert('Failed to load company profile. Please try again.');
-        window.location.href = 'company_profile.html';
+        showNotification('Failed to load company profile. Please try again.', 'error');
+        setTimeout(() => {
+            window.location.href = 'company_profile.html';
+        }, 3000);
     }
 }
 
@@ -224,14 +268,16 @@ async function handleJobSubmission(e) {
         const userType = window.apiClient.getUserType();
         
         if (!currentUser || userType !== 'company') {
-            alert('Authentication expired. Please log in again.');
-            window.location.href = 'login.html';
+            showNotification('Authentication expired. Please log in again.', 'error');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
             return;
         }
         
         // Verify company profile exists
         if (!window.currentCompany) {
-            alert('Company profile not found. Please refresh the page.');
+            showNotification('Company profile not found. Please refresh the page.', 'error');
             return;
         }
         
@@ -264,7 +310,7 @@ async function handleJobSubmission(e) {
         
         // Validate salary range
         if (salaryMin && salaryMax && salaryMin > salaryMax) {
-            alert('Minimum salary cannot be greater than maximum salary.');
+            showNotification('Minimum salary cannot be greater than maximum salary.', 'error');
             return;
         }
         
@@ -301,15 +347,17 @@ async function handleJobSubmission(e) {
         const result = await response.json();
         
         if (response.ok && result.success) {
-            alert('Job posted successfully!');
-            window.location.href = 'oprec.html';
+            showNotification('Job posted successfully!', 'success');
+            setTimeout(() => {
+                window.location.href = 'oprec.html';
+            }, 2000);
         } else {
             throw new Error(result.message || 'Failed to post job');
         }
         
     } catch (error) {
         console.error('Error posting job:', error);
-        alert('Error posting job: ' + error.message);
+        showNotification('Error posting job: ' + error.message, 'error');
     } finally {
         // Reset submit button
         const submitBtn = e.target.querySelector('button[type="submit"]');

@@ -8,6 +8,40 @@ class CompanyJobsManager {
         this.jobs = [];
     }
 
+    // Notification system - consistent with other classes in the codebase
+    showNotification(message, type = 'success') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
     async init() {
         this.setupEventListeners();
         
@@ -286,15 +320,80 @@ function editJob(jobId) {
     window.location.href = `posting_oprec.html?edit=${jobId}`;
 }
 
-async function deleteJob(jobId, jobTitle) {
-    if (!confirm(`Are you sure you want to delete "${jobTitle}"? This action cannot be undone.`)) {
-        return;
-    }
+// Updated delete function to use custom confirmation modal
+function deleteJob(jobId, jobTitle) {
+    showDeleteJobConfirmationModal(jobTitle, () => {
+        proceedWithJobDeletion(jobId, jobTitle);
+    });
+}
 
+// Add this new function to show the confirmation modal
+function showDeleteJobConfirmationModal(jobTitle, onConfirm) {
+    // Create modal HTML
+    const modalHTML = `
+        <div id="delete-job-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md mx-4 shadow-xl">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl mr-3"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Confirm Delete</h3>
+                </div>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    Are you sure you want to delete "<strong>${jobTitle}</strong>"? This action cannot be undone.
+                </p>
+                <div class="flex justify-end space-x-3">
+                    <button id="cancel-delete-job" class="px-4 py-2 text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        Cancel
+                    </button>
+                    <button id="confirm-delete-job" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                        Delete Job
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to DOM
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    const modal = document.getElementById('delete-job-confirmation-modal');
+    const cancelBtn = document.getElementById('cancel-delete-job');
+    const confirmBtn = document.getElementById('confirm-delete-job');
+    
+    // Handle cancel
+    cancelBtn.addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    // Handle confirm
+    confirmBtn.addEventListener('click', () => {
+        modal.remove();
+        onConfirm();
+    });
+    
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// Separate the actual delete logic
+async function proceedWithJobDeletion(jobId, jobTitle) {
     try {
         const user = window.apiClient?.getCurrentUser();
         if (!user?.id) {
-            alert('Authentication required. Please log in again.');
+            // Use notification system instead of alert
+            if (window.companyJobsManager && typeof window.companyJobsManager.showNotification === 'function') {
+                window.companyJobsManager.showNotification('Authentication required. Please log in again.', 'error');
+            } else {
+                // Fallback to global showNotification if available
+                if (typeof showNotification === 'function') {
+                    showNotification('Authentication required. Please log in again.', 'error');
+                } else {
+                    alert('Authentication required. Please log in again.');
+                }
+            }
             return;
         }
 
@@ -309,7 +408,18 @@ async function deleteJob(jobId, jobTitle) {
         const data = await response.json();
 
         if (response.ok && data.success) {
-            alert('Job deleted successfully!');
+            // Use notification system instead of alert
+            if (window.companyJobsManager && typeof window.companyJobsManager.showNotification === 'function') {
+                window.companyJobsManager.showNotification('Job deleted successfully!', 'success');
+            } else {
+                // Fallback to global showNotification if available
+                if (typeof showNotification === 'function') {
+                    showNotification('Job deleted successfully!', 'success');
+                } else {
+                    alert('Job deleted successfully!');
+                }
+            }
+            
             // Reload the jobs list
             if (window.companyJobsManager) {
                 window.companyJobsManager.loadCompanyJobs();
@@ -319,7 +429,18 @@ async function deleteJob(jobId, jobTitle) {
         }
     } catch (error) {
         console.error('Error deleting job:', error);
-        alert('Error deleting job: ' + error.message);
+        
+        // Use notification system instead of alert
+        if (window.companyJobsManager && typeof window.companyJobsManager.showNotification === 'function') {
+            window.companyJobsManager.showNotification('Error deleting job: ' + error.message, 'error');
+        } else {
+            // Fallback to global showNotification if available
+            if (typeof showNotification === 'function') {
+                showNotification('Error deleting job: ' + error.message, 'error');
+            } else {
+                alert('Error deleting job: ' + error.message);
+            }
+        }
     }
 }
 

@@ -53,6 +53,40 @@ document.addEventListener('DOMContentLoaded', () => {
     deleteBtn.addEventListener('click', deleteImage);
 });
 
+// Notification system - consistent with other classes in the codebase
+function showNotification(message, type = 'success') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full ${
+        type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+    
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${iconClass} mr-2" aria-label="${type}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+
+    // Animate out and remove
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
 function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -78,13 +112,13 @@ function handleDrop(e) {
 function handleFileSelect(file) {
     // Validate file type
     if (!file.type.startsWith('image/')) {
-        alert('Please select an image file');
+        showNotification('Please select an image file', 'error');
         return;
     }
     
     // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
-        alert('File size must be less than 5MB');
+        showNotification('File size must be less than 5MB', 'error');
         return;
     }
     
@@ -122,7 +156,7 @@ function handleFileSelect(file) {
 
 async function uploadImage() {
     if (!selectedFile) {
-        alert('No file selected');
+        showNotification('No file selected', 'error');
         return;
     }
     
@@ -139,7 +173,7 @@ async function uploadImage() {
             const response = await window.apiClient.uploadProfileImage(currentUserId, formData);
             
             if (response && response.success) {
-                alert('✅ Image uploaded successfully!');
+                showNotification('Image uploaded successfully!', 'success');
                 
                 // Update profile image on page using background-image
                 updateProfileImages(response.imageUrl);
@@ -147,12 +181,12 @@ async function uploadImage() {
                 resetUploadArea();
                 closeModal('modal-upload');
             } else {
-                alert(`❌ Upload failed: ${response ? response.message : 'Unknown error'}`);
+                showNotification(`Upload failed: ${response ? response.message : 'Unknown error'}`, 'error');
             }
         } else {
             // Fallback: simulate upload for demo
             setTimeout(() => {
-                alert('✅ Image uploaded successfully! (Demo mode)');
+                showNotification('Image uploaded successfully! (Demo mode)', 'success');
                 
                 // Update profile image with selected file using FileReader
                 const reader = new FileReader();
@@ -166,7 +200,7 @@ async function uploadImage() {
             }, 1000);
         }
     } catch (error) {
-        alert(`❌ Upload error: ${error.message}`);
+        showNotification(`Upload error: ${error.message}`, 'error');
     } finally {
         uploadBtn.disabled = false;
         uploadBtn.textContent = 'Upload Image';
@@ -174,9 +208,67 @@ async function uploadImage() {
 }
 
 async function deleteImage() {
-    if (!confirm('Are you sure you want to delete your profile image?')) {
-        return;
-    }
+    // Show confirmation modal instead of browser confirm
+    showDeleteConfirmationModal(() => {
+        // Proceed with deletion if confirmed
+        proceedWithDelete();
+    });
+    return;
+}
+
+// Add this new function to show the confirmation modal
+function showDeleteConfirmationModal(onConfirm) {
+    // Create modal HTML
+    const modalHTML = `
+        <div id="delete-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md mx-4 shadow-xl">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl mr-3"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Confirm Delete</h3>
+                </div>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    Are you sure you want to delete your profile image? This action cannot be undone.
+                </p>
+                <div class="flex justify-end space-x-3">
+                    <button id="cancel-delete" class="px-4 py-2 text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        Cancel
+                    </button>
+                    <button id="confirm-delete" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                        Delete Image
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to DOM
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    const modal = document.getElementById('delete-confirmation-modal');
+    const cancelBtn = document.getElementById('cancel-delete');
+    const confirmBtn = document.getElementById('confirm-delete');
+    
+    // Handle cancel
+    cancelBtn.addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    // Handle confirm
+    confirmBtn.addEventListener('click', () => {
+        modal.remove();
+        onConfirm();
+    });
+    
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// Separate the actual delete logic
+async function proceedWithDelete() {
     
     deleteBtn.disabled = true;
     deleteBtn.textContent = 'Deleting...';
@@ -186,24 +278,24 @@ async function deleteImage() {
             const response = await window.apiClient.deleteProfileImage(currentUserId);
             
             if (response && response.success) {
-                alert('✅ Image deleted successfully!');
+                showNotification('Image deleted successfully!', 'success');
                 
                 // Reset to default image
                 updateProfileImages('img/default-profile.png');
             } else {
-                alert(`❌ Delete failed: ${response ? response.message : 'Unknown error'}`);
+                showNotification(`Delete failed: ${response ? response.message : 'Unknown error'}`, 'error');
             }
         } else {
             // Fallback: simulate delete for demo
             setTimeout(() => {
-                alert('✅ Image deleted successfully! (Demo mode)');
+                showNotification('Image deleted successfully! (Demo mode)', 'success');
                 
                 // Reset to default image
                 updateProfileImages('img/default-profile.png');
             }, 500);
         }
     } catch (error) {
-        alert(`❌ Delete error: ${error.message}`);
+        showNotification(`Delete error: ${error.message}`, 'error');
     } finally {
         deleteBtn.disabled = false;
         deleteBtn.textContent = 'Delete Image';
