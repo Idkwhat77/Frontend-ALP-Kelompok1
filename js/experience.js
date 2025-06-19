@@ -134,13 +134,21 @@ class ExperienceManager {
         event.preventDefault();
 
         try {
+            // Safely get form elements with null checks
+            const experienceNameEl = document.getElementById('experience-name');
+            const startYearEl = document.getElementById('exp-start-year');
+            const endYearEl = document.getElementById('exp-end-year');
+            
+
+            // Check if required elements exist
+            if (!experienceNameEl || !startYearEl) {
+                throw new Error('Required form elements not found');
+            }
+
             const formData = {
-                experienceName: document.getElementById('experience-name').value.trim(),
-                startYear: parseInt(document.getElementById('exp-start-year').value),
-                endYear: document.getElementById('exp-end-year').value ? parseInt(document.getElementById('exp-end-year').value) : null,
-                profileImageUrl: document.getElementById('profile-image-url').value.trim() || null,
-                profileImagePath: null,
-                imageUploadDate: null
+                experienceName: experienceNameEl.value.trim(),
+                startYear: parseInt(startYearEl.value),
+                endYear: endYearEl?.value ? parseInt(endYearEl.value) : null,
             };
 
             // Debug logging
@@ -205,7 +213,7 @@ class ExperienceManager {
                 document.getElementById('experience-name').value = experience.experienceName;
                 document.getElementById('exp-start-year').value = experience.startYear;
                 document.getElementById('exp-end-year').value = experience.endYear || '';
-                document.getElementById('profile-image-url').value = experience.profileImageUrl || '';
+                
 
                 // Set editing mode
                 this.isEditing = true;
