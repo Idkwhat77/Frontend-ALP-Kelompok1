@@ -10,56 +10,36 @@ This is the frontend repository for a Challenge Based Learning (CBL) project foc
 > [!NOTE]
 > This project is currently in development phase. Database configuration and deployment strategies may change for production environments.
 
+## 🔗 Visit Backend Repository
+You can find the backend repository for this project here:
+[**Backend-ALP-Kelompok1**](https://github.com/Idkwhat77/Backend-ALP-Kelompok1)
+
 ## 👥 Team Members
-1. Aristo Benedict Iskandar
-2. Exsel Octaviand Gosal
-3. M. Rifki Paranrengi
-4. Stella J. Chandra
+- **Aristo Benedict Iskandar**
+- **Exsel Octaviand Gosal**
+- **M. Rifki Paranrengi**
+- **Stella J. Chandra**
 
 ## 💡 Project Overview
 
-This repository contains the frontend implementation for the project.
+This repository contains the frontend implementation for an interactive platform designed to address unemployment challenges in Indonesia through innovative digital solutions.
 
-### Big Idea
-### Sosial : Pengangguran 
+### Project Context
+**Big Idea:** Sosial - Pengangguran  
 Addressing unemployment challenges through digital innovation
 
-### Essential Question
-Bagaimana cara membuat interaksi agar dapat mengurangi pengangguran di Indonesia?
+**Essential Question:** Bagaimana cara membuat interaksi agar dapat mengurangi pengangguran di Indonesia?
 
-### Challenge
-Membuat sebuah interaksi agar dapat mengurangi pengangguran di Indonesia
+**Challenge:** Membuat sebuah interaksi agar dapat mengurangi pengangguran di Indonesia
 
-## 🛠️ Tech Stack
+## ✨ Features
 
-### Frontend
-| Technology | Badge | Description |
-|------------|-------|-------------|
-| **JavaScript ES6+** | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) | Modern client-side programming language |
-| **HTML5** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) | Semantic markup and structure |
-| **CSS3** | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) | Modern styling and animations |
-| **Tailwind CSS v4** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white) | Utility-first CSS framework |
-
-## 📋 Development Guidelines
-
-### Project Status
-- ✅ Project structure planning
-- 🚧 Frontend development (In Progress)
-- 📋 Integration testing (Planned)
-
-### Code Standards
-- Follow **Clean Code** principles
-- Implement proper **error handling**
-- Write **comprehensive tests**
-- Document **API endpoints**
-- Use **semantic commit messages**
-
-> [!IMPORTANT]
-> As this is an academic project, development practices may vary as we learn and adapt. We strive to follow industry standards but acknowledge that consistency may improve over time as the team gains experience.
-
-## 🔗 Visit Backend Repository
-You can find the backend repository for this project here:
-[Backend-ALP-Kelompok1](https://github.com/Idkwhat77/Backend-ALP-Kelompok1)
+- **Interactive Job Matching System** - Connect job seekers with relevant opportunities
+- **AI-Powered Career Guidance** - Intelligent chatbot for personalized assistance
+- **User Dashboard** - Comprehensive profile and progress tracking
+- **Advanced Search & Filtering** - Find opportunities based on skills and preferences
+- **Responsive Design** - Optimized for all device types
+- **Real-time Notifications** - Stay updated with latest job postings
 
 ---
 *Last updated: June 2025*
